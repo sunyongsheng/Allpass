@@ -34,21 +34,21 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.supervised_user_circle,
-              color: _appColor,
+              color: _currentIndex==0?_appColor:Colors.grey,
             ),
-            title: Text("密码")
+            title: Text("密码"),
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.credit_card,
-                color: _appColor,
+                color: _currentIndex==1?_appColor:Colors.grey,
               ),
               title: Text("卡片")
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
-                color: _appColor,
+                color: _currentIndex==2?_appColor:Colors.grey,
               ),
               title: Text("设置")
           ),
