@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/bean/password_bean.dart';
+import 'package:allpass/pages/view_password_page.dart';
 
 class PasswordPage extends StatelessWidget {
   @override
@@ -78,7 +79,7 @@ class PasswordWidget extends StatelessWidget {
   }
 }
 
-Widget _createBottomSheet(BuildContext context, PasswordBean accountBean) {
+Widget _createBottomSheet(BuildContext context, PasswordBean passwordBean) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: <Widget>[
@@ -86,28 +87,33 @@ Widget _createBottomSheet(BuildContext context, PasswordBean accountBean) {
         leading: Icon(Icons.remove_red_eye),
         title: Text("查看"),
         onTap: () {
-          print("点击了账号：" + accountBean.name + "的查看按钮");
+          print("点击了账号：" + passwordBean.name + "的查看按钮");
+          Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (context) => ViewPasswordPage(passwordBean)
+              )
+          );
         },
       ),
       ListTile(
         leading: Icon(Icons.edit),
         title: Text("编辑"),
         onTap: () {
-          print("点击了账号：" + accountBean.name + "的编辑按钮");
+          print("点击了账号：" + passwordBean.name + "的编辑按钮");
         },
       ),
       ListTile(
         leading: Icon(Icons.person),
         title: Text("复制用户名"),
         onTap: () {
-          print("复制用户名：" + accountBean.username);
+          print("复制用户名：" + passwordBean.username);
         },
       ),
       ListTile(
         leading: Icon(Icons.content_copy),
         title: Text("复制密码"),
         onTap: () {
-          print("复制密码：" + accountBean.password);
+          print("复制密码：" + passwordBean.password);
         },
       )
     ],
