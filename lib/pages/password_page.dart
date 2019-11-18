@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/bean/password_bean.dart';
-import 'package:allpass/pages/view_password_page.dart';
+import 'package:allpass/pages/view_and_edit_password_page.dart';
 
 class PasswordPage extends StatelessWidget {
   @override
@@ -90,7 +90,7 @@ Widget _createBottomSheet(BuildContext context, PasswordBean passwordBean) {
           print("点击了账号：" + passwordBean.name + "的查看按钮");
           Navigator.push(context,
               MaterialPageRoute(
-                  builder: (context) => ViewPasswordPage(passwordBean)
+                  builder: (context) => ViewAndEditPasswordPage(passwordBean)
               )
           );
         },
@@ -100,6 +100,11 @@ Widget _createBottomSheet(BuildContext context, PasswordBean passwordBean) {
         title: Text("编辑"),
         onTap: () {
           print("点击了账号：" + passwordBean.name + "的编辑按钮");
+          Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (context) => ViewAndEditPasswordPage(passwordBean)
+              )
+          );
         },
       ),
       ListTile(
