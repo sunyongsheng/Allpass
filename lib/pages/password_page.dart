@@ -5,6 +5,18 @@ import 'package:allpass/pages/view_and_edit_password_page.dart';
 
 class PasswordPage extends StatelessWidget {
   @override
+  Widget build(BuildContext context) =>  _PasswordPage();
+}
+
+class _PasswordPage extends StatefulWidget {
+
+  @override
+  _PasswordPageState createState() => _PasswordPageState();
+}
+
+class _PasswordPageState extends State<_PasswordPage> {
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

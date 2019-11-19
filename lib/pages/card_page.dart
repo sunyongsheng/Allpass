@@ -3,6 +3,16 @@ import 'package:allpass/bean/card_bean.dart';
 
 class CardPage extends StatelessWidget {
   @override
+  Widget build(BuildContext context) => _CardPage();
+}
+
+class _CardPage extends StatefulWidget {
+  @override
+  _CardPageState createState() => _CardPageState();
+}
+
+class _CardPageState extends State<_CardPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
