@@ -8,7 +8,7 @@ class PasswordBean {
   String notes;     // 备注
   String label;     // 标签
 
-  PasswordBean(this.key, this.username, this.password, this.url, {this.folder, this.name, this.label, this.notes}) {
+  PasswordBean(this.key, this.username, this.password, this.url, {this.folder: "默认", this.name, this.label, this.notes}) {
     if (name == null) {
       if (url.contains("weibo")) {
         this.name = "微博";
