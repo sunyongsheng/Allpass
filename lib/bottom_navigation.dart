@@ -36,21 +36,21 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
               Icons.supervised_user_circle,
               color: _currentIndex==0?_appColor:Colors.grey,
             ),
-            title: Text("密码"),
+            title: Text("密码", style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.credit_card,
                 color: _currentIndex==1?_appColor:Colors.grey,
               ),
-              title: Text("卡片")
+              title: Text("卡片", style: TextStyle(fontSize: 12))
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
                 color: _currentIndex==2?_appColor:Colors.grey,
               ),
-              title: Text("设置")
+              title: Text("设置", style: TextStyle(fontSize: 12))
           ),
         ],
         type: BottomNavigationBarType.fixed,
