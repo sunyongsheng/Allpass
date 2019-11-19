@@ -8,9 +8,14 @@ class CardBean {
   String label;     // 标签
   String notes;     // 备注
 
-  CardBean(this.key, this.ownerName, this.cardId, {this.folder="default", this.name, this.telephone, this.label, this.notes}){
+  CardBean(this.key, this.ownerName, this.cardId, {this.folder, this.name, this.telephone, this.label, this.notes}){
     if (name == null) {
       this.name = this.ownerName + "的卡片";
     }
+
+    if (folder == null) {
+      this.folder = "默认";
+    }
+
   }
 }
