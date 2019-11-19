@@ -11,6 +11,8 @@ class AllpassTextUI {
   static final TextStyle firstTitleStyleBlack = TextStyle(fontSize: 16, color: Colors.black);
   static final TextStyle secondTitleStyleBlack = TextStyle(fontSize: 14, color: Colors.black);
 
+  static final TextStyle smallTextStyleBlack = TextStyle(fontSize: 13, color: Colors.black);
+
 }
 
 class AllpassColorUI {
