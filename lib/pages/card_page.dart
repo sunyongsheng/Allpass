@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/test_data.dart';
 
 class CardPage extends StatelessWidget {
   @override
@@ -10,7 +11,10 @@ class CardPage extends StatelessWidget {
 
 class _CardPage extends StatefulWidget {
   @override
-  _CardPageState createState() => _CardPageState();
+  _CardPageState createState() {
+    CardTestData();   // 初始化测试数据
+    return _CardPageState();
+  }
 }
 
 class _CardPageState extends State<_CardPage> {
@@ -50,13 +54,8 @@ class _CardPageState extends State<_CardPage> {
 }
 
 List<Widget> getCardWidgetList() {
-  List<CardBean> list = List();
 
-  list..add(CardBean(1, "Aengus", "1233455214123123", name: "Aengus的身份证"))
-    ..add(CardBean(2, "Joye", "12312312312312312", name: "Joyed的身份证"))
-    ..add(CardBean(3, "Jike", "123146452132446748", name: "工商银行"));
-
-  return list.map((card) => CardWidget(card)).toList();
+  return CardTestData.cardList.map((card) => CardWidget(card)).toList();
 }
 
 class CardWidget extends StatelessWidget {
@@ -87,46 +86,47 @@ class CardWidget extends StatelessWidget {
           showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return _createBottomSheet(context, cardBean);
+                return _createBottomSheet(context);
               });
         },
       ),
     );
   }
-}
 
-Widget _createBottomSheet(BuildContext context, CardBean cardBean) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      ListTile(
-        leading: Icon(Icons.remove_red_eye),
-        title: Text("查看"),
-        onTap: () {
-          print("点击了卡片：" + cardBean.name + "的查看按钮");
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.edit),
-        title: Text("编辑"),
-        onTap: () {
-          print("点击了卡片：" + cardBean.name + "的编辑按钮");
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.person),
-        title: Text("复制用户名"),
-        onTap: () {
-          print("复制用户名：" + cardBean.ownerName);
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.content_copy),
-        title: Text("复制卡号"),
-        onTap: () {
-          print("复制卡号：" + cardBean.cardId);
-        },
-      )
-    ],
-  );
+  // 点击账号弹出模态菜单
+  Widget _createBottomSheet(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.remove_red_eye),
+          title: Text("查看"),
+          onTap: () {
+            print("点击了卡片：" + cardBean.name + "的查看按钮");
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.edit),
+          title: Text("编辑"),
+          onTap: () {
+            print("点击了卡片：" + cardBean.name + "的编辑按钮");
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.person),
+          title: Text("复制用户名"),
+          onTap: () {
+            print("复制用户名：" + cardBean.ownerName);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.content_copy),
+          title: Text("复制卡号"),
+          onTap: () {
+            print("复制卡号：" + cardBean.cardId);
+          },
+        )
+      ],
+    );
+  }
 }

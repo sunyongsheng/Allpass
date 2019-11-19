@@ -3,10 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/test_data.dart';
 
 class PasswordPage extends StatelessWidget {
+
+
   @override
-  Widget build(BuildContext context) =>  _PasswordPage();
+  Widget build(BuildContext context) {
+    PasswordTestData();   // 初始化测试数据
+    return _PasswordPage();
+  }
 }
 
 class _PasswordPage extends StatefulWidget {
@@ -53,17 +59,12 @@ class _PasswordPageState extends State<_PasswordPage> {
 }
 
 List<Widget> getPasswordWidgetList() {
-  List<PasswordBean> passwordList = List();
 
-  passwordList.add(PasswordBean(1, "sys6511@126.com", "1234","https://www.weibo.com"));
-  passwordList.add(PasswordBean(2, "sys6511@126.com", "12345", "https://www.zhihu.com"));
-  passwordList.add(PasswordBean(3, "sys6511@126.com", "31238912","https://www.126.com"));
-  passwordList.add(PasswordBean(4, "sunyongsheng6511@gmail.com", "joi123123", "https://www.gmail.com"));
-
-  return passwordList.map((item) => PasswordWidget(item)).toList();
+  return PasswordTestData.passwordList.map((item) => PasswordWidget(item)).toList();
 }
 
 class PasswordWidget extends StatelessWidget {
+
   final PasswordBean passwordBean;
 
   PasswordWidget(this.passwordBean);
@@ -90,56 +91,57 @@ class PasswordWidget extends StatelessWidget {
           showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return _createBottomSheet(context, passwordBean);
+                return _createBottomSheet(context);
               });
         },
       ),
     );
   }
-}
 
-Widget _createBottomSheet(BuildContext context, PasswordBean passwordBean) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: <Widget>[
-      ListTile(
-        leading: Icon(Icons.remove_red_eye),
-        title: Text("查看"),
-        onTap: () {
-          print("点击了账号：" + passwordBean.name + "的查看按钮");
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context) => ViewAndEditPasswordPage(passwordBean)
-              )
-          );
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.edit),
-        title: Text("编辑"),
-        onTap: () {
-          print("点击了账号：" + passwordBean.name + "的编辑按钮");
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context) => ViewAndEditPasswordPage(passwordBean)
-              )
-          );
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.person),
-        title: Text("复制用户名"),
-        onTap: () {
-          print("复制用户名：" + passwordBean.username);
-        },
-      ),
-      ListTile(
-        leading: Icon(Icons.content_copy),
-        title: Text("复制密码"),
-        onTap: () {
-          print("复制密码：" + passwordBean.password);
-        },
-      )
-    ],
-  );
+  // 点击账号弹出模态菜单
+  Widget _createBottomSheet(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ListTile(
+          leading: Icon(Icons.remove_red_eye),
+          title: Text("查看"),
+          onTap: () {
+            print("点击了账号：" + passwordBean.name + "的查看按钮");
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => ViewAndEditPasswordPage(passwordBean)
+                )
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.edit),
+          title: Text("编辑"),
+          onTap: () {
+            print("点击了账号：" + passwordBean.name + "的编辑按钮");
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => ViewAndEditPasswordPage(passwordBean)
+                )
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.person),
+          title: Text("复制用户名"),
+          onTap: () {
+            print("复制用户名：" + passwordBean.username);
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.content_copy),
+          title: Text("复制密码"),
+          onTap: () {
+            print("复制密码：" + passwordBean.password);
+          },
+        )
+      ],
+    );
+  }
 }
