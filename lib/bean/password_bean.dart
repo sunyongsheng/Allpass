@@ -1,12 +1,12 @@
 class PasswordBean {
-  final int key;    // ID
-  String name;      // 账号名称
-  String username;  // 用户名
-  String password;  // 密码
-  String url;       // 地址
-  String folder;    // 文件夹
-  String notes;     // 备注
-  String label;     // 标签
+  final int key;          // ID
+  String name;            // 账号名称
+  String username;        // 用户名
+  String password;        // 密码
+  String url;             // 地址
+  String folder;          // 文件夹
+  String notes;           // 备注
+  List<String> label;     // 标签
 
   PasswordBean(this.key, this.username, this.password, this.url, {this.folder: "默认", this.name, this.label, this.notes}) {
     if (name == null) {
