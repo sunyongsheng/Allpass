@@ -8,7 +8,8 @@ class PasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("密码"),
+        title: Text("密码", style: TextStyle(color: Colors.black, fontSize: 16),),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -18,10 +19,15 @@ class PasswordPage extends StatelessWidget {
             },
           )
         ],
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        toolbarOpacity: 1,
       ),
       body: ListView(
           children: getPasswordWidgetList()
       ),
+      backgroundColor: Colors.white,
       // 添加 按钮
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

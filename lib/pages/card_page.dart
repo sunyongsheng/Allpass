@@ -6,20 +6,26 @@ class CardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("卡片"),
+        title: Text("卡片", style: TextStyle(color: Colors.black, fontSize: 16),),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             tooltip: "搜索",
             onPressed: () {
-              print("点击搜索按钮");
+              print("点击了卡片页的搜索");
             },
           )
         ],
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        toolbarOpacity: 1,
       ),
       body: ListView(
         children: getCardWidgetList(),
       ),
+      backgroundColor: Colors.white,
       // 添加按钮
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

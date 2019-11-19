@@ -39,16 +39,19 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("查看密码"),
+          title: Text("查看密码", style: TextStyle(fontSize: 16, color: Colors.black),),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.check),
+              icon: Icon(Icons.check, color: Colors.black,),
               onPressed: () {
                 print("点击了保存按钮");
                 Navigator.pop(context);
               },
             )
           ],
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0,
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -136,6 +139,8 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   ),
                 )
               ],
-        )));
+        )),
+      backgroundColor: Colors.white,
+    );
   }
 }
