@@ -1,4 +1,5 @@
 class PasswordBean {
+  final int key;     // ID
   String name;      // 账号名称
   String username;  // 用户名
   String password;  // 密码
@@ -7,9 +8,19 @@ class PasswordBean {
   String notes;     // 备注
   String label;     // 标签
 
-  PasswordBean(this.username, this.password, this.url, {this.folder="default"}) {
+  PasswordBean(this.key, this.username, this.password, this.url, {this.folder="default"}) {
     if (name == null) {
-      this.name = this.username;
+      if (url.contains("weibo")) {
+        this.name = "微博";
+      } else if (url.contains("zhihu")) {
+        this.name = "知乎";
+      } else if (url.contains("gmail")) {
+        this.name = "Gmail";
+      } else if (url.contains("126")) {
+        this.name = "126邮箱";
+      } else {
+        this.name = this.username;
+      }
     }
   }
 }
