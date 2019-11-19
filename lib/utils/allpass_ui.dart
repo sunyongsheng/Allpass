@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class TextUI {
+class AllpassTextUI {
 
-  TextUI._();
+  AllpassTextUI._();
 
   static final TextStyle mainTitleStyle = TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold);
   static final TextStyle firstTitleStyleBlue = TextStyle(fontSize: 18, color: Colors.blue);
@@ -13,7 +13,7 @@ class TextUI {
 
 }
 
-class ColorUI {
+class AllpassColorUI {
 
   static final Color mainColor = Colors.blue;
   static final Color mainBackgroundColor = Colors.white;
