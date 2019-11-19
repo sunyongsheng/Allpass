@@ -16,6 +16,9 @@ class CardBean {
     if (folder == null) {
       this.folder = "默认";
     }
+    if (label == null) {
+      this.label = List();
+    }
 
   }
 }

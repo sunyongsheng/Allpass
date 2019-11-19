@@ -6,7 +6,7 @@ class PasswordBean {
   String url;             // 地址
   String folder;          // 文件夹
   String notes;           // 备注
-  List<String> label = List();     // 标签
+  List<String> label;     // 标签
 
   PasswordBean(this.key, this.username, this.password, this.url, {this.folder: "默认", this.name, this.label, this.notes}) {
     if (name == null) {
@@ -26,9 +26,9 @@ class PasswordBean {
     if (folder == null) {
       this.folder = "默认";
     }
-
     if (label == null) {
-      this.label.add("undefined");
+      this.label = List();
     }
   }
+
 }
