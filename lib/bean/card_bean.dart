@@ -5,8 +5,8 @@ class CardBean {
   String cardId;          // 卡片ID/卡号
   int telephone;          // 手机号
   String folder;          // 文件夹
-  List<String> label;     // 标签
   String notes;           // 备注
+  List<String> label = List();     // 标签
 
   CardBean(this.key, this.ownerName, this.cardId, {this.folder, this.name, this.telephone, this.label, this.notes}){
     if (name == null) {
