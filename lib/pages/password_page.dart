@@ -54,10 +54,10 @@ class _PasswordPageState extends State<_PasswordPage> {
 List<Widget> getPasswordWidgetList() {
   List<PasswordBean> passwordList = List();
 
-  passwordList.add(PasswordBean("sys6511@126.com", "1234","https://www.weibo.com"));
-  passwordList.add(PasswordBean("sys6511@126.com", "12345", "https://www.zhihu.com"));
-  passwordList.add(PasswordBean("sys6511@126.com", "31238912","https://www.126.com"));
-  passwordList.add(PasswordBean("sunyongsheng6511@gmail.com", "joi123123", "https://www.gmail.com"));
+  passwordList.add(PasswordBean(1, "sys6511@126.com", "1234","https://www.weibo.com"));
+  passwordList.add(PasswordBean(2, "sys6511@126.com", "12345", "https://www.zhihu.com"));
+  passwordList.add(PasswordBean(3, "sys6511@126.com", "31238912","https://www.126.com"));
+  passwordList.add(PasswordBean(4, "sunyongsheng6511@gmail.com", "joi123123", "https://www.gmail.com"));
 
   return passwordList.map((item) => PasswordWidget(item)).toList();
 }

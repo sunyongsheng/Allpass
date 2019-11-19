@@ -50,9 +50,9 @@ class _CardPageState extends State<_CardPage> {
 List<Widget> getCardWidgetList() {
   List<CardBean> list = List();
 
-  list..add(CardBean("Aengus", "1233455214123123"))
-    ..add(CardBean("Joye", "12312312312312312"))
-    ..add(CardBean("Jike", "123146452132446748"));
+  list..add(CardBean(1, "Aengus", "1233455214123123", name: "Aengus的身份证"))
+    ..add(CardBean(2, "Joye", "12312312312312312", name: "Joyed的身份证"))
+    ..add(CardBean(3, "Jike", "123146452132446748", name: "工商银行"));
 
   return list.map((card) => CardWidget(card)).toList();
 }
