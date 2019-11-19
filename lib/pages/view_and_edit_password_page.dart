@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:allpass/bean/password_bean.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 
 class ViewAndEditPasswordPage extends StatefulWidget {
   final PasswordBean data;
@@ -39,7 +41,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("查看密码", style: TextStyle(fontSize: 16, color: Colors.black),),
+          title: Text("查看密码", style: AllpassTextUI.firstTitleStyleBlue,),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.check, color: Colors.black,),
@@ -61,7 +63,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("名称"),
+                      Text("名称", style: AllpassTextUI.firstTitleStyleBlue,),
                       TextField(
                         controller: nameController,
                       ),
@@ -73,7 +75,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("用户名"),
+                      Text("用户名", style: AllpassTextUI.firstTitleStyleBlue,),
                       TextField(
                         controller: usernameController,
                       ),
@@ -85,9 +87,15 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Text("密码", style: AllpassTextUI.firstTitleStyleBlue,),
                       Row(
                         children: <Widget>[
-                          Text("密码"),
+                          Expanded(
+                            child: TextField(
+                              controller: passwordController,
+                              obscureText: !_passwordVisible,
+                            ),
+                          ),
                           IconButton(
                             icon: _passwordVisible==true?Icon(Icons.visibility):Icon(Icons.visibility_off),
                             onPressed: () {
@@ -99,10 +107,6 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                           )
                         ],
                       ),
-                      TextField(
-                        controller: passwordController,
-                        obscureText: !_passwordVisible,
-                      ),
                     ],
                   ),
                 ),
@@ -111,7 +115,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("文件夹"),
+                      Text("文件夹", style: AllpassTextUI.firstTitleStyleBlue,),
                       TextField(),
                     ],
                   ),
@@ -121,7 +125,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("标签"),
+                      Text("标签", style: AllpassTextUI.firstTitleStyleBlue,),
                       TextField(),
                     ],
                   ),
@@ -131,7 +135,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text("备注"),
+                      Text("备注", style: AllpassTextUI.firstTitleStyleBlue,),
                       TextField(
                         controller: notesController,
                       ),

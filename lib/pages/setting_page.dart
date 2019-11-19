@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/utils/allpass_ui.dart';
+
 class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _SettingPage();
@@ -15,13 +17,13 @@ class _SettingPageState extends State<_SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("设置", style: TextStyle(color: Colors.black, fontSize: 16),),
+        title: Text("设置", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
       ),
       body: Text("设置"),
-      backgroundColor: Colors.white,
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
     );
   }
 }

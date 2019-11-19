@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:allpass/bean/card_bean.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 
 class CardPage extends StatelessWidget {
   @override
@@ -16,7 +18,7 @@ class _CardPageState extends State<_CardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("卡片", style: TextStyle(color: Colors.black, fontSize: 16),),
+        title: Text("卡片", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -27,7 +29,7 @@ class _CardPageState extends State<_CardPage> {
             },
           )
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         toolbarOpacity: 1,
@@ -35,7 +37,7 @@ class _CardPageState extends State<_CardPage> {
       body: ListView(
         children: getCardWidgetList(),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加按钮
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

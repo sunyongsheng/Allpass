@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 
 class PasswordPage extends StatelessWidget {
   @override
@@ -20,7 +21,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("密码", style: TextStyle(color: Colors.black, fontSize: 16),),
+        title: Text("密码", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
@@ -31,7 +32,7 @@ class _PasswordPageState extends State<_PasswordPage> {
             },
           )
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         toolbarOpacity: 1,
@@ -39,7 +40,7 @@ class _PasswordPageState extends State<_PasswordPage> {
       body: ListView(
           children: getPasswordWidgetList()
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加 按钮
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
