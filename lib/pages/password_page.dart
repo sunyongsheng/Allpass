@@ -5,6 +5,7 @@ import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/test_data.dart';
 
+/// 密码页面
 class PasswordPage extends StatelessWidget {
 
 

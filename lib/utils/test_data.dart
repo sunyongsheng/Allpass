@@ -1,6 +1,7 @@
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/bean/card_bean.dart';
 
+/// 密码测试数据
 class PasswordTestData {
 
   static List<PasswordBean> passwordList = List();
@@ -20,6 +21,7 @@ class PasswordTestData {
 
 }
 
+/// 卡片测试数据
 class CardTestData {
 
   static List<CardBean> cardList = List();

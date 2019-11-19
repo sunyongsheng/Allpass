@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// 保存所有Allpass用到的文本样式
 class AllpassTextUI {
 
   AllpassTextUI._();
@@ -15,6 +16,7 @@ class AllpassTextUI {
 
 }
 
+/// 保存所有Allpass用到的颜色
 class AllpassColorUI {
 
   AllpassColorUI._();

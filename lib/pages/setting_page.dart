@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
 
+/// 设置页面
 class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _SettingPage();

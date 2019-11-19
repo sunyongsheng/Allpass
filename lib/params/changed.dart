@@ -1,3 +1,4 @@
+/// 存储文件夹与标签选项
 class FolderAndLabelList {
 
   FolderAndLabelList._();

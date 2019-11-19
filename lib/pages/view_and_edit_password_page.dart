@@ -4,6 +4,7 @@ import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/params/changed.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
+/// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
   final PasswordBean data;
 

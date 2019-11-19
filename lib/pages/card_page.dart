@@ -4,6 +4,7 @@ import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/test_data.dart';
 
+/// 卡片页面
 class CardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _CardPage();
