@@ -15,6 +15,8 @@ class AllpassTextUI {
 
 class AllpassColorUI {
 
+  AllpassColorUI._();
+
   static final Color mainColor = Colors.blue;
   static final Color mainBackgroundColor = Colors.white;
 
