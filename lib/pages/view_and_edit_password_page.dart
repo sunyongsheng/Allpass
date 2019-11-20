@@ -6,6 +6,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
+
   final PasswordBean data;
 
   ViewAndEditPasswordPage(this.data);
@@ -18,26 +19,33 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
-  final PasswordBean oldData;
   PasswordBean newData;
+  PasswordBean oldData;
+
+  var nameController;
+  var usernameController;
+  var passwordController;
+  var notesController;
+  var urlController;
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(this.oldData);
 
-  @override
-  Widget build(BuildContext context) {
-
+  _ViewPasswordPage(PasswordBean oldData) {
+    this.oldData = oldData;
     newData = PasswordBean(oldData.key, oldData.username, oldData.password, oldData.url,
         name: oldData.name, folder: oldData.folder,
         label: oldData.label, notes: oldData.notes);
 
-    var nameController = TextEditingController(text: newData.name);
-    var usernameController = TextEditingController(text: newData.username);
-    var passwordController = TextEditingController(text: newData.password);
-    var notesController = TextEditingController(text: newData.notes);
-    var urlController = TextEditingController(text: newData.url);
+    nameController = TextEditingController(text: newData.name);
+    usernameController = TextEditingController(text: newData.username);
+    passwordController = TextEditingController(text: newData.password);
+    notesController = TextEditingController(text: newData.notes);
+    urlController = TextEditingController(text: newData.url);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
         Navigator.of(context).pop(oldData);
@@ -56,7 +64,6 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                 color: Colors.black,
               ),
               onPressed: () {
-                print("点击了保存按钮");
                 Navigator.pop<PasswordBean>(context, newData);
               },
             )
@@ -170,25 +177,32 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                         "文件夹",
                         style: AllpassTextUI.firstTitleStyleBlue,
                       ),
-                      // TODO 修改后页面无反应
-                      DropdownButton<String>(
-                        value: newData.folder,
-                        onChanged: (String newValue) {
+                      DropdownButton(
+                        onChanged: (newValue) {
                           setState(() {
                             newData.folder = newValue;
                           });
                         },
                         items: FolderAndLabelList.folderList
-                             .map<DropdownMenuItem<String>>((String value) {
+                             .map<DropdownMenuItem<String>>((item) {
                            return DropdownMenuItem<String>(
-                             value: value,
-                             child: Text(value),
+                             value: item,
+                             child: Text(item),
                            );
                          }).toList(),
                         style: AllpassTextUI.firstTitleStyleBlack,
                         elevation: 8,
                         iconSize: 30,
+                        value: newData.folder,
                       ),
+                      // Expanded(
+                      //   child: TextField(
+                      //     controller: folderController,
+                      //     onChanged: (text) {
+                      //       newData.folder = text;
+                      //     },
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -241,19 +255,18 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
       ),
     );
   }
-
   List<Widget> _getTag() {
       List<Widget> labelChoices = List();
       FolderAndLabelList.labelList.forEach((item) {
         labelChoices.add(ChoiceChip(
           label: Text(item),
           labelStyle: AllpassTextUI.secondTitleStyleBlack,
-          selected: oldData.label.contains(item),
+          selected: newData.label.contains(item),
           onSelected: (selected) {
             setState(() {
-              oldData.label.contains(item)
-                  ? oldData.label.remove(item)
-                  : oldData.label.add(item);
+              newData.label.contains(item)
+                  ? newData.label.remove(item)
+                  : newData.label.add(item);
             });
           },
           selectedColor: AllpassColorUI.mainColor,
