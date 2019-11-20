@@ -5,12 +5,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/test_data.dart';
 
 /// 卡片页面
-class CardPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => _CardPage();
-}
-
-class _CardPage extends StatefulWidget {
+class CardPage extends StatefulWidget {
   @override
   _CardPageState createState() {
     CardTestData();   // 初始化测试数据
@@ -18,10 +13,7 @@ class _CardPage extends StatefulWidget {
   }
 }
 
-class _CardPageState extends State<_CardPage> {
-
-  TextEditingController searchController = TextEditingController();
-
+class _CardPageState extends State<CardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,21 +65,12 @@ class _CardPageState extends State<_CardPage> {
       ),
     );
   }
-}
 
-List<Widget> getCardWidgetList() {
+  List<Widget> getCardWidgetList() {
+    return CardTestData.cardList.map((card) => getCardWidget(card)).toList();
+  }
 
-  return CardTestData.cardList.map((card) => CardWidget(card)).toList();
-}
-
-class CardWidget extends StatelessWidget {
-
-  final CardBean cardBean;
-
-  CardWidget(this.cardBean);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget getCardWidget(CardBean cardBean){
     return Container(
       width: 150,
       height: 70,
@@ -108,7 +91,7 @@ class CardWidget extends StatelessWidget {
           showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
-                return _createBottomSheet(context);
+                return _createBottomSheet(context, cardBean);
               });
         },
       ),
@@ -116,7 +99,7 @@ class CardWidget extends StatelessWidget {
   }
 
   // 点击账号弹出模态菜单
-  Widget _createBottomSheet(BuildContext context) {
+  Widget _createBottomSheet(BuildContext context, CardBean cardBean) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -152,3 +135,4 @@ class CardWidget extends StatelessWidget {
     );
   }
 }
+
