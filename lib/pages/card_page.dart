@@ -19,28 +19,53 @@ class _CardPage extends StatefulWidget {
 }
 
 class _CardPageState extends State<_CardPage> {
+
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("卡片", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: "搜索",
-            onPressed: () {
-              print("点击了卡片页的搜索");
-            },
-          )
-        ],
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         toolbarOpacity: 1,
       ),
-      body: ListView(
-        children: getCardWidgetList(),
+      body: Column(
+        children: <Widget>[
+          // 搜索框
+          Container(
+              padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 40),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                  alignment: Alignment.center,
+                  height: 60.0,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: null,
+                      borderRadius: new BorderRadius.circular(25.0)),
+                  child: TextFormField(
+                    decoration: InputDecoration.collapsed(hintText: '搜索', hintStyle: AllpassTextUI.hintTextStyle),
+                    controller: searchController,
+                    style: AllpassTextUI.secondTitleStyleBlack,
+                    onFieldSubmitted: (text) {
+                      print("点击了搜索按钮：$text");
+                    },
+                  ),
+                ),
+              )
+          ),
+          // 密码列表
+          Expanded(
+            child: ListView(
+                children: getCardWidgetList()
+            ),
+          ),
+        ],
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加按钮

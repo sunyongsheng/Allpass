@@ -24,28 +24,52 @@ class _PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<_PasswordPage> {
 
+  TextEditingController searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("密码", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: "搜索",
-            onPressed: () {
-              print("点击了密码页的搜索");
-            },
-          )
-        ],
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         toolbarOpacity: 1,
       ),
-      body: ListView(
-          children: getPasswordWidgetList()
+      body: Column(
+        children: <Widget>[
+          // 搜索框
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: 40),
+              child: Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                alignment: Alignment.center,
+                height: 60.0,
+                decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: null,
+                    borderRadius: new BorderRadius.circular(25.0)),
+                child: TextFormField(
+                  decoration: InputDecoration.collapsed(hintText: '搜索', hintStyle: AllpassTextUI.hintTextStyle),
+                  controller: searchController,
+                  style: AllpassTextUI.secondTitleStyleBlack,
+                  onFieldSubmitted: (text) {
+                    print("点击了搜索按钮：$text");
+                  },
+                ),
+              ),
+            )
+          ),
+          // 密码列表
+          Expanded(
+            child: ListView(
+                children: getPasswordWidgetList()
+            ),
+          ),
+        ],
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加 按钮
@@ -59,10 +83,9 @@ class _PasswordPageState extends State<_PasswordPage> {
   }
 }
 
-List<Widget> getPasswordWidgetList() {
+List<Widget> getPasswordWidgetList() => PasswordTestData.passwordList
+    .map((item) => PasswordWidget(item)).toList();
 
-  return PasswordTestData.passwordList.map((item) => PasswordWidget(item)).toList();
-}
 
 class PasswordWidget extends StatelessWidget {
 
@@ -73,7 +96,7 @@ class PasswordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
+      width: 140,
       height: 70,
       //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
       child: ListTile(
