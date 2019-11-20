@@ -47,7 +47,7 @@ class _CardPageState extends State<CardPage> {
               Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
             ),
           ),
-          // 密码列表
+          // 卡片列表
           Expanded(
             child: ListView(
                 children: getCardWidgetList()
