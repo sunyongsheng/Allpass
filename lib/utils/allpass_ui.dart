@@ -13,7 +13,7 @@ class AllpassTextUI {
   static final TextStyle secondTitleStyleBlack = TextStyle(fontSize: 14, color: Colors.black);
 
   static final TextStyle smallTextStyleBlack = TextStyle(fontSize: 13, color: Colors.black);
-  static final TextStyle hintTextStyle = TextStyle(fontSize: 14, color: Colors.black12);
+  static final TextStyle hintTextStyle = TextStyle(fontSize: 14, color: Colors.black54);
 
 }
 
