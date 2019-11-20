@@ -35,29 +35,25 @@ class _CardPageState extends State<_CardPage> {
       ),
       body: Column(
         children: <Widget>[
-          // 搜索框
+          // 搜索框 按钮
           Container(
-              padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 40),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                  alignment: Alignment.center,
-                  height: 60.0,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: null,
-                      borderRadius: new BorderRadius.circular(25.0)),
-                  child: TextFormField(
-                    decoration: InputDecoration.collapsed(hintText: '搜索', hintStyle: AllpassTextUI.hintTextStyle),
-                    controller: searchController,
-                    style: AllpassTextUI.secondTitleStyleBlack,
-                    onFieldSubmitted: (text) {
-                      print("点击了搜索按钮：$text");
-                    },
-                  ),
-                ),
-              )
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+            child: FlatButton(
+              onPressed: () {
+                print("点击了搜索按钮");
+              },
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.search),
+                  Text("搜索"),
+                ],
+              ),
+              color: Colors.grey[200],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50)),
+              splashColor:
+              Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
+            ),
           ),
           // 密码列表
           Expanded(
