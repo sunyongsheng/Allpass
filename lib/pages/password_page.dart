@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -85,30 +87,40 @@ class _PasswordPageState extends State<_PasswordPage> {
       PasswordTestData.passwordList.map((item) => getPasswordWidget(item)).toList();
 
   Widget getPasswordWidget(PasswordBean passwordBean) {
-    return Container(
-      width: 140,
-      height: 70,
-      //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: passwordBean.hashCode % 2 == 1 ? Colors.blue : Colors.amberAccent,
-          child: Text(
-            passwordBean.name.substring(0, 1),
-            style: TextStyle(color: Colors.white),
+    // TODO 滑动弹出删除按钮
+    return Dismissible(
+      key: Key(passwordBean.key.toString()),
+      onDismissed: (dismissibleDirection) {
+        setState(() {
+          PasswordTestData.passwordList.remove(passwordBean);
+          Fluttertoast.showToast(msg: "删除了"+passwordBean.name);
+        });
+      },
+      child: Container(
+        width: 140,
+        height: 70,
+        //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: passwordBean.hashCode % 2 == 1 ? Colors.blue : Colors.amberAccent,
+            child: Text(
+              passwordBean.name.substring(0, 1),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
+          title: Text(passwordBean.name),
+          subtitle: Text(passwordBean.username),
+          onTap: () {
+            print("点击了账号：" + passwordBean.name);
+            _currentKey = passwordBean.key;
+            // 显示模态BottomSheet
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return _createBottomSheet(context, passwordBean);
+                });
+          },
         ),
-        title: Text(passwordBean.name),
-        subtitle: Text(passwordBean.username),
-        onTap: () {
-          print("点击了账号：" + passwordBean.name);
-          _currentKey = passwordBean.key;
-          // 显示模态BottomSheet
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return _createBottomSheet(context, passwordBean);
-              });
-        },
       ),
     );
   }
