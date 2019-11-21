@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
@@ -170,6 +171,7 @@ class _PasswordPageState extends State<_PasswordPage> {
           title: Text("复制用户名"),
           onTap: () {
             print("复制用户名：" + data.username);
+            Clipboard.setData(ClipboardData(text: data.username));
           },
         ),
         ListTile(
@@ -177,6 +179,7 @@ class _PasswordPageState extends State<_PasswordPage> {
           title: Text("复制密码"),
           onTap: () {
             print("复制密码：" + data.password);
+            Clipboard.setData(ClipboardData(text: data.password));
           },
         )
       ],

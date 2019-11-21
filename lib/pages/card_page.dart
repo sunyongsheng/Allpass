@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -122,6 +123,7 @@ class _CardPageState extends State<CardPage> {
           title: Text("复制用户名"),
           onTap: () {
             print("复制用户名：" + cardBean.ownerName);
+            Clipboard.setData(ClipboardData(text: cardBean.ownerName));
           },
         ),
         ListTile(
@@ -129,6 +131,7 @@ class _CardPageState extends State<CardPage> {
           title: Text("复制卡号"),
           onTap: () {
             print("复制卡号：" + cardBean.cardId);
+            Clipboard.setData(ClipboardData(text: cardBean.cardId));
           },
         )
       ],
