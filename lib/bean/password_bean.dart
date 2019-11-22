@@ -16,7 +16,7 @@ class PasswordBase {
 
 /// 存储新建的“密码”
 class PasswordBean extends PasswordBase {
-  final int uniqueKey = getUniquePassKey(PasswordTestData.passwordList); // ID
+  final int uniqueKey = getUniquePassKey(PasswordData.passwordKeySet); // ID
 
   PasswordBean(String username, String password, String url,
       {String folder:"默认", String notes:"", int fav: 0, String name, List<String> label}) {
@@ -55,10 +55,10 @@ class PasswordBean extends PasswordBase {
     PasswordData.passwordKeySet.add(this.key);
   }
 
-  static int getUniquePassKey(List<PasswordBase> list) {
+  static int getUniquePassKey(Set<int> list) {
     int key = 1;
     while (true) {
-      if (PasswordData.passwordKeySet.contains(key))
+      if (list.contains(key))
         ++key;
       else
         break;
@@ -81,19 +81,8 @@ class PasswordBean extends PasswordBase {
   }
 }
 
-/// 将暂存数据复制给原先的数据
-void copyPasswordBean(PasswordBean old, PasswordTempBean newData) {
-  old.name = newData.name;
-  old.username = newData.username;
-  old.password = newData.password;
-  old.url = newData.url;
-  old.folder = newData.folder;
-  old.label = newData.label;
-  old.notes = newData.notes;
-}
-
 /// 存储在修改页面中修改后但未保存的暂存数据
-/// 相比PasswordBean的不同之处在于key的初始化在构造函数中
+/// 相比PasswordBean的不同之处在于uniqueKey的初始化在构造函数中
 class PasswordTempBean extends PasswordBase {
   final int uniqueKey;      // ID
 
