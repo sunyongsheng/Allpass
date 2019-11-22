@@ -30,11 +30,11 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(PasswordBase oldData) {
-    this.oldData = oldData;
-    newData = PasswordTempBean(oldData.key, oldData.username, oldData.password, oldData.url,
-        name: oldData.name, folder: oldData.folder,
-        label: oldData.label, notes: oldData.notes, fav: oldData.fav);
+  _ViewPasswordPage(PasswordBase data) {
+    this.oldData = data;
+    newData = PasswordTempBean(data.key, data.username, data.password, data.url,
+        name: data.name, folder: data.folder,
+        label: data.label, notes: data.notes, fav: data.fav);
 
     nameController = TextEditingController(text: newData.name);
     usernameController = TextEditingController(text: newData.username);
