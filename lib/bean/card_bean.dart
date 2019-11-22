@@ -1,8 +1,10 @@
 import 'package:allpass/params/card_data.dart';
 
-/// “卡片”基类
-class CardBase {
-  int key; // ID
+const int CARD_MAGIC = -12342;   // 随便输的
+
+/// 保存“卡片”数据
+class CardBean {
+  int uniqueKey; // ID
   String name; // 卡片名称
   String ownerName; // 卡片拥有者
   String cardId; // 卡片ID/卡号
@@ -11,26 +13,27 @@ class CardBase {
   String notes; // 备注
   List<String> label = List(); // 标签
   int fav; // 是否标心
-}
-
-/// 保存“卡片”数据
-class CardBean extends CardBase {
-  final int uniqueKey = getUniqueCardKey(CardData.cardKeySet); // ID
 
   CardBean(String ownerName, String cardId,
       {String folder: "默认",
       String notes: "",
       int fav: 0,
       String telephone: "",
+      int key: CARD_MAGIC,
       String name,
       List<String> label}) {
-    this.key = uniqueKey;
+
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
     this.notes = notes;
     this.fav = fav;
     this.telephone = telephone;
+    this.uniqueKey = key;
+
+    if (uniqueKey == CARD_MAGIC) {
+      this.uniqueKey = getUniqueCardKey(CardData.cardKeySet);
+    }//uniqueKey
 
     if (name == null) {
       this.name = this.ownerName + "的卡片";
@@ -61,48 +64,7 @@ class CardBean extends CardBase {
 
   @override
   String toString() {
-    return "{key:" "$key, " +
-        "name:" "$name, " +
-        "ownerName:" "$ownerName, " +
-        "cardId:" "$cardId}";
-  }
-}
-
-/// 暂存修改页面的“卡片”数据
-/// 相比CardBean的不同之处在于uniqueKey的初始化在构造函数中
-class CardTempBean extends CardBase {
-  final int uniqueKey;
-
-  CardTempBean(this.uniqueKey, String ownerName, String cardId,
-      {String folder: "默认",
-      String notes: "",
-      int fav: 0,
-      String telephone: "",
-      String name,
-      List<String> label}) {
-    this.key = uniqueKey;
-    this.ownerName = ownerName;
-    this.cardId = cardId;
-    this.folder = folder;
-    this.notes = notes;
-    this.fav = fav;
-    this.telephone = telephone;
-
-    if (name == null) {
-      this.name = this.ownerName + "的卡片";
-    } else {
-      this.name = name;
-    } //name
-    if (label == null) {
-      this.label = List();
-    } else {
-      this.label = label;
-    } //label
-  }
-
-  @override
-  String toString() {
-    return "{key:" "$key, " +
+    return "{key:" "$uniqueKey, " +
         "name:" "$name, " +
         "ownerName:" "$ownerName, " +
         "cardId:" "$cardId}";

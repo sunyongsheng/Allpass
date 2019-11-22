@@ -4,7 +4,7 @@ import 'package:allpass/bean/card_bean.dart';
 /// 密码测试数据
 class PasswordTestData {
 
-  static List<PasswordBase> passwordList = List();
+  static List<PasswordBean> passwordList = List();
 
   PasswordTestData() {
     if (passwordList.length == 0) {
@@ -37,7 +37,7 @@ class PasswordTestData {
 /// 卡片测试数据
 class CardTestData {
 
-  static List<CardBase> cardList = List();
+  static List<CardBean> cardList = List();
 
   CardTestData() {
     if (cardList.length == 0) {

@@ -4,7 +4,7 @@ import 'package:allpass/bean/card_bean.dart';
 /// @author Aengus Sun
 class CardData {
   // 保存所有卡片数据
-  static List<CardBase> cardData = List();
+  static List<CardBean> cardData = List();
   // 保存卡片唯一Key
   static Set<int> cardKeySet = Set();
 
