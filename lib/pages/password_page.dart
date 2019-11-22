@@ -86,7 +86,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   List<Widget> getPasswordWidgetList() =>
       PasswordTestData.passwordList.map((item) => getPasswordWidget(item)).toList();
 
-  Widget getPasswordWidget(PasswordBean passwordBean) {
+  Widget getPasswordWidget(PasswordBase passwordBean) {
     // TODO 滑动弹出删除按钮
     return Dismissible(
       key: Key(passwordBean.key.toString()),
@@ -126,7 +126,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   }
 
   // 点击账号弹出模态菜单
-  Widget _createBottomSheet(BuildContext context, PasswordBean data) {
+  Widget _createBottomSheet(BuildContext context, PasswordBase data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -149,17 +149,18 @@ class _PasswordPageState extends State<_PasswordPage> {
                     break;
                   }
                 }
+                PasswordTestData.passwordList[index] = reData;
                 // TODO 下面的函数会报 PasswordBean isn't the subtype of PassWordTempBean
                 // copyPasswordBean(PasswordTestData.passwordList[index], reData);
 
-                PasswordTestData.passwordList[index].name = reData.name;
-                PasswordTestData.passwordList[index].username = reData.username;
-                PasswordTestData.passwordList[index].password = reData.password;
-                PasswordTestData.passwordList[index].url = reData.url;
-                PasswordTestData.passwordList[index].folder = reData.folder;
-                PasswordTestData.passwordList[index].label = reData.label;
-                PasswordTestData.passwordList[index].notes = reData.notes;
-                PasswordTestData.passwordList[index].fav = reData.fav;
+                // PasswordTestData.passwordList[index].name = reData.name;
+                // PasswordTestData.passwordList[index].username = reData.username;
+                // PasswordTestData.passwordList[index].password = reData.password;
+                // PasswordTestData.passwordList[index].url = reData.url;
+                // PasswordTestData.passwordList[index].folder = reData.folder;
+                // PasswordTestData.passwordList[index].label = reData.label;
+                // PasswordTestData.passwordList[index].notes = reData.notes;
+                // PasswordTestData.passwordList[index].fav = reData.fav;
               });
             });
           },

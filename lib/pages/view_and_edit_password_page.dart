@@ -7,7 +7,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
 
-  final PasswordBean data;
+  final PasswordBase data;
 
   ViewAndEditPasswordPage(this.data);
 
@@ -20,7 +20,7 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   PasswordTempBean newData;
-  PasswordBean oldData;
+  PasswordBase oldData;
 
   var nameController;
   var usernameController;
@@ -30,7 +30,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(PasswordBean oldData) {
+  _ViewPasswordPage(PasswordBase oldData) {
     this.oldData = oldData;
     newData = PasswordTempBean(oldData.key, oldData.username, oldData.password, oldData.url,
         name: oldData.name, folder: oldData.folder,
