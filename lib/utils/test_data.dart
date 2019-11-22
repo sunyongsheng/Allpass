@@ -9,25 +9,25 @@ class PasswordTestData {
   PasswordTestData() {
     if (passwordList.length == 0) {
       passwordList.add(
-          PasswordBean(1, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(2, "sys6511@126.com", "12345", "https://www.zhihu.com"));
+          PasswordBean("sys6511@126.com", "12345", "https://www.zhihu.com"));
       passwordList.add(PasswordBean(
-          3, "sys6511@126.com", "31238912", "https://www.126.com"));
+          "sys6511@126.com", "31238912", "https://www.126.com"));
       passwordList.add(PasswordBean(
-          4, "sunyongsheng6511@gmail.com", "joi123123", "https://www.gmail.com"));
+          "sunyongsheng6511@gmail.com", "joi123123", "https://www.gmail.com"));
       passwordList.add(
-          PasswordBean(5, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(6, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(7, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean( "sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(8, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(9, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
       passwordList.add(
-          PasswordBean(10, "sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
     }
 
   }
