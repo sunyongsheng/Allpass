@@ -56,7 +56,7 @@ class PasswordBean extends PasswordBase {
   }
 
   static int getUniquePassKey(List<PasswordBase> list) {
-    int key = 0;
+    int key = 1;
     while (true) {
       if (PasswordData.passwordKeySet.contains(key))
         ++key;
