@@ -140,7 +140,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data)))
-                .then((newData){
+                .then((reData){
               this.setState(() {
                 int index = 0;
                 for (int i = 0; i < PasswordTestData.passwordList.length; i++) {
@@ -149,7 +149,17 @@ class _PasswordPageState extends State<_PasswordPage> {
                     break;
                   }
                 }
-                PasswordTestData.passwordList[index] = newData;
+                // TODO 下面的函数会报 PasswordBean isn't the subtype of PassWordTempBean
+                // copyPasswordBean(PasswordTestData.passwordList[index], reData);
+
+                PasswordTestData.passwordList[index].name = reData.name;
+                PasswordTestData.passwordList[index].username = reData.username;
+                PasswordTestData.passwordList[index].password = reData.password;
+                PasswordTestData.passwordList[index].url = reData.url;
+                PasswordTestData.passwordList[index].folder = reData.folder;
+                PasswordTestData.passwordList[index].label = reData.label;
+                PasswordTestData.passwordList[index].notes = reData.notes;
+                PasswordTestData.passwordList[index].fav = reData.fav;
               });
             });
           },
