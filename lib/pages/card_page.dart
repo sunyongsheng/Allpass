@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/test_data.dart';
+import 'package:allpass/params/card_data.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -68,7 +69,7 @@ class _CardPageState extends State<CardPage> {
   }
 
   List<Widget> getCardWidgetList() {
-    return CardTestData.cardList.map((card) => getCardWidget(card)).toList();
+    return CardData.cardData.map((card) => getCardWidget(card)).toList();
   }
 
   Widget getCardWidget(CardBean cardBean){

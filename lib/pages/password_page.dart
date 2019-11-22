@@ -6,7 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+
 import 'package:allpass/utils/test_data.dart';
+import 'package:allpass/params/password_data.dart';
 
 /// 密码页面
 class PasswordPage extends StatelessWidget {
@@ -84,7 +86,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   }
 
   List<Widget> getPasswordWidgetList() =>
-      PasswordTestData.passwordList.map((item) => getPasswordWidget(item)).toList();
+      PasswordData.passwordData.map((item) => getPasswordWidget(item)).toList();
 
   Widget getPasswordWidget(PasswordBase passwordBean) {
     // TODO 滑动弹出删除按钮
@@ -92,7 +94,7 @@ class _PasswordPageState extends State<_PasswordPage> {
       key: Key(passwordBean.key.toString()),
       onDismissed: (dismissibleDirection) {
         setState(() {
-          PasswordTestData.passwordList.remove(passwordBean);
+          PasswordData.passwordData.remove(passwordBean);
           Fluttertoast.showToast(msg: "删除了"+passwordBean.name);
         });
       },
@@ -143,13 +145,13 @@ class _PasswordPageState extends State<_PasswordPage> {
                 .then((reData){
               this.setState(() {
                 int index = 0;
-                for (int i = 0; i < PasswordTestData.passwordList.length; i++) {
-                  if (_currentKey == PasswordTestData.passwordList[i].key) {
+                for (int i = 0; i < PasswordData.passwordData.length; i++) {
+                  if (_currentKey == PasswordData.passwordData[i].key) {
                     index = i;
                     break;
                   }
                 }
-                PasswordTestData.passwordList[index] = reData;
+                PasswordData.passwordData[index] = reData;
                 // TODO 下面的函数会报 PasswordBean isn't the subtype of PassWordTempBean
                 // copyPasswordBean(PasswordTestData.passwordList[index], reData);
 
