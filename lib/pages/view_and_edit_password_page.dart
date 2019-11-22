@@ -7,7 +7,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
 
-  final PasswordBase data;
+  final PasswordBean data;
 
   ViewAndEditPasswordPage(this.data);
 
@@ -19,8 +19,8 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
-  PasswordTempBean newData;
-  PasswordBase oldData;
+  PasswordBean newData;
+  PasswordBean oldData;
 
   var nameController;
   var usernameController;
@@ -30,10 +30,10 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(PasswordBase data) {
+  _ViewPasswordPage(PasswordBean data) {
     this.oldData = data;
-    newData = PasswordTempBean(oldData.key, oldData.username, oldData.password, oldData.url,
-        name: oldData.name, folder: oldData.folder,
+    newData = PasswordBean(oldData.username, oldData.password, oldData.url,
+        key:oldData.uniqueKey, name: oldData.name, folder: oldData.folder,
         label: oldData.label, notes: oldData.notes, fav: oldData.fav);
 
     nameController = TextEditingController(text: newData.name);
@@ -48,7 +48,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
     return WillPopScope(
       onWillPop: () {
         print("取消修改: " + oldData.toString());
-        Navigator.of(context).pop<PasswordBase>(oldData);
+        Navigator.of(context).pop<PasswordBean>(oldData);
         return Future<bool>.value(false);
       },
       child: Scaffold(
@@ -65,7 +65,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
               ),
               onPressed: () {
                 print("保存: " + newData.toString());
-                Navigator.pop<PasswordBase>(context, newData);
+                Navigator.pop<PasswordBean>(context, newData);
               },
             )
           ],

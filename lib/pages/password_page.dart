@@ -85,14 +85,14 @@ class _PasswordPageState extends State<_PasswordPage> {
   List<Widget> getPasswordWidgetList() =>
       PasswordData.passwordData.map((item) => getPasswordWidget(item)).toList();
 
-  Widget getPasswordWidget(PasswordBase passwordBean) {
+  Widget getPasswordWidget(PasswordBean passwordBean) {
     // TODO 滑动弹出删除按钮
     return Dismissible(
-      key: Key(passwordBean.key.toString()),
+      key: Key(passwordBean.uniqueKey.toString()),
       onDismissed: (dismissibleDirection) {
         setState(() {
-          PasswordData.passwordData.remove(passwordBean);
           Fluttertoast.showToast(msg: "删除了"+passwordBean.name);
+          PasswordData.passwordData.remove(passwordBean);
         });
       },
       child: Container(
@@ -111,7 +111,7 @@ class _PasswordPageState extends State<_PasswordPage> {
           subtitle: Text(passwordBean.username),
           onTap: () {
             print("点击了账号：" + passwordBean.name);
-            _currentKey = passwordBean.key;
+            _currentKey = passwordBean.uniqueKey;
             // 显示模态BottomSheet
             showModalBottomSheet(
                 context: context,
@@ -125,7 +125,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   }
 
   // 点击账号弹出模态菜单
-  Widget _createBottomSheet(BuildContext context, PasswordBase data) {
+  Widget _createBottomSheet(BuildContext context, PasswordBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -143,23 +143,12 @@ class _PasswordPageState extends State<_PasswordPage> {
               this.setState(() {
                 int index = 0;
                 for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                  if (_currentKey == PasswordData.passwordData[i].key) {
+                  if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
                     index = i;
                     break;
                   }
                 }
                 PasswordData.passwordData[index] = reData;
-                // TODO 下面的函数会报 PasswordBean isn't the subtype of PassWordTempBean
-                // copyPasswordBean(PasswordTestData.passwordList[index], reData);
-
-                // PasswordTestData.passwordList[index].name = reData.name;
-                // PasswordTestData.passwordList[index].username = reData.username;
-                // PasswordTestData.passwordList[index].password = reData.password;
-                // PasswordTestData.passwordList[index].url = reData.url;
-                // PasswordTestData.passwordList[index].folder = reData.folder;
-                // PasswordTestData.passwordList[index].label = reData.label;
-                // PasswordTestData.passwordList[index].notes = reData.notes;
-                // PasswordTestData.passwordList[index].fav = reData.fav;
               });
             });
           },
@@ -178,7 +167,7 @@ class _PasswordPageState extends State<_PasswordPage> {
               this.setState(() {
                 int index = 0;
                 for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                  if (_currentKey == PasswordData.passwordData[i].key) {
+                  if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
                     index = i;
                     break;
                   }
