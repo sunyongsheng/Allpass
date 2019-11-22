@@ -3,14 +3,12 @@ import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/test_data.dart';
 import 'package:allpass/params/card_data.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
   @override
   _CardPageState createState() {
-    CardTestData();   // 初始化测试数据
     return _CardPageState();
   }
 }

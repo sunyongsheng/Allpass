@@ -7,14 +7,12 @@ import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
-import 'package:allpass/utils/test_data.dart';
 import 'package:allpass/params/password_data.dart';
 
 /// 密码页面
 class PasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    PasswordTestData(); // 初始化测试数据
     return _PasswordPage();
   }
 }
@@ -22,7 +20,6 @@ class PasswordPage extends StatelessWidget {
 class _PasswordPage extends StatefulWidget {
   @override
   _PasswordPageState createState() {
-    PasswordTestData(); // 初始化测试数据
     return _PasswordPageState();
   }
 }
@@ -177,16 +174,16 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data)))
-            .then((newData) {
+                .then((reData){
               this.setState(() {
                 int index = 0;
-                for (int i = 0; i < PasswordTestData.passwordList.length; i++) {
-                  if (_currentKey == PasswordTestData.passwordList[i].key) {
+                for (int i = 0; i < PasswordData.passwordData.length; i++) {
+                  if (_currentKey == PasswordData.passwordData[i].key) {
                     index = i;
                     break;
                   }
                 }
-                PasswordTestData.passwordList[index] = newData;
+                PasswordData.passwordData[index] = reData;
               });
             });
           },
@@ -209,19 +206,5 @@ class _PasswordPageState extends State<_PasswordPage> {
         )
       ],
     );
-  }
-
-  viewDetails(PasswordBean data) async {
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                ViewAndEditPasswordPage(data)))
-        .then((newData){
-      this.setState(() {
-        data = newData;
-        print(PasswordTestData.passwordList[0].name);
-      });
-    });
   }
 }
