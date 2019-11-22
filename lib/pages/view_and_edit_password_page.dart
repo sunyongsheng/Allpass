@@ -19,7 +19,7 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
-  PasswordBean newData;
+  PasswordTempBean newData;
   PasswordBean oldData;
 
   var nameController;
@@ -30,12 +30,11 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-
   _ViewPasswordPage(PasswordBean oldData) {
     this.oldData = oldData;
-    newData = PasswordBean(oldData.key, oldData.username, oldData.password, oldData.url,
+    newData = PasswordTempBean(oldData.key, oldData.username, oldData.password, oldData.url,
         name: oldData.name, folder: oldData.folder,
-        label: oldData.label, notes: oldData.notes);
+        label: oldData.label, notes: oldData.notes, fav: oldData.fav);
 
     nameController = TextEditingController(text: newData.name);
     usernameController = TextEditingController(text: newData.username);
@@ -48,7 +47,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.of(context).pop(oldData);
+        Navigator.of(context).pop<PasswordBase>(oldData);
         return Future<bool>.value(false);
       },
       child: Scaffold(
@@ -64,7 +63,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                 color: Colors.black,
               ),
               onPressed: () {
-                Navigator.pop<PasswordBean>(context, newData);
+                Navigator.pop<PasswordBase>(context, newData);
               },
             )
           ],
