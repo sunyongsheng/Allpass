@@ -37,14 +37,14 @@ class PasswordTestData {
 /// 卡片测试数据
 class CardTestData {
 
-  static List<CardBean> cardList = List();
+  static List<CardBase> cardList = List();
 
   CardTestData() {
     if (cardList.length == 0) {
       cardList..add(
-          CardBean(1, "Aengus", "1233455214123123", name: "Aengus的身份证"))..add(
-          CardBean(2, "Joye", "12312312312312312", name: "Joyed的身份证"))..add(
-          CardBean(3, "Jike", "123146452132446748", name: "工商银行"));
+          CardBean("Aengus", "1233455214123123", name: "Aengus的身份证"))..add(
+          CardBean("Joye", "12312312312312312", name: "Joyed的身份证"))..add(
+          CardBean("Jike", "123146452132446748", name: "工商银行"));
     }
   }
 }
