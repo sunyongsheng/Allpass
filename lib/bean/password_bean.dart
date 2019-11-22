@@ -2,11 +2,8 @@ import 'package:allpass/params/password_data.dart';
 import 'package:allpass/utils/test_data.dart';
 
 /// 基类
-class PasswordBase {}
-
-/// 存储新建的“密码”
-class PasswordBean extends PasswordBase {
-  final int key = getUniquePassKey(PasswordTestData.passwordList); // ID
+class PasswordBase {
+  int key;
   String name;          // 账号名称
   String username;      // 用户名
   String password;      // 密码
@@ -15,9 +12,23 @@ class PasswordBean extends PasswordBase {
   String notes;         // 备注
   List<String> label;   // 标签
   int fav;              // 是否标心，0代表否
+}
 
-  PasswordBean(this.username, this.password, this.url,
-      {this.folder, this.name, this.label, this.notes, this.fav: 0}) {
+/// 存储新建的“密码”
+class PasswordBean extends PasswordBase {
+  final int uniqueKey = getUniquePassKey(PasswordTestData.passwordList); // ID
+
+  PasswordBean(String username, String password, String url,
+      {String folder:"默认", String notes:"", int fav: 0, String name, List<String> label}) {
+
+    this.key = uniqueKey;
+    this.username = username;
+    this.password = password;
+    this.url = url;
+    this.folder = folder;
+    this.notes = notes;
+    this.fav = fav;
+
     if (name == null) {
       if (url.contains("weibo")) {
         this.name = "微博";
@@ -30,20 +41,21 @@ class PasswordBean extends PasswordBase {
       } else {
         this.name = this.username;
       }
-    }
+    } else {
+      this.name = name;
+    }//name
 
-    if (folder == null) {
-      this.folder = "默认";
-    }
     if (label == null) {
       this.label = List();
-    }
+    } else {
+      this.label = label;
+    }//label
 
     PasswordData.passwordData.add(this);
     PasswordData.passwordKeySet.add(this.key);
   }
 
-  static int getUniquePassKey(List<PasswordBean> list) {
+  static int getUniquePassKey(List<PasswordBase> list) {
     int key = 0;
     while (true) {
       if (PasswordData.passwordKeySet.contains(key))
@@ -83,18 +95,19 @@ void copyPasswordBean(PasswordBean old, PasswordTempBean newData) {
 /// 存储在修改页面中修改后但未保存的暂存数据
 /// 相比PasswordBean的不同之处在于key的初始化在构造函数中
 class PasswordTempBean extends PasswordBase {
-  final int key;      // ID
-  String name;        // 账号名称
-  String username;    // 用户名
-  String password;    // 密码
-  String url;         // 地址
-  String folder;      // 文件夹
-  String notes;       // 备注
-  List<String> label; // 标签
-  int fav;            // 是否标心，0代表否
+  final int uniqueKey;      // ID
 
-  PasswordTempBean(this.key, this.username, this.password, this.url,
-      {this.folder, this.name, this.label, this.notes, this.fav: 0}) {
+  PasswordTempBean(this.uniqueKey, String username, String password, String url,
+      {String folder:"默认", String notes:"", int fav: 0, String name, List<String> label}) {
+
+    this.key = uniqueKey;
+    this.username = username;
+    this.password = password;
+    this.url = url;
+    this.folder = folder;
+    this.notes = notes;
+    this.fav = fav;
+
     if (name == null) {
       if (url.contains("weibo")) {
         this.name = "微博";
@@ -107,14 +120,15 @@ class PasswordTempBean extends PasswordBase {
       } else {
         this.name = this.username;
       }
-    }
+    } else {
+      this.name = name;
+    }//name
 
-    if (folder == null) {
-      this.folder = "默认";
-    }
     if (label == null) {
       this.label = List();
-    }
+    } else {
+      this.label = label;
+    }//label
   }
 
   @override
