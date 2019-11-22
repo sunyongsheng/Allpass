@@ -47,6 +47,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
+        print("取消修改: " + oldData.toString());
         Navigator.of(context).pop<PasswordBase>(oldData);
         return Future<bool>.value(false);
       },
@@ -63,6 +64,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                 color: Colors.black,
               ),
               onPressed: () {
+                print("保存: " + newData.toString());
                 Navigator.pop<PasswordBase>(context, newData);
               },
             )
