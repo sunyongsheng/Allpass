@@ -1,5 +1,4 @@
 import 'package:allpass/params/password_data.dart';
-import 'package:allpass/utils/test_data.dart';
 
 /// 基类
 class PasswordBase {
@@ -52,7 +51,7 @@ class PasswordBean extends PasswordBase {
     }//label
 
     PasswordData.passwordData.add(this);
-    PasswordData.passwordKeySet.add(this.key);
+    PasswordData.passwordKeySet.add(this.uniqueKey);
   }
 
   static int getUniquePassKey(Set<int> list) {

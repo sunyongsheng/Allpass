@@ -4,6 +4,8 @@ import 'package:allpass/bean/card_bean.dart';
 /// @author Aengus Sun
 class CardData {
 
-  static List<CardBean> cardData = List();
+  static List<CardBase> cardData = List();
+
+  static Set<int> cardKeySet = Set();
 
 }
