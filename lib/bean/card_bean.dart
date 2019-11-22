@@ -15,8 +15,7 @@ class CardBase {
 
 /// 保存“卡片”数据
 class CardBean extends CardBase {
-
-  final int uniqueKey = getUniqueCardKey(CardData.cardKeySet);  // ID
+  final int uniqueKey = getUniqueCardKey(CardData.cardKeySet); // ID
 
   CardBean(String ownerName, String cardId,
       {String folder: "默认",
@@ -52,10 +51,20 @@ class CardBean extends CardBase {
     // TODO 找到int的最大值
     int key = 100000000;
     while (true) {
-      if (list.contains(key)) --key;
-      else break;
+      if (list.contains(key))
+        --key;
+      else
+        break;
     }
     return key;
+  }
+
+  @override
+  String toString() {
+    return "{key:" "$key, " +
+        "name:" "$name, " +
+        "ownerName:" "$ownerName, " +
+        "cardId:" "$cardId}";
   }
 }
 
@@ -66,11 +75,11 @@ class CardTempBean extends CardBase {
 
   CardTempBean(this.uniqueKey, String ownerName, String cardId,
       {String folder: "默认",
-        String notes: "",
-        int fav: 0,
-        String telephone: "",
-        String name,
-        List<String> label}) {
+      String notes: "",
+      int fav: 0,
+      String telephone: "",
+      String name,
+      List<String> label}) {
     this.key = uniqueKey;
     this.ownerName = ownerName;
     this.cardId = cardId;
@@ -89,5 +98,13 @@ class CardTempBean extends CardBase {
     } else {
       this.label = label;
     } //label
+  }
+
+  @override
+  String toString() {
+    return "{key:" "$key, " +
+        "name:" "$name, " +
+        "ownerName:" "$ownerName, " +
+        "cardId:" "$cardId}";
   }
 }
