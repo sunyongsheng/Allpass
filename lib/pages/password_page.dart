@@ -101,8 +101,9 @@ class _PasswordPageState extends State<_PasswordPage> {
       key: Key(passwordBean.uniqueKey.toString()),
       onDismissed: (dismissibleDirection) {
         setState(() {
-          Fluttertoast.showToast(msg: "删除了"+passwordBean.name);
+          Fluttertoast.showToast(msg: "删除了“"+passwordBean.name+"”");
           PasswordData.passwordData.remove(passwordBean);
+          // TODO 是否remove对应的key
         });
       },
       child: Container(
@@ -120,7 +121,6 @@ class _PasswordPageState extends State<_PasswordPage> {
           title: Text(passwordBean.name),
           subtitle: Text(passwordBean.username),
           onTap: () {
-            print("点击了账号：" + passwordBean.name);
             _currentKey = passwordBean.uniqueKey;
             // 显示模态BottomSheet
             showModalBottomSheet(
@@ -148,20 +148,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "查看密码")))
-                .then((reData){
-              this.setState(() {
-                int index = 0;
-                for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                  if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-                    index = i;
-                    break;
-                  }
-                }
-                // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
-                // PasswordData.passwordData[index] = reData;
-                copyPasswordBean(PasswordData.passwordData[index], reData);
-              });
-            });
+                .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),
         ListTile(
@@ -173,20 +160,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "编辑密码")))
-                .then((reData){
-              this.setState(() {
-                int index = 0;
-                for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                  if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-                    index = i;
-                    break;
-                  }
-                }
-                // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
-                // PasswordData.passwordData[index] = reData;
-                copyPasswordBean(PasswordData.passwordData[index], reData);
-              });
-            });
+                .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),
         ListTile(
@@ -207,5 +181,18 @@ class _PasswordPageState extends State<_PasswordPage> {
         )
       ],
     );
+  }
+
+  updatePasswordBean(PasswordBean res) {
+    int index = 0;
+    for (int i = 0; i < PasswordData.passwordData.length; i++) {
+      if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
+        index = i;
+        break;
+      }
+    }
+    // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
+    // PasswordData.passwordData[index] = reData;
+    copyPasswordBean(PasswordData.passwordData[index], res);
   }
 }
