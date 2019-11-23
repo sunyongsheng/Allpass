@@ -67,7 +67,7 @@ class _PasswordPageState extends State<_PasswordPage> {
           ),
           // 密码列表
           Expanded(
-            child: ListView(children: getPasswordWidgetList()),
+            child: ListView(children: _getPasswordWidgetList()),
           ),
         ],
       ),
@@ -76,16 +76,26 @@ class _PasswordPageState extends State<_PasswordPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          print("点击了密码页面的增加按钮");
+          var newData = PasswordBean("", "", "", folder: "默认", isNew: false);
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => ViewAndEditPasswordPage(newData, "添加密码")))
+          .then((resData) {
+            this.setState(() {
+              if (resData.username != "" && resData.password != "" && resData.url != "") {
+                PasswordData.passwordData.add(resData);
+                PasswordData.passwordKeySet.add(resData.key);
+              }
+            });
+          });
         },
       ),
     );
   }
 
-  List<Widget> getPasswordWidgetList() =>
-      PasswordData.passwordData.map((item) => getPasswordWidget(item)).toList();
+  List<Widget> _getPasswordWidgetList() =>
+      PasswordData.passwordData.map((item) => _getPasswordWidget(item)).toList();
 
-  Widget getPasswordWidget(PasswordBean passwordBean) {
+  Widget _getPasswordWidget(PasswordBean passwordBean) {
     // TODO 滑动弹出删除按钮
     return Dismissible(
       key: Key(passwordBean.uniqueKey.toString()),
@@ -133,12 +143,11 @@ class _PasswordPageState extends State<_PasswordPage> {
           leading: Icon(Icons.remove_red_eye),
           title: Text("查看"),
           onTap: () {
-            print("点击了账号：" + data.name + "的查看按钮");
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data)))
+                        ViewAndEditPasswordPage(data, "查看密码")))
                 .then((reData){
               this.setState(() {
                 int index = 0;
@@ -159,12 +168,11 @@ class _PasswordPageState extends State<_PasswordPage> {
           leading: Icon(Icons.edit),
           title: Text("编辑"),
           onTap: () {
-            print("点击了账号：" + data.name + "的编辑按钮");
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data)))
+                        ViewAndEditPasswordPage(data, "编辑密码")))
                 .then((reData){
               this.setState(() {
                 int index = 0;
