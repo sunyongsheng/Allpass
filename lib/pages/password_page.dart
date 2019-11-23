@@ -5,8 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/pages/view_and_edit_password_page.dart';
+import 'package:allpass/pages/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-
+import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/params/password_data.dart';
 
 /// 密码页面
@@ -50,7 +51,7 @@ class _PasswordPageState extends State<_PasswordPage> {
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
             child: FlatButton(
               onPressed: () {
-                print("点击了搜索按钮");
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
               },
               child: Row(
                 children: <Widget>[
@@ -134,7 +135,7 @@ class _PasswordPageState extends State<_PasswordPage> {
     );
   }
 
-  // 点击账号弹出模态菜单
+  // 点击密码弹出模态菜单
   Widget _createBottomSheet(BuildContext context, PasswordBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,

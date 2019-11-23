@@ -7,6 +7,8 @@ import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/card_data.dart';
 import 'package:allpass/pages/view_and_edit_card_page.dart';
+import 'package:allpass/pages/search_page.dart';
+import 'package:allpass/params/allpass_type.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -17,14 +19,16 @@ class CardPage extends StatefulWidget {
 }
 
 class _CardPageState extends State<CardPage> {
-
   int _currentKey = -1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("卡片", style: AllpassTextUI.mainTitleStyle,),
+        title: Text(
+          "卡片",
+          style: AllpassTextUI.mainTitleStyle,
+        ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
@@ -38,7 +42,10 @@ class _CardPageState extends State<CardPage> {
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
             child: FlatButton(
               onPressed: () {
-                print("点击了搜索按钮");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchPage(AllpassType.CARD)));
               },
               child: Row(
                 children: <Widget>[
@@ -50,14 +57,12 @@ class _CardPageState extends State<CardPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)),
               splashColor:
-              Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
+                  Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
             ),
           ),
           // 卡片列表
           Expanded(
-            child: ListView(
-                children: _getCardWidgetList()
-            ),
+            child: ListView(children: _getCardWidgetList()),
           ),
         ],
       ),
@@ -67,9 +72,11 @@ class _CardPageState extends State<CardPage> {
         child: Icon(Icons.add),
         onPressed: () {
           var newData = CardBean("", "", folder: "默认", isNew: false);
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => ViewAndEditCardPage(newData, "添加卡片")))
-              .then((resData) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ViewAndEditCardPage(newData, "添加卡片"))).then((resData) {
             this.setState(() {
               if (resData.ownerName != "" && resData.cardId != "") {
                 CardData.cardData.add(resData);
@@ -86,12 +93,12 @@ class _CardPageState extends State<CardPage> {
     return CardData.cardData.map((card) => _getCardWidget(card)).toList();
   }
 
-  Widget _getCardWidget(CardBean cardBean){
+  Widget _getCardWidget(CardBean cardBean) {
     return Dismissible(
       key: Key(cardBean.uniqueKey.toString()),
       onDismissed: (dismissibleDec) {
         setState(() {
-          Fluttertoast.showToast(msg: "删除了“"+cardBean.name+"”");
+          Fluttertoast.showToast(msg: "删除了“" + cardBean.name + "”");
           CardData.cardData.remove(cardBean);
           // TODO 是否remove对应的key
         });
@@ -102,9 +109,10 @@ class _CardPageState extends State<CardPage> {
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: cardBean.hashCode%2==1?Colors.blue:Colors.amberAccent,
+            backgroundColor:
+                cardBean.hashCode % 2 == 1 ? Colors.blue : Colors.amberAccent,
             child: Text(
-              cardBean.name.substring(0,1),
+              cardBean.name.substring(0, 1),
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -124,27 +132,32 @@ class _CardPageState extends State<CardPage> {
     );
   }
 
-  // 点击账号弹出模态菜单
+  // 点击卡片弹出模态菜单
   Widget _createBottomSheet(BuildContext context, CardBean cardBean) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.remove_red_eye),
-          title: Text("查看"),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片")))
-                .then((resData) => this.setState(() => updateCardBean(resData)));
-          }
-        ),
+            leading: Icon(Icons.remove_red_eye),
+            title: Text("查看"),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewAndEditCardPage(cardBean, "查看卡片"))).then(
+                  (resData) => this.setState(() => updateCardBean(resData)));
+            }),
         ListTile(
           leading: Icon(Icons.edit),
           title: Text("编辑"),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片")))
-                .then((resData) => this.setState(() => updateCardBean(resData)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ViewAndEditCardPage(cardBean, "编辑卡片"))).then(
+                (resData) => this.setState(() => updateCardBean(resData)));
           },
         ),
         ListTile(
@@ -176,4 +189,3 @@ class _CardPageState extends State<CardPage> {
     copyCardBean(CardData.cardData[index], res);
   }
 }
-
