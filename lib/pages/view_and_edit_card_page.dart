@@ -8,12 +8,13 @@ import 'package:allpass/utils/allpass_ui.dart';
 class ViewAndEditCardPage extends StatefulWidget {
   final CardBean data;
   final String pageTitle;
+  bool readOnly;
 
-  ViewAndEditCardPage(this.data, this.pageTitle);
+  ViewAndEditCardPage(this.data, this.pageTitle, this.readOnly);
 
   @override
   State<StatefulWidget> createState() {
-    return _ViewAndEditCardPage(data, pageTitle);
+    return _ViewAndEditCardPage(data, pageTitle, readOnly);
   }
 }
 
@@ -29,7 +30,9 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   var telephoneController;
   var notesController;
 
-  _ViewAndEditCardPage(CardBean inData, this.pageName) {
+  bool readOnly;
+
+  _ViewAndEditCardPage(CardBean inData, this.pageName, this.readOnly) {
     this.oldData = inData;
 
     tempData = CardBean(oldData.ownerName, oldData.cardId,
@@ -65,13 +68,23 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: Icon(
+                  icon: readOnly?Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ):
+                  Icon(
                     Icons.check,
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    print("保存: " + tempData.toString());
-                    Navigator.pop<CardBean>(context, tempData);
+                    if (readOnly) {
+                      setState(() {
+                        readOnly = false;
+                      });
+                    } else {
+                      print("保存: " + tempData.toString());
+                      Navigator.pop<CardBean>(context, tempData);
+                    }
                   },
                 )
               ],
@@ -96,6 +109,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           onChanged: (text) {
                             tempData.name = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ],
                     ),
@@ -114,6 +128,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           onChanged: (text) {
                             tempData.ownerName = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ],
                     ),
@@ -132,6 +147,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           onChanged: (text) {
                             tempData.cardId = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ],
                     ),
@@ -150,6 +166,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           onChanged: (text) {
                             tempData.telephone = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ],
                     ),
@@ -166,9 +183,11 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         DropdownButton(
                           onChanged: (newValue) {
-                            setState(() {
-                              tempData.folder = newValue;
-                            });
+                            if (!readOnly) {
+                              setState(() {
+                                tempData.folder = newValue;
+                              });
+                            }
                           },
                           items: FolderAndLabelList.folderList
                               .map<DropdownMenuItem<String>>((item) {
@@ -225,6 +244,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           onChanged: (text) {
                             tempData.notes = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ],
                     ),
@@ -242,11 +262,13 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
         selected: tempData.label.contains(item),
         onSelected: (selected) {
-          setState(() {
-            tempData.label.contains(item)
-                ? tempData.label.remove(item)
-                : tempData.label.add(item);
-          });
+          if (!readOnly) {
+            setState(() {
+              tempData.label.contains(item)
+                  ? tempData.label.remove(item)
+                  : tempData.label.add(item);
+            });
+          }
         },
         selectedColor: AllpassColorUI.mainColor,
       ));

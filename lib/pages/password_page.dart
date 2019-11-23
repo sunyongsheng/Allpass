@@ -79,7 +79,7 @@ class _PasswordPageState extends State<_PasswordPage> {
         onPressed: () {
           var newData = PasswordBean("", "", "", folder: "默认", isNew: false);
           Navigator.push(context, MaterialPageRoute(
-              builder: (context) => ViewAndEditPasswordPage(newData, "添加密码")))
+              builder: (context) => ViewAndEditPasswordPage(newData, "添加密码", false)))
           .then((resData) {
             assert(resData is PasswordBean);
             this.setState(() {
@@ -149,7 +149,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data, "查看密码")))
+                        ViewAndEditPasswordPage(data, "查看密码", true)))
                 .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),
@@ -161,7 +161,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data, "编辑密码")))
+                        ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),

@@ -8,12 +8,13 @@ import 'package:allpass/utils/allpass_ui.dart';
 class ViewAndEditPasswordPage extends StatefulWidget {
   final PasswordBean data;
   final String pageTitle;
+  bool readOnly;
 
-  ViewAndEditPasswordPage(this.data, this.pageTitle);
+  ViewAndEditPasswordPage(this.data, this.pageTitle, this.readOnly);
 
   @override
   _ViewPasswordPage createState() {
-    return _ViewPasswordPage(data, pageTitle);
+    return _ViewPasswordPage(data, pageTitle, readOnly);
   }
 }
 
@@ -30,8 +31,9 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   var urlController;
 
   bool _passwordVisible = false;
+  bool readOnly;
 
-  _ViewPasswordPage(PasswordBean data, this.pageName) {
+  _ViewPasswordPage(PasswordBean data, this.pageName, this.readOnly) {
     this.oldData = data;
     tempData = PasswordBean(oldData.username, oldData.password, oldData.url,
         key: oldData.uniqueKey,
@@ -65,13 +67,22 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(
+              icon: readOnly?Icon(
+                Icons.edit,
+                color: Colors.black,
+              ):Icon(
                 Icons.check,
                 color: Colors.black,
               ),
               onPressed: () {
-                print("保存: " + tempData.toString());
-                Navigator.pop<PasswordBean>(context, tempData);
+                if (readOnly) {
+                  setState(() {
+                    readOnly = false;
+                  });
+                } else {
+                  print("保存: " + tempData.toString());
+                  Navigator.pop<PasswordBean>(context, tempData);
+                }
               },
             )
           ],
@@ -96,6 +107,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     onChanged: (text) {
                       tempData.name = text;
                     },
+                    readOnly: this.readOnly,
                   ),
                 ],
               ),
@@ -114,6 +126,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     onChanged: (text) {
                       tempData.url = text;
                     },
+                    readOnly: this.readOnly,
                   ),
                 ],
               ),
@@ -132,6 +145,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     onChanged: (text) {
                       tempData.username = text;
                     },
+                    readOnly: this.readOnly,
                   ),
                 ],
               ),
@@ -154,6 +168,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                           onChanged: (text) {
                             tempData.password = text;
                           },
+                          readOnly: this.readOnly,
                         ),
                       ),
                       IconButton(
@@ -186,9 +201,11 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   ),
                   DropdownButton(
                     onChanged: (newValue) {
-                      setState(() {
-                        tempData.folder = newValue;
-                      });
+                      if (!readOnly) {
+                        setState(() {
+                          tempData.folder = newValue;
+                        });
+                      }
                     },
                     items: FolderAndLabelList.folderList
                         .map<DropdownMenuItem<String>>((item) {
@@ -245,6 +262,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     onChanged: (text) {
                       tempData.notes = text;
                     },
+                    readOnly: this.readOnly,
                   ),
                 ],
               ),
@@ -264,11 +282,13 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
         selected: tempData.label.contains(item),
         onSelected: (selected) {
-          setState(() {
-            tempData.label.contains(item)
-                ? tempData.label.remove(item)
-                : tempData.label.add(item);
-          });
+          if (!readOnly) {
+            setState(() {
+              tempData.label.contains(item)
+                  ? tempData.label.remove(item)
+                  : tempData.label.add(item);
+            });
+          }
         },
         selectedColor: AllpassColorUI.mainColor,
       ));

@@ -146,7 +146,7 @@ class _SearchPage extends State<SearchPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data, "查看密码")))
+                        ViewAndEditPasswordPage(data, "查看密码", true)))
                 .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),
@@ -158,7 +158,7 @@ class _SearchPage extends State<SearchPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditPasswordPage(data, "编辑密码")))
+                        ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) => this.setState(() => updatePasswordBean(reData)));
           },
         ),
@@ -205,7 +205,7 @@ class _SearchPage extends State<SearchPage> {
             title: Text("查看"),
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片")))
+                  builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片", true)))
                   .then((resData) => this.setState(() => updateCardBean(resData)));
             }
         ),
@@ -214,7 +214,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("编辑"),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片")))
+                builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片", false)))
                 .then((resData) => this.setState(() => updateCardBean(resData)));
           },
         ),

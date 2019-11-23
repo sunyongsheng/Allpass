@@ -76,7 +76,7 @@ class _CardPageState extends State<CardPage> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      ViewAndEditCardPage(newData, "添加卡片"))).then((resData) {
+                      ViewAndEditCardPage(newData, "添加卡片", false))).then((resData) {
             assert(resData is CardBean);
             this.setState(() {
               if (resData.ownerName != "" && resData.cardId != "") {
@@ -146,7 +146,7 @@ class _CardPageState extends State<CardPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ViewAndEditCardPage(cardBean, "查看卡片"))).then(
+                          ViewAndEditCardPage(cardBean, "查看卡片", true))).then(
                   (resData) => this.setState(() => updateCardBean(resData)));
             }),
         ListTile(
@@ -157,7 +157,7 @@ class _CardPageState extends State<CardPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ViewAndEditCardPage(cardBean, "编辑卡片"))).then(
+                        ViewAndEditCardPage(cardBean, "编辑卡片", false))).then(
                 (resData) => this.setState(() => updateCardBean(resData)));
           },
         ),
