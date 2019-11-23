@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/card_data.dart';
+import 'package:allpass/pages/view_and_edit_card_page.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -14,6 +15,9 @@ class CardPage extends StatefulWidget {
 }
 
 class _CardPageState extends State<CardPage> {
+
+  int _currentKey = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +54,7 @@ class _CardPageState extends State<CardPage> {
           // 卡片列表
           Expanded(
             child: ListView(
-                children: getCardWidgetList()
+                children: _getCardWidgetList()
             ),
           ),
         ],
@@ -60,17 +64,27 @@ class _CardPageState extends State<CardPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          print("点击了卡片页面的增加按钮");
+          var newData = CardBean("", "", folder: "默认", isNew: false);
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => ViewAndEditCardPage(newData, "添加卡片")))
+              .then((resData) {
+            this.setState(() {
+              if (resData.ownerName != "" && resData.cardId != "") {
+                CardData.cardData.add(resData);
+                CardData.cardKeySet.add(resData.key);
+              }
+            });
+          });
         },
       ),
     );
   }
 
-  List<Widget> getCardWidgetList() {
-    return CardData.cardData.map((card) => getCardWidget(card)).toList();
+  List<Widget> _getCardWidgetList() {
+    return CardData.cardData.map((card) => _getCardWidget(card)).toList();
   }
 
-  Widget getCardWidget(CardBean cardBean){
+  Widget _getCardWidget(CardBean cardBean){
     return Container(
       width: 150,
       height: 70,
@@ -107,14 +121,40 @@ class _CardPageState extends State<CardPage> {
           leading: Icon(Icons.remove_red_eye),
           title: Text("查看"),
           onTap: () {
-            print("点击了卡片：" + cardBean.name + "的查看按钮");
-          },
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片")))
+                .then((resData) {
+              this.setState(() {
+                int index = 0;
+                for (int i = 0; i < CardData.cardData.length; i++) {
+                  if (_currentKey == CardData.cardData[i].uniqueKey) {
+                    index = i;
+                    break;
+                  }
+                }
+                copyCardBean(CardData.cardData[index], resData);
+              });
+            });
+          }
         ),
         ListTile(
           leading: Icon(Icons.edit),
           title: Text("编辑"),
           onTap: () {
-            print("点击了卡片：" + cardBean.name + "的编辑按钮");
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片")))
+                .then((resData) {
+              this.setState(() {
+                int index = 0;
+                for (int i = 0; i < CardData.cardData.length; i++) {
+                  if (_currentKey == CardData.cardData[i].uniqueKey) {
+                    index = i;
+                    break;
+                  }
+                }
+                copyCardBean(CardData.cardData[index], resData);
+              });
+            });
           },
         ),
         ListTile(
