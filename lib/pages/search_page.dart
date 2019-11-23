@@ -90,6 +90,7 @@ class _SearchPage extends State<SearchPage> {
     return res;
   }
 
+  /// 搜索栏
   Widget searchWidget() {
     return Container(
         padding: EdgeInsets.only(left: 0, right: 0, bottom: 11, top: 11),
@@ -131,6 +132,7 @@ class _SearchPage extends State<SearchPage> {
         ));
   }
 
+  /// 以下代码与password_page和card_page的重复
   // 点击密码弹出模态菜单
   Widget createPassBottomSheet(BuildContext context, PasswordBean data) {
     return Column(
