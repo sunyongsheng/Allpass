@@ -9,7 +9,7 @@ class PasswordTestData {
   PasswordTestData() {
     if (passwordList.length == 0) {
       passwordList.add(
-          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com"));
+          PasswordBean("sys6511@126.com", "1234", "https://www.weibo.com", label: List()..addAll(["默认","论坛", "社交"])));
       passwordList.add(
           PasswordBean("sys6511@126.com", "12345", "https://www.zhihu.com"));
       passwordList.add(PasswordBean(
