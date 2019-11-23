@@ -56,6 +56,7 @@ class PasswordBean {
       this.label = label;
     } //label
 
+    // 如果没有isNew参数，那么在编辑页面的暂存数据tempData就会新建一个Bean添加到List中，这样主页面中没有刷新就会报错
     if (isNew) {
       PasswordData.passwordData.add(this);
       PasswordData.passwordKeySet.add(this.uniqueKey);
