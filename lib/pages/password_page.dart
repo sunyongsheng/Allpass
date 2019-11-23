@@ -148,7 +148,9 @@ class _PasswordPageState extends State<_PasswordPage> {
                     break;
                   }
                 }
-                PasswordData.passwordData[index] = reData;
+                // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
+                // PasswordData.passwordData[index] = reData;
+                copyPasswordBean(PasswordData.passwordData[index], reData);
               });
             });
           },
@@ -172,7 +174,9 @@ class _PasswordPageState extends State<_PasswordPage> {
                     break;
                   }
                 }
-                PasswordData.passwordData[index] = reData;
+                // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
+                // PasswordData.passwordData[index] = reData;
+                copyPasswordBean(PasswordData.passwordData[index], reData);
               });
             });
           },
