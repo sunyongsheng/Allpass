@@ -81,10 +81,11 @@ class _PasswordPageState extends State<_PasswordPage> {
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => ViewAndEditPasswordPage(newData, "添加密码")))
           .then((resData) {
+            assert(resData is PasswordBean);
             this.setState(() {
               if (resData.username != "" && resData.password != "" && resData.url != "") {
                 PasswordData.passwordData.add(resData);
-                PasswordData.passwordKeySet.add(resData.key);
+                PasswordData.passwordKeySet.add(resData.uniqueKey);
               }
             });
           });

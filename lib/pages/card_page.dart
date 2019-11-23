@@ -77,10 +77,11 @@ class _CardPageState extends State<CardPage> {
               MaterialPageRoute(
                   builder: (context) =>
                       ViewAndEditCardPage(newData, "添加卡片"))).then((resData) {
+            assert(resData is CardBean);
             this.setState(() {
               if (resData.ownerName != "" && resData.cardId != "") {
                 CardData.cardData.add(resData);
-                CardData.cardKeySet.add(resData.key);
+                CardData.cardKeySet.add(resData.uniqueKey);
               }
             });
           });
