@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/params/changed.dart';
@@ -67,13 +68,15 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: readOnly?Icon(
-                Icons.edit,
-                color: Colors.black,
-              ):Icon(
-                Icons.check,
-                color: Colors.black,
-              ),
+              icon: readOnly
+                  ? Icon(
+                      Icons.edit,
+                      color: Colors.black,
+                    )
+                  : Icon(
+                      Icons.check,
+                      color: Colors.black,
+                    ),
               onPressed: () {
                 if (readOnly) {
                   setState(() {
@@ -104,9 +107,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   ),
                   TextField(
                     controller: nameController,
-                    onChanged: (text) {
-                      tempData.name = text;
-                    },
+                    onChanged: (text) => tempData.name = text,
                     readOnly: this.readOnly,
                   ),
                 ],
@@ -121,13 +122,22 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     "URL",
                     style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                  TextField(
-                    controller: urlController,
-                    onChanged: (text) {
-                      tempData.url = text;
-                    },
-                    readOnly: this.readOnly,
-                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: urlController,
+                          onChanged: (text) => tempData.url = text,
+                          readOnly: this.readOnly,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.content_copy),
+                        onPressed: () => Clipboard.setData(
+                            ClipboardData(text: tempData.url)),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -140,13 +150,22 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     "用户名",
                     style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                  TextField(
-                    controller: usernameController,
-                    onChanged: (text) {
-                      tempData.username = text;
-                    },
-                    readOnly: this.readOnly,
-                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: usernameController,
+                          onChanged: (text) => tempData.username = text,
+                          readOnly: this.readOnly,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.content_copy),
+                        onPressed: () => Clipboard.setData(
+                            ClipboardData(text: tempData.username)),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -165,9 +184,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                         child: TextField(
                           controller: passwordController,
                           obscureText: !_passwordVisible,
-                          onChanged: (text) {
-                            tempData.password = text;
-                          },
+                          onChanged: (text) => tempData.password = text,
                           readOnly: this.readOnly,
                         ),
                       ),
@@ -259,9 +276,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   ),
                   TextField(
                     controller: notesController,
-                    onChanged: (text) {
-                      tempData.notes = text;
-                    },
+                    onChanged: (text) => tempData.notes = text,
                     readOnly: this.readOnly,
                   ),
                 ],
@@ -283,11 +298,9 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         selected: tempData.label.contains(item),
         onSelected: (selected) {
           if (!readOnly) {
-            setState(() {
-              tempData.label.contains(item)
-                  ? tempData.label.remove(item)
-                  : tempData.label.add(item);
-            });
+            setState(() => tempData.label.contains(item)
+                ? tempData.label.remove(item)
+                : tempData.label.add(item));
           }
         },
         selectedColor: AllpassColorUI.mainColor,

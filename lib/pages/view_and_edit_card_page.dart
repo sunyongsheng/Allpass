@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/params/changed.dart/';
@@ -68,19 +69,18 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: readOnly?Icon(
-                    Icons.edit,
-                    color: Colors.black,
-                  ):
-                  Icon(
-                    Icons.check,
-                    color: Colors.black,
-                  ),
+                  icon: readOnly
+                      ? Icon(
+                          Icons.edit,
+                          color: Colors.black,
+                        )
+                      : Icon(
+                          Icons.check,
+                          color: Colors.black,
+                        ),
                   onPressed: () {
                     if (readOnly) {
-                      setState(() {
-                        readOnly = false;
-                      });
+                      setState(() => readOnly = false);
                     } else {
                       print("保存: " + tempData.toString());
                       Navigator.pop<CardBean>(context, tempData);
@@ -106,9 +106,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         TextField(
                           controller: nameController,
-                          onChanged: (text) {
-                            tempData.name = text;
-                          },
+                          onChanged: (text) => tempData.name = text,
                           readOnly: this.readOnly,
                         ),
                       ],
@@ -123,13 +121,22 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           "拥有者姓名",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        TextField(
-                          controller: ownerNameController,
-                          onChanged: (text) {
-                            tempData.ownerName = text;
-                          },
-                          readOnly: this.readOnly,
-                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: ownerNameController,
+                                onChanged: (text) => tempData.ownerName = text,
+                                readOnly: this.readOnly,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.content_copy),
+                              onPressed: () => Clipboard.setData(
+                                  ClipboardData(text: tempData.ownerName)),
+                            )
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -142,12 +149,22 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           "卡号",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        TextField(
-                          controller: cardIdController,
-                          onChanged: (text) {
-                            tempData.cardId = text;
-                          },
-                          readOnly: this.readOnly,
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: cardIdController,
+                                onChanged: (text) => tempData.cardId = text,
+                                readOnly: this.readOnly,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.content_copy),
+                              onPressed: () => Clipboard.setData(
+                                  ClipboardData(text: tempData.cardId)),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -161,12 +178,25 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           "绑定手机号",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        TextField(
-                          controller: telephoneController,
-                          onChanged: (text) {
-                            tempData.telephone = text;
-                          },
-                          readOnly: this.readOnly,
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: telephoneController,
+                                onChanged: (text) {
+                                  tempData.telephone = text;
+                                },
+                                readOnly: this.readOnly,
+                                keyboardType: TextInputType.numberWithOptions(
+                                    signed: true),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.content_copy),
+                              onPressed: () => Clipboard.setData(
+                                  ClipboardData(text: tempData.telephone)),
+                            )
+                          ],
                         ),
                       ],
                     ),
@@ -184,9 +214,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         DropdownButton(
                           onChanged: (newValue) {
                             if (!readOnly) {
-                              setState(() {
-                                tempData.folder = newValue;
-                              });
+                              setState(() => tempData.folder = newValue);
                             }
                           },
                           items: FolderAndLabelList.folderList
@@ -241,9 +269,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         TextField(
                           controller: notesController,
-                          onChanged: (text) {
-                            tempData.notes = text;
-                          },
+                          onChanged: (text) => tempData.notes = text,
                           readOnly: this.readOnly,
                         ),
                       ],
@@ -263,11 +289,9 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
         selected: tempData.label.contains(item),
         onSelected: (selected) {
           if (!readOnly) {
-            setState(() {
-              tempData.label.contains(item)
-                  ? tempData.label.remove(item)
-                  : tempData.label.add(item);
-            });
+            setState(() => tempData.label.contains(item)
+                ? tempData.label.remove(item)
+                : tempData.label.add(item));
           }
         },
         selectedColor: AllpassColorUI.mainColor,
