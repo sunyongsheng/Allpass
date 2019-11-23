@@ -1,6 +1,7 @@
 import 'package:allpass/params/card_data.dart';
 
 const int CARD_MAGIC = -12342;   // 随便输的
+const int MAX_INT = 2^53-1;
 
 /// 保存“卡片”数据
 class CardBean {
@@ -11,7 +12,7 @@ class CardBean {
   String telephone; // 手机号
   String folder; // 文件夹
   String notes; // 备注
-  List<String> label = List(); // 标签
+  List<String> label; // 标签
   int fav; // 是否标心
 
   CardBean(String ownerName, String cardId,
@@ -51,8 +52,7 @@ class CardBean {
   }
 
   static int getUniqueCardKey(Set<int> list) {
-    // TODO 找到int的最大值
-    int key = 100000000;
+    int key = MAX_INT;
     while (true) {
       if (list.contains(key))
         --key;
