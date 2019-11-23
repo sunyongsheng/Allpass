@@ -200,7 +200,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   updatePasswordBean(PasswordBean res) {
-    int index = 0;
+    int index = -1;
     for (int i = 0; i < PasswordData.passwordData.length; i++) {
       if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
         index = i;
@@ -270,7 +270,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   updateCardBean(CardBean res) {
-    int index = 0;
+    int index = -1;
     for (int i = 0; i < CardData.cardData.length; i++) {
       if (_currentKey == CardData.cardData[i].uniqueKey) {
         index = i;

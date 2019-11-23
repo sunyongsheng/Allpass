@@ -202,7 +202,7 @@ class _PasswordPageState extends State<_PasswordPage> {
   }
 
   updatePasswordBean(PasswordBean res) {
-    int index = 0;
+    int index = -1;
     for (int i = 0; i < PasswordData.passwordData.length; i++) {
       if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
         index = i;

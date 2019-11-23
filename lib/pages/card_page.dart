@@ -197,7 +197,7 @@ class _CardPageState extends State<CardPage> {
   }
 
   updateCardBean(CardBean res) {
-    int index = 0;
+    int index = -1;
     for (int i = 0; i < CardData.cardData.length; i++) {
       if (_currentKey == CardData.cardData[i].uniqueKey) {
         index = i;
