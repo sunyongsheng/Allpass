@@ -226,7 +226,7 @@ class _SearchPage extends State<SearchPage> {
         ),
         ListTile(
           leading: Icon(Icons.delete_outline),
-          title: Text("删除密码"),
+          title: Text("删除卡片"),
           onTap: () => setState(() => deleteCardBean(_currentKey)),
         )
       ],

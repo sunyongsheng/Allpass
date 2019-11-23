@@ -121,6 +121,7 @@ class _CardPageState extends State<CardPage> {
           subtitle: Text(cardBean.ownerName),
           onTap: () {
             print("点击了卡片：" + cardBean.name);
+            _currentKey = cardBean.uniqueKey;
             // 显示模态BottomSheet
             showModalBottomSheet(
                 context: context,
