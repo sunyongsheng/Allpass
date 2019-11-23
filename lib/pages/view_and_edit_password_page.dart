@@ -34,7 +34,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
     this.oldData = data;
     newData = PasswordBean(oldData.username, oldData.password, oldData.url,
         key:oldData.uniqueKey, name: oldData.name, folder: oldData.folder,
-        label: oldData.label, notes: oldData.notes, fav: oldData.fav);
+        label: oldData.label, notes: oldData.notes, fav: oldData.fav, isNew: false);
 
     nameController = TextEditingController(text: newData.name);
     usernameController = TextEditingController(text: newData.username);
@@ -48,7 +48,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
     return WillPopScope(
       onWillPop: () {
         print("取消修改: " + oldData.toString());
-        Navigator.of(context).pop<PasswordBean>(oldData);
+        Navigator.pop<PasswordBean>(context, this.oldData);
         return Future<bool>.value(false);
       },
       child: Scaffold(
@@ -196,14 +196,6 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                         iconSize: 30,
                         value: newData.folder,
                       ),
-                      // Expanded(
-                      //   child: TextField(
-                      //     controller: folderController,
-                      //     onChanged: (text) {
-                      //       newData.folder = text;
-                      //     },
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
@@ -221,11 +213,13 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                       ),
                       Row(
                         children: <Widget>[
-                          Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.start,
-                              spacing: 8.0,
-                              runSpacing: 10.0,
-                              children: _getTag()
+                          Expanded(
+                            child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.start,
+                                spacing: 8.0,
+                                runSpacing: 10.0,
+                                children: _getTag()
+                            ),
                           )
                         ],
                       )
