@@ -20,15 +20,15 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
-  final AllpassType type;
+  final AllpassType _type;
 
-  String searchText = "null";
-  var searchController;
+  String _searchText = "";
+  var _searchController;
 
   int _currentKey = -1;
 
-  _SearchPage(this.type) {
-    searchController = TextEditingController();
+  _SearchPage(this._type) {
+    _searchController = TextEditingController();
   }
 
   @override
@@ -50,9 +50,9 @@ class _SearchPage extends State<SearchPage> {
 
   List<Widget> getSearchResult() {
     List<Widget> res = List();
-    if (type == AllpassType.PASSWORD) {
+    if (_type == AllpassType.PASSWORD) {
       for (var item in PasswordData.passwordData) {
-        if (item.name.contains(searchText) || item.username.contains(searchText)) {
+        if (item.name.contains(_searchText) || item.username.contains(_searchText)) {
           res.add(ListTile(
               title: Text(item.name),
               subtitle: Text(item.username),
@@ -69,8 +69,8 @@ class _SearchPage extends State<SearchPage> {
       }
     } else {
       for (var item in CardData.cardData) {
-        if (item.name.contains(searchText) ||
-            item.ownerName.contains(searchText)) {
+        if (item.name.contains(_searchText) ||
+            item.ownerName.contains(_searchText)) {
           res.add(ListTile(
             title: Text(item.name),
             subtitle: Text(item.ownerName),
@@ -111,11 +111,11 @@ class _SearchPage extends State<SearchPage> {
                     child: TextField(
                       decoration: InputDecoration.collapsed(hintText: ""),
                       style: AllpassTextUI.secondTitleStyleBlack,
-                      controller: searchController,
+                      controller: _searchController,
                       autofocus: true,
                       onEditingComplete: () {
                         setState(() {
-                          searchText = searchController.text;
+                          _searchText = _searchController.text;
                         });
                       },
                     )),
