@@ -15,13 +15,13 @@ class PasswordBean {
   int fav; // 是否标心，0代表否
 
   PasswordBean(String username, String password, String url,
-      {String folder: "默认",
+      {bool isNew: true,
+      String folder: "默认",
       String notes: "",
       int fav: 0,
       int key: PASS_MAGIC,
       String name,
       List<String> label}) {
-
     this.username = username;
     this.password = password;
     this.url = url;
@@ -56,8 +56,10 @@ class PasswordBean {
       this.label = label;
     } //label
 
-    PasswordData.passwordData.add(this);
-    PasswordData.passwordKeySet.add(this.uniqueKey);
+    if (isNew) {
+      PasswordData.passwordData.add(this);
+      PasswordData.passwordKeySet.add(this.uniqueKey);
+    }
   }
 
   static int getUniquePassKey(Set<int> list) {
@@ -79,10 +81,25 @@ class PasswordBean {
         this.name +
         ", username:" +
         this.username +
-        ",url:" +
+        ", password:" +
+        this.password +
+        ", url:" +
         this.url +
         ", folder:" +
         this.folder +
+        ", label:" +
+        this.label.toString() +
         "}";
   }
+}
+
+void copyPasswordBean(PasswordBean old, PasswordBean now) {
+  old.name = now.name;
+  old.username = now.username;
+  old.password = now.password;
+  old.url = now.url;
+  old.label = now.label;
+  old.folder = now.folder;
+  old.notes = now.notes;
+  old.fav = now.fav;
 }

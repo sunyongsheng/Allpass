@@ -1,7 +1,7 @@
 import 'package:allpass/params/card_data.dart';
 
-const int CARD_MAGIC = -12342;   // 随便输的
-const int MAX_INT = 2^53-1;
+const int CARD_MAGIC = -12342; // 随便输的
+const int MAX_INT = 2 ^ 53 - 1;
 
 /// 保存“卡片”数据
 class CardBean {
@@ -16,14 +16,14 @@ class CardBean {
   int fav; // 是否标心
 
   CardBean(String ownerName, String cardId,
-      {String folder: "默认",
+      {bool isNew: true,
+      String folder: "默认",
       String notes: "",
       int fav: 0,
       String telephone: "",
       int key: CARD_MAGIC,
       String name,
       List<String> label}) {
-
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -34,7 +34,7 @@ class CardBean {
 
     if (uniqueKey == CARD_MAGIC) {
       this.uniqueKey = getUniqueCardKey(CardData.cardKeySet);
-    }//uniqueKey
+    } //uniqueKey
 
     if (name == null) {
       this.name = this.ownerName + "的卡片";
@@ -47,8 +47,10 @@ class CardBean {
       this.label = label;
     } //label
 
-    CardData.cardData.add(this);
-    CardData.cardKeySet.add(this.uniqueKey);
+    if (isNew) {
+      CardData.cardData.add(this);
+      CardData.cardKeySet.add(this.uniqueKey);
+    }
   }
 
   static int getUniqueCardKey(Set<int> list) {
