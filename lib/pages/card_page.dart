@@ -174,6 +174,23 @@ class _CardPageState extends State<CardPage> {
           onTap: () {
             Clipboard.setData(ClipboardData(text: cardBean.cardId));
           },
+        ),
+        ListTile(
+          leading: Icon(Icons.delete_outline),
+          title: Text("删除卡片"),
+          onTap: () {
+            setState(() {
+              int index = -1;
+              for (int i = 0; i < CardData.cardData.length; i++) {
+                if (_currentKey == CardData.cardData[i].uniqueKey) {
+                  index = i;
+                  break;
+                }
+              }
+              CardData.cardData.removeAt(index);
+
+            });
+          },
         )
       ],
     );

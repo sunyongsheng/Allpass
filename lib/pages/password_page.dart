@@ -180,6 +180,22 @@ class _PasswordPageState extends State<_PasswordPage> {
             print("复制密码：" + data.password);
             Clipboard.setData(ClipboardData(text: data.password));
           },
+        ),
+        ListTile(
+          leading: Icon(Icons.delete_outline),
+          title: Text("删除密码"),
+          onTap: () {
+            setState(() {
+              int index = -1;
+              for (int i = 0; i < PasswordData.passwordData.length; i++) {
+                if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
+                  index = i;
+                  break;
+                }
+              }
+              PasswordData.passwordData.removeAt(index);
+            });
+          },
         )
       ],
     );

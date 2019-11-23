@@ -177,6 +177,23 @@ class _SearchPage extends State<SearchPage> {
             print("复制密码：" + data.password);
             Clipboard.setData(ClipboardData(text: data.password));
           },
+        ),
+        ListTile(
+          leading: Icon(Icons.delete_outline),
+          title: Text("删除密码"),
+          onTap: () {
+            setState(() {
+              int index = -1;
+              for (int i = 0; i < PasswordData.passwordData.length; i++) {
+                if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
+                  index = i;
+                  break;
+                }
+              }
+              PasswordData.passwordData.removeAt(index);
+
+            });
+          },
         )
       ],
     );
@@ -230,6 +247,22 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: cardBean.cardId));
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.delete_outline),
+          title: Text("删除密码"),
+          onTap: () {
+            setState(() {
+              int index = -1;
+              for (int i = 0; i < CardData.cardData.length; i++) {
+                if (_currentKey == CardData.cardData[i].uniqueKey) {
+                  index = i;
+                  break;
+                }
+              }
+              CardData.cardData.removeAt(index);
+            });
           },
         )
       ],
