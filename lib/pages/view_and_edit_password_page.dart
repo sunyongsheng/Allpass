@@ -6,7 +6,6 @@ import 'package:allpass/utils/allpass_ui.dart';
 
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
-
   final PasswordBean data;
 
   ViewAndEditPasswordPage(this.data);
@@ -18,7 +17,6 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 }
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
-
   PasswordBean newData;
   PasswordBean oldData;
 
@@ -33,8 +31,13 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   _ViewPasswordPage(PasswordBean data) {
     this.oldData = data;
     newData = PasswordBean(oldData.username, oldData.password, oldData.url,
-        key:oldData.uniqueKey, name: oldData.name, folder: oldData.folder,
-        label: oldData.label, notes: oldData.notes, fav: oldData.fav, isNew: false);
+        key: oldData.uniqueKey,
+        name: oldData.name,
+        folder: oldData.folder,
+        label: List()..addAll(oldData.label),
+        notes: oldData.notes,
+        fav: oldData.fav,
+        isNew: false);
 
     nameController = TextEditingController(text: newData.name);
     usernameController = TextEditingController(text: newData.username);
@@ -75,199 +78,198 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         ),
         body: SingleChildScrollView(
             child: Column(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "名称",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      TextField(
-                        controller: nameController,
-                        onChanged: (text) {
-                          newData.name = text;
-                        },
-                      ),
-                    ],
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "名称",
+                    style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "URL",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      TextField(
-                        controller: urlController,
-                        onChanged: (text) {
-                          newData.url = text;
-                        },
-                      ),
-                    ],
+                  TextField(
+                    controller: nameController,
+                    onChanged: (text) {
+                      newData.name = text;
+                    },
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "用户名",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      TextField(
-                        controller: usernameController,
-                        onChanged: (text) {
-                          newData.username = text;
-                        },
-                      ),
-                    ],
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "URL",
+                    style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "密码",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              controller: passwordController,
-                              obscureText: !_passwordVisible,
-                              onChanged: (text) {
-                                newData.password = text;
-                              },
-                            ),
-                          ),
-                          IconButton(
-                            icon: _passwordVisible == true
-                                ? Icon(Icons.visibility)
-                                : Icon(Icons.visibility_off),
-                            onPressed: () {
-                              setState(() {
-                                if (_passwordVisible == false)
-                                  _passwordVisible = true;
-                                else
-                                  _passwordVisible = false;
-                              });
-                            },
-                          )
-                        ],
-                      ),
-                    ],
+                  TextField(
+                    controller: urlController,
+                    onChanged: (text) {
+                      newData.url = text;
+                    },
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "文件夹",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      DropdownButton(
-                        onChanged: (newValue) {
-                          setState(() {
-                            newData.folder = newValue;
-                          });
-                        },
-                        items: FolderAndLabelList.folderList
-                             .map<DropdownMenuItem<String>>((item) {
-                           return DropdownMenuItem<String>(
-                             value: item,
-                             child: Text(item),
-                           );
-                         }).toList(),
-                        style: AllpassTextUI.firstTitleStyleBlack,
-                        elevation: 8,
-                        iconSize: 30,
-                        value: newData.folder,
-                      ),
-                    ],
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "用户名",
+                    style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  TextField(
+                    controller: usernameController,
+                    onChanged: (text) {
+                      newData.username = text;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "密码",
+                    style: AllpassTextUI.firstTitleStyleBlue,
+                  ),
+                  Row(
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          "标签",
-                          style: AllpassTextUI.firstTitleStyleBlue,
+                      Expanded(
+                        child: TextField(
+                          controller: passwordController,
+                          obscureText: !_passwordVisible,
+                          onChanged: (text) {
+                            newData.password = text;
+                          },
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.start,
-                                spacing: 8.0,
-                                runSpacing: 10.0,
-                                children: _getTag()
-                            ),
-                          )
-                        ],
+                      IconButton(
+                        icon: _passwordVisible == true
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                        onPressed: () {
+                          setState(() {
+                            if (_passwordVisible == false)
+                              _passwordVisible = true;
+                            else
+                              _passwordVisible = false;
+                          });
+                        },
                       )
                     ],
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "备注",
-                        style: AllpassTextUI.firstTitleStyleBlue,
-                      ),
-                      TextField(
-                        controller: notesController,
-                        onChanged: (text) {
-                          newData.notes = text;
-                        },
-                      ),
-                    ],
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "文件夹",
+                    style: AllpassTextUI.firstTitleStyleBlue,
                   ),
-                )
-              ],
-            )),
+                  DropdownButton(
+                    onChanged: (newValue) {
+                      setState(() {
+                        newData.folder = newValue;
+                      });
+                    },
+                    items: FolderAndLabelList.folderList
+                        .map<DropdownMenuItem<String>>((item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item),
+                      );
+                    }).toList(),
+                    style: AllpassTextUI.firstTitleStyleBlack,
+                    elevation: 8,
+                    iconSize: 30,
+                    value: newData.folder,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      "标签",
+                      style: AllpassTextUI.firstTitleStyleBlue,
+                    ),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            spacing: 8.0,
+                            runSpacing: 10.0,
+                            children: _getTag()),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    "备注",
+                    style: AllpassTextUI.firstTitleStyleBlue,
+                  ),
+                  TextField(
+                    controller: notesController,
+                    onChanged: (text) {
+                      newData.notes = text;
+                    },
+                  ),
+                ],
+              ),
+            )
+          ],
+        )),
         backgroundColor: Colors.white,
       ),
     );
   }
+
   List<Widget> _getTag() {
-      List<Widget> labelChoices = List();
-      FolderAndLabelList.labelList.forEach((item) {
-        labelChoices.add(ChoiceChip(
-          label: Text(item),
-          labelStyle: AllpassTextUI.secondTitleStyleBlack,
-          selected: newData.label.contains(item),
-          onSelected: (selected) {
-            setState(() {
-              newData.label.contains(item)
-                  ? newData.label.remove(item)
-                  : newData.label.add(item);
-            });
-          },
-          selectedColor: AllpassColorUI.mainColor,
-        ));
-      });
-      return labelChoices;
+    List<Widget> labelChoices = List();
+    FolderAndLabelList.labelList.forEach((item) {
+      labelChoices.add(ChoiceChip(
+        label: Text(item),
+        labelStyle: AllpassTextUI.secondTitleStyleBlack,
+        selected: newData.label.contains(item),
+        onSelected: (selected) {
+          setState(() {
+            newData.label.contains(item)
+                ? newData.label.remove(item)
+                : newData.label.add(item);
+          });
+        },
+        selectedColor: AllpassColorUI.mainColor,
+      ));
+    });
+    return labelChoices;
   }
 }
-
