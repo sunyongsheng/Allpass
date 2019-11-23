@@ -5,15 +5,15 @@ const int MAX_INT = 2 ^ 53 - 1;
 
 /// 保存“卡片”数据
 class CardBean {
-  int uniqueKey; // ID
-  String name; // 卡片名称
-  String ownerName; // 卡片拥有者
-  String cardId; // 卡片ID/卡号
-  String telephone; // 手机号
-  String folder; // 文件夹
-  String notes; // 备注
-  List<String> label; // 标签
-  int fav; // 是否标心
+  int uniqueKey;       // 1 ID
+  String name;         // 2 卡片名称
+  String ownerName;    // 3 卡片拥有者
+  String cardId;       // 4 卡片ID/卡号
+  String telephone;    // 5 手机号
+  String folder;       // 6 文件夹
+  String notes;        // 7 备注
+  List<String> label;  // 8 标签
+  int fav;             // 9 是否标心
 
   CardBean(String ownerName, String cardId,
       {bool isNew: true,
@@ -72,4 +72,16 @@ class CardBean {
         "ownerName:" "$ownerName, " +
         "cardId:" "$cardId}";
   }
+}
+
+void copyCardBean(CardBean old, CardBean now) {
+  // 复制除key以外的所有属性
+  old.name = now.name;
+  old.ownerName = now.ownerName;
+  old.cardId = now.cardId;
+  old.telephone = now.telephone;
+  old.folder = now.folder;
+  old.notes = now.notes;
+  old.label = now.label;
+  old.fav = now.fav;
 }
