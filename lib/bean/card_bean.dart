@@ -1,7 +1,7 @@
 import 'package:allpass/params/card_data.dart';
 
 const int CARD_MAGIC = -12342; // 随便输的
-const int MAX_INT = 2 ^ 53 - 1;
+const int MAX_INT = 4294967295; // 2^32-1
 
 /// 保存“卡片”数据
 class CardBean {
@@ -70,7 +70,9 @@ class CardBean {
     return "{key:" "$uniqueKey, " +
         "name:" "$name, " +
         "ownerName:" "$ownerName, " +
-        "cardId:" "$cardId}";
+        "cardId:" "$cardId, " +
+        "telephone: " "$telephone" +
+        "}";
   }
 }
 
