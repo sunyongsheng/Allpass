@@ -9,3 +9,15 @@ class CardData {
   static Set<int> cardKeySet = Set();
 
 }
+
+/// 更新特定key的CardBean
+void updateCardBean(CardBean res, int currKey) {
+  int index = -1;
+  for (int i = 0; i < CardData.cardData.length; i++) {
+    if (currKey == CardData.cardData[i].uniqueKey) {
+      index = i;
+      break;
+    }
+  }
+  copyCardBean(CardData.cardData[index], res);
+}

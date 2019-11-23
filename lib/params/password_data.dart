@@ -9,3 +9,17 @@ class PasswordData {
   static Set<int> passwordKeySet = Set();
 
 }
+
+/// 更新特定key的PasswordBean
+void updatePasswordBean(PasswordBean res, int currKey) {
+  int index = -1;
+  for (int i = 0; i < PasswordData.passwordData.length; i++) {
+    if (currKey == PasswordData.passwordData[i].uniqueKey) {
+      index = i;
+      break;
+    }
+  }
+  // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
+  // PasswordData.passwordData[index] = reData;
+  copyPasswordBean(PasswordData.passwordData[index], res);
+}

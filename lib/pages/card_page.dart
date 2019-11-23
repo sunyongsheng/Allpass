@@ -147,7 +147,7 @@ class _CardPageState extends State<CardPage> {
                   MaterialPageRoute(
                       builder: (context) =>
                           ViewAndEditCardPage(cardBean, "查看卡片", true))).then(
-                  (resData) => this.setState(() => updateCardBean(resData)));
+                  (resData) => this.setState(() => updateCardBean(resData, _currentKey)));
             }),
         ListTile(
           leading: Icon(Icons.edit),
@@ -158,7 +158,7 @@ class _CardPageState extends State<CardPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditCardPage(cardBean, "编辑卡片", false))).then(
-                (resData) => this.setState(() => updateCardBean(resData)));
+                (resData) => this.setState(() => updateCardBean(resData, _currentKey)));
           },
         ),
         ListTile(
@@ -194,16 +194,5 @@ class _CardPageState extends State<CardPage> {
         )
       ],
     );
-  }
-
-  updateCardBean(CardBean res) {
-    int index = -1;
-    for (int i = 0; i < CardData.cardData.length; i++) {
-      if (_currentKey == CardData.cardData[i].uniqueKey) {
-        index = i;
-        break;
-      }
-    }
-    copyCardBean(CardData.cardData[index], res);
   }
 }

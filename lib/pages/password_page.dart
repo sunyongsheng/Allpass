@@ -150,7 +150,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "查看密码", true)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData)));
+                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -162,7 +162,7 @@ class _PasswordPageState extends State<_PasswordPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "编辑密码", false)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData)));
+                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -199,18 +199,5 @@ class _PasswordPageState extends State<_PasswordPage> {
         )
       ],
     );
-  }
-
-  updatePasswordBean(PasswordBean res) {
-    int index = -1;
-    for (int i = 0; i < PasswordData.passwordData.length; i++) {
-      if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-        index = i;
-        break;
-      }
-    }
-    // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
-    // PasswordData.passwordData[index] = reData;
-    copyPasswordBean(PasswordData.passwordData[index], res);
   }
 }

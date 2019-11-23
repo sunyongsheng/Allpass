@@ -147,7 +147,7 @@ class _SearchPage extends State<SearchPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "查看密码", true)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData)));
+                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -159,7 +159,7 @@ class _SearchPage extends State<SearchPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditPasswordPage(data, "编辑密码", false)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData)));
+                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -191,25 +191,11 @@ class _SearchPage extends State<SearchPage> {
                 }
               }
               PasswordData.passwordData.removeAt(index);
-
             });
           },
         )
       ],
     );
-  }
-
-  updatePasswordBean(PasswordBean res) {
-    int index = -1;
-    for (int i = 0; i < PasswordData.passwordData.length; i++) {
-      if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-        index = i;
-        break;
-      }
-    }
-    // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
-    // PasswordData.passwordData[index] = reData;
-    copyPasswordBean(PasswordData.passwordData[index], res);
   }
 
   // 点击卡片弹出模态菜单
@@ -223,7 +209,7 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               Navigator.push(context, MaterialPageRoute(
                   builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片", true)))
-                  .then((resData) => this.setState(() => updateCardBean(resData)));
+                  .then((resData) => this.setState(() => updateCardBean(resData, _currentKey)));
             }
         ),
         ListTile(
@@ -232,7 +218,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片", false)))
-                .then((resData) => this.setState(() => updateCardBean(resData)));
+                .then((resData) => this.setState(() => updateCardBean(resData, _currentKey)));
           },
         ),
         ListTile(
@@ -267,16 +253,5 @@ class _SearchPage extends State<SearchPage> {
         )
       ],
     );
-  }
-
-  updateCardBean(CardBean res) {
-    int index = -1;
-    for (int i = 0; i < CardData.cardData.length; i++) {
-      if (_currentKey == CardData.cardData[i].uniqueKey) {
-        index = i;
-        break;
-      }
-    }
-    copyCardBean(CardData.cardData[index], res);
   }
 }
