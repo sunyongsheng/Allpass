@@ -4,15 +4,15 @@ const int PASS_MAGIC = -12474; // 随便输的
 
 /// 存储新建的“密码”
 class PasswordBean {
-  int uniqueKey; // ID
-  String name; // 账号名称
-  String username; // 用户名
-  String password; // 密码
-  String url; // 地址
-  String folder; // 文件夹
-  String notes; // 备注
-  List<String> label; // 标签
-  int fav; // 是否标心，0代表否
+  int uniqueKey;       // 1 ID
+  String name;         // 2 账号名称
+  String username;     // 3 用户名
+  String password;     // 4 密码
+  String url;          // 5 地址
+  String folder;       // 6 文件夹
+  String notes;        // 7 备注
+  List<String> label;  // 8 标签
+  int fav;             // 9 是否标心，0代表否
 
   PasswordBean(String username, String password, String url,
       {bool isNew: true,
@@ -95,6 +95,7 @@ class PasswordBean {
 }
 
 void copyPasswordBean(PasswordBean old, PasswordBean now) {
+  // 复制除key以外的所有属性
   old.name = now.name;
   old.username = now.username;
   old.password = now.password;
