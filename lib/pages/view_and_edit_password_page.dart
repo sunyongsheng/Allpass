@@ -17,7 +17,7 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 }
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
-  PasswordBean newData;
+  PasswordBean tempData;
   PasswordBean oldData;
 
   var nameController;
@@ -30,7 +30,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   _ViewPasswordPage(PasswordBean data) {
     this.oldData = data;
-    newData = PasswordBean(oldData.username, oldData.password, oldData.url,
+    tempData = PasswordBean(oldData.username, oldData.password, oldData.url,
         key: oldData.uniqueKey,
         name: oldData.name,
         folder: oldData.folder,
@@ -39,11 +39,11 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         fav: oldData.fav,
         isNew: false);
 
-    nameController = TextEditingController(text: newData.name);
-    usernameController = TextEditingController(text: newData.username);
-    passwordController = TextEditingController(text: newData.password);
-    notesController = TextEditingController(text: newData.notes);
-    urlController = TextEditingController(text: newData.url);
+    nameController = TextEditingController(text: tempData.name);
+    usernameController = TextEditingController(text: tempData.username);
+    passwordController = TextEditingController(text: tempData.password);
+    notesController = TextEditingController(text: tempData.notes);
+    urlController = TextEditingController(text: tempData.url);
   }
 
   @override
@@ -67,8 +67,8 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                 color: Colors.black,
               ),
               onPressed: () {
-                print("保存: " + newData.toString());
-                Navigator.pop<PasswordBean>(context, newData);
+                print("保存: " + tempData.toString());
+                Navigator.pop<PasswordBean>(context, tempData);
               },
             )
           ],
@@ -91,7 +91,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   TextField(
                     controller: nameController,
                     onChanged: (text) {
-                      newData.name = text;
+                      tempData.name = text;
                     },
                   ),
                 ],
@@ -109,7 +109,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   TextField(
                     controller: urlController,
                     onChanged: (text) {
-                      newData.url = text;
+                      tempData.url = text;
                     },
                   ),
                 ],
@@ -127,7 +127,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   TextField(
                     controller: usernameController,
                     onChanged: (text) {
-                      newData.username = text;
+                      tempData.username = text;
                     },
                   ),
                 ],
@@ -149,7 +149,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                           controller: passwordController,
                           obscureText: !_passwordVisible,
                           onChanged: (text) {
-                            newData.password = text;
+                            tempData.password = text;
                           },
                         ),
                       ),
@@ -184,7 +184,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   DropdownButton(
                     onChanged: (newValue) {
                       setState(() {
-                        newData.folder = newValue;
+                        tempData.folder = newValue;
                       });
                     },
                     items: FolderAndLabelList.folderList
@@ -197,7 +197,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     style: AllpassTextUI.firstTitleStyleBlack,
                     elevation: 8,
                     iconSize: 30,
-                    value: newData.folder,
+                    value: tempData.folder,
                   ),
                 ],
               ),
@@ -240,7 +240,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   TextField(
                     controller: notesController,
                     onChanged: (text) {
-                      newData.notes = text;
+                      tempData.notes = text;
                     },
                   ),
                 ],
@@ -259,12 +259,12 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: newData.label.contains(item),
+        selected: tempData.label.contains(item),
         onSelected: (selected) {
           setState(() {
-            newData.label.contains(item)
-                ? newData.label.remove(item)
-                : newData.label.add(item);
+            tempData.label.contains(item)
+                ? tempData.label.remove(item)
+                : tempData.label.add(item);
           });
         },
         selectedColor: AllpassColorUI.mainColor,
