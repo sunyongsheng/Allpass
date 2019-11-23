@@ -181,18 +181,7 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
-          onTap: () {
-            setState(() {
-              int index = -1;
-              for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-                  index = i;
-                  break;
-                }
-              }
-              PasswordData.passwordData.removeAt(index);
-            });
-          },
+          onTap: () => setState(() => deletePasswordBean(_currentKey)),
         )
       ],
     );
@@ -238,18 +227,7 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
-          onTap: () {
-            setState(() {
-              int index = -1;
-              for (int i = 0; i < CardData.cardData.length; i++) {
-                if (_currentKey == CardData.cardData[i].uniqueKey) {
-                  index = i;
-                  break;
-                }
-              }
-              CardData.cardData.removeAt(index);
-            });
-          },
+          onTap: () => setState(() => deleteCardBean(_currentKey)),
         )
       ],
     );

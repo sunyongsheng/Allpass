@@ -11,10 +11,10 @@ class PasswordData {
 }
 
 /// 更新特定key的PasswordBean
-void updatePasswordBean(PasswordBean res, int currKey) {
+void updatePasswordBean(PasswordBean res, int toUpdateKey) {
   int index = -1;
   for (int i = 0; i < PasswordData.passwordData.length; i++) {
-    if (currKey == PasswordData.passwordData[i].uniqueKey) {
+    if (toUpdateKey == PasswordData.passwordData[i].uniqueKey) {
       index = i;
       break;
     }
@@ -22,4 +22,16 @@ void updatePasswordBean(PasswordBean res, int currKey) {
   // TODO 以下这种方式修改的名称与用户名可以保存，但是其他数据修改保存再打开就会恢复
   // PasswordData.passwordData[index] = reData;
   copyPasswordBean(PasswordData.passwordData[index], res);
+}
+
+/// 删除特定key的PasswordBean
+void deletePasswordBean(int toDelKey) {
+  int index = -1;
+  for (int i = 0; i < PasswordData.passwordData.length; i++) {
+    if (toDelKey == PasswordData.passwordData[i].uniqueKey) {
+      index = i;
+      break;
+    }
+  }
+  PasswordData.passwordData.removeAt(index);
 }

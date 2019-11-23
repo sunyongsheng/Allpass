@@ -11,13 +11,25 @@ class CardData {
 }
 
 /// 更新特定key的CardBean
-void updateCardBean(CardBean res, int currKey) {
+void updateCardBean(CardBean res, int toUpdateKey) {
   int index = -1;
   for (int i = 0; i < CardData.cardData.length; i++) {
-    if (currKey == CardData.cardData[i].uniqueKey) {
+    if (toUpdateKey == CardData.cardData[i].uniqueKey) {
       index = i;
       break;
     }
   }
   copyCardBean(CardData.cardData[index], res);
+}
+
+/// 删除特定key的CardBean
+void deleteCardBean(int toDelKey) {
+  int index = -1;
+  for (int i = 0; i < CardData.cardData.length; i++) {
+    if (toDelKey == CardData.cardData[i].uniqueKey) {
+      index = i;
+      break;
+    }
+  }
+  CardData.cardData.removeAt(index);
 }

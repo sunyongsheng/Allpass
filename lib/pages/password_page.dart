@@ -184,18 +184,7 @@ class _PasswordPageState extends State<_PasswordPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
-          onTap: () {
-            setState(() {
-              int index = -1;
-              for (int i = 0; i < PasswordData.passwordData.length; i++) {
-                if (_currentKey == PasswordData.passwordData[i].uniqueKey) {
-                  index = i;
-                  break;
-                }
-              }
-              PasswordData.passwordData.removeAt(index);
-            });
-          },
+          onTap: () =>setState(() => deletePasswordBean(_currentKey)),
         )
       ],
     );
