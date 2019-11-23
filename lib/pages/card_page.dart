@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/card_data.dart';
@@ -85,29 +87,39 @@ class _CardPageState extends State<CardPage> {
   }
 
   Widget _getCardWidget(CardBean cardBean){
-    return Container(
-      width: 150,
-      height: 70,
-      //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: cardBean.hashCode%2==1?Colors.blue:Colors.amberAccent,
-          child: Text(
-            cardBean.name.substring(0,1),
-            style: TextStyle(color: Colors.white),
+    return Dismissible(
+      key: Key(cardBean.uniqueKey.toString()),
+      onDismissed: (dismissibleDec) {
+        setState(() {
+          Fluttertoast.showToast(msg: "删除了“"+cardBean.name+"”");
+          CardData.cardData.remove(cardBean);
+          // TODO 是否remove对应的key
+        });
+      },
+      child: Container(
+        width: 150,
+        height: 70,
+        //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: cardBean.hashCode%2==1?Colors.blue:Colors.amberAccent,
+            child: Text(
+              cardBean.name.substring(0,1),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
+          title: Text(cardBean.name),
+          subtitle: Text(cardBean.ownerName),
+          onTap: () {
+            print("点击了卡片：" + cardBean.name);
+            // 显示模态BottomSheet
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return _createBottomSheet(context, cardBean);
+                });
+          },
         ),
-        title: Text(cardBean.name),
-        subtitle: Text(cardBean.ownerName),
-        onTap: () {
-          print("点击了卡片：" + cardBean.name);
-          // 显示模态BottomSheet
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return _createBottomSheet(context, cardBean);
-              });
-        },
       ),
     );
   }
@@ -123,18 +135,7 @@ class _CardPageState extends State<CardPage> {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片")))
-                .then((resData) {
-              this.setState(() {
-                int index = 0;
-                for (int i = 0; i < CardData.cardData.length; i++) {
-                  if (_currentKey == CardData.cardData[i].uniqueKey) {
-                    index = i;
-                    break;
-                  }
-                }
-                copyCardBean(CardData.cardData[index], resData);
-              });
-            });
+                .then((resData) => this.setState(() => updateCardBean(resData)));
           }
         ),
         ListTile(
@@ -143,25 +144,13 @@ class _CardPageState extends State<CardPage> {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片")))
-                .then((resData) {
-              this.setState(() {
-                int index = 0;
-                for (int i = 0; i < CardData.cardData.length; i++) {
-                  if (_currentKey == CardData.cardData[i].uniqueKey) {
-                    index = i;
-                    break;
-                  }
-                }
-                copyCardBean(CardData.cardData[index], resData);
-              });
-            });
+                .then((resData) => this.setState(() => updateCardBean(resData)));
           },
         ),
         ListTile(
           leading: Icon(Icons.person),
           title: Text("复制用户名"),
           onTap: () {
-            print("复制用户名：" + cardBean.ownerName);
             Clipboard.setData(ClipboardData(text: cardBean.ownerName));
           },
         ),
@@ -169,12 +158,22 @@ class _CardPageState extends State<CardPage> {
           leading: Icon(Icons.content_copy),
           title: Text("复制卡号"),
           onTap: () {
-            print("复制卡号：" + cardBean.cardId);
             Clipboard.setData(ClipboardData(text: cardBean.cardId));
           },
         )
       ],
     );
+  }
+
+  updateCardBean(CardBean res) {
+    int index = 0;
+    for (int i = 0; i < CardData.cardData.length; i++) {
+      if (_currentKey == CardData.cardData[i].uniqueKey) {
+        index = i;
+        break;
+      }
+    }
+    copyCardBean(CardData.cardData[index], res);
   }
 }
 
