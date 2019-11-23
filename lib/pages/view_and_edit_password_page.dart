@@ -7,16 +7,19 @@ import 'package:allpass/utils/allpass_ui.dart';
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
   final PasswordBean data;
+  final String pageTitle;
 
-  ViewAndEditPasswordPage(this.data);
+  ViewAndEditPasswordPage(this.data, this.pageTitle);
 
   @override
   _ViewPasswordPage createState() {
-    return _ViewPasswordPage(data);
+    return _ViewPasswordPage(data, pageTitle);
   }
 }
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
+  final String pageName;
+
   PasswordBean tempData;
   PasswordBean oldData;
 
@@ -28,7 +31,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(PasswordBean data) {
+  _ViewPasswordPage(PasswordBean data, this.pageName) {
     this.oldData = data;
     tempData = PasswordBean(oldData.username, oldData.password, oldData.url,
         key: oldData.uniqueKey,
@@ -57,7 +60,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "查看密码",
+            pageName,
             style: AllpassTextUI.firstTitleStyleBlack,
           ),
           actions: <Widget>[
