@@ -59,6 +59,18 @@ class PasswordDao extends BaseDBProvider {
     return null;
   }
 
+  // 删除指定uniqueKey的密码
+  Future<int> deletePasswordBeanById(int key) async {
+    Database db = await getDataBase();
+    return await db.delete(name, where: 'uniqueKey=?', whereArgs: [key]);
+  }
+
+  // 更新
+  Future<int> updatePasswordBean(PasswordBean bean) async {
+    Database db = await getDataBase();
+    return await db.update(name, passwordBean2Map(bean));
+  }
+
   Map<String, dynamic> passwordBean2Map(PasswordBean bean) {
     String labels;
     for (String la in bean.label) {

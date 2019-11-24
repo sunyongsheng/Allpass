@@ -60,6 +60,18 @@ class CardDao extends BaseDBProvider {
     return null;
   }
 
+  // 删除指定uniqueKey的密码
+  Future<int> deleteCardBeanById(int key) async {
+    Database db = await getDataBase();
+    return await db.delete(name, where: 'uniqueKey=?', whereArgs: [key]);
+  }
+
+  // 更新
+  Future<int> updatePasswordBean(CardBean bean) async {
+    Database db = await getDataBase();
+    return await db.update(name, cardBean2Map(bean));
+  }
+
   Map<String, dynamic> cardBean2Map(CardBean bean) {
     String labels;
     for (String la in bean.label) {
