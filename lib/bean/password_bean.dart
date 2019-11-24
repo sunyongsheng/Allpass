@@ -63,6 +63,24 @@ class PasswordBean {
     }
   }
 
+  // 将map转化为PasswordBean
+  static PasswordBean fromJson(Map<String, dynamic> map) {
+    List<String> newLabel = List();
+    List<String> labels = map["label"].split("~");
+    for (String la in labels) {
+      newLabel.add(la);
+    }
+    return PasswordBean(map['username'], map["password"], map["url"],
+      isNew: true,
+      folder: map["folder"],
+      notes: map["notes"],
+      fav: map["fav"],
+      key: map["uniqueKey"],
+      name: map["name"],
+      label: newLabel
+    );
+  }
+
   static int getUniquePassKey(Set<int> list) {
     int key = 1;
     while (true) {
