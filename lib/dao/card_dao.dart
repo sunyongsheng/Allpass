@@ -26,11 +26,16 @@ class CardDao extends BaseDBProvider {
       cardId TEXT NOT NULL,
       url TEXT,
       telephone TEXT,
-      forder TEXT DEFALUT '默认',
+      folder TEXT DEFALUT '默认',
       notes TEXT,
       label TEXT,
       fav INTEGER DEFAULT 0)
       ''';
+  }
+
+  deleteTable() async {
+    Database db = await getDataBase();
+    db.rawDelete("DROP TABLE allpass_card");
   }
 
   // 插入卡片

@@ -16,6 +16,11 @@ class PasswordDao extends BaseDBProvider {
     return name;
   }
 
+  deleteTable() async {
+    Database db = await getDataBase();
+    db.rawDelete("DROP TABLE allpass_password");
+  }
+
   // 创建表的sql
   @override
   tableSqlString() {
@@ -25,7 +30,7 @@ class PasswordDao extends BaseDBProvider {
       username TEXT NOT NULL,
       password TEXT NOT NULL,
       url TEXT NOT NULL,
-      forder TEXT DEFALUT '默认',
+      folder TEXT DEFALUT '默认',
       notes TEXT,
       label TEXT,
       fav INTEGER DEFAULT 0)
@@ -72,7 +77,7 @@ class PasswordDao extends BaseDBProvider {
   }
 
   Map<String, dynamic> passwordBean2Map(PasswordBean bean) {
-    String labels;
+    String labels = "";
     for (String la in bean.label) {
       la += "~";
       labels += la;
