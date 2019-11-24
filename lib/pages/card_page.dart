@@ -102,7 +102,6 @@ class _CardPageState extends State<CardPage> {
         setState(() {
           Fluttertoast.showToast(msg: "删除了“" + cardBean.name + "”");
           CardData.cardData.remove(cardBean);
-          // TODO 是否remove对应的key
         });
       },
       child: Container(

@@ -114,7 +114,6 @@ class _PasswordPageState extends State<_PasswordPage> {
         setState(() {
           Fluttertoast.showToast(msg: "删除了“" + passwordBean.name + "”");
           PasswordData.passwordData.remove(passwordBean);
-          // TODO 是否remove对应的key
         });
       },
       child: Container(
