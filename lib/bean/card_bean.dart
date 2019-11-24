@@ -74,6 +74,25 @@ class CardBean {
         "telephone: " "$telephone" +
         "}";
   }
+
+  // 将Map转化为CardBean
+  static CardBean fromJson(Map<String, dynamic> map) {
+    List<String> newLabel = List();
+    List<String> labels = map["label"].split("~");
+    for (String la in labels) {
+      newLabel.add(la);
+    }
+    return CardBean(map['ownerName'], map["cardId"],
+        isNew: true,
+        folder: map["folder"],
+        notes: map["notes"],
+        fav: map["fav"],
+        key: map["uniqueKey"],
+        name: map["name"],
+        telephone: map["telephone"],
+        label: newLabel
+    );
+  }
 }
 
 void copyCardBean(CardBean old, CardBean now) {
