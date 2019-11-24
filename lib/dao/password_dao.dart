@@ -32,10 +32,10 @@ class PasswordDao extends BaseDBProvider {
       ''';
   }
 
-  // 插入记录
+  // 插入密码
   Future insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    return db.insert(name, toMap(bean));
+    return db.insert(name, passwordBean2Map(bean));
   }
 
   // 根据uniqueKey查询记录
@@ -48,7 +48,7 @@ class PasswordDao extends BaseDBProvider {
     return null;
   }
 
-  // 获取密码
+  // 获取所有的密码List
   Future<List<PasswordBean>> getPasswordBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
@@ -59,7 +59,12 @@ class PasswordDao extends BaseDBProvider {
     return null;
   }
 
-  Map<String, dynamic> toMap(PasswordBean bean) {
+  Map<String, dynamic> passwordBean2Map(PasswordBean bean) {
+    String labels;
+    for (String la in bean.label) {
+      la += "~";
+      labels += la;
+    }
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
@@ -69,7 +74,7 @@ class PasswordDao extends BaseDBProvider {
       "folder": bean.folder,
       "fav": bean.fav,
       "notes": bean.notes,
-      "label": bean.label
+      "label": labels
     };
     return map;
   }
