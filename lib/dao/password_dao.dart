@@ -39,7 +39,7 @@ class PasswordDao extends BaseDBProvider {
   }
 
   // 根据uniqueKey查询记录
-  Future<PasswordBean> getPasswordBean(String id) async {
+  Future<PasswordBean> getPasswordBeanById(String id) async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
@@ -49,7 +49,7 @@ class PasswordDao extends BaseDBProvider {
   }
 
   // 获取所有的密码List
-  Future<List<PasswordBean>> getPasswordBeanList() async {
+  Future<List<PasswordBean>> getAllPasswordBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
