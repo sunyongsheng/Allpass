@@ -9,11 +9,12 @@ class CardBean {
   String name;         // 2 卡片名称
   String ownerName;    // 3 卡片拥有者
   String cardId;       // 4 卡片ID/卡号
-  String telephone;    // 5 手机号
-  String folder;       // 6 文件夹
-  String notes;        // 7 备注
-  List<String> label;  // 8 标签
-  int fav;             // 9 是否标心
+  String url;          // 5 URL
+  String telephone;    // 6 手机号
+  String folder;       // 7 文件夹
+  String notes;        // 8 备注
+  List<String> label;  // 9 标签
+  int fav;             // 10 是否标心
 
   CardBean(String ownerName, String cardId,
       {bool isNew: true,
@@ -22,6 +23,7 @@ class CardBean {
       int fav: 0,
       String telephone: "",
       int key: CARD_MAGIC,
+      String url,
       String name,
       List<String> label}) {
     this.ownerName = ownerName;
@@ -31,6 +33,7 @@ class CardBean {
     this.fav = fav;
     this.telephone = telephone;
     this.uniqueKey = key;
+    this.url = url;
 
     if (uniqueKey == CARD_MAGIC) {
       this.uniqueKey = getUniqueCardKey(CardData.cardKeySet);
@@ -90,8 +93,8 @@ class CardBean {
         key: map["uniqueKey"],
         name: map["name"],
         telephone: map["telephone"],
-        label: newLabel
-    );
+        url: map['url'],
+        label: newLabel);
   }
 }
 
@@ -105,4 +108,5 @@ void copyCardBean(CardBean old, CardBean now) {
   old.notes = now.notes;
   old.label = now.label;
   old.fav = now.fav;
+  old.url = now.url;
 }
