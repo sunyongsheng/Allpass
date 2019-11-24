@@ -26,7 +26,6 @@ class _PasswordPage extends StatefulWidget {
 }
 
 class _PasswordPageState extends State<_PasswordPage> {
-
   TextEditingController searchController = TextEditingController();
   int _currentKey = -1;
 
@@ -51,7 +50,11 @@ class _PasswordPageState extends State<_PasswordPage> {
             padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
             child: FlatButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SearchPage(AllpassType.PASSWORD)));
               },
               child: Row(
                 children: <Widget>[
@@ -78,12 +81,17 @@ class _PasswordPageState extends State<_PasswordPage> {
         child: Icon(Icons.add),
         onPressed: () {
           var newData = PasswordBean("", "", "", folder: "默认", isNew: false);
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context) => ViewAndEditPasswordPage(newData, "添加密码", false)))
-          .then((resData) {
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewAndEditPasswordPage(newData, "添加密码", false)))
+              .then((resData) {
             assert(resData is PasswordBean);
             this.setState(() {
-              if (resData.username != "" && resData.password != "" && resData.url != "") {
+              if (resData.username != "" &&
+                  resData.password != "" &&
+                  resData.url != "") {
                 PasswordData.passwordData.add(resData);
                 PasswordData.passwordKeySet.add(resData.uniqueKey);
               }
@@ -94,8 +102,9 @@ class _PasswordPageState extends State<_PasswordPage> {
     );
   }
 
-  List<Widget> _getPasswordWidgetList() =>
-      PasswordData.passwordData.map((item) => _getPasswordWidget(item)).toList();
+  List<Widget> _getPasswordWidgetList() => PasswordData.passwordData
+      .map((item) => _getPasswordWidget(item))
+      .toList();
 
   Widget _getPasswordWidget(PasswordBean passwordBean) {
     // TODO 滑动弹出删除按钮
@@ -103,7 +112,7 @@ class _PasswordPageState extends State<_PasswordPage> {
       key: Key(passwordBean.uniqueKey.toString()),
       onDismissed: (dismissibleDirection) {
         setState(() {
-          Fluttertoast.showToast(msg: "删除了“"+passwordBean.name+"”");
+          Fluttertoast.showToast(msg: "删除了“" + passwordBean.name + "”");
           PasswordData.passwordData.remove(passwordBean);
           // TODO 是否remove对应的key
         });
@@ -114,7 +123,9 @@ class _PasswordPageState extends State<_PasswordPage> {
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: passwordBean.hashCode % 2 == 1 ? Colors.blue : Colors.amberAccent,
+            backgroundColor: passwordBean.hashCode % 2 == 1
+                ? Colors.blue
+                : Colors.amberAccent,
             child: Text(
               passwordBean.name.substring(0, 1),
               style: TextStyle(color: Colors.white),
@@ -148,9 +159,9 @@ class _PasswordPageState extends State<_PasswordPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAndEditPasswordPage(data, "查看密码", true)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    builder: (context) => ViewAndEditPasswordPage(
+                        data, "查看密码", true))).then((reData) =>
+                this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -160,9 +171,9 @@ class _PasswordPageState extends State<_PasswordPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAndEditPasswordPage(data, "编辑密码", false)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    builder: (context) => ViewAndEditPasswordPage(
+                        data, "编辑密码", false))).then((reData) =>
+                this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -184,7 +195,7 @@ class _PasswordPageState extends State<_PasswordPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
-          onTap: () =>setState(() => deletePasswordBean(_currentKey)),
+          onTap: () => setState(() => deletePasswordBean(_currentKey)),
         )
       ],
     );

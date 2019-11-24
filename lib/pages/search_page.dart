@@ -52,7 +52,8 @@ class _SearchPage extends State<SearchPage> {
     List<Widget> res = List();
     if (_type == AllpassType.PASSWORD) {
       for (var item in PasswordData.passwordData) {
-        if (item.name.contains(_searchText) || item.username.contains(_searchText)) {
+        if (item.name.contains(_searchText) ||
+            item.username.contains(_searchText)) {
           res.add(ListTile(
               title: Text(item.name),
               subtitle: Text(item.username),
@@ -145,9 +146,9 @@ class _SearchPage extends State<SearchPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAndEditPasswordPage(data, "查看密码", true)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    builder: (context) => ViewAndEditPasswordPage(
+                        data, "查看密码", true))).then((reData) =>
+                this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -157,9 +158,9 @@ class _SearchPage extends State<SearchPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAndEditPasswordPage(data, "编辑密码", false)))
-                .then((reData) => this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    builder: (context) => ViewAndEditPasswordPage(
+                        data, "编辑密码", false))).then((reData) =>
+                this.setState(() => updatePasswordBean(reData, _currentKey)));
           },
         ),
         ListTile(
@@ -196,18 +197,24 @@ class _SearchPage extends State<SearchPage> {
             leading: Icon(Icons.remove_red_eye),
             title: Text("查看"),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ViewAndEditCardPage(cardBean, "查看卡片", true)))
-                  .then((resData) => this.setState(() => updateCardBean(resData, _currentKey)));
-            }
-        ),
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ViewAndEditCardPage(
+                          cardBean, "查看卡片", true))).then((resData) =>
+                  this.setState(() => updateCardBean(resData, _currentKey)));
+            }),
         ListTile(
           leading: Icon(Icons.edit),
           title: Text("编辑"),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => ViewAndEditCardPage(cardBean, "编辑卡片", false)))
-                .then((resData) => this.setState(() => updateCardBean(resData, _currentKey)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        ViewAndEditCardPage(cardBean, "编辑卡片", false))).then(
+                (resData) =>
+                    this.setState(() => updateCardBean(resData, _currentKey)));
           },
         ),
         ListTile(

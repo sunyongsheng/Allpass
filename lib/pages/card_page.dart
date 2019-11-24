@@ -73,10 +73,11 @@ class _CardPageState extends State<CardPage> {
         onPressed: () {
           var newData = CardBean("", "", folder: "默认", isNew: false);
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      ViewAndEditCardPage(newData, "添加卡片", false))).then((resData) {
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewAndEditCardPage(newData, "添加卡片", false)))
+              .then((resData) {
             assert(resData is CardBean);
             this.setState(() {
               if (resData.ownerName != "" && resData.cardId != "") {
@@ -146,9 +147,9 @@ class _CardPageState extends State<CardPage> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ViewAndEditCardPage(cardBean, "查看卡片", true))).then(
-                  (resData) => this.setState(() => updateCardBean(resData, _currentKey)));
+                      builder: (context) => ViewAndEditCardPage(
+                          cardBean, "查看卡片", true))).then((resData) =>
+                  this.setState(() => updateCardBean(resData, _currentKey)));
             }),
         ListTile(
           leading: Icon(Icons.edit),
@@ -159,7 +160,8 @@ class _CardPageState extends State<CardPage> {
                 MaterialPageRoute(
                     builder: (context) =>
                         ViewAndEditCardPage(cardBean, "编辑卡片", false))).then(
-                (resData) => this.setState(() => updateCardBean(resData, _currentKey)));
+                (resData) =>
+                    this.setState(() => updateCardBean(resData, _currentKey)));
           },
         ),
         ListTile(
