@@ -16,9 +16,10 @@ class PasswordDao extends BaseDBProvider {
     return name;
   }
 
+  // 删除表
   deleteTable() async {
     Database db = await getDataBase();
-    db.rawDelete("DROP TABLE allpass_password");
+    db.rawDelete("DROP TABLE $name");
   }
 
   // 创建表的sql
@@ -67,13 +68,21 @@ class PasswordDao extends BaseDBProvider {
   // 删除指定uniqueKey的密码
   Future<int> deletePasswordBeanById(int key) async {
     Database db = await getDataBase();
-    return await db.delete(name, where: 'uniqueKey=?', whereArgs: [key]);
+    return await db.delete(name, where: '$columnId = ?', whereArgs: [key]);
   }
 
   // 更新
   Future<int> updatePasswordBean(PasswordBean bean) async {
     Database db = await getDataBase();
-    return await db.update(name, passwordBean2Map(bean));
+    String labels = "";
+    for (String la in bean.label) {
+      la += "~";
+      labels += la;
+    }
+    return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
+    // 下面的语句更新时提示UNIQUE constraint failed
+    // return await db.update(name, passwordBean2Map(bean));
   }
 
   Map<String, dynamic> passwordBean2Map(PasswordBean bean) {

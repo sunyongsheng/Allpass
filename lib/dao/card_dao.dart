@@ -33,9 +33,10 @@ class CardDao extends BaseDBProvider {
       ''';
   }
 
+  // 删除表
   deleteTable() async {
     Database db = await getDataBase();
-    db.rawDelete("DROP TABLE allpass_card");
+    db.rawDelete("DROP TABLE $name");
   }
 
   // 插入卡片
@@ -68,13 +69,19 @@ class CardDao extends BaseDBProvider {
   // 删除指定uniqueKey的密码
   Future<int> deleteCardBeanById(int key) async {
     Database db = await getDataBase();
-    return await db.delete(name, where: 'uniqueKey=?', whereArgs: [key]);
+    return await db.delete(name, where: '$columnId=?', whereArgs: [key]);
   }
 
   // 更新
   Future<int> updatePasswordBean(CardBean bean) async {
     Database db = await getDataBase();
-    return await db.update(name, cardBean2Map(bean));
+    String labels = "";
+    for (String la in bean.label) {
+      la += "~";
+      labels += la;
+    }
+    return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, url=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.ownerName, bean.cardId, bean.url, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
   }
 
   Map<String, dynamic> cardBean2Map(CardBean bean) {
