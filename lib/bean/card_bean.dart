@@ -1,8 +1,3 @@
-import 'package:allpass/params/card_data.dart';
-
-const int CARD_MAGIC = -12342; // 随便输的
-const int MAX_INT = 4294967295; // 2^32-1
-
 /// 保存“卡片”数据
 class CardBean {
   int uniqueKey;       // 1 ID
@@ -17,12 +12,11 @@ class CardBean {
   int fav;             // 10 是否标心
 
   CardBean(String ownerName, String cardId,
-      {bool isNew: true,
-      String folder: "默认",
+      {String folder: "默认",
       String notes: "",
       int fav: 0,
       String telephone: "",
-      int key: CARD_MAGIC,
+      int key,//: CARD_MAGIC,
       String url,
       String name,
       List<String> label}) {
@@ -35,10 +29,6 @@ class CardBean {
     this.uniqueKey = key;
     this.url = url;
 
-    if (uniqueKey == CARD_MAGIC) {
-      this.uniqueKey = getUniqueCardKey(CardData.cardKeySet);
-    } //uniqueKey
-
     if (name == null) {
       this.name = this.ownerName + "的卡片";
     } else {
@@ -49,23 +39,6 @@ class CardBean {
     } else {
       this.label = label;
     } //label
-
-    // 如果没有isNew参数，那么在编辑页面的暂存数据tempData就会新建一个Bean添加到List中，这样主页面中没有刷新就会报错
-    if (isNew) {
-      CardData.cardData.add(this);
-      CardData.cardKeySet.add(this.uniqueKey);
-    }
-  }
-
-  static int getUniqueCardKey(Set<int> list) {
-    int key = MAX_INT;
-    while (true) {
-      if (list.contains(key))
-        --key;
-      else
-        break;
-    }
-    return key;
   }
 
   @override
@@ -81,12 +54,21 @@ class CardBean {
   // 将Map转化为CardBean
   static CardBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
-    List<String> labels = map["label"].split("~");
-    for (String la in labels) {
-      newLabel.add(la);
+    if (map['label'] != null) {
+      List<String> labels = map["label"].split("~");
+      for (String la in labels) {
+        if (la != "") newLabel.add(la);
+      }
     }
+    assert(map["name"] != null);
+    assert(map["ownerName"] != null);
+    assert(map["cardId"] != null);
+    assert(map["folder"] != null);
+    assert(map["telephone"] != null);
+    assert(map["fav"] != null);
+    assert(map["url"] != null);
+    assert(map['notes'] != null);
     return CardBean(map['ownerName'], map["cardId"],
-        isNew: true,
         folder: map["folder"],
         notes: map["notes"],
         fav: map["fav"],

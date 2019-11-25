@@ -1,7 +1,3 @@
-import 'package:allpass/params/password_data.dart';
-
-const int PASS_MAGIC = -12474; // 随便输的
-
 /// 存储新建的“密码”
 class PasswordBean {
   int uniqueKey;       // 1 ID
@@ -15,11 +11,10 @@ class PasswordBean {
   int fav;             // 9 是否标心，0代表否
 
   PasswordBean(String username, String password, String url,
-      {bool isNew: true,
-      String folder: "默认",
+      {String folder: "默认",
       String notes: "",
       int fav: 0,
-      int key: PASS_MAGIC,
+      int key, //: PASS_MAGIC,
       String name,
       List<String> label}) {
     this.username = username;
@@ -29,10 +24,6 @@ class PasswordBean {
     this.notes = notes;
     this.fav = fav;
     this.uniqueKey = key;
-
-    if (this.uniqueKey == PASS_MAGIC) {
-      this.uniqueKey = getUniquePassKey(PasswordData.passwordKeySet);
-    }
 
     if (name == null) {
       if (url.contains("weibo")) {
@@ -52,26 +43,29 @@ class PasswordBean {
 
     if (label == null) {
       this.label = List();
+      this.label..add("~");
     } else {
       this.label = label;
     } //label
-
-    // 如果没有isNew参数，那么在编辑页面的暂存数据tempData就会新建一个Bean添加到List中，这样主页面中没有刷新就会报错
-    if (isNew) {
-      PasswordData.passwordData.add(this);
-      PasswordData.passwordKeySet.add(this.uniqueKey);
-    }
   }
 
   // 将map转化为PasswordBean
   static PasswordBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
-    List<String> labels = map["label"].split("~");
-    for (String la in labels) {
-      newLabel.add(la);
+    if (map['label'] != null) {
+      List<String> labels = map["label"].split("~");
+      for (String la in labels) {
+        if (la != "") newLabel.add(la);
+      }
     }
+    assert(map["username"] != null);
+    assert(map["password"] != null);
+    assert(map["url"] != null);
+    assert(map["folder"] != null);
+    assert(map["uniqueKey"] != null);
+    assert(map["fav"] != null);
+    assert(map["name"] != null);
     return PasswordBean(map['username'], map["password"], map["url"],
-      isNew: true,
       folder: map["folder"],
       notes: map["notes"],
       fav: map["fav"],
@@ -81,20 +75,9 @@ class PasswordBean {
     );
   }
 
-  static int getUniquePassKey(Set<int> list) {
-    int key = 1;
-    while (true) {
-      if (list.contains(key))
-        ++key;
-      else
-        break;
-    }
-    return key;
-  }
-
   @override
   String toString() {
-    return "{key:" +
+    return "{uniqueKey:" +
         this.uniqueKey.toString() +
         ", name:" +
         this.name +
