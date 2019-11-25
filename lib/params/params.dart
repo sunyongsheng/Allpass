@@ -9,24 +9,50 @@ class Params {
 
   static String appPath;
 
-  static Set<String> folderList = Set.of(<String>['默认', '论坛', '社交', '游戏', '其他']);
-  static Set<String> labelList = Set.of(<String>["默认", "论坛", "学习", "娱乐", "游戏", "社交"]);
+  static Set<String> folderList = Set();
+  static Set<String> labelList = Set();
 
-  paramsInit() async {
+  /// 参数初始化
+  static paramsInit() async {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     appPath = appDocDir.path;
 
     final folderFile = File("$appPath/folder.appt"); // all_pass_plain_text
-    String folder = await folderFile.readAsString();
+    if (!folderFile.existsSync()) {
+      folderFile.createSync();
+    }
+    String folder = folderFile.readAsStringSync();
     for (String f in folder.split(",")) {
-      folderList.add(f);
+      if (f != "") folderList.add(f);
     }
 
     final labelFile = File("$appPath/label.appt");
-    String label = await labelFile.readAsString();
-    for (String l in label.split(",")) {
-      labelList.add(l);
+    if (!labelFile.existsSync()) {
+      labelFile.createSync();
     }
+    String label = labelFile.readAsStringSync();
+    for (String l in label.split(",")) {
+      if (l != "") labelList.add(l);
+    }
+  }
+
+  /// 参数持久化
+  static paramsPersistence() {
+    final folderFile = File("$appPath/folder.appt");
+    String folder = "";
+    for (var s in folderList) {
+      folder += s;
+      folder += ",";
+    }
+    folderFile.writeAsStringSync(folder, flush: true);
+
+    final labelFile = File("$appPath/label.appt");
+    String label = "";
+    for (var s in labelList) {
+      label += s;
+      label += ",";
+    }
+    labelFile.writeAsStringSync(label, flush: true);
   }
 
 }
