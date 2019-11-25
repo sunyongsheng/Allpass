@@ -7,9 +7,10 @@ import 'package:allpass/utils/allpass_ui.dart';
 
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
+
   final PasswordBean data;
   final String pageTitle;
-  bool readOnly;
+  final bool readOnly;
 
   ViewAndEditPasswordPage(this.data, this.pageTitle, this.readOnly);
 
@@ -42,8 +43,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         folder: oldData.folder,
         label: List()..addAll(oldData.label),
         notes: oldData.notes,
-        fav: oldData.fav,
-        isNew: false);
+        fav: oldData.fav);
 
     nameController = TextEditingController(text: tempData.name);
     usernameController = TextEditingController(text: tempData.username);
@@ -57,7 +57,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
     return WillPopScope(
       onWillPop: () {
         print("取消修改: " + oldData.toString());
-        Navigator.pop<PasswordBean>(context, this.oldData);
+        Navigator.pop<PasswordBean>(context, null);
         return Future<bool>.value(false);
       },
       child: Scaffold(

@@ -8,26 +8,75 @@ import 'package:allpass/pages/view_and_edit_password_page.dart';
 import 'package:allpass/pages/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/params/password_data.dart';
+import 'package:allpass/dao/password_dao.dart';
+
 
 /// 密码页面
-class PasswordPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _PasswordPage();
-  }
-}
-
-class _PasswordPage extends StatefulWidget {
+class PasswordPage extends StatefulWidget {
   @override
   _PasswordPageState createState() {
     return _PasswordPageState();
   }
 }
 
-class _PasswordPageState extends State<_PasswordPage> {
-  TextEditingController searchController = TextEditingController();
+class _PasswordPageState extends State<PasswordPage> {
+
+  PasswordDao passwordDao = new PasswordDao();
+
   int _currentKey = -1;
+
+  List<PasswordBean> _passList = List();  // 所有的PasswordBean
+  List<Widget> _passWidgetList = List();  // 列表
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDB();
+  }
+
+  Future<Null> _getDataFromDB() async {
+    List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
+    if (data != null) {
+      if (data.length > 0) {
+        data.forEach((bean) {
+          _passList.add(bean);
+        });
+      }
+    }
+    setState(() {});
+  }
+
+  // 查询
+  Future<Null> _query() async {
+    _passList.clear();
+    List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
+    if (data != null) {
+      if (data.length > 0) {
+        data.forEach((bean) {
+          _passList.add(bean);
+        });
+      }
+    }
+    setState(() {});
+  }
+
+  // 添加
+  Future<Null> _add(PasswordBean newBean) async {
+    await passwordDao.insert(newBean);
+    _query();
+  }
+
+  // 删除
+  Future<Null> _delete(int key) async {
+    await passwordDao.deletePasswordBeanById(key);
+    _query();
+  }
+
+  // 更新
+  Future<Null> _update(PasswordBean newBean) async {
+    await passwordDao.updatePasswordBean(newBean);
+    _query();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,50 +119,65 @@ class _PasswordPageState extends State<_PasswordPage> {
             ),
           ),
           // 密码列表
-          Expanded(
-            child: ListView(children: _getPasswordWidgetList()),
-          ),
+          FutureBuilder(
+            future: _getPasswordWidgetList(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  return Center(
+                    child: Text("加载中..."),
+                  );
+                case ConnectionState.done:
+                  return Expanded(
+                    child: ListView(children: _passWidgetList),
+                  );
+                default:
+                  return Text("unknow");
+              }
+            },
+          )
         ],
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加 按钮
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          var newData = PasswordBean("", "", "", folder: "默认", isNew: false);
-          Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ViewAndEditPasswordPage(newData, "添加密码", false)))
-              .then((resData) {
-            assert(resData is PasswordBean);
-            this.setState(() {
-              if (resData.username != "" &&
-                  resData.password != "" &&
-                  resData.url != "") {
-                PasswordData.passwordData.add(resData);
-                PasswordData.passwordKeySet.add(resData.uniqueKey);
+          child: Icon(Icons.add),
+          onPressed: () {
+            var newData = PasswordBean("", "", "", folder: "默认");
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewAndEditPasswordPage(newData, "添加密码", false)))
+                .then((resData) {
+              if (resData != null) {
+                _add(resData);
               }
             });
-          });
-        },
-      ),
+          }),
     );
   }
 
-  List<Widget> _getPasswordWidgetList() => PasswordData.passwordData
-      .map((item) => _getPasswordWidget(item))
-      .toList();
+  Future<Null> _getPasswordWidgetList() async {
+    setState(() {
+      _passWidgetList.clear();
+      for (var item in _passList) {
+        _passWidgetList.add(_getPasswordWidget(item));
+      }
+    });
+  }
 
   Widget _getPasswordWidget(PasswordBean passwordBean) {
     // TODO 滑动弹出删除按钮
     return Dismissible(
       key: Key(passwordBean.uniqueKey.toString()),
       onDismissed: (dismissibleDirection) {
+        _currentKey = passwordBean.uniqueKey;
         setState(() {
-          Fluttertoast.showToast(msg: "删除了“" + passwordBean.name + "”");
-          PasswordData.passwordData.remove(passwordBean);
+          _delete(passwordBean.uniqueKey).then((_) =>
+              Fluttertoast.showToast(msg: "删除了“" + passwordBean.name + "”"));
         });
       },
       child: Container(
@@ -156,11 +220,14 @@ class _PasswordPageState extends State<_PasswordPage> {
           title: Text("查看"),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewAndEditPasswordPage(
-                        data, "查看密码", true))).then((reData) =>
-                this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewAndEditPasswordPage(data, "查看密码", true)))
+                .then((reData) {
+              if (reData != null) _update(reData);
+              //updatePasswordBean(reData, _currentKey)
+            });
           },
         ),
         ListTile(
@@ -168,11 +235,14 @@ class _PasswordPageState extends State<_PasswordPage> {
           title: Text("编辑"),
           onTap: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ViewAndEditPasswordPage(
-                        data, "编辑密码", false))).then((reData) =>
-                this.setState(() => updatePasswordBean(reData, _currentKey)));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewAndEditPasswordPage(data, "编辑密码", false)))
+                .then((reData) {
+                      if (reData != null) _update(reData);
+                      // updatePasswordBean(reData, _currentKey)
+                    });
           },
         ),
         ListTile(
@@ -194,7 +264,9 @@ class _PasswordPageState extends State<_PasswordPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
-          onTap: () => setState(() => deletePasswordBean(_currentKey)),
+          onTap: () {
+            _delete(_currentKey);
+          },
         )
       ],
     );

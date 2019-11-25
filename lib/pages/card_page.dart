@@ -5,10 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/params/card_data.dart';
 import 'package:allpass/pages/view_and_edit_card_page.dart';
 import 'package:allpass/pages/search_page.dart';
 import 'package:allpass/params/allpass_type.dart';
+import 'package:allpass/dao/card_dao.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -19,7 +19,62 @@ class CardPage extends StatefulWidget {
 }
 
 class _CardPageState extends State<CardPage> {
+  CardDao cardDao = CardDao();
+
   int _currentKey = -1;
+
+  List<CardBean> _cardList = List(); // 所有的PasswordBean
+  List<Widget> _cardWidgetList = List(); // 列表
+
+  @override
+  void initState() {
+    super.initState();
+    _getDataFromDB();
+  }
+
+  Future<Null> _getDataFromDB() async {
+    List<CardBean> data = await cardDao.getAllCardBeanList();
+    if (data != null) {
+      if (data.length > 0) {
+        data.forEach((bean) {
+          _cardList.add(bean);
+        });
+      }
+    }
+    setState(() {});
+  }
+
+  // 查询
+  Future<Null> _query() async {
+    _cardList.clear();
+    List<CardBean> data = await cardDao.getAllCardBeanList();
+    if (data != null) {
+      if (data.length > 0) {
+        data.forEach((bean) {
+          _cardList.add(bean);
+        });
+      }
+    }
+    setState(() {});
+  }
+
+  // 添加
+  Future<Null> _add(CardBean newBean) async {
+    await cardDao.insert(newBean);
+    _query();
+  }
+
+  // 删除
+  Future<Null> _delete(int key) async {
+    await cardDao.deleteCardBeanById(key);
+    _query();
+  }
+
+  // 更新
+  Future<Null> _update(CardBean newBean) async {
+    await cardDao.updatePasswordBean(newBean);
+    _query();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +116,25 @@ class _CardPageState extends State<CardPage> {
             ),
           ),
           // 卡片列表
-          Expanded(
-            child: ListView(children: _getCardWidgetList()),
-          ),
+          FutureBuilder(
+            future: _getCardWidgetList(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                case ConnectionState.waiting:
+                case ConnectionState.active:
+                  return Center(
+                    child: Text("加载中..."),
+                  );
+                case ConnectionState.done:
+                  return Expanded(
+                    child: ListView(children: _cardWidgetList),
+                  );
+                default:
+                  return Text("unknow");
+              }
+            },
+          )
         ],
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -71,37 +142,37 @@ class _CardPageState extends State<CardPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          var newData = CardBean("", "", folder: "默认", isNew: false);
+          var newData = CardBean("", "", folder: "默认");
           Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
                           ViewAndEditCardPage(newData, "添加卡片", false)))
               .then((resData) {
-            assert(resData is CardBean);
-            this.setState(() {
-              if (resData.ownerName != "" && resData.cardId != "") {
-                CardData.cardData.add(resData);
-                CardData.cardKeySet.add(resData.uniqueKey);
-              }
-            });
+            if (resData != null) {
+              _add(resData);
+            }
           });
         },
       ),
     );
   }
 
-  List<Widget> _getCardWidgetList() {
-    return CardData.cardData.map((card) => _getCardWidget(card)).toList();
+  Future<Null> _getCardWidgetList() async {
+    _cardWidgetList.clear();
+    for (var item in _cardList) {
+      _cardWidgetList.add(_getCardWidget(item));
+    }
   }
 
   Widget _getCardWidget(CardBean cardBean) {
     return Dismissible(
       key: Key(cardBean.uniqueKey.toString()),
       onDismissed: (dismissibleDec) {
+        _currentKey = cardBean.uniqueKey;
         setState(() {
-          Fluttertoast.showToast(msg: "删除了“" + cardBean.name + "”");
-          CardData.cardData.remove(cardBean);
+          _delete(cardBean.uniqueKey).then(
+              (_) => Fluttertoast.showToast(msg: "删除了“" + cardBean.name + "”"));
         });
       },
       child: Container(
@@ -144,25 +215,27 @@ class _CardPageState extends State<CardPage> {
             title: Text("查看"),
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ViewAndEditCardPage(
-                          cardBean, "查看卡片", true))).then((resData) =>
-                  this.setState(() => updateCardBean(resData, _currentKey)));
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewAndEditCardPage(cardBean, "查看卡片", true)))
+                  .then((resData) {
+                if (resData != null) _update(resData);
+              });
             }),
         ListTile(
-          leading: Icon(Icons.edit),
-          title: Text("编辑"),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ViewAndEditCardPage(cardBean, "编辑卡片", false))).then(
-                (resData) =>
-                    this.setState(() => updateCardBean(resData, _currentKey)));
-          },
-        ),
+            leading: Icon(Icons.edit),
+            title: Text("编辑"),
+            onTap: () {
+              Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ViewAndEditCardPage(cardBean, "编辑卡片", false)))
+                  .then((resData) {
+                if (resData != null) _update(resData);
+              });
+            }),
         ListTile(
           leading: Icon(Icons.person),
           title: Text("复制用户名"),
@@ -180,7 +253,7 @@ class _CardPageState extends State<CardPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除卡片"),
-          onTap: () => setState(() => deleteCardBean(_currentKey)),
+          onTap: () => _delete(_currentKey),
         )
       ],
     );

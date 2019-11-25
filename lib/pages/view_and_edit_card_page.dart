@@ -30,6 +30,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   var cardIdController;
   var telephoneController;
   var notesController;
+  var urlController;
 
   bool readOnly;
 
@@ -38,19 +39,21 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
 
     tempData = CardBean(oldData.ownerName, oldData.cardId,
         key: oldData.uniqueKey,
-        isNew: false,
         name: oldData.name,
         telephone: oldData.telephone,
         folder: oldData.folder,
         label: List()..addAll(oldData.label),
         fav: oldData.fav,
-        notes: oldData.notes);
+        notes: oldData.notes,
+      url: oldData.url,
+    );
 
     nameController = TextEditingController(text: tempData.name);
     ownerNameController = TextEditingController(text: tempData.ownerName);
     cardIdController = TextEditingController(text: tempData.cardId);
     telephoneController = TextEditingController(text: tempData.telephone);
     notesController = TextEditingController(text: tempData.notes);
+    urlController = TextEditingController(text: tempData.url);
   }
 
   @override
@@ -58,7 +61,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
     return WillPopScope(
         onWillPop: () {
           print("取消修改: " + oldData.toString());
-          Navigator.pop<CardBean>(context, this.oldData);
+          Navigator.pop<CardBean>(context, null);
           return Future<bool>.value(false);
         },
         child: Scaffold(
@@ -163,6 +166,36 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                               icon: Icon(Icons.content_copy),
                               onPressed: () => Clipboard.setData(
                                   ClipboardData(text: tempData.cardId)),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "URL",
+                          style: AllpassTextUI.firstTitleStyleBlue,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: TextField(
+                                controller: urlController,
+                                onChanged: (text) {
+                                  tempData.url = text;
+                                },
+                                readOnly: this.readOnly,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.content_copy),
+                              onPressed: () => Clipboard.setData(
+                                  ClipboardData(text: tempData.telephone)),
                             )
                           ],
                         ),
