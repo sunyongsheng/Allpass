@@ -100,7 +100,8 @@ class _CardPageState extends State<CardPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPage(AllpassType.CARD)));
+                        builder: (context) => SearchPage(AllpassType.CARD)))
+                .then((value) => setState((){_query();}));
               },
               child: Row(
                 children: <Widget>[

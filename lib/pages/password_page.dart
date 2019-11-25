@@ -103,7 +103,8 @@ class _PasswordPageState extends State<PasswordPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            SearchPage(AllpassType.PASSWORD)));
+                            SearchPage(AllpassType.PASSWORD)))
+                .then((value) => setState(() {_query();}));
               },
               child: Row(
                 children: <Widget>[
