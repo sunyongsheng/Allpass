@@ -42,7 +42,7 @@ class CardDao extends BaseDBProvider {
   // 插入卡片
   Future insert(CardBean bean) async {
     Database db = await getDataBase();
-    return db.insert(name, cardBean2Map(bean));
+    return await db.insert(name, cardBean2Map(bean));
   }
 
   // 根据uniqueKey查询记录
