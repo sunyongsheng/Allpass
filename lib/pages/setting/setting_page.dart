@@ -1,8 +1,9 @@
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/dao/card_dao.dart';
+import 'package:allpass/dao/password_dao.dart';
+import 'package:allpass/params/params.dart';
 
 /// 设置页面
 class SettingPage extends StatelessWidget {
@@ -41,6 +42,12 @@ class _SettingPageState extends State<_SettingPage> {
               cd.deleteTable();
             },
             child: Text("删除Card表"),
+          ),
+          FlatButton(
+            onPressed: () {
+              Params.paramsPersistence();
+            },
+            child: Text("持久化"),
           )
         ],
       ),),
