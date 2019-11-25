@@ -1,4 +1,5 @@
-import 'package:allpass/params/changed.dart';
+import 'package:allpass/dao/card_dao.dart';
+import 'package:allpass/dao/password_dao.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
@@ -15,15 +16,12 @@ class _SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<_SettingPage> {
-  var _value = "默认";
+  PasswordDao pd = PasswordDao();
+  CardDao cd = CardDao();
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-      Navigator.of(context).pop();
-      return Future<bool>.value(false);
-    },
-    child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("设置", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
@@ -32,35 +30,21 @@ class _SettingPageState extends State<_SettingPage> {
       ),
       body: SingleChildScrollView(child:Column(
         children: <Widget>[
-          Center(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                DropdownButton(
-                  value: _value,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _value = newValue;
-                    });
-                  },
-                  items: FolderAndLabelList.folderList
-                      .map<DropdownMenuItem<String>>((value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  style: AllpassTextUI.firstTitleStyleBlack,
-                  elevation: 8,
-                  iconSize: 30,
-                ),
-              ],
-            ),
+          FlatButton(
+            onPressed: () {
+              pd.deleteTable();
+            },
+            child: Text("删除Pass表"),
           ),
+          FlatButton(
+            onPressed: () {
+              cd.deleteTable();
+            },
+            child: Text("删除Card表"),
+          )
         ],
       ),),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
-    )
     );
   }
 }
