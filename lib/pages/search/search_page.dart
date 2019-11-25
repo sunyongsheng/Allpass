@@ -5,8 +5,8 @@ import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/pages/view_and_edit_card_page.dart';
-import 'package:allpass/pages/view_and_edit_password_page.dart';
+import 'package:allpass/pages/card/view_and_edit_card_page.dart';
+import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 

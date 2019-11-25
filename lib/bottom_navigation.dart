@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/pages/password_page.dart';
-import 'package:allpass/pages/card_page.dart';
-import 'package:allpass/pages/setting_page.dart';
+import 'package:allpass/pages/password/password_page.dart';
+import 'package:allpass/pages/card/card_page.dart';
+import 'package:allpass/pages/setting/setting_page.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
 
