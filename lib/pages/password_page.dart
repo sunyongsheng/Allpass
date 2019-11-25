@@ -134,7 +134,7 @@ class _PasswordPageState extends State<PasswordPage> {
                     child: ListView(children: _passWidgetList),
                   );
                 default:
-                  return Text("unknow");
+                  return Text("未知状态，请联系开发者：sys6511@126.com");
               }
             },
           )
@@ -226,7 +226,6 @@ class _PasswordPageState extends State<PasswordPage> {
                             ViewAndEditPasswordPage(data, "查看密码", true)))
                 .then((reData) {
               if (reData != null) _update(reData);
-              //updatePasswordBean(reData, _currentKey)
             });
           },
         ),
@@ -241,7 +240,6 @@ class _PasswordPageState extends State<PasswordPage> {
                             ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) {
                       if (reData != null) _update(reData);
-                      // updatePasswordBean(reData, _currentKey)
                     });
           },
         ),
