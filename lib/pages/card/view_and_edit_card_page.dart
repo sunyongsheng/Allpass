@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:allpass/bean/card_bean.dart';
-import 'package:allpass/params/changed.dart/';
+import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
 /// 查看或编辑“卡片”页面
@@ -35,6 +35,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   bool readOnly;
 
   _ViewAndEditCardPage(CardBean inData, this.pageName, this.readOnly) {
+
     this.oldData = inData;
 
     tempData = CardBean(oldData.ownerName, oldData.cardId,
@@ -54,6 +55,17 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
     telephoneController = TextEditingController(text: tempData.telephone);
     notesController = TextEditingController(text: tempData.notes);
     urlController = TextEditingController(text: tempData.url);
+
+    // 如果文件夹未知，添加
+    if (!Params.folderList.contains(tempData.folder)) {
+      Params.folderList.add(tempData.folder);
+    }
+    // 检查标签未知，添加
+    for (var label in tempData.label) {
+      if (!Params.labelList.contains(label)) {
+        Params.labelList.add(label);
+      }
+    }
   }
 
   @override
@@ -250,7 +262,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                               setState(() => tempData.folder = newValue);
                             }
                           },
-                          items: FolderAndLabelList.folderList
+                          items: Params.folderList
                               .map<DropdownMenuItem<String>>((item) {
                             return DropdownMenuItem<String>(
                               value: item,
@@ -315,7 +327,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
 
   List<Widget> _getTag() {
     List<Widget> labelChoices = List();
-    FolderAndLabelList.labelList.forEach((item) {
+    Params.labelList.forEach((item) {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
