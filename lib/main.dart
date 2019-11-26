@@ -10,7 +10,6 @@ void main() {
 
 class Allpass extends StatelessWidget {
 
-  // TODO 标签中不允许 ~ 符号，文件夹不允许英文逗号
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
