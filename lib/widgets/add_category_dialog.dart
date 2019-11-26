@@ -44,16 +44,16 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
             TextField(
               autofocus: true,
               decoration: InputDecoration(
-                  errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”",
+                  errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
               ),
               controller: _addTextController,
               onChanged: (text) {
-                if (text.contains(",") || text.contains("~")) {
+                if (text.contains(",") || text.contains("~") || text.contains(" ")) {
                   setState(() {
                     _inputFormatCorr = false;
                   });
                 } else {
-                  _addTextController.text = text;
+                  _inputFormatCorr = true;
                 }
               }
             ),
@@ -64,7 +64,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
         FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
-            _addTextController.text = "";
+            _addTextController..clear();
           },
           child: Text('取消'),
           textColor: AllpassColorUI.mainColor,
@@ -89,9 +89,10 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
                   Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
                 }
               }
-              _addTextController.text = "";
-              this.dispose();
+              _addTextController.clear();
               Navigator.pop(context);
+            } else {
+              Fluttertoast.showToast(msg: "输入内容不合法");
             }
           },
           child: Text('提交'),
