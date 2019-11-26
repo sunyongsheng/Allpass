@@ -42,7 +42,7 @@ class Params {
     String label = "";
     for (var s in labelList) {
       label += s;
-      label += ",";
+      if (s != labelList.last) label += ",";
     }
     labelFile.writeAsStringSync(label, flush: true);
   }
@@ -53,7 +53,7 @@ class Params {
     String folder = "";
     for (var s in folderList) {
       folder += s;
-      folder += ",";
+      if (s != folderList.last) folder += ",";
     }
     folderFile.writeAsStringSync(folder, flush: true);
   }
