@@ -182,8 +182,7 @@ class _CardPageState extends State<CardPage> {
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor:
-                cardBean.hashCode % 2 == 1 ? Colors.blue : Colors.amberAccent,
+            backgroundColor: getRandomColor(cardBean.uniqueKey),
             child: Text(
               cardBean.name.substring(0, 1),
               style: TextStyle(color: Colors.white),

@@ -187,9 +187,7 @@ class _PasswordPageState extends State<PasswordPage> {
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: passwordBean.hashCode % 2 == 1
-                ? Colors.blue
-                : Colors.amberAccent,
+            backgroundColor: getRandomColor(passwordBean.uniqueKey),
             child: Text(
               passwordBean.name.substring(0, 1),
               style: TextStyle(color: Colors.white),
