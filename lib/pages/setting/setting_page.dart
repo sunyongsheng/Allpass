@@ -45,7 +45,8 @@ class _SettingPageState extends State<_SettingPage> {
           ),
           FlatButton(
             onPressed: () {
-              Params.paramsPersistence();
+              Params.labelParamsPersistence();
+              Params.folderParamsPersistence();
             },
             child: Text("持久化"),
           )

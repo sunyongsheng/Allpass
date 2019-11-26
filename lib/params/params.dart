@@ -36,16 +36,8 @@ class Params {
     }
   }
 
-  /// 参数持久化
-  static paramsPersistence() {
-    final folderFile = File("$appPath/folder.appt");
-    String folder = "";
-    for (var s in folderList) {
-      folder += s;
-      folder += ",";
-    }
-    folderFile.writeAsStringSync(folder, flush: true);
-
+  /// 标签参数持久化
+  static labelParamsPersistence() {
     final labelFile = File("$appPath/label.appt");
     String label = "";
     for (var s in labelList) {
@@ -53,6 +45,17 @@ class Params {
       label += ",";
     }
     labelFile.writeAsStringSync(label, flush: true);
+  }
+
+  /// 文件夹参数持久化
+  static folderParamsPersistence() {
+    final folderFile = File("$appPath/folder.appt");
+    String folder = "";
+    for (var s in folderList) {
+      folder += s;
+      folder += ",";
+    }
+    folderFile.writeAsStringSync(folder, flush: true);
   }
 
 }
