@@ -1,22 +1,26 @@
+import 'package:flutter/material.dart';
+
 /// 保存“卡片”数据
 class CardBean {
-  int uniqueKey;       // 1 ID
-  String name;         // 2 卡片名称
-  String ownerName;    // 3 卡片拥有者
-  String cardId;       // 4 卡片ID/卡号
-  String url;          // 5 URL
-  String telephone;    // 6 手机号
-  String folder;       // 7 文件夹
-  String notes;        // 8 备注
-  List<String> label;  // 9 标签
-  int fav;             // 10 是否标心
+  int uniqueKey; // 1 ID
+  String name; // 2 卡片名称
+  String ownerName; // 3 卡片拥有者
+  String cardId; // 4 卡片ID/卡号
+  String url; // 5 URL
+  String telephone; // 6 手机号
+  String folder; // 7 文件夹
+  String notes; // 8 备注
+  List<String> label; // 9 标签
+  int fav; // 10 是否标心
 
-  CardBean(String ownerName, String cardId,
-      {String folder: "默认",
+  CardBean(
+      {@required String ownerName,
+      @required String cardId,
+      String folder: "默认",
       String notes: "",
       int fav: 0,
       String telephone: "",
-      int key,//: CARD_MAGIC,
+      int key, //: CARD_MAGIC,
       String url,
       String name,
       List<String> label}) {
@@ -68,7 +72,9 @@ class CardBean {
     assert(map["fav"] != null);
     assert(map["url"] != null);
     assert(map['notes'] != null);
-    return CardBean(map['ownerName'], map["cardId"],
+    return CardBean(
+        ownerName: map['ownerName'],
+        cardId: map["cardId"],
         folder: map["folder"],
         notes: map["notes"],
         fav: map["fav"],

@@ -37,7 +37,10 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   _ViewPasswordPage(PasswordBean data, this.pageName, this._readOnly) {
     this._oldData = data;
-    _tempData = PasswordBean(_oldData.username, _oldData.password, _oldData.url,
+    _tempData = PasswordBean(
+        username: _oldData.username,
+        password: _oldData.password,
+        url: _oldData.url,
         key: _oldData.uniqueKey,
         name: _oldData.name,
         folder: _oldData.folder,

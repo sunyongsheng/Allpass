@@ -6,7 +6,6 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 
-
 /// 查看或编辑“卡片”页面
 class ViewAndEditCardPage extends StatefulWidget {
   final CardBean data;
@@ -37,17 +36,18 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   bool _readOnly;
 
   _ViewAndEditCardPage(CardBean inData, this.pageName, this._readOnly) {
-
     this._oldData = inData;
 
-    _tempData = CardBean(_oldData.ownerName, _oldData.cardId,
-        key: _oldData.uniqueKey,
-        name: _oldData.name,
-        telephone: _oldData.telephone,
-        folder: _oldData.folder,
-        label: List()..addAll(_oldData.label),
-        fav: _oldData.fav,
-        notes: _oldData.notes,
+    _tempData = CardBean(
+      ownerName: _oldData.ownerName,
+      cardId: _oldData.cardId,
+      key: _oldData.uniqueKey,
+      name: _oldData.name,
+      telephone: _oldData.telephone,
+      folder: _oldData.folder,
+      label: List()..addAll(_oldData.label),
+      fav: _oldData.fav,
+      notes: _oldData.notes,
       url: _oldData.url,
     );
 

@@ -98,10 +98,12 @@ class _CardPageState extends State<CardPage> {
             child: FlatButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SearchPage(AllpassType.CARD)))
-                .then((value) => setState((){_query();}));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SearchPage(AllpassType.CARD)))
+                    .then((value) => setState(() {
+                          _query();
+                        }));
               },
               child: Row(
                 children: <Widget>[
@@ -143,7 +145,7 @@ class _CardPageState extends State<CardPage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          var newData = CardBean("", "", folder: "默认");
+          var newData = CardBean(ownerName: "", cardId: "", folder: "默认");
           Navigator.push(
                   context,
                   MaterialPageRoute(

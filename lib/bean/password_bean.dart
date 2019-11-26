@@ -1,17 +1,22 @@
+import 'package:flutter/material.dart';
+
 /// 存储新建的“密码”
 class PasswordBean {
-  int uniqueKey;       // 1 ID
-  String name;         // 2 账号名称
-  String username;     // 3 用户名
-  String password;     // 4 密码
-  String url;          // 5 地址
-  String folder;       // 6 文件夹
-  String notes;        // 7 备注
-  List<String> label;  // 8 标签
-  int fav;             // 9 是否标心，0代表否
+  int uniqueKey; // 1 ID
+  String name; // 2 账号名称
+  String username; // 3 用户名
+  String password; // 4 密码
+  String url; // 5 地址
+  String folder; // 6 文件夹
+  String notes; // 7 备注
+  List<String> label; // 8 标签
+  int fav; // 9 是否标心，0代表否
 
-  PasswordBean(String username, String password, String url,
-      {String folder: "默认",
+  PasswordBean(
+      {@required String username,
+      @required String password,
+      @required String url,
+      String folder: "默认",
       String notes: "",
       int fav: 0,
       int key, //: PASS_MAGIC,
@@ -65,14 +70,16 @@ class PasswordBean {
     assert(map["uniqueKey"] != null);
     assert(map["fav"] != null);
     assert(map["name"] != null);
-    return PasswordBean(map['username'], map["password"], map["url"],
-      folder: map["folder"],
-      notes: map["notes"],
-      fav: map["fav"],
-      key: map["uniqueKey"],
-      name: map["name"],
-      label: newLabel
-    );
+    return PasswordBean(
+        username: map['username'],
+        password: map["password"],
+        url: map["url"],
+        folder: map["folder"],
+        notes: map["notes"],
+        fav: map["fav"],
+        key: map["uniqueKey"],
+        name: map["name"],
+        label: newLabel);
   }
 
   @override

@@ -10,7 +10,6 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/password_dao.dart';
 
-
 /// 密码页面
 class PasswordPage extends StatefulWidget {
   @override
@@ -20,13 +19,12 @@ class PasswordPage extends StatefulWidget {
 }
 
 class _PasswordPageState extends State<PasswordPage> {
-
   PasswordDao passwordDao = new PasswordDao();
 
   int _currentKey = -1;
 
-  List<PasswordBean> _passList = List();  // 所有的PasswordBean
-  List<Widget> _passWidgetList = List();  // 列表
+  List<PasswordBean> _passList = List(); // 所有的PasswordBean
+  List<Widget> _passWidgetList = List(); // 列表
 
   @override
   void initState() {
@@ -100,11 +98,13 @@ class _PasswordPageState extends State<PasswordPage> {
             child: FlatButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            SearchPage(AllpassType.PASSWORD)))
-                .then((value) => setState(() {_query();}));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SearchPage(AllpassType.PASSWORD)))
+                    .then((value) => setState(() {
+                          _query();
+                        }));
               },
               child: Row(
                 children: <Widget>[
@@ -146,7 +146,8 @@ class _PasswordPageState extends State<PasswordPage> {
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            var newData = PasswordBean("", "", "", folder: "默认");
+            var newData =
+                PasswordBean(username: "", password: "", url: "", folder: "默认");
             Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -238,8 +239,8 @@ class _PasswordPageState extends State<PasswordPage> {
                         builder: (context) =>
                             ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) {
-                      if (reData != null) _update(reData);
-                    });
+              if (reData != null) _update(reData);
+            });
           },
         ),
         ListTile(
