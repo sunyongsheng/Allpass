@@ -88,8 +88,8 @@ class PasswordDao extends BaseDBProvider {
   Map<String, dynamic> passwordBean2Map(PasswordBean bean) {
     String labels = "";
     for (String la in bean.label) {
-      la += "~";
       labels += la;
+      if (la != bean.label.last) la += "~";
     }
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,

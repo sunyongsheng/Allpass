@@ -87,8 +87,8 @@ class CardDao extends BaseDBProvider {
   Map<String, dynamic> cardBean2Map(CardBean bean) {
     String labels;
     for (String la in bean.label) {
-      la += "~";
       labels += la;
+      if (la != bean.label.last) la += "~";
     }
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
