@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:allpass/bean/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/widgets/add_category_dialog.dart';
+
 
 /// 查看或编辑“卡片”页面
 class ViewAndEditCardPage extends StatefulWidget {
   final CardBean data;
   final String pageTitle;
-  bool readOnly;
+  final bool readOnly;
 
   ViewAndEditCardPage(this.data, this.pageTitle, this.readOnly);
 
@@ -22,46 +24,46 @@ class ViewAndEditCardPage extends StatefulWidget {
 class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   final String pageName;
 
-  CardBean oldData;
-  CardBean tempData;
+  CardBean _oldData;
+  CardBean _tempData;
 
-  var nameController;
-  var ownerNameController;
-  var cardIdController;
-  var telephoneController;
-  var notesController;
-  var urlController;
+  var _nameController;
+  var _ownerNameController;
+  var _cardIdController;
+  var _telephoneController;
+  var _notesController;
+  var _urlController;
 
-  bool readOnly;
+  bool _readOnly;
 
-  _ViewAndEditCardPage(CardBean inData, this.pageName, this.readOnly) {
+  _ViewAndEditCardPage(CardBean inData, this.pageName, this._readOnly) {
 
-    this.oldData = inData;
+    this._oldData = inData;
 
-    tempData = CardBean(oldData.ownerName, oldData.cardId,
-        key: oldData.uniqueKey,
-        name: oldData.name,
-        telephone: oldData.telephone,
-        folder: oldData.folder,
-        label: List()..addAll(oldData.label),
-        fav: oldData.fav,
-        notes: oldData.notes,
-      url: oldData.url,
+    _tempData = CardBean(_oldData.ownerName, _oldData.cardId,
+        key: _oldData.uniqueKey,
+        name: _oldData.name,
+        telephone: _oldData.telephone,
+        folder: _oldData.folder,
+        label: List()..addAll(_oldData.label),
+        fav: _oldData.fav,
+        notes: _oldData.notes,
+      url: _oldData.url,
     );
 
-    nameController = TextEditingController(text: tempData.name);
-    ownerNameController = TextEditingController(text: tempData.ownerName);
-    cardIdController = TextEditingController(text: tempData.cardId);
-    telephoneController = TextEditingController(text: tempData.telephone);
-    notesController = TextEditingController(text: tempData.notes);
-    urlController = TextEditingController(text: tempData.url);
+    _nameController = TextEditingController(text: _tempData.name);
+    _ownerNameController = TextEditingController(text: _tempData.ownerName);
+    _cardIdController = TextEditingController(text: _tempData.cardId);
+    _telephoneController = TextEditingController(text: _tempData.telephone);
+    _notesController = TextEditingController(text: _tempData.notes);
+    _urlController = TextEditingController(text: _tempData.url);
 
     // 如果文件夹未知，添加
-    if (!Params.folderList.contains(tempData.folder)) {
-      Params.folderList.add(tempData.folder);
+    if (!Params.folderList.contains(_tempData.folder)) {
+      Params.folderList.add(_tempData.folder);
     }
     // 检查标签未知，添加
-    for (var label in tempData.label) {
+    for (var label in _tempData.label) {
       if (!Params.labelList.contains(label)) {
         Params.labelList.add(label);
       }
@@ -72,7 +74,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-          print("取消修改: " + oldData.toString());
+          print("取消修改: " + _oldData.toString());
           Navigator.pop<CardBean>(context, null);
           return Future<bool>.value(false);
         },
@@ -84,7 +86,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: readOnly
+                  icon: _readOnly
                       ? Icon(
                           Icons.edit,
                           color: Colors.black,
@@ -94,11 +96,11 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           color: Colors.black,
                         ),
                   onPressed: () {
-                    if (readOnly) {
-                      setState(() => readOnly = false);
+                    if (_readOnly) {
+                      setState(() => _readOnly = false);
                     } else {
-                      print("保存: " + tempData.toString());
-                      Navigator.pop<CardBean>(context, tempData);
+                      print("保存: " + _tempData.toString());
+                      Navigator.pop<CardBean>(context, _tempData);
                     }
                   },
                 )
@@ -120,9 +122,9 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
                         TextField(
-                          controller: nameController,
-                          onChanged: (text) => tempData.name = text,
-                          readOnly: this.readOnly,
+                          controller: _nameController,
+                          onChanged: (text) => _tempData.name = text,
+                          readOnly: this._readOnly,
                         ),
                       ],
                     ),
@@ -140,15 +142,15 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           children: <Widget>[
                             Expanded(
                               child: TextField(
-                                controller: ownerNameController,
-                                onChanged: (text) => tempData.ownerName = text,
-                                readOnly: this.readOnly,
+                                controller: _ownerNameController,
+                                onChanged: (text) => _tempData.ownerName = text,
+                                readOnly: this._readOnly,
                               ),
                             ),
                             IconButton(
                               icon: Icon(Icons.content_copy),
                               onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: tempData.ownerName)),
+                                  ClipboardData(text: _tempData.ownerName)),
                             )
                           ],
                         )
@@ -168,16 +170,16 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           children: <Widget>[
                             Expanded(
                               child: TextField(
-                                controller: cardIdController,
-                                onChanged: (text) => tempData.cardId = text,
-                                readOnly: this.readOnly,
+                                controller: _cardIdController,
+                                onChanged: (text) => _tempData.cardId = text,
+                                readOnly: this._readOnly,
                                 keyboardType: TextInputType.number,
                               ),
                             ),
                             IconButton(
                               icon: Icon(Icons.content_copy),
                               onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: tempData.cardId)),
+                                  ClipboardData(text: _tempData.cardId)),
                             )
                           ],
                         ),
@@ -197,17 +199,17 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           children: <Widget>[
                             Expanded(
                               child: TextField(
-                                controller: urlController,
+                                controller: _urlController,
                                 onChanged: (text) {
-                                  tempData.url = text;
+                                  _tempData.url = text;
                                 },
-                                readOnly: this.readOnly,
+                                readOnly: this._readOnly,
                               ),
                             ),
                             IconButton(
                               icon: Icon(Icons.content_copy),
                               onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: tempData.telephone)),
+                                  ClipboardData(text: _tempData.telephone)),
                             )
                           ],
                         ),
@@ -227,11 +229,11 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           children: <Widget>[
                             Expanded(
                               child: TextField(
-                                controller: telephoneController,
+                                controller: _telephoneController,
                                 onChanged: (text) {
-                                  tempData.telephone = text;
+                                  _tempData.telephone = text;
                                 },
-                                readOnly: this.readOnly,
+                                readOnly: this._readOnly,
                                 keyboardType: TextInputType.numberWithOptions(
                                     signed: true),
                               ),
@@ -239,7 +241,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                             IconButton(
                               icon: Icon(Icons.content_copy),
                               onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: tempData.telephone)),
+                                  ClipboardData(text: _tempData.telephone)),
                             )
                           ],
                         ),
@@ -258,8 +260,8 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         DropdownButton(
                           onChanged: (newValue) {
-                            if (!readOnly) {
-                              setState(() => tempData.folder = newValue);
+                            if (!_readOnly) {
+                              setState(() => _tempData.folder = newValue);
                             }
                           },
                           items: Params.folderList
@@ -272,7 +274,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           style: AllpassTextUI.firstTitleStyleBlack,
                           elevation: 8,
                           iconSize: 30,
-                          value: tempData.folder,
+                          value: _tempData.folder,
                         ),
                       ],
                     ),
@@ -313,9 +315,9 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
                         TextField(
-                          controller: notesController,
-                          onChanged: (text) => tempData.notes = text,
-                          readOnly: this.readOnly,
+                          controller: _notesController,
+                          onChanged: (text) => _tempData.notes = text,
+                          readOnly: this._readOnly,
                         ),
                       ],
                     ),
@@ -331,17 +333,37 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: tempData.label.contains(item),
+        selected: _tempData.label.contains(item),
         onSelected: (selected) {
-          if (!readOnly) {
-            setState(() => tempData.label.contains(item)
-                ? tempData.label.remove(item)
-                : tempData.label.add(item));
+          if (!_readOnly) {
+            setState(() => _tempData.label.contains(item)
+                ? _tempData.label.remove(item)
+                : _tempData.label.add(item));
           }
         },
         selectedColor: AllpassColorUI.mainColor,
       ));
     });
+    labelChoices.add(
+      ChoiceChip(
+          label: Icon(Icons.add),
+          selected: false,
+          onSelected: (_) {
+            if (!_readOnly) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return StatefulBuilder(
+                    builder: (context, state) {
+                      return AddCategoryDialog("标签");
+                    },
+                  );
+                },
+              );
+            }
+          }),
+    );
     return labelChoices;
   }
 }

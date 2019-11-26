@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:allpass/bean/password_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/widgets/add_category_dialog.dart';
 
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
-
   final PasswordBean data;
   final String pageTitle;
   final bool readOnly;
@@ -21,42 +21,42 @@ class ViewAndEditPasswordPage extends StatefulWidget {
 }
 
 class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
-  final String pageName;
+  String pageName;
 
-  PasswordBean tempData;
-  PasswordBean oldData;
+  PasswordBean _tempData;
+  PasswordBean _oldData;
 
-  var nameController;
-  var usernameController;
-  var passwordController;
-  var notesController;
-  var urlController;
+  var _nameController;
+  var _usernameController;
+  var _passwordController;
+  var _notesController;
+  var _urlController;
 
   bool _passwordVisible = false;
-  bool readOnly;
+  bool _readOnly;
 
-  _ViewPasswordPage(PasswordBean data, this.pageName, this.readOnly) {
-    this.oldData = data;
-    tempData = PasswordBean(oldData.username, oldData.password, oldData.url,
-        key: oldData.uniqueKey,
-        name: oldData.name,
-        folder: oldData.folder,
-        label: List()..addAll(oldData.label),
-        notes: oldData.notes,
-        fav: oldData.fav);
+  _ViewPasswordPage(PasswordBean data, this.pageName, this._readOnly) {
+    this._oldData = data;
+    _tempData = PasswordBean(_oldData.username, _oldData.password, _oldData.url,
+        key: _oldData.uniqueKey,
+        name: _oldData.name,
+        folder: _oldData.folder,
+        label: List()..addAll(_oldData.label),
+        notes: _oldData.notes,
+        fav: _oldData.fav);
 
-    nameController = TextEditingController(text: tempData.name);
-    usernameController = TextEditingController(text: tempData.username);
-    passwordController = TextEditingController(text: tempData.password);
-    notesController = TextEditingController(text: tempData.notes);
-    urlController = TextEditingController(text: tempData.url);
+    _nameController = TextEditingController(text: _tempData.name);
+    _usernameController = TextEditingController(text: _tempData.username);
+    _passwordController = TextEditingController(text: _tempData.password);
+    _notesController = TextEditingController(text: _tempData.notes);
+    _urlController = TextEditingController(text: _tempData.url);
 
     // 如果文件夹未知，添加
-    if (!Params.folderList.contains(tempData.folder)) {
-      Params.folderList.add(tempData.folder);
+    if (!Params.folderList.contains(_tempData.folder)) {
+      Params.folderList.add(_tempData.folder);
     }
     // 检查标签未知，添加
-    for (var label in tempData.label) {
+    for (var label in _tempData.label) {
       if (!Params.labelList.contains(label)) {
         Params.labelList.add(label);
       }
@@ -67,7 +67,6 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        print("取消修改: " + oldData.toString());
         Navigator.pop<PasswordBean>(context, null);
         return Future<bool>.value(false);
       },
@@ -79,7 +78,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: readOnly
+              icon: _readOnly
                   ? Icon(
                       Icons.edit,
                       color: Colors.black,
@@ -89,13 +88,13 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                       color: Colors.black,
                     ),
               onPressed: () {
-                if (readOnly) {
+                if (_readOnly) {
                   setState(() {
-                    readOnly = false;
+                    pageName = "编辑密码";
+                    _readOnly = false;
                   });
                 } else {
-                  print("保存: " + tempData.toString());
-                  Navigator.pop<PasswordBean>(context, tempData);
+                  Navigator.pop<PasswordBean>(context, _tempData);
                 }
               },
             )
@@ -117,9 +116,9 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     style: AllpassTextUI.firstTitleStyleBlue,
                   ),
                   TextField(
-                    controller: nameController,
-                    onChanged: (text) => tempData.name = text,
-                    readOnly: this.readOnly,
+                    controller: _nameController,
+                    onChanged: (text) => _tempData.name = text,
+                    readOnly: this._readOnly,
                   ),
                 ],
               ),
@@ -137,15 +136,15 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
-                          controller: urlController,
-                          onChanged: (text) => tempData.url = text,
-                          readOnly: this.readOnly,
+                          controller: _urlController,
+                          onChanged: (text) => _tempData.url = text,
+                          readOnly: this._readOnly,
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.content_copy),
                         onPressed: () => Clipboard.setData(
-                            ClipboardData(text: tempData.url)),
+                            ClipboardData(text: _tempData.url)),
                       )
                     ],
                   )
@@ -165,15 +164,15 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
-                          controller: usernameController,
-                          onChanged: (text) => tempData.username = text,
-                          readOnly: this.readOnly,
+                          controller: _usernameController,
+                          onChanged: (text) => _tempData.username = text,
+                          readOnly: this._readOnly,
                         ),
                       ),
                       IconButton(
                         icon: Icon(Icons.content_copy),
                         onPressed: () => Clipboard.setData(
-                            ClipboardData(text: tempData.username)),
+                            ClipboardData(text: _tempData.username)),
                       )
                     ],
                   )
@@ -193,10 +192,10 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     children: <Widget>[
                       Expanded(
                         child: TextField(
-                          controller: passwordController,
+                          controller: _passwordController,
                           obscureText: !_passwordVisible,
-                          onChanged: (text) => tempData.password = text,
-                          readOnly: this.readOnly,
+                          onChanged: (text) => _tempData.password = text,
+                          readOnly: this._readOnly,
                         ),
                       ),
                       IconButton(
@@ -229,14 +228,14 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   ),
                   DropdownButton(
                     onChanged: (newValue) {
-                      if (!readOnly) {
+                      if (!_readOnly) {
                         setState(() {
-                          tempData.folder = newValue;
+                          _tempData.folder = newValue;
                         });
                       }
                     },
-                    items: Params.folderList
-                        .map<DropdownMenuItem<String>>((item) {
+                    items:
+                        Params.folderList.map<DropdownMenuItem<String>>((item) {
                       return DropdownMenuItem<String>(
                         value: item,
                         child: Text(item),
@@ -245,7 +244,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     style: AllpassTextUI.firstTitleStyleBlack,
                     elevation: 8,
                     iconSize: 30,
-                    value: tempData.folder,
+                    value: _tempData.folder,
                   ),
                 ],
               ),
@@ -286,9 +285,9 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     style: AllpassTextUI.firstTitleStyleBlue,
                   ),
                   TextField(
-                    controller: notesController,
-                    onChanged: (text) => tempData.notes = text,
-                    readOnly: this.readOnly,
+                    controller: _notesController,
+                    onChanged: (text) => _tempData.notes = text,
+                    readOnly: this._readOnly,
                   ),
                 ],
               ),
@@ -306,17 +305,37 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: tempData.label.contains(item),
+        selected: _tempData.label.contains(item),
         onSelected: (selected) {
-          if (!readOnly) {
-            setState(() => tempData.label.contains(item)
-                ? tempData.label.remove(item)
-                : tempData.label.add(item));
+          if (!_readOnly) {
+            setState(() => _tempData.label.contains(item)
+                ? _tempData.label.remove(item)
+                : _tempData.label.add(item));
           }
         },
         selectedColor: AllpassColorUI.mainColor,
       ));
     });
+    labelChoices.add(
+      ChoiceChip(
+          label: Icon(Icons.add),
+          selected: false,
+          onSelected: (_) {
+            if (!_readOnly) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return StatefulBuilder(
+                    builder: (context, state) {
+                      return AddCategoryDialog("标签");
+                    },
+                  );
+                },
+              );
+            }
+          }),
+    );
     return labelChoices;
   }
 }
