@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/bottom_navigation.dart';
 import 'package:allpass/params/params.dart';
+import 'package:allpass/widgets/bottom_navigation_widget.dart';
 
 void main() {
   Params.paramsInit();
@@ -9,7 +9,6 @@ void main() {
 }
 
 class Allpass extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
