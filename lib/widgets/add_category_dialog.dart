@@ -53,7 +53,9 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
                     _inputFormatCorr = false;
                   });
                 } else {
-                  _inputFormatCorr = true;
+                  setState(() {
+                    _inputFormatCorr = true;
+                  });
                 }
               }
             ),
@@ -64,7 +66,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
         FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
-            _addTextController..clear();
+            _addTextController.clear();
           },
           child: Text('取消'),
           textColor: AllpassColorUI.mainColor,
