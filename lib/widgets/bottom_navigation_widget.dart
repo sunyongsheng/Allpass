@@ -12,13 +12,12 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidget extends State<BottomNavigationWidget> {
 
-  final Color _appColor = Colors.blue;
-  List<Widget> pagesList = List();
+  List<Widget> _pagesList = List();
   int _currentIndex = 0;
 
   @override
   void initState() {
-    pagesList..add(PasswordPage())
+    _pagesList..add(PasswordPage())
              ..add(CardPage())
              ..add(SettingPage());
 
@@ -28,27 +27,27 @@ class _BottomNavigationWidget extends State<BottomNavigationWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pagesList[_currentIndex],
+      body: _pagesList[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.supervised_user_circle,
-              color: _currentIndex==0?_appColor:Colors.grey,
+              color: _currentIndex==0?null:Colors.grey,
             ),
             title: Text("密码", style: TextStyle(fontSize: 12),),
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.credit_card,
-                color: _currentIndex==1?_appColor:Colors.grey,
+                color: _currentIndex==1?null:Colors.grey,
               ),
               title: Text("卡片", style: TextStyle(fontSize: 12))
           ),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
-                color: _currentIndex==2?_appColor:Colors.grey,
+                color: _currentIndex==2?null:Colors.grey,
               ),
               title: Text("设置", style: TextStyle(fontSize: 12))
           ),
