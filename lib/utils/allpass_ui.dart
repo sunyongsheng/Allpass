@@ -7,7 +7,7 @@ class AllpassTextUI {
   AllpassTextUI._();
 
   static final TextStyle mainTitleStyle =
-      TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 17, color: Colors.black,);
   static final TextStyle firstTitleStyleBlue =
       TextStyle(fontSize: 16, color: Colors.blue);
   static final TextStyle secondTitleStyleBlue =
@@ -19,7 +19,7 @@ class AllpassTextUI {
       TextStyle(fontSize: 14, color: Colors.black);
 
   static final TextStyle smallTextStyleBlack =
-      TextStyle(fontSize: 13, color: Colors.black);
+      TextStyle(fontSize: 12, color: Colors.black);
   static final TextStyle hintTextStyle =
       TextStyle(fontSize: 14, color: Colors.black54);
 }
