@@ -5,6 +5,7 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /// 查看或编辑密码页面
 class ViewAndEditPasswordPage extends StatefulWidget {
@@ -97,7 +98,11 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                     _readOnly = false;
                   });
                 } else {
-                  Navigator.pop<PasswordBean>(context, _tempData);
+                  if (_tempData.username.length >= 1 && _tempData.password.length >= 1 && _tempData.url.length >= 1) {
+                    Navigator.pop<PasswordBean>(context, _tempData);
+                  } else {
+                    Fluttertoast.showToast(msg: "用户名、密码和URL不允许为空！");
+                  }
                 }
               },
             )

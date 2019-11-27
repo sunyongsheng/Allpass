@@ -5,6 +5,7 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /// 查看或编辑“卡片”页面
 class ViewAndEditCardPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class ViewAndEditCardPage extends StatefulWidget {
 }
 
 class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
-  final String pageName;
+  String pageName;
 
   CardBean _oldData;
   CardBean _tempData;
@@ -97,10 +98,16 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                   onPressed: () {
                     if (_readOnly) {
-                      setState(() => _readOnly = false);
+                      setState(() {
+                        _readOnly = false;
+                        pageName = "编辑卡片";
+                      });
                     } else {
-                      print("保存: " + _tempData.toString());
-                      Navigator.pop<CardBean>(context, _tempData);
+                      if (_tempData.ownerName.length >= 1 && _tempData.cardId.length >= 1) {
+                        Navigator.pop<CardBean>(context, _tempData);
+                      } else {
+                        Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
+                      }
                     }
                   },
                 )
