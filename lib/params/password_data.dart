@@ -1,4 +1,4 @@
-import 'package:allpass/bean/password_bean.dart';
+import 'package:allpass/model//password_bean.dart';
 
 /// 用于存储所有“密码”数据
 /// @author Aengus Sun

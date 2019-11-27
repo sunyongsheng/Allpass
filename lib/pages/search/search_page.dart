@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:allpass/bean/password_bean.dart';
-import 'package:allpass/bean/card_bean.dart';
+import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 
@@ -223,7 +223,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   // 点击卡片弹出模态菜单
-  Widget createCardBottomSheet(BuildContext context, CardBean cardBean) {
+  Widget createCardBottomSheet(BuildContext context, CardBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -235,7 +235,7 @@ class _SearchPage extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ViewAndEditCardPage(cardBean, "查看卡片", true)))
+                              ViewAndEditCardPage(data, "查看卡片", true)))
                   .then((resData) {
                 if (resData != null) cardDao.updatePasswordBean(resData);
               });
@@ -248,7 +248,7 @@ class _SearchPage extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ViewAndEditCardPage(cardBean, "编辑卡片", false)))
+                              ViewAndEditCardPage(data, "编辑卡片", false)))
                   .then((resData) {
                 if (resData != null) cardDao.updatePasswordBean(resData);
               });
@@ -257,14 +257,14 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.person),
           title: Text("复制用户名"),
           onTap: () {
-            Clipboard.setData(ClipboardData(text: cardBean.ownerName));
+            Clipboard.setData(ClipboardData(text: data.ownerName));
           },
         ),
         ListTile(
           leading: Icon(Icons.content_copy),
           title: Text("复制卡号"),
           onTap: () {
-            Clipboard.setData(ClipboardData(text: cardBean.cardId));
+            Clipboard.setData(ClipboardData(text: data.cardId));
           },
         ),
         ListTile(

@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/utils/db_provider.dart';
-import 'package:allpass/bean/card_bean.dart';
+import 'package:allpass/model/card_bean.dart';
 
 
 class CardDao extends BaseDBProvider {

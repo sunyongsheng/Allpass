@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:allpass/bean/password_bean.dart';
+import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/db_provider.dart';
 
 class PasswordDao extends BaseDBProvider {

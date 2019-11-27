@@ -1,4 +1,4 @@
-import 'package:allpass/bean/card_bean.dart';
+import 'package:allpass/model//card_bean.dart';
 
 /// 用于存储所有“卡片”数据
 /// @author Aengus Sun
