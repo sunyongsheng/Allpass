@@ -27,7 +27,7 @@ class Params {
     }
     String folder = folderFile.readAsStringSync();
     for (String f in folder.split(",")) {
-      if (f != "" && f != '~' && f != ',') folderList.add(f);
+      if (f != "" && f != '~' && f != ',' && f != " ") folderList.add(f);
     }
 
     final labelFile = File("$appPath/label.appt");
@@ -36,7 +36,7 @@ class Params {
     }
     String label = labelFile.readAsStringSync();
     for (String l in label.split(",")) {
-      if (l != "" && l != '~' && l != ',') labelList.add(l);
+      if (l != "" && l != '~' && l != ',' && l != " ") labelList.add(l);
     }
   }
 
