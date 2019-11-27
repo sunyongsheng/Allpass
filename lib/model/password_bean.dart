@@ -102,15 +102,3 @@ class PasswordBean {
         "}";
   }
 }
-
-void copyPasswordBean(PasswordBean old, PasswordBean now) {
-  // 复制除key以外的所有属性
-  old.name = now.name;
-  old.username = now.username;
-  old.password = now.password;
-  old.url = now.url;
-  old.label = now.label;
-  old.folder = now.folder;
-  old.notes = now.notes;
-  old.fav = now.fav;
-}

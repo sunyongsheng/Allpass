@@ -89,16 +89,3 @@ class CardBean {
         label: newLabel);
   }
 }
-
-void copyCardBean(CardBean old, CardBean now) {
-  // 复制除key以外的所有属性
-  old.name = now.name;
-  old.ownerName = now.ownerName;
-  old.cardId = now.cardId;
-  old.telephone = now.telephone;
-  old.folder = now.folder;
-  old.notes = now.notes;
-  old.label = now.label;
-  old.fav = now.fav;
-  old.url = now.url;
-}
