@@ -45,6 +45,12 @@ class _SettingPageState extends State<_SettingPage> {
           ),
           FlatButton(
             onPressed: () {
+              Params.paramsInit();
+            },
+            child: Text("重新初始化参数"),
+          ),
+          FlatButton(
+            onPressed: () {
               Params.labelParamsPersistence();
               Params.folderParamsPersistence();
             },
