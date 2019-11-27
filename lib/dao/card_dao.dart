@@ -77,18 +77,18 @@ class CardDao extends BaseDBProvider {
     Database db = await getDataBase();
     String labels = "";
     for (String la in bean.label) {
-      la += "~";
       labels += la;
+      if (la != bean.label.last) labels += "~";
     }
     return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, url=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.ownerName, bean.cardId, bean.url, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
   }
 
   Map<String, dynamic> cardBean2Map(CardBean bean) {
-    String labels;
+    String labels = "";
     for (String la in bean.label) {
       labels += la;
-      if (la != bean.label.last) la += "~";
+      if (la != bean.label.last) labels += "~";
     }
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,

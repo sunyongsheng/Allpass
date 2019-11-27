@@ -76,8 +76,8 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     String labels = "";
     for (String la in bean.label) {
-      la += "~";
       labels += la;
+      if (la != bean.label.last) labels += "~";
     }
     return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
@@ -89,7 +89,7 @@ class PasswordDao extends BaseDBProvider {
     String labels = "";
     for (String la in bean.label) {
       labels += la;
-      if (la != bean.label.last) la += "~";
+      if (la != bean.label.last) labels += "~";
     }
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
