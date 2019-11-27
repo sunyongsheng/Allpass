@@ -85,10 +85,8 @@ class _PasswordPageState extends State<PasswordPage> {
           style: AllpassTextUI.mainTitleStyle,
         ),
         centerTitle: true,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        toolbarOpacity: 1,
+        backgroundColor: AllpassColorUI.mainBackgroundColor,
       ),
       body: Column(
         children: <Widget>[

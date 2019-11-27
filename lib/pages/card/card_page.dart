@@ -86,9 +86,7 @@ class _CardPageState extends State<CardPage> {
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        toolbarOpacity: 1,
       ),
       body: Column(
         children: <Widget>[
