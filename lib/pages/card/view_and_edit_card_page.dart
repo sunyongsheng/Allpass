@@ -47,7 +47,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
       name: _oldData.name,
       telephone: _oldData.telephone,
       folder: _oldData.folder,
-      label: List()..addAll(_oldData.label),
+      label: _oldData.label,
       fav: _oldData.fav,
       notes: _oldData.notes,
       url: _oldData.url,

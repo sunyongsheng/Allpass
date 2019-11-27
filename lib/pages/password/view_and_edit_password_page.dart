@@ -46,7 +46,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
         key: _oldData.uniqueKey,
         name: _oldData.name,
         folder: _oldData.folder,
-        label: List()..addAll(_oldData.label),
+        label: _oldData.label,
         notes: _oldData.notes,
         fav: _oldData.fav);
 
