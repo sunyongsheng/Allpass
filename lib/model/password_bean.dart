@@ -48,7 +48,6 @@ class PasswordBean {
 
     if (label == null) {
       this.label = List();
-      this.label..add("~");
     } else {
       this.label = label;
     } //label
@@ -59,8 +58,10 @@ class PasswordBean {
     List<String> newLabel = List();
     if (map['label'] != null) {
       List<String> labels = map["label"].split("~");
-      for (String la in labels) {
-        if (la != "") newLabel.add(la);
+      if (labels != null) {
+        for (String la in labels) {
+          if (la != "" && la != "~" && la != " " && la != ",") newLabel.add(la);
+        }
       }
     }
     assert(map["username"] != null);

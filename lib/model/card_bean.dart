@@ -21,7 +21,7 @@ class CardBean {
       int fav: 0,
       String telephone: "",
       int key, //: CARD_MAGIC,
-      String url,
+      String url: "",
       String name,
       List<String> label}) {
     this.ownerName = ownerName;
@@ -51,7 +51,9 @@ class CardBean {
         "name:" "$name, " +
         "ownerName:" "$ownerName, " +
         "cardId:" "$cardId, " +
-        "telephone: " "$telephone" +
+        "telephone: " "$telephone, " +
+        "url: " "$url, " +
+        "fav: " "$fav" +
         "}";
   }
 
@@ -60,8 +62,10 @@ class CardBean {
     List<String> newLabel = List();
     if (map['label'] != null) {
       List<String> labels = map["label"].split("~");
-      for (String la in labels) {
-        if (la != "") newLabel.add(la);
+      if (labels != null) {
+        for (String la in labels) {
+          if (la != "" && la != "~" && la != " " && la != ",") newLabel.add(la);
+        }
       }
     }
     assert(map["name"] != null);
