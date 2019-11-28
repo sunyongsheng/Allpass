@@ -76,7 +76,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-          print("取消修改: " + _oldData.toString());
           Navigator.pop<CardBean>(context, null);
           return Future<bool>.value(false);
         },
