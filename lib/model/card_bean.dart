@@ -110,4 +110,17 @@ class CardBean {
     };
     return map;
   }
+
+  /// 将CardBean转化为csv格式的字符
+  static String cardBean2Csv(CardBean bean) {
+    // 包含除[uniqueKey]的所有属性
+    String labels = "";
+    for (var la in bean.label) {
+      labels += la;
+      if (la != bean.label.last) labels += "~";
+    }
+    String csv =
+        "${bean.name},${bean.ownerName},${bean.cardId},${bean.url},${bean.telephone},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
+    return csv;
+  }
 }

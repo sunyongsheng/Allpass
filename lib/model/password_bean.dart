@@ -21,7 +21,7 @@ class PasswordBean {
       String folder: "默认",
       String notes: "",
       int fav: 0,
-      int key, //: PASS_MAGIC,
+      int key,
       String name,
       List<String> label}) {
     this.username = username;
@@ -123,5 +123,18 @@ class PasswordBean {
       "label": labels
     };
     return map;
+  }
+
+  /// 将PasswordBean转化为csv格式的字符
+  static String passwordBean2Csv(PasswordBean bean) {
+    // 包含除[uniqueKey]的所有属性
+    String labels = "";
+    for (var la in bean.label) {
+      labels += la;
+      if (la != bean.label.last) labels += "~";
+    }
+    String csv =
+        "${bean.name},${bean.username},${bean.password},${bean.url},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
+    return csv;
   }
 }
