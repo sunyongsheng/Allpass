@@ -1,3 +1,6 @@
+import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/utils/csv_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
@@ -55,6 +58,24 @@ class _SettingPageState extends State<_SettingPage> {
               Params.folderParamsPersistence();
             },
             child: Text("持久化"),
+          ),
+          FlatButton(
+            onPressed: () async {
+              PasswordDao dao = PasswordDao();
+              CsvHelper helper = CsvHelper();
+              List<PasswordBean> list =  await dao.getAllPasswordBeanList();
+              helper.passwordExportCsv(list);
+            },
+            child: Text("写入Password CSV文件"),
+          ),
+          FlatButton(
+            onPressed: () async {
+              CardDao dao = CardDao();
+              CsvHelper helper = CsvHelper();
+              List<CardBean> list =  await dao.getAllCardBeanList();
+              helper.cardExportCsv(list);
+            },
+            child: Text("Card CSV文件"),
           )
         ],
       ),),
