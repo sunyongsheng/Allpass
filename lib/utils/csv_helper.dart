@@ -16,7 +16,7 @@ class CsvHelper {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      String w = "name,ownerName,cardId,url,telephone,folder,notes,label,fav\n";
+      String w = "name,username,password,url,folder,notes,label,fav\n";
       for (var item in list) {
         w += PasswordBean.passwordBean2Csv(item);
       }
@@ -26,6 +26,7 @@ class CsvHelper {
     }
     return null;
   }
+
   /// 将CardList导出为csv，[,]分隔，[\n]换行，返回文件路径
   Future<String> cardExportCsv(List<CardBean> list) async {
     if (Platform.isAndroid) {
@@ -35,7 +36,7 @@ class CsvHelper {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      String w = "name,username,password,url,folder,notes,label,fav\n";
+      String w = "name,ownerName,cardId,url,telephone,folder,notes,label,fav\n";
       for (var item in list) {
         w += CardBean.cardBean2Csv(item);
       }
