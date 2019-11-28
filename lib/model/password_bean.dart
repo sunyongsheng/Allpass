@@ -1,5 +1,6 @@
-import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:flutter/material.dart';
+
+import 'package:allpass/utils/encrypt_helper.dart';
 
 /// 存储新建的“密码”
 class PasswordBean {
