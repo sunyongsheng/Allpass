@@ -42,7 +42,7 @@ class CardDao extends BaseDBProvider {
   // 插入卡片
   Future insert(CardBean bean) async {
     Database db = await getDataBase();
-    return await db.insert(name, cardBean2Map(bean));
+    return await db.insert(name, CardBean.cardBean2Map(bean));
   }
 
   // 根据uniqueKey查询记录
@@ -82,26 +82,5 @@ class CardDao extends BaseDBProvider {
     }
     return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, url=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.ownerName, bean.cardId, bean.url, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
-  }
-
-  Map<String, dynamic> cardBean2Map(CardBean bean) {
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
-    Map<String, dynamic> map = {
-      "uniqueKey": bean.uniqueKey,
-      "name": bean.name,
-      "ownerName": bean.ownerName,
-      "cardId": bean.cardId,
-      "telephone": bean.telephone,
-      "url": bean.url,
-      "folder": bean.folder,
-      "fav": bean.fav,
-      "notes": bean.notes,
-      "label": labels
-    };
-    return map;
   }
 }

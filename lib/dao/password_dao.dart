@@ -42,7 +42,7 @@ class PasswordDao extends BaseDBProvider {
   // 插入密码
   Future insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    Map<String, dynamic> map = await passwordBean2Map(bean);
+    Map<String, dynamic> map = await PasswordBean.passwordBean2Map(bean);
     return await db.insert(name, map);
   }
 
@@ -89,25 +89,4 @@ class PasswordDao extends BaseDBProvider {
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));
   }
-
-  Future<Map<String, dynamic>> passwordBean2Map(PasswordBean bean) async {
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
-    Map<String, dynamic> map = {
-      "uniqueKey": bean.uniqueKey,
-      "name": bean.name,
-      "username": bean.username,
-      "password": await EncryptHelper.encrypt(bean.password),
-      "url": bean.url,
-      "folder": bean.folder,
-      "fav": bean.fav,
-      "notes": bean.notes,
-      "label": labels
-    };
-    return map;
-  }
-
 }

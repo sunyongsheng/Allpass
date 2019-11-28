@@ -57,7 +57,7 @@ class CardBean {
         "}";
   }
 
-  // 将Map转化为CardBean
+  /// 将Map转化为CardBean
   static CardBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
     if (map['label'] != null) {
@@ -87,5 +87,27 @@ class CardBean {
         telephone: map["telephone"],
         url: map['url'],
         label: newLabel);
+  }
+
+  /// 将CardBean转化为Map
+  static Map<String, dynamic> cardBean2Map(CardBean bean) {
+    String labels = "";
+    for (String la in bean.label) {
+      labels += la;
+      if (la != bean.label.last) labels += "~";
+    }
+    Map<String, dynamic> map = {
+      "uniqueKey": bean.uniqueKey,
+      "name": bean.name,
+      "ownerName": bean.ownerName,
+      "cardId": bean.cardId,
+      "telephone": bean.telephone,
+      "url": bean.url,
+      "folder": bean.folder,
+      "fav": bean.fav,
+      "notes": bean.notes,
+      "label": labels
+    };
+    return map;
   }
 }

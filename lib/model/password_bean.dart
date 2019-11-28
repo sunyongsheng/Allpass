@@ -55,7 +55,26 @@ class PasswordBean {
     } //label
   }
 
-  // 将map转化为PasswordBean
+  @override
+  String toString() {
+    return "{uniqueKey:" +
+        this.uniqueKey.toString() +
+        ", name:" +
+        this.name +
+        ", username:" +
+        this.username +
+        ", password:" +
+        this.password +
+        ", url:" +
+        this.url +
+        ", folder:" +
+        this.folder +
+        ", label:" +
+        this.label.toString() +
+        "}";
+  }
+
+  /// 将Map转化为PasswordBean
   static Future<PasswordBean> fromJson(Map<String, dynamic> map) async {
     List<String> newLabel = List();
     if (map['label'] != null) {
@@ -85,22 +104,24 @@ class PasswordBean {
         label: newLabel);
   }
 
-  @override
-  String toString() {
-    return "{uniqueKey:" +
-        this.uniqueKey.toString() +
-        ", name:" +
-        this.name +
-        ", username:" +
-        this.username +
-        ", password:" +
-        this.password +
-        ", url:" +
-        this.url +
-        ", folder:" +
-        this.folder +
-        ", label:" +
-        this.label.toString() +
-        "}";
+  /// 将PasswordBean转化为Map
+  static Future<Map<String, dynamic>> passwordBean2Map(PasswordBean bean) async {
+    String labels = "";
+    for (String la in bean.label) {
+      labels += la;
+      if (la != bean.label.last) labels += "~";
+    }
+    Map<String, dynamic> map = {
+      "uniqueKey": bean.uniqueKey,
+      "name": bean.name,
+      "username": bean.username,
+      "password": await EncryptHelper.encrypt(bean.password),
+      "url": bean.url,
+      "folder": bean.folder,
+      "fav": bean.fav,
+      "notes": bean.notes,
+      "label": labels
+    };
+    return map;
   }
 }
