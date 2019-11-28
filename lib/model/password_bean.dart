@@ -1,3 +1,4 @@
+import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:flutter/material.dart';
 
 /// 存储新建的“密码”
@@ -54,7 +55,7 @@ class PasswordBean {
   }
 
   // 将map转化为PasswordBean
-  static PasswordBean fromJson(Map<String, dynamic> map) {
+  static Future<PasswordBean> fromJson(Map<String, dynamic> map) async {
     List<String> newLabel = List();
     if (map['label'] != null) {
       List<String> labels = map["label"].split("~");
@@ -73,7 +74,7 @@ class PasswordBean {
     assert(map["name"] != null);
     return PasswordBean(
         username: map['username'],
-        password: map["password"],
+        password: await EncryptHelper.decrypt(map["password"]),
         url: map["url"],
         folder: map["folder"],
         notes: map["notes"],

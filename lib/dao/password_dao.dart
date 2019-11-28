@@ -1,3 +1,4 @@
+import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/model/password_bean.dart';
@@ -41,7 +42,8 @@ class PasswordDao extends BaseDBProvider {
   // 插入密码
   Future insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    return await db.insert(name, passwordBean2Map(bean));
+    Map<String, dynamic> map = await passwordBean2Map(bean);
+    return await db.insert(name, map);
   }
 
   // 根据uniqueKey查询记录
@@ -49,7 +51,7 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      return PasswordBean.fromJson(maps.first);
+      return await PasswordBean.fromJson(maps.first);
     }
     return null;
   }
@@ -59,7 +61,10 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      List<PasswordBean> res = maps.map((item) => PasswordBean.fromJson(item)).toList();
+      List<PasswordBean> res = List();
+      for (var map in maps) {
+        res.add(await PasswordBean.fromJson(map));
+      }
       return res;
     }
     return null;
@@ -80,12 +85,12 @@ class PasswordDao extends BaseDBProvider {
       if (la != bean.label.last) labels += "~";
     }
     return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
+        [bean.name, bean.username, await EncryptHelper.encrypt(bean.password), bean.url, bean.folder, bean.fav, bean.notes, labels]);
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));
   }
 
-  Map<String, dynamic> passwordBean2Map(PasswordBean bean) {
+  Future<Map<String, dynamic>> passwordBean2Map(PasswordBean bean) async {
     String labels = "";
     for (String la in bean.label) {
       labels += la;
@@ -95,7 +100,7 @@ class PasswordDao extends BaseDBProvider {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
       "username": bean.username,
-      "password": bean.password,
+      "password": await EncryptHelper.encrypt(bean.password),
       "url": bean.url,
       "folder": bean.folder,
       "fav": bean.fav,
