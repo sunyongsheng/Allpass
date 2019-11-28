@@ -132,7 +132,9 @@ class _CardPageState extends State<CardPage> {
                     child: ListView(children: _cardWidgetList),
                   );
                 default:
-                  return Text("未知状态，请联系开发者：sys6511@126.com");
+                  return Center(
+                    child: Text("未知状态，请联系开发者：sys6511@126.com"),
+                  );
               }
             },
           )
