@@ -185,12 +185,23 @@ class _CardPageState extends State<CardPage> {
           elevation: 10,
           color: getRandomColor(cardBean.uniqueKey),
           margin: EdgeInsets.only(left: 20, right: 20, top: 6, bottom: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
           child: ListTile(
-            title: Text(cardBean.name,
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
-            subtitle: Text("ID: ${cardBean.cardId}",
-              style: TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+            title: Text(
+              cardBean.name,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: Text(
+              "ID: ${cardBean.cardId}",
+              style:
+                  TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
             ),
