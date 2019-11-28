@@ -22,6 +22,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.2"
+  cipher2:
+    dependency: "direct main"
+    description:
+      name: cipher2
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.5"
   collection:
     dependency: transitive
     description:
@@ -80,7 +87,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.4"
+    version: "1.4.5"
   pedantic:
     dependency: transitive
     description:
@@ -120,7 +127,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.7+2"
+    version: "1.1.7+3"
   stack_trace:
     dependency: transitive
     description:
@@ -179,4 +186,4 @@ packages:
     version: "2.0.8"
 sdks:
   dart: ">=2.5.0 <3.0.0"
-  flutter: ">=1.9.1 <2.0.0"
+  flutter: ">=1.9.1+hotfix.5 <2.0.0"

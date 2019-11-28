@@ -26,8 +26,10 @@ dependencies:
   fluttertoast: ^2.1.1
   # 数据库
   sqflite: ^1.1.7
-
+  # 应用路径
   path_provider: ^1.4.4
+  # 密码加密
+  cipher2: ^0.3.5
 
 dev_dependencies:
   flutter_test:
@@ -46,7 +48,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/keys/private_key.pem
+    - assets/keys/public_key.pem
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
