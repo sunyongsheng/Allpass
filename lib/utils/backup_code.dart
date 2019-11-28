@@ -98,3 +98,25 @@
 //   }
 //   CardData.cardData.removeAt(index);
 // }
+
+// ListTile(
+// leading: CircleAvatar(
+// backgroundColor: getRandomColor(cardBean.uniqueKey),
+// child: Text(
+// cardBean.name.substring(0, 1),
+// style: TextStyle(color: Colors.white),
+// ),
+// ),
+// title: Text(cardBean.name),
+// subtitle: Text(cardBean.ownerName),
+// onTap: () {
+// print("点击了卡片：" + cardBean.name);
+// _currentKey = cardBean.uniqueKey;
+// // 显示模态BottomSheet
+// showModalBottomSheet(
+// context: context,
+// builder: (BuildContext context) {
+// return _createBottomSheet(context, cardBean);
+// });
+// },
+// )
