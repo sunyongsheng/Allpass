@@ -31,11 +31,12 @@ class AllpassColorUI {
   static final Color mainColor = Colors.blue;
   static final Color mainBackgroundColor = Colors.white;
   static final List<Color> allColor = List.of([
-    Colors.blue,
+    Color.fromARGB(255, 5, 118, 285),   // PPHub 蓝
     Colors.amber,
     Colors.deepOrangeAccent,
     Colors.teal,
-    Colors.green
+    Color.fromARGB(255, 52, 184, 105),  // PPHub 绿
+    Color.fromARGB(255, 255, 86, 85),   // 番茄todo 红
   ]);
 }
 
