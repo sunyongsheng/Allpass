@@ -3,6 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/db_provider.dart';
 import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/string_process.dart';
 
 class PasswordDao extends BaseDBProvider {
 
@@ -79,11 +80,7 @@ class PasswordDao extends BaseDBProvider {
   // 更新
   Future<int> updatePasswordBean(PasswordBean bean) async {
     Database db = await getDataBase();
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.username, await EncryptHelper.encrypt(bean.password), bean.url, bean.folder, bean.fav, bean.notes, labels]);
     // 下面的语句更新时提示UNIQUE constraint failed

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/utils/string_process.dart';
+
 /// 保存“卡片”数据
 class CardBean {
   int uniqueKey; // 1 ID
@@ -33,7 +35,7 @@ class CardBean {
     this.uniqueKey = key;
     this.url = url;
 
-    if (name == null) {
+    if (name == null && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
     } else {
       this.name = name;
@@ -61,12 +63,7 @@ class CardBean {
   static CardBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
     if (map['label'] != null) {
-      List<String> labels = map["label"].split("~");
-      if (labels != null) {
-        for (String la in labels) {
-          if (la != "" && la != "~" && la != " " && la != ",") newLabel.add(la);
-        }
-      }
+      newLabel = str2List(map['label']);
     }
     assert(map["name"] != null);
     assert(map["ownerName"] != null);
@@ -91,11 +88,7 @@ class CardBean {
 
   /// 将CardBean转化为Map
   static Map<String, dynamic> cardBean2Map(CardBean bean) {
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
@@ -114,11 +107,7 @@ class CardBean {
   /// 将CardBean转化为csv格式的字符
   static String cardBean2Csv(CardBean bean) {
     // 包含除[uniqueKey]的所有属性
-    String labels = "";
-    for (var la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     String csv =
         "${bean.name},${bean.ownerName},${bean.cardId},${bean.url},${bean.telephone},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
     return csv;

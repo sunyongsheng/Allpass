@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/utils/db_provider.dart';
 import 'package:allpass/model/card_bean.dart';
-
+import 'package:allpass/utils/string_process.dart';
 
 class CardDao extends BaseDBProvider {
   // 表名
@@ -75,11 +75,7 @@ class CardDao extends BaseDBProvider {
   // 更新
   Future<int> updatePasswordBean(CardBean bean) async {
     Database db = await getDataBase();
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, url=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.ownerName, bean.cardId, bean.url, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
   }

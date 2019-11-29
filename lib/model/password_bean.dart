@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/string_process.dart';
 
 /// 存储新建的“密码”
 class PasswordBean {
@@ -78,12 +79,7 @@ class PasswordBean {
   static Future<PasswordBean> fromJson(Map<String, dynamic> map) async {
     List<String> newLabel = List();
     if (map['label'] != null) {
-      List<String> labels = map["label"].split("~");
-      if (labels != null) {
-        for (String la in labels) {
-          if (la != "" && la != "~" && la != " " && la != ",") newLabel.add(la);
-        }
-      }
+      newLabel = str2List(map['label']);
     }
     assert(map["username"] != null);
     assert(map["password"] != null);
@@ -106,11 +102,7 @@ class PasswordBean {
 
   /// 将PasswordBean转化为Map
   static Future<Map<String, dynamic>> passwordBean2Map(PasswordBean bean) async {
-    String labels = "";
-    for (String la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
@@ -128,11 +120,7 @@ class PasswordBean {
   /// 将PasswordBean转化为csv格式的字符
   static String passwordBean2Csv(PasswordBean bean) {
     // 包含除[uniqueKey]的所有属性
-    String labels = "";
-    for (var la in bean.label) {
-      labels += la;
-      if (la != bean.label.last) labels += "~";
-    }
+    String labels = list2Str(bean.label);
     String csv =
         "${bean.name},${bean.username},${bean.password},${bean.url},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
     return csv;
