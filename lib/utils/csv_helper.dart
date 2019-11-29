@@ -60,10 +60,12 @@ class CsvHelper {
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
-        if (attribute == null) continue;
+        if (attribute.length != text[0].split(",").length) continue;
         List<String> label = List();
-        for (String la in attribute[6].split("~")) {
-          if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
+        if (attribute[6].length > 0) {
+          for (String la in attribute[6].split("~")) {
+            if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
+          }
         }
         res.add(PasswordBean(
           name: attribute[0] == null ? "" : attribute[0],
@@ -93,10 +95,12 @@ class CsvHelper {
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
-        if (attribute == null) continue;
+        if (attribute.length != text[0].split(",").length) continue;
         List<String> label = List();
-        for (String la in attribute[7].split("~")) {
-          if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
+        if (attribute[7].length > 0) {
+          for (String la in attribute[7].split("~")) {
+            if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
+          }
         }
         res.add(CardBean(
           name: attribute[0] == null ? "" : attribute[0],
