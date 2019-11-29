@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
@@ -103,5 +104,4 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
       ],
     );
   }
-
 }
