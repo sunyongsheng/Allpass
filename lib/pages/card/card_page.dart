@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
@@ -169,55 +167,47 @@ class _CardPageState extends State<CardPage> {
   }
 
   Widget _getCardWidget(CardBean cardBean) {
-    return Dismissible(
-      key: Key(cardBean.uniqueKey.toString()),
-      onDismissed: (dismissibleDec) {
-        _currentKey = cardBean.uniqueKey;
-        setState(() {
-          _delete(cardBean.uniqueKey).then(
-              (_) => Fluttertoast.showToast(msg: "删除了“" + cardBean.name + "”"));
-        });
-      },
-      child: SizedBox(
+    return SizedBox(
         height: 100,
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-        child: Card(
-          elevation: 10,
-          color: getRandomColor(cardBean.uniqueKey),
-          margin: EdgeInsets.only(left: 20, right: 20, top: 6, bottom: 12),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
-          child: ListTile(
-            title: Text(
-              cardBean.name,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+        child: GestureDetector(
+          onTap: () {
+            _currentKey = cardBean.uniqueKey;
+            // 显示模态BottomSheet
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return _createBottomSheet(context, cardBean);
+                });
+          },
+          child: Card(
+            elevation: 3,
+            color: getRandomColor(cardBean.uniqueKey),
+            margin: EdgeInsets.only(left: 20, right: 20, top: 6, bottom: 12),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8.0))),
+            child: ListTile(
+              title: Text(
+                cardBean.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              subtitle: Text(
+                "ID: ${cardBean.cardId}",
+                style:
+                TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+              contentPadding: EdgeInsets.only(left: 30, right: 30, top: 4),
             ),
-            subtitle: Text(
-              "ID: ${cardBean.cardId}",
-              style:
-                  TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            contentPadding: EdgeInsets.only(left: 30, right: 30, top: 4),
-            onTap: () {
-              _currentKey = cardBean.uniqueKey;
-              // 显示模态BottomSheet
-              showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return _createBottomSheet(context, cardBean);
-                  });
-            },
           ),
-        ),
-      ),
+        )
     );
   }
 
