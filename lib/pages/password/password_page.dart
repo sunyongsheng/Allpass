@@ -7,6 +7,7 @@ import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/password_dao.dart';
+import 'package:allpass/widgets/search_button_widget.dart';
 
 /// 密码页面
 class PasswordPage extends StatefulWidget {
@@ -89,32 +90,7 @@ class _PasswordPageState extends State<PasswordPage> {
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
-            child: FlatButton(
-              onPressed: () {
-                Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SearchPage(AllpassType.PASSWORD)))
-                    .then((value) => setState(() {
-                          _query();
-                        }));
-              },
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.search),
-                  Text("搜索"),
-                ],
-              ),
-              color: Colors.grey[200],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
-              splashColor:
-                  Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
-            ),
-          ),
+          SearchButtonWidget(_searchPress),
           // 密码列表
           FutureBuilder(
             future: _getPasswordWidgetList(),
@@ -254,5 +230,16 @@ class _PasswordPageState extends State<PasswordPage> {
         )
       ],
     );
+  }
+
+  _searchPress () {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                SearchPage(AllpassType.PASSWORD)))
+        .then((value) => setState(() {
+      _query();
+    }));
   }
 }
