@@ -23,7 +23,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  fluttertoast: ^2.1.1
+  # 弹出底部通知
+  fluttertoast: ^3.1.3
   # 数据库
   sqflite: ^1.1.7
   # 应用路径
@@ -32,6 +33,8 @@ dependencies:
   cipher2: ^0.3.5
   # 文件管理
   flutter_file_picker: ^0.0.3
+  # 路径选择
+  directory_picker: ^1.0.0
 
 dev_dependencies:
   flutter_test:
