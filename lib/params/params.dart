@@ -9,8 +9,8 @@ class Params {
 
   static String appPath;
 
-  static Set<String> folderList = Set();
-  static Set<String> labelList = Set();
+  static List<String> folderList = List();
+  static List<String> labelList = List();
 
   /// 参数初始化
   static paramsInit() async {
