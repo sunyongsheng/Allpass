@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
-import 'package:allpass/pages/setting/csv_import_export_page.dart';
+import 'package:allpass/pages/setting/import_export_page.dart';
 
 /// 设置页面
 class SettingPage extends StatelessWidget {
@@ -60,7 +60,7 @@ class _SettingPageState extends State<_SettingPage> {
                     leading: Icon(Icons.import_export),
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CsvImportExportPage(),
+                        builder: (context) => ImportExportPage(),
                       ));
                     },
                   ),

@@ -14,9 +14,10 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/csv_helper.dart';
+import 'package:allpass/pages/setting/chrome_import_help.dart';
 
-
-class CsvImportExportPage extends StatelessWidget {
+/// 导入导出页面
+class ImportExportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +30,18 @@ class CsvImportExportPage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: ListTile(
+              title: Text("从Chrome中导入"),
+              leading: Icon(CustomIcons.chrome),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ChromeImportHelpPage(),
+                ));
+              },
+            ),
+          ),
           Container(
             padding: EdgeInsets.only(left: 15, right: 15),
             child: ListTile(
@@ -60,6 +73,7 @@ class CsvImportExportPage extends StatelessWidget {
 
 }
 
+/// 导入类型选择
 class ImportTypeSelectPage extends StatelessWidget {
 
   final CardDao cardDao = CardDao();
@@ -135,6 +149,7 @@ class ImportTypeSelectPage extends StatelessWidget {
   }
 }
 
+/// 导出选择页
 class ExportTypeSelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
