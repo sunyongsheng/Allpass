@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 class ChromeImportHelpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Text("对不起，这个功能不会做"),
+        ),
+      ));
   }
-
 }
