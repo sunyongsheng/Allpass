@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:allpass/utils/string_process.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/utils/string_process.dart';
 
 class CsvHelper {
 
