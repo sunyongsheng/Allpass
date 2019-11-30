@@ -1,12 +1,8 @@
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/utils/csv_helper.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/pages/setting/category_manager_page.dart';
+import 'package:allpass/pages/setting/csv_import_export_page.dart';
 
 /// 设置页面
 class SettingPage extends StatelessWidget {
@@ -20,65 +16,61 @@ class _SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<_SettingPage> {
-  PasswordDao pd = PasswordDao();
-  CardDao cd = CardDao();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("设置", style: AllpassTextUI.mainTitleStyle,),
+        title: Text(
+          "设置",
+          style: AllpassTextUI.mainTitleStyle,
+        ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
       ),
-      body: SingleChildScrollView(child:Column(
+      body: Column(
         children: <Widget>[
-          FlatButton(
-            onPressed: () {
-              pd.deleteTable();
-            },
-            child: Text("删除Pass表"),
-          ),
-          FlatButton(
-            onPressed: () {
-              cd.deleteTable();
-            },
-            child: Text("删除Card表"),
-          ),
-          FlatButton(
-            onPressed: () {
-              Params.paramsInit();
-            },
-            child: Text("重新初始化参数"),
-          ),
-          FlatButton(
-            onPressed: () {
-              Params.labelParamsPersistence();
-              Params.folderParamsPersistence();
-            },
-            child: Text("持久化"),
-          ),
-          FlatButton(
-            onPressed: () async {
-              PasswordDao dao = PasswordDao();
-              CsvHelper helper = CsvHelper();
-              List<PasswordBean> list =  await dao.getAllPasswordBeanList();
-              helper.passwordExportCsv(list);
-            },
-            child: Text("写入Password CSV文件"),
-          ),
-          FlatButton(
-            onPressed: () async {
-              CardDao dao = CardDao();
-              CsvHelper helper = CsvHelper();
-              List<CardBean> list =  await dao.getAllCardBeanList();
-              helper.cardExportCsv(list);
-            },
-            child: Text("Card CSV文件"),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  child: ListTile(
+                    title: Text("标签管理"),
+                    leading: Icon(Icons.label_outline),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryManagerPage("标签")));
+                    },
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
+                  child: ListTile(
+                    title: Text("文件夹管理"),
+                    leading: Icon(Icons.folder_open),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryManagerPage("文件夹")));
+                    },
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
+                  child: ListTile(
+                    title: Text("导入/导出"),
+                    leading: Icon(Icons.import_export),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CsvImportExportPage(),
+                      ));
+                    },
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+              ],
+            ),
           )
         ],
-      ),),
+      ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
     );
   }
