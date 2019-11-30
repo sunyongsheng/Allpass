@@ -41,6 +41,14 @@ class AllpassColorUI {
   ]);
 }
 
+/// 自定义图标
+class CustomIcons {
+  static const IconData chrome = const IconData(0xe684,
+      fontFamily: "IconFont",
+      matchTextDirection: true
+  );
+}
+
 Color getRandomColor(int seed) {
   Random random = Random(seed);
   int i = random.nextInt(AllpassColorUI.allColor.length - 1);
