@@ -28,6 +28,7 @@ class ImportExportPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
       ),
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         children: <Widget>[
           Container(
@@ -89,6 +90,7 @@ class ImportTypeSelectPage extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
       ),
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         children: <Widget>[
           Container(
