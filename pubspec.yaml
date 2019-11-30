@@ -30,6 +30,8 @@ dependencies:
   path_provider: ^1.4.4
   # 密码加密
   cipher2: ^0.3.5
+  # 文件管理
+  flutter_file_picker: ^0.0.3
 
 dev_dependencies:
   flutter_test:
