@@ -49,8 +49,9 @@ class CsvHelper {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  Future<List<PasswordBean>> passwordImportFromCsv(File file) async {
+  Future<List<PasswordBean>> passwordImportFromCsv(String path) async {
     List<PasswordBean> res = List();
+    File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
     String fileContext = file.readAsStringSync();
     List<String> text = fileContext.split("\n");
@@ -81,8 +82,9 @@ class CsvHelper {
   }
 
   /// 从csv文件中导入Card
-  Future<List<CardBean>> cardImportFromCsv(File file) async {
+  Future<List<CardBean>> cardImportFromCsv(String path) async {
     List<CardBean> res = List();
+    File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
     String fileContext = file.readAsStringSync();
     List<String> text = fileContext.split("\n");
