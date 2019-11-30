@@ -66,14 +66,6 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
       actions: <Widget>[
         FlatButton(
           onPressed: () {
-            Navigator.of(context).pop();
-            _addTextController.clear();
-          },
-          child: Text('取消'),
-          textColor: AllpassColorUI.mainColor,
-        ),
-        FlatButton(
-          onPressed: () {
             if (_inputFormatCorr && _addTextController.text != "") {
               if (categoryName == "标签") {
                 if (!Params.labelList.contains(_addTextController.text)) {
@@ -99,6 +91,14 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
             }
           },
           child: Text('提交'),
+          textColor: AllpassColorUI.mainColor,
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            _addTextController.clear();
+          },
+          child: Text('取消'),
           textColor: AllpassColorUI.mainColor,
         ),
       ],
