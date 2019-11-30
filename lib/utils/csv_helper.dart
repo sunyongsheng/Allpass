@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:path_provider/path_provider.dart';
-
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/string_process.dart';
@@ -9,10 +7,9 @@ import 'package:allpass/utils/string_process.dart';
 class CsvHelper {
 
   /// 将PasswordList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  Future<String> passwordExportCsv(List<PasswordBean> list) async {
+  Future<String> passwordExportCsv(List<PasswordBean> list, Directory dst) async {
     if (Platform.isAndroid) {
-      Directory directory = await getExternalStorageDirectory();
-      String path = "${directory.path}/password.csv";
+      String path = "${dst.path}/allpass_password.csv";
       File csv = File(path);
       if (!csv.existsSync()) {
         csv.createSync();
@@ -29,10 +26,9 @@ class CsvHelper {
   }
 
   /// 将CardList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  Future<String> cardExportCsv(List<CardBean> list) async {
+  Future<String> cardExportCsv(List<CardBean> list, Directory dst) async {
     if (Platform.isAndroid) {
-      Directory directory = await getExternalStorageDirectory();
-      String path = "${directory.path}/card.csv";
+      String path = "${dst.path}/allpass_card.csv";
       File csv = File(path);
       if (!csv.existsSync()) {
         csv.createSync();
