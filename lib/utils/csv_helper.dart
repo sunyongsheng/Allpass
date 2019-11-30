@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:allpass/utils/string_process.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:allpass/model/card_bean.dart';
@@ -48,9 +49,8 @@ class CsvHelper {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  Future<List<PasswordBean>> passwordImportFromCsv(String path) async {
+  Future<List<PasswordBean>> passwordImportFromCsv(File file) async {
     List<PasswordBean> res = List();
-    File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
     String fileContext = file.readAsStringSync();
     List<String> text = fileContext.split("\n");
@@ -63,9 +63,7 @@ class CsvHelper {
         if (attribute.length != text[0].split(",").length) continue;
         List<String> label = List();
         if (attribute[6].length > 0) {
-          for (String la in attribute[6].split("~")) {
-            if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
-          }
+          label = str2List(attribute[6]);
         }
         res.add(PasswordBean(
           name: attribute[0] == null ? "" : attribute[0],
@@ -83,9 +81,8 @@ class CsvHelper {
   }
 
   /// 从csv文件中导入Card
-  Future<List<CardBean>> cardImportFromCsv(String path) async {
+  Future<List<CardBean>> cardImportFromCsv(File file) async {
     List<CardBean> res = List();
-    File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
     String fileContext = file.readAsStringSync();
     List<String> text = fileContext.split("\n");
@@ -98,9 +95,7 @@ class CsvHelper {
         if (attribute.length != text[0].split(",").length) continue;
         List<String> label = List();
         if (attribute[7].length > 0) {
-          for (String la in attribute[7].split("~")) {
-            if (la != "" && la != " " && la != "~" && la != ",") label.add(la);
-          }
+          label = str2List(attribute[7]);
         }
         res.add(CardBean(
           name: attribute[0] == null ? "" : attribute[0],
