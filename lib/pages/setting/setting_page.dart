@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import_export_page.dart';
+import 'package:allpass/pages/about_page.dart';
 
 /// 设置页面
 class SettingPage extends StatelessWidget {
@@ -61,6 +62,18 @@ class _SettingPageState extends State<_SettingPage> {
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) => ImportExportPage(),
+                      ));
+                    },
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
+                  child: ListTile(
+                    title: Text("关于"),
+                    leading: Icon(Icons.details),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => AboutPage(),
                       ));
                     },
                   ),
