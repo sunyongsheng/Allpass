@@ -8,6 +8,7 @@ import 'package:flutter_file_picker/flutter_document_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:directory_picker/directory_picker.dart';
 
+import 'package:allpass/params/params.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/card_bean.dart';
@@ -110,6 +111,8 @@ class ImportTypeSelectPage extends StatelessWidget {
                     List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
                     for (var bean in passwordList) {
                       passwordDao.insert(bean);
+                      Params.labelListAdd(bean.label);
+                      Params.folderListAdd(bean.folder);
                     }
                     Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
                   } catch (assertError) {
@@ -136,6 +139,8 @@ class ImportTypeSelectPage extends StatelessWidget {
                     List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
                     for (var bean in cardList) {
                       cardDao.insert(bean);
+                      Params.labelListAdd(bean.label);
+                      Params.folderListAdd(bean.folder);
                     }
                     Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
                   } catch (assertError) {
