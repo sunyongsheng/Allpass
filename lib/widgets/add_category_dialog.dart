@@ -68,17 +68,13 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
           onPressed: () {
             if (_inputFormatCorr && _addTextController.text != "") {
               if (categoryName == "标签") {
-                if (!Params.labelList.contains(_addTextController.text)) {
-                  Params.labelList.add(_addTextController.text);
-                  Params.labelParamsPersistence();
+                if (Params.labelListAdd([_addTextController.text])) {
                   Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
                 }
               } else {
-                if (!Params.folderList.contains(_addTextController.text)) {
-                  Params.folderList.add(_addTextController.text);
-                  Params.folderParamsPersistence();
+                if (Params.folderListAdd(_addTextController.text)) {
                   Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
