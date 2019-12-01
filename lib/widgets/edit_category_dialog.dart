@@ -115,19 +115,23 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
 
   editLabelAndUpdate() async {
     List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    for (var bean in passwordList) {
-      if (bean.label.contains(Params.labelList[_index])) {
-        bean.label.remove(Params.labelList[_index]);
-        bean.label.add(_editTextController.text);
-        passwordDao.updatePasswordBean(bean);
+    if (passwordList != null) {
+      for (var bean in passwordList) {
+        if (bean.label.contains(Params.labelList[_index])) {
+          bean.label.remove(Params.labelList[_index]);
+          bean.label.add(_editTextController.text);
+          passwordDao.updatePasswordBean(bean);
+        }
       }
     }
     List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    for (var bean in cardList) {
-      if (bean.label.contains(Params.labelList[_index])) {
-        bean.label.remove(Params.labelList[_index]);
-        bean.label.add(_editTextController.text);
-        cardDao.updatePasswordBean(bean);
+    if (cardList != null) {
+      for (var bean in cardList) {
+        if (bean.label.contains(Params.labelList[_index])) {
+          bean.label.remove(Params.labelList[_index]);
+          bean.label.add(_editTextController.text);
+          cardDao.updatePasswordBean(bean);
+        }
       }
     }
     Params.labelList[_index] = _editTextController.text;
@@ -136,17 +140,21 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
 
   editFolderAndUpdate() async {
     List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    for (var bean in passwordList) {
-      if (bean.folder == Params.folderList[_index]) {
-        bean.folder = _editTextController.text;
-        passwordDao.updatePasswordBean(bean);
+    if (passwordList != null) {
+      for (var bean in passwordList) {
+        if (bean.folder == Params.folderList[_index]) {
+          bean.folder = _editTextController.text;
+          passwordDao.updatePasswordBean(bean);
+        }
       }
     }
     List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    for (var bean in cardList) {
-      if (bean.folder == Params.folderList[_index]) {
-        bean.folder = _editTextController.text;
-        cardDao.updatePasswordBean(bean);
+    if (cardList != null) {
+      for (var bean in cardList) {
+        if (bean.folder == Params.folderList[_index]) {
+          bean.folder = _editTextController.text;
+          cardDao.updatePasswordBean(bean);
+        }
       }
     }
     Params.folderList[_index] = _editTextController.text;

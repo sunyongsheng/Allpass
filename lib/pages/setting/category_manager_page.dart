@@ -183,17 +183,21 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   deleteLabelAndUpdate(String label) async {
     List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    for (var bean in passwordList) {
-      if (bean.label.contains(label)) {
-        bean.label.remove(label);
-        passwordDao.updatePasswordBean(bean);
+    if (passwordList != null) {
+      for (var bean in passwordList) {
+        if (bean.label.contains(label)) {
+          bean.label.remove(label);
+          passwordDao.updatePasswordBean(bean);
+        }
       }
     }
     List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    for (var bean in cardList) {
-      if (bean.label.contains(label)) {
-        bean.label.remove(label);
-        cardDao.updatePasswordBean(bean);
+    if (cardList != null) {
+      for (var bean in cardList) {
+        if (bean.label.contains(label)) {
+          bean.label.remove(label);
+          cardDao.updatePasswordBean(bean);
+        }
       }
     }
     setState(() {
@@ -205,17 +209,21 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   deleteFolderAndUpdate(String folder) async {
     List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    for (var bean in passwordList) {
-      if (folder == bean.folder) {
-        bean.folder = "默认";
-        passwordDao.updatePasswordBean(bean);
+    if (passwordList != null) {
+      for (var bean in passwordList) {
+        if (folder == bean.folder) {
+          bean.folder = "默认";
+          passwordDao.updatePasswordBean(bean);
+        }
       }
     }
     List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    for (var bean in cardList) {
-      if (folder == bean.folder) {
-        bean.folder = "默认";
-        cardDao.updatePasswordBean(bean);
+    if (cardList != null) {
+      for (var bean in cardList) {
+        if (folder == bean.folder) {
+          bean.folder = "默认";
+          cardDao.updatePasswordBean(bean);
+        }
       }
     }
     setState(() {
