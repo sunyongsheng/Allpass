@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 
 /// 存储系统参数
 class Params {
-
   Params._();
 
   static String appPath;
@@ -12,9 +11,33 @@ class Params {
   static List<String> folderList = List();
   static List<String> labelList = List();
 
+  /// 添加Bean的label
+  static bool labelListAdd(List<String> labels) {
+    int oldLen = labelList.length;
+    for (var label in labels) {
+      if (!labelList.contains(label)) {
+        labelList.add(label);
+      }
+    }
+    if (labelList.length > oldLen) {
+      labelParamsPersistence();
+      return true;
+    }
+    else return false;
+
+  }
+  /// 添加folder
+  static bool folderListAdd(String folder) {
+    if (!folderList.contains(folder)) {
+      folderList.add(folder);
+      folderParamsPersistence();
+      return true;
+    }
+    return false;
+  }
+
   /// 参数初始化
   static paramsInit() async {
-
     folderList.clear();
     labelList.clear();
 
@@ -61,5 +84,4 @@ class Params {
     }
     folderFile.writeAsStringSync(folder, flush: true);
   }
-
 }
