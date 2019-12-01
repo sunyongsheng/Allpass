@@ -37,6 +37,8 @@ dependencies:
   directory_picker: ^1.0.0
   # 打开链接
   url_launcher: ^5.2.7
+  # 状态管理
+  provider: ^3.2.0
 
 dev_dependencies:
   flutter_test:
