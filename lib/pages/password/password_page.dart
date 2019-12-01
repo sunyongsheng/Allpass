@@ -85,6 +85,7 @@ class _PasswordPageState extends State<PasswordPage> {
         ),
         centerTitle: true,
         elevation: 0,
+        brightness: Brightness.light,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
       ),
       body: Column(

@@ -115,6 +115,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
               backgroundColor: Colors.white,
               iconTheme: IconThemeData(color: Colors.black),
               elevation: 0,
+              brightness: Brightness.light,
             ),
             body: SingleChildScrollView(
               child: Column(

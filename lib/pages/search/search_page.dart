@@ -46,6 +46,7 @@ class _SearchPage extends State<SearchPage> {
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         toolbarOpacity: 1,
+        brightness: Brightness.light,
       ),
       body: FutureBuilder(
         future: getSearchResult(),

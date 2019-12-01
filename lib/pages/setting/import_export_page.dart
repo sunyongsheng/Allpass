@@ -22,6 +22,7 @@ class ImportExportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        brightness: Brightness.light,
         title: Text("导入/导出", style: AllpassTextUI.mainTitleStyle,),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -89,6 +90,7 @@ class ImportTypeSelectPage extends StatelessWidget {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
+        brightness: Brightness.light,
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
@@ -162,6 +164,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
+        brightness: Brightness.light,
       ),
       body: Column(
         children: <Widget>[

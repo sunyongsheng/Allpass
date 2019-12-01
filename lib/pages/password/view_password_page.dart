@@ -59,6 +59,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
+        brightness: Brightness.light,
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(

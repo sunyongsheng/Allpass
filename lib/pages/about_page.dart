@@ -13,6 +13,7 @@ class AboutPage extends StatelessWidget {
           style: AllpassTextUI.mainTitleStyle,
         ),
         centerTitle: true,
+        brightness: Brightness.light,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,

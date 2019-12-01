@@ -29,6 +29,7 @@ class _SettingPageState extends State<_SettingPage> {
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
+        brightness: Brightness.light,
       ),
       body: Column(
         children: <Widget>[
@@ -56,6 +57,10 @@ class _SettingPageState extends State<_SettingPage> {
                   padding: EdgeInsets.only(left: 15, right: 15),
                 ),
                 Container(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Divider(thickness: 1,),
+                ),
+                Container(
                   child: ListTile(
                     title: Text("导入/导出"),
                     leading: Icon(Icons.import_export),
@@ -66,6 +71,10 @@ class _SettingPageState extends State<_SettingPage> {
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Divider(thickness: 1,),
                 ),
                 Container(
                   child: ListTile(

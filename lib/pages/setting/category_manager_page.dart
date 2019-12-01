@@ -44,6 +44,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
+        brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
