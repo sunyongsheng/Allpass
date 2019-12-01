@@ -9,7 +9,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Allpass"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/allpass_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -27,6 +27,14 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ShareActivity" android:label="导入到Allpass中">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
     </application>
