@@ -27,7 +27,7 @@ class PasswordDao extends BaseDBProvider {
   /// 删除表中所有内容
   deleteContent() async {
     Database db = await getDataBase();
-    db.execute("TRUNCATE TABLE $name");
+    db.delete(name);
   }
 
   /// 创建表的sql

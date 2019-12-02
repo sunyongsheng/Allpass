@@ -42,7 +42,7 @@ class CardDao extends BaseDBProvider {
   /// 删除表中所有数据
   deleteContent() async {
     Database db = await getDataBase();
-    db.execute("TRUNCATE TABLE $name");
+    db.delete(name);
   }
 
   /// 插入卡片
