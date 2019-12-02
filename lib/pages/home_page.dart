@@ -4,13 +4,13 @@ import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
 import 'package:allpass/pages/setting/setting_page.dart';
 
-class BottomNavigationWidget extends StatefulWidget {
+class HomePage extends StatefulWidget {
 
   @override
-  _BottomNavigationWidget createState() => _BottomNavigationWidget();
+  _HomePage createState() => _HomePage();
 }
 
-class _BottomNavigationWidget extends State<BottomNavigationWidget> {
+class _HomePage extends State<HomePage> {
 
   List<Widget> _pagesList = List();
   int _currentIndex = 0;

@@ -6,7 +6,7 @@ import 'package:allpass/pages/card/card_page.dart';
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/setting/setting_page.dart';
-import 'package:allpass/widgets/bottom_navigation_widget.dart';
+import 'package:allpass/pages/home_page.dart';
 
 /// 登录页
 var loginHandler = Handler(
@@ -15,7 +15,7 @@ var loginHandler = Handler(
 
 /// 主页
 var homeHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<Object>> params) => BottomNavigationWidget()
+  handlerFunc: (BuildContext context, Map<String, List<Object>> params) => HomePage()
 );
 
 /// 密码页
