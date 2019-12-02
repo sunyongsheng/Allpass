@@ -53,24 +53,90 @@ class CsvHelper {
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
     else {
-      assert(text[0] == "name,username,password,url,folder,notes,label,fav", "文件格式不正确！");
+      int nameIndex = -1;
+      int usernameIndex = -1;
+      int passwordIndex = -1;
+      int urlIndex = -1;
+      int folderIndex = -1;
+      int notesIndex = -1;
+      int labelIndex = -1;
+      int favIndex = -1;
+      List<String> index = text[0].split(",");
+      for (int i = 0; i < index.length; i++) {
+        switch (index[i]) {
+          case "name":
+            nameIndex = i;
+            break;
+          case "username":
+            usernameIndex = i;
+            break;
+          case "password":
+            passwordIndex = i;
+            break;
+          case "url":
+            urlIndex = i;
+            break;
+          case "folder":
+            folderIndex = i;
+            break;
+          case "notes":
+            notesIndex = i;
+            break;
+          case "label":
+            labelIndex = i;
+            break;
+          case "fav":
+            favIndex = i;
+            break;
+        }
+      }
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
-        if (attribute.length != text[0].split(",").length) continue;
+        if (attribute.length != index.length) continue;
         List<String> label = List();
-        if (attribute[6].length > 0) {
-          label = str2List(attribute[6]);
+        String name = "";
+        String username = "";
+        String password = "";
+        String url = "";
+        String folder = "默认";
+        String notes = "";
+        int fav = 0;
+        if (nameIndex != -1) {
+          name = attribute[nameIndex] == null ? "" : attribute[nameIndex];
+        }
+        if (usernameIndex != -1) {
+          username = attribute[usernameIndex] == null ? "" : attribute[usernameIndex];
+        }
+        if (passwordIndex != -1) {
+          password = attribute[passwordIndex] == null ? "" : attribute[passwordIndex];
+        }
+        if (urlIndex != -1) {
+          url = attribute[urlIndex] == null ? "" : attribute[urlIndex];
+        }
+        if (folderIndex != -1) {
+          folder = attribute[folderIndex] == null ? "默认" : attribute[folderIndex];
+        }
+        if (notesIndex != -1) {
+          notes = attribute[notesIndex] == null ? "" : attribute[notesIndex];
+        }
+        if (labelIndex != -1) {
+          if (attribute[labelIndex].length > 0) {
+            label = str2List(attribute[labelIndex]);
+          }
+        }
+        if (favIndex != -1) {
+          fav = int.parse(attribute[favIndex] == null ? "0" : attribute[favIndex]);
         }
         res.add(PasswordBean(
-          name: attribute[0] == null ? "" : attribute[0],
-          username: attribute[1] == null ? "" : attribute[1],
-          password: attribute[2] == null ? "" : attribute[2],
-          url: attribute[3] == null ? "" : attribute[3],
-          folder: attribute[4] == null ? "默认" : attribute[4],
-          notes: attribute[5] == null ? "" : attribute[5],
+          name: name,
+          username: username,
+          password: password,
+          url: url,
+          folder: folder,
+          notes: notes,
           label: label,
-          fav: int.parse(attribute[7]) == null ? "" : int.parse(attribute[7]),
+          fav: fav,
         ));
       }
     }
@@ -86,25 +152,99 @@ class CsvHelper {
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
     else {
-      assert(text[0] == "name,ownerName,cardId,url,telephone,folder,notes,label,fav", "文件格式不正确！");
+      int nameIndex = -1;
+      int ownerNameIndex = -1;
+      int cardIdIndex = -1;
+      int telephoneIndex = -1;
+      int urlIndex = -1;
+      int folderIndex = -1;
+      int notesIndex = -1;
+      int labelIndex = -1;
+      int favIndex = -1;
+      List<String> index = text[0].split(",");
+      for (int i = 0; i < index.length; i++) {
+        switch (index[i]) {
+          case "name":
+            nameIndex = i;
+            break;
+          case "ownerName":
+            ownerNameIndex = i;
+            break;
+          case "cardId":
+            cardIdIndex = i;
+            break;
+          case "url":
+            urlIndex = i;
+            break;
+          case "telephone":
+            telephoneIndex = i;
+            break;
+          case "folder":
+            folderIndex = i;
+            break;
+          case "notes":
+            notesIndex = i;
+            break;
+          case "label":
+            labelIndex = i;
+            break;
+          case "fav":
+            favIndex = i;
+            break;
+        }
+      }
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
-        if (attribute.length != text[0].split(",").length) continue;
+        if (attribute.length != index.length) continue;
         List<String> label = List();
-        if (attribute[7].length > 0) {
-          label = str2List(attribute[7]);
+        String name = "";
+        String ownerName = "";
+        String cardId = "";
+        String url = "";
+        String telephone = "";
+        String folder = "默认";
+        String notes = "";
+        int fav = 0;
+        if (nameIndex != -1) {
+          name = attribute[nameIndex] == null ? "" : attribute[nameIndex];
+        }
+        if (ownerNameIndex != -1) {
+          ownerName = attribute[ownerNameIndex] == null ? "" : attribute[ownerNameIndex];
+        }
+        if (cardIdIndex != -1) {
+          cardId = attribute[cardIdIndex] == null ? "" : attribute[cardIdIndex];
+        }
+        if (urlIndex != -1) {
+          url = attribute[urlIndex] == null ? "" : attribute[urlIndex];
+        }
+        if (telephoneIndex != -1) {
+          telephone = attribute[telephoneIndex] == null ? "" : attribute[telephoneIndex];
+        }
+        if (folderIndex != -1) {
+          folder = attribute[folderIndex] == null ? "默认" : attribute[folderIndex];
+        }
+        if (notesIndex != -1) {
+          notes = attribute[notesIndex] == null ? "" : attribute[notesIndex];
+        }
+        if (labelIndex != -1) {
+          if (attribute[labelIndex].length > 0) {
+            label = str2List(attribute[labelIndex]);
+          }
+        }
+        if (favIndex != -1) {
+          fav = int.parse(attribute[favIndex] == null ? "0" : attribute[favIndex]);
         }
         res.add(CardBean(
-          name: attribute[0] == null ? "" : attribute[0],
-          ownerName: attribute[1] == null ? "" : attribute[1],
-          cardId: attribute[2] == null ? "" : attribute[2],
-          url: attribute[3] == null ? "" : attribute[3],
-          telephone: attribute[4] == null ? "" : attribute[4],
-          folder: attribute[5] == null ? "" : attribute[5],
-          notes: attribute[6] == null ? "" : attribute[6],
+          name: name,
+          ownerName: ownerName,
+          cardId: cardId,
+          url: url,
+          telephone: telephone,
+          folder: folder,
+          notes: notes,
           label: label,
-          fav: int.parse(attribute[8]) == null ? 0 : int.parse(attribute[8]),
+          fav: fav,
         ));
       }
     }
