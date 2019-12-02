@@ -12,12 +12,11 @@ class NavigationUtils {
       Duration transitionDuration: const Duration(milliseconds: 250),
       RouteTransitionsBuilder transitionBuilder}) {
     Application.router.navigateTo(context, path,
-      replace: replace,
-      clearStack: clearStack,
-      transitionDuration: transitionDuration,
-      transitionBuilder: transitionBuilder,
-      transition: TransitionType.material
-    );
+        replace: replace,
+        clearStack: clearStack,
+        transitionDuration: transitionDuration,
+        transitionBuilder: transitionBuilder,
+        transition: TransitionType.material);
   }
 
   static void goLoginPage(BuildContext context) {
