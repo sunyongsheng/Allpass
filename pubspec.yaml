@@ -41,6 +41,10 @@ dependencies:
   provider: ^3.2.0
   # 路由管理
   fluro: ^1.5.1
+  # 持久化
+  shared_preferences: ^0.5.4+6
+  # 依赖注入
+  get_it: ^3.0.3
 
 dev_dependencies:
   flutter_test:
