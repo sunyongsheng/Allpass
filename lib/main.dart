@@ -2,16 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluro/fluro.dart';
 
+import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/params/params.dart';
-import 'package:allpass/widgets/bottom_navigation_widget.dart';
+import 'package:allpass/application.dart';
+import 'package:allpass/route/routes.dart';
 
 void main() {
   Params.paramsInit();
+  Router router = Router();
+  Routes.configureRoutes(router);
+  Application.router = router;
+  Application.setupLocator();
+  Application.initSp();
+
   if (Platform.isAndroid) {
     //设置Android头部的导航栏透明
     SystemUiOverlayStyle systemUiOverlayStyle =
-    SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
   runApp(Allpass());
@@ -23,7 +32,8 @@ class Allpass extends StatelessWidget {
     return MaterialApp(
       title: 'Allpass',
       theme: ThemeData.light(),
-      home: BottomNavigationWidget(),
+      home: LoginPage(),
+      onGenerateRoute: Application.router.generator,
     );
   }
 }
