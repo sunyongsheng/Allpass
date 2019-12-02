@@ -22,7 +22,7 @@ class _LoginPage extends State<LoginPage> {
 
   String _username;
   String _password;
-  int inputErrorTimes = 0;
+  int inputErrorTimes = 0;  // 超过五次自动清除所有内容
 
   @override
   void initState() {
@@ -81,7 +81,7 @@ class _LoginPage extends State<LoginPage> {
                           if (inputErrorTimes >= 5) {
                             PasswordDao().deleteContent();
                             CardDao().deleteContent();
-                            Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据！");
+                            Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
                             Application.sp.clear();
                           } else {
                             if (Application.sp.containsKey(_username)) {
@@ -90,11 +90,11 @@ class _LoginPage extends State<LoginPage> {
                                 Fluttertoast.showToast(msg: "登录成功");
                               } else {
                                 inputErrorTimes++;
-                                Fluttertoast.showToast(msg: "密码错误，错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+                                Fluttertoast.showToast(msg: "密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
                               }
                             } else {
                               inputErrorTimes++;
-                              Fluttertoast.showToast(msg: "用户名错误，错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+                              Fluttertoast.showToast(msg: "用户名错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
                             }
                           }
                         },
