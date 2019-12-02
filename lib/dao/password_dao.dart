@@ -24,6 +24,12 @@ class PasswordDao extends BaseDBProvider {
     db.rawDelete("DROP TABLE $name");
   }
 
+  /// 删除表中所有内容
+  deleteContent() async {
+    Database db = await getDataBase();
+    db.execute("TRUNCATE TABLE $name");
+  }
+
   // 创建表的sql
   @override
   tableSqlString() {

@@ -39,6 +39,12 @@ class CardDao extends BaseDBProvider {
     db.rawDelete("DROP TABLE $name");
   }
 
+  /// 删除表中所有数据
+  deleteContent() async {
+    Database db = await getDataBase();
+    db.execute("TRUNCATE TABLE $name");
+  }
+
   // 插入卡片
   Future insert(CardBean bean) async {
     Database db = await getDataBase();
