@@ -9,13 +9,14 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
 
-void main() {
-  Params.paramsInit();
+void main() async{
   Router router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
   Application.setupLocator();
-  Application.initSp();
+  await Application.initSp();
+
+  Params.paramsInit();
 
   if (Platform.isAndroid) {
     //设置Android头部的导航栏透明
