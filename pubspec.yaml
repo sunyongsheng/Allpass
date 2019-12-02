@@ -39,6 +39,8 @@ dependencies:
   url_launcher: ^5.2.7
   # 状态管理
   provider: ^3.2.0
+  # 路由管理
+  fluro: ^1.5.1
 
 dev_dependencies:
   flutter_test:
