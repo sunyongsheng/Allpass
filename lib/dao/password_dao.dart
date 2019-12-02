@@ -7,10 +7,10 @@ import 'package:allpass/utils/string_process.dart';
 
 class PasswordDao extends BaseDBProvider {
 
-  // 表名
+  /// 表名
   final String name = "allpass_password";
 
-  // 表主键字段
+  /// 表主键字段
   final String columnId = "uniqueKey";
 
   @override
@@ -18,7 +18,7 @@ class PasswordDao extends BaseDBProvider {
     return name;
   }
 
-  // 删除表
+  /// 删除表
   deleteTable() async {
     Database db = await getDataBase();
     db.rawDelete("DROP TABLE $name");
@@ -30,7 +30,7 @@ class PasswordDao extends BaseDBProvider {
     db.execute("TRUNCATE TABLE $name");
   }
 
-  // 创建表的sql
+  /// 创建表的sql
   @override
   tableSqlString() {
     return tableBaseString(name, columnId) +
@@ -46,14 +46,14 @@ class PasswordDao extends BaseDBProvider {
       ''';
   }
 
-  // 插入密码
+  /// 插入密码
   Future insert(PasswordBean bean) async {
     Database db = await getDataBase();
     Map<String, dynamic> map = await PasswordBean.passwordBean2Map(bean);
     return await db.insert(name, map);
   }
 
-  // 根据uniqueKey查询记录
+  /// 根据uniqueKey查询记录
   Future<PasswordBean> getPasswordBeanById(String id) async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
@@ -63,7 +63,7 @@ class PasswordDao extends BaseDBProvider {
     return null;
   }
 
-  // 获取所有的密码List
+  /// 获取所有的密码List
   Future<List<PasswordBean>> getAllPasswordBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
@@ -77,13 +77,13 @@ class PasswordDao extends BaseDBProvider {
     return null;
   }
 
-  // 删除指定uniqueKey的密码
+  /// 删除指定uniqueKey的密码
   Future<int> deletePasswordBeanById(int key) async {
     Database db = await getDataBase();
     return await db.delete(name, where: '$columnId = ?', whereArgs: [key]);
   }
 
-  // 更新
+  /// 更新
   Future<int> updatePasswordBean(PasswordBean bean) async {
     Database db = await getDataBase();
     String labels = list2Str(bean.label);
