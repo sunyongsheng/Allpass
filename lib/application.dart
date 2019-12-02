@@ -10,7 +10,7 @@ class Application {
   static Router router;
   static GlobalKey<NavigatorState> key = GlobalKey();
   static SharedPreferences sp;
-  static GetIt getIt = GetIt.asNewInstance();
+  static GetIt getIt = GetIt.instance;
 
   static initSp() async {
     sp = await SharedPreferences.getInstance();
