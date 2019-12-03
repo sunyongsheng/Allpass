@@ -129,7 +129,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             child: ListTile(
               title: Text("退出"),
               leading: Icon(Icons.exit_to_app),
-              onTap: () {},
+              onTap: () => NavigationUtils.goLoginPage(context),
             ),
           )
         ],
