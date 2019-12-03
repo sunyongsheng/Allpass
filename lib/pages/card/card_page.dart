@@ -87,6 +87,7 @@ class _CardPageState extends State<CardPage> {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
         brightness: Brightness.light,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[

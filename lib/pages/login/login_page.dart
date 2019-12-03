@@ -47,6 +47,7 @@ class _LoginPage extends State<LoginPage> {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
         brightness: Brightness.light,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(

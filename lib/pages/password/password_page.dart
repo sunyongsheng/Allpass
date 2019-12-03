@@ -87,6 +87,7 @@ class _PasswordPageState extends State<PasswordPage> {
         elevation: 0,
         brightness: Brightness.light,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[
