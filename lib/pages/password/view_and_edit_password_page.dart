@@ -102,7 +102,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   if (_tempData.username.length >= 1 && _tempData.password.length >= 1 && _tempData.url.length >= 1) {
                     Navigator.pop<PasswordBean>(context, _tempData);
                   } else {
-                    Fluttertoast.showToast(msg: "用户名、密码和URL不允许为空！");
+                    Fluttertoast.showToast(msg: "用户名、密码和链接不允许为空！");
                   }
                 }
               },
@@ -139,7 +139,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "URL",
+                    "链接",
                     style: AllpassTextUI.firstTitleStyleBlue,
                   ),
                   Row(

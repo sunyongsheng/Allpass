@@ -200,7 +200,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "URL",
+                          "链接",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
                         Row(
