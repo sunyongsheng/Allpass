@@ -7,6 +7,8 @@ class Params {
 
   static String appPath;
 
+  static String username; // 当前使用者用户名
+
   static List<String> folderList = List();
   static List<String> labelList = List();
 
@@ -61,6 +63,13 @@ class Params {
     //   if (l != "" && l != '~' && l != ',' && l != " ") labelList.add(l);
     // }
 
+    // 寻找当前用户名
+    for (var it in Application.sp.getKeys()) {
+      if (it != "label" && it != "folder") {
+        username = it;
+        break;
+      }
+    }
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
