@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/pages/setting/account_manage_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import_export_page.dart';
 import 'package:allpass/pages/about_page.dart';
@@ -30,12 +31,27 @@ class _SettingPageState extends State<_SettingPage> {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
         brightness: Brightness.light,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[
           Expanded(
             child: ListView(
               children: <Widget>[
+                Container(
+                  child: ListTile(
+                    title: Text("主账号管理"),
+                    leading: Icon(Icons.account_circle),
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AccountManagePage()));
+                    },
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Divider(thickness: 1,),
+                ),
                 Container(
                   child: ListTile(
                     title: Text("标签管理"),
