@@ -1,13 +1,14 @@
-import 'package:allpass/application.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/params/params.dart';
-import 'package:allpass/utils/navigation_utils.dart';
 import 'package:flutter/material.dart';
 
-import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/widgets/modify_password_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:allpass/application.dart';
+import 'package:allpass/params/params.dart';
+import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/navigation_utils.dart';
+import 'package:allpass/widgets/modify_password_dialog.dart';
+import 'package:allpass/dao/card_dao.dart';
+import 'package:allpass/dao/password_dao.dart';
 
 /// 主账号管理页
 class AccountManagePage extends StatefulWidget {
