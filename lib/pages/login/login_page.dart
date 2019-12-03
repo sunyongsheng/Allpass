@@ -110,6 +110,7 @@ class _LoginPage extends State<LoginPage> {
                             // 判断是否与其他key重复
                             if (!Application.sp.containsKey(_usernameController.text)) {
                               Application.sp.setString(_usernameController.text, _passwordController.text);
+                              Params.username = _usernameController.text;
                               inputErrorTimes = 0;
                               Fluttertoast.showToast(msg: "注册成功");
                             } else {
