@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/pages/setting/account_manage_page.dart';
+import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import_export_page.dart';
 import 'package:allpass/pages/about_page.dart';
@@ -43,7 +43,7 @@ class _SettingPageState extends State<_SettingPage> {
                     title: Text("主账号管理"),
                     leading: Icon(Icons.account_circle),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AccountManagePage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AccountManagerPage()));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),

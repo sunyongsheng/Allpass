@@ -11,14 +11,14 @@ import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 
 /// 主账号管理页
-class AccountManagePage extends StatefulWidget {
+class AccountManagerPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _AccountManagePage();
+    return _AccountManagerPage();
   }
 }
 
-class _AccountManagePage extends State<AccountManagePage> {
+class _AccountManagerPage extends State<AccountManagerPage> {
 
   var passwordController = TextEditingController();
 
