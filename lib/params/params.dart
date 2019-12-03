@@ -7,7 +7,7 @@ class Params {
 
   static String appPath;
 
-  static String username; // 当前使用者用户名
+  static String username = ""; // 当前使用者用户名
 
   static List<String> folderList = List();
   static List<String> labelList = List();
