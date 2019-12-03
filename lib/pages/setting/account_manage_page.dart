@@ -93,6 +93,7 @@ class _AccountManagePage extends State<AccountManagePage> {
                                       PasswordDao().deleteContent();
                                       CardDao().deleteContent();
                                       Application.sp.remove(Params.username);
+                                      Params.username = "";
                                       Fluttertoast.showToast(msg: "已删除所有数据");
                                       passwordController.clear();
                                       NavigationUtils.goLoginPage(context);
