@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/params/params.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -28,14 +29,7 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
-    String oldUsername;
-    for (var i in Application.sp.getKeys()) {
-      if (i != "label" && i != "folder") {
-        oldUsername = i;
-        break;
-      }
-    }
-    _usernameController = TextEditingController(text: oldUsername);
+    _usernameController = TextEditingController(text: Params.username);
     _passwordController = TextEditingController();
     super.initState();
   }

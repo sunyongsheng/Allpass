@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/application.dart';
+import 'package:allpass/params/params.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 
 /// 修改密码对话框
 class ModifyPasswordDialog extends StatelessWidget {
@@ -61,17 +62,10 @@ class ModifyPasswordDialog extends StatelessWidget {
         FlatButton(
           child: Text("提交"),
           onPressed: () {
-            String username;
-            for (var it in Application.sp.getKeys()) {
-              if (it != "label" && it != "folder") {
-                username = it;
-                break;
-              }
-            }
-            String old = Application.sp.get(username);
+            String old = Application.sp.get(Params.username);
             if (old == oldPasswordController.text) {
               if (newPasswordController.text == secondInputController.text) {
-                Application.sp.setString(username, newPasswordController.text);
+                Application.sp.setString(Params.username, newPasswordController.text);
                 Fluttertoast.showToast(msg: "修改成功");
                 Navigator.pop(context);
               } else {
