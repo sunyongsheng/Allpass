@@ -84,6 +84,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                               content: TextField(
                                 controller: passwordController,
                                 obscureText: true,
+                                autofocus: true,
                               ),
                               actions: <Widget>[
                                 FlatButton(
