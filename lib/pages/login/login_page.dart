@@ -23,8 +23,6 @@ class _LoginPage extends State<LoginPage> {
   var _usernameController;
   var _passwordController;
 
-  String _username;
-  String _password;
   int inputErrorTimes = 0;  // 超过五次自动清除所有内容
 
   @override
@@ -61,9 +59,6 @@ class _LoginPage extends State<LoginPage> {
                         labelText: "用户名",
                         prefixIcon: Icon(Icons.person)
                     ),
-                    onChanged: (text) {
-                      _username = text;
-                    },
                   ),
                 ),
                 Padding(
@@ -75,9 +70,6 @@ class _LoginPage extends State<LoginPage> {
                       prefixIcon: Icon(Icons.lock),
                       labelText: "密码",
                     ),
-                    onChanged: (text) {
-                      _password = text;
-                    },
                   ),
                 ),
                 Row(
@@ -94,7 +86,7 @@ class _LoginPage extends State<LoginPage> {
                           Application.sp.clear();
                         } else {
                           if (Application.sp.containsKey(_usernameController.text)) {
-                            if (_password == Application.sp.getString(_usernameController.text)) {
+                            if (_passwordController.text == Application.sp.getString(_usernameController.text)) {
                               NavigationUtils.goHomePage(context);
                               Fluttertoast.showToast(msg: "登录成功");
                             } else {
@@ -114,10 +106,10 @@ class _LoginPage extends State<LoginPage> {
                         // 判断是否已有账号存在，sp中已有folder和label两个key
                         if (Application.sp.getKeys().length < 3) {
                           // 判断用户名和密码长度
-                          if (_username.length >= 3 && _password.length >= 3) {
+                          if (_usernameController.text.length >= 3 && _passwordController.text.length >= 3) {
                             // 判断是否与其他key重复
-                            if (!Application.sp.containsKey(_username)) {
-                              Application.sp.setString(_username, _password);
+                            if (!Application.sp.containsKey(_usernameController.text)) {
+                              Application.sp.setString(_usernameController.text, _passwordController.text);
                               inputErrorTimes = 0;
                               Fluttertoast.showToast(msg: "注册成功");
                             } else {
