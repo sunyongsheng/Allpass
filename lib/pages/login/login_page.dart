@@ -121,6 +121,12 @@ class _LoginPage extends State<LoginPage> {
                           Fluttertoast.showToast(msg: "已有账号注册过，只允许单账号");
                         }
                       },
+                    ),
+                    FlatButton(
+                      child: Text("使用生物识别方式"),
+                      onPressed: () {
+                        NavigationUtils.goAuthLoginPage(context);
+                      },
                     )
                   ],
                 )

@@ -24,16 +24,29 @@ class AuthLoginPage extends StatelessWidget {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body:Center(
-          child: ListTile(
-            title: Text("请使用指纹登陆"),
-            onTap: () async {
-              var authSucceed = await _localAuthService.authenticate();
-              if (authSucceed) {
-                NavigationUtils.goHomePage(context);
-              } else {
-                Fluttertoast.showToast(msg: "认证失败，请重试");
-              }
-            },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text("使用指纹登录"),
+                autofocus: true,
+                onPressed: () async {
+                  var authSucceed = await _localAuthService.authenticate();
+                  if (authSucceed) {
+                    Fluttertoast.showToast(msg: "验证成功");
+                    NavigationUtils.goHomePage(context);
+                  } else {
+                    Fluttertoast.showToast(msg: "认证失败，请重试");
+                  }
+                },
+              ),
+              FlatButton(
+                child: Text("使用密码登录"),
+                onPressed: () {
+                  NavigationUtils.goLoginPage(context);
+                },
+              )
+            ],
           )
       ),
     );
