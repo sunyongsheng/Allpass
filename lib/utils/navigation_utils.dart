@@ -23,6 +23,10 @@ class NavigationUtils {
     _navigateTo(context, Routes.login, clearStack: true);
   }
 
+  static void goAuthLoginPage(BuildContext context) {
+    _navigateTo(context, Routes.authLogin, clearStack: true);
+  }
+
   static void goHomePage(BuildContext context) {
     _navigateTo(context, Routes.home, clearStack: true);
   }

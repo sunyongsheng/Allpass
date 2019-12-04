@@ -9,6 +9,7 @@ class Routes {
   static String root = "/";
   static String home = "/home";
   static String login = "/login";
+  static String authLogin = "/authlogin";
   static String password = "/password";
   static String card = "/card";
   static String setting = "/setting";
@@ -25,5 +26,6 @@ class Routes {
     router.define(password, handler: passwordHandler);
     router.define(card, handler: cardHandler);
     router.define(setting, handler: settingHandler);
+    router.define(authLogin, handler: authLoginHandler);
   }
 }
