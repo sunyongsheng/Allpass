@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:local_auth/local_auth.dart';
+
 import 'package:allpass/application.dart';
+import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
@@ -53,14 +57,19 @@ class _SettingPageState extends State<_SettingPage> {
                 ),
                 Container(
                   child: ListTile(
-                    title: Text("指纹登录"),
+                    title: Text("生物识别"),
                     leading: Icon(Icons.fingerprint),
                     trailing: Switch(
-                      value: Application.sp.getBool("biometrics") == null
-                          ? false
-                          : Application.sp.getBool("biometrics"),
-                      onChanged: (sw) {
-                        Application.sp.setBool("biometrics", sw);
+                      value: Params.enabledBiometrics,
+                      onChanged: (sw) async {
+                        if (await LocalAuthentication().canCheckBiometrics) {
+                          Application.sp.setBool("biometrics", sw);
+                          Params.enabledBiometrics = sw;
+                        } else {
+                          Application.sp.setBool("biometrics", false);
+                          Params.enabledBiometrics = false;
+                          Fluttertoast.showToast(msg: "您的设备似乎不支持生物识别");
+                        }
                       },
                     ),
                   ),
