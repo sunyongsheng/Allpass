@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^0.5.4+6
   # 依赖注入
   get_it: ^3.0.3
+  # 生物识别
+  local_auth: ^0.6.1
 
 dev_dependencies:
   flutter_test:
