@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
@@ -18,7 +19,6 @@ class _SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<_SettingPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,21 +43,44 @@ class _SettingPageState extends State<_SettingPage> {
                     title: Text("主账号管理"),
                     leading: Icon(Icons.account_circle),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AccountManagerPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AccountManagerPage()));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
                 ),
                 Container(
+                  child: ListTile(
+                    title: Text("指纹登录"),
+                    leading: Icon(Icons.fingerprint),
+                    trailing: Switch(
+                      value: Application.sp.getBool("biometrics") == null
+                          ? false
+                          : Application.sp.getBool("biometrics"),
+                      onChanged: (sw) {
+                        Application.sp.setBool("biometrics", sw);
+                      },
+                    ),
+                  ),
+                  padding: EdgeInsets.only(left: 15, right: 15),
+                ),
+                Container(
                   padding: EdgeInsets.only(left: 30, right: 30),
-                  child: Divider(thickness: 1,),
+                  child: Divider(
+                    thickness: 1,
+                  ),
                 ),
                 Container(
                   child: ListTile(
                     title: Text("标签管理"),
                     leading: Icon(Icons.label_outline),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryManagerPage("标签")));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CategoryManagerPage("标签")));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
@@ -67,39 +90,51 @@ class _SettingPageState extends State<_SettingPage> {
                     title: Text("文件夹管理"),
                     leading: Icon(Icons.folder_open),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryManagerPage("文件夹")));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CategoryManagerPage("文件夹")));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 30, right: 30),
-                  child: Divider(thickness: 1,),
+                  child: Divider(
+                    thickness: 1,
+                  ),
                 ),
                 Container(
                   child: ListTile(
                     title: Text("导入/导出"),
                     leading: Icon(Icons.import_export),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => ImportExportPage(),
-                      ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImportExportPage(),
+                          ));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 30, right: 30),
-                  child: Divider(thickness: 1,),
+                  child: Divider(
+                    thickness: 1,
+                  ),
                 ),
                 Container(
                   child: ListTile(
                     title: Text("关于"),
                     leading: Icon(Icons.details),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => AboutPage(),
-                      ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AboutPage(),
+                          ));
                     },
                   ),
                   padding: EdgeInsets.only(left: 15, right: 15),
