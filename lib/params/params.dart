@@ -65,6 +65,15 @@ class Params {
     }
   }
 
+  /// 清空参数
+  static paramsClear() async {
+    username = "";
+    password = "";
+    enabledBiometrics = false;
+    folderList.clear();
+    labelList.clear();
+  }
+
   /// 标签参数持久化
   static labelParamsPersistence() {
     // 采用SharedPreferences持久化数据
