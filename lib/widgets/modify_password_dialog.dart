@@ -62,14 +62,14 @@ class ModifyPasswordDialog extends StatelessWidget {
         FlatButton(
           child: Text("提交"),
           onPressed: () {
-            String old = Application.sp.get(Params.username);
-            if (old == oldPasswordController.text) {
-              if (newPasswordController.text == secondInputController.text) {
+            if (Params.password == oldPasswordController.text) {
+              if (newPasswordController.text.length >= 6
+                  && newPasswordController.text == secondInputController.text) {
                 Application.sp.setString(Params.username, newPasswordController.text);
                 Fluttertoast.showToast(msg: "修改成功");
                 Navigator.pop(context);
               } else {
-                Fluttertoast.showToast(msg: "两次密码输入不一致！");
+                Fluttertoast.showToast(msg: "密码过短或两次密码输入不一致！");
               }
             } else {
               Fluttertoast.showToast(msg: "输入旧密码错误！");
