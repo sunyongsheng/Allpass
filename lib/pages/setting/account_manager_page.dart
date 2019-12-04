@@ -90,11 +90,11 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                                 FlatButton(
                                   child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
                                   onPressed: () {
-                                    if (passwordController.text == Application.sp.get(Params.username)) {
+                                    if (passwordController.text == Params.password) {
                                       PasswordDao().deleteContent();
                                       CardDao().deleteContent();
-                                      Application.sp.remove(Params.username);
-                                      Params.username = "";
+                                      Application.sp.clear();
+                                      Params.paramsClear();
                                       Fluttertoast.showToast(msg: "已删除所有数据");
                                       passwordController.clear();
                                       NavigationUtils.goLoginPage(context);
@@ -129,7 +129,9 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             child: ListTile(
               title: Text("退出"),
               leading: Icon(Icons.exit_to_app),
-              onTap: () => NavigationUtils.goLoginPage(context),
+              onTap: () => Params.enabledBiometrics
+                  ? NavigationUtils.goAuthLoginPage(context)
+                  : NavigationUtils.goLoginPage(context),
             ),
           )
         ],
