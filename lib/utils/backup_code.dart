@@ -120,3 +120,41 @@
 // });
 // },
 // )
+
+/// 参数初始化和持久化
+// Directory appDocDir = await getApplicationDocumentsDirectory();
+// appPath = appDocDir.path;
+//
+// final folderFile = File("$appPath/folder.appt"); // all_pass_plain_text
+// if (!folderFile.existsSync()) {
+//   folderFile.createSync();
+// }
+// String folder = folderFile.readAsStringSync();
+// for (String f in folder.split(",")) {
+//   if (f != "" && f != '~' && f != ',' && f != " ") folderList.add(f);
+// }
+//
+// final labelFile = File("$appPath/label.appt");
+// if (!labelFile.existsSync()) {
+//   labelFile.createSync();
+// }
+// String label = labelFile.readAsStringSync();
+// for (String l in label.split(",")) {
+//   if (l != "" && l != '~' && l != ',' && l != " ") labelList.add(l);
+// }
+
+// final labelFile = File("$appPath/label.appt");
+// String label = "";
+// for (var s in labelList) {
+//   label += s;
+//   if (s != labelList.last) label += ",";
+// }
+// labelFile.writeAsStringSync(label, flush: true);
+
+// final folderFile = File("$appPath/folder.appt");
+// String folder = "";
+// for (var s in folderList) {
+//   folder += s;
+//   if (s != folderList.last) folder += ",";
+// }
+// folderFile.writeAsStringSync(folder, flush: true);
