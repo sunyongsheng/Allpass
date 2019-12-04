@@ -65,7 +65,7 @@ class Params {
 
     // 寻找当前用户名
     for (var it in Application.sp.getKeys()) {
-      if (it != "label" && it != "folder") {
+      if (it != "label" && it != "folder" && it != "biometrics") {
         username = it;
         break;
       }
