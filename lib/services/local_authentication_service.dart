@@ -23,7 +23,7 @@ class LocalAuthenticationService {
           }
         }
         isAuthenticated = await _auth.authenticateWithBiometrics(
-          localizedReason: 'authenticate to access',
+          localizedReason: '授权以访问账号',
           useErrorDialogs: true,
           stickyAuth: true,
         );
