@@ -41,7 +41,6 @@ class _LoginPage extends State<LoginPage> {
         brightness: Brightness.light,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,24 +77,25 @@ class _LoginPage extends State<LoginPage> {
                     FlatButton(
                       child: Text("登录"),
                       color: Colors.grey[200],
-                      onPressed: () {
+                      onPressed: () async {
                         if (inputErrorTimes >= 5) {
                           PasswordDao().deleteContent();
                           CardDao().deleteContent();
+                          Params.paramsClear();
+                          await Application.sp.clear();
                           Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
-                          Application.sp.clear();
                         } else {
-                          if (Application.sp.containsKey(_usernameController.text)) {
-                            if (_passwordController.text == Application.sp.getString(_usernameController.text)) {
+                          if (Params.username != "" && Params.password != "") {
+                            if (Params.username == _usernameController.text
+                                && Params.password == _passwordController.text) {
                               NavigationUtils.goHomePage(context);
                               Fluttertoast.showToast(msg: "登录成功");
                             } else {
                               inputErrorTimes++;
-                              Fluttertoast.showToast(msg: "密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+                              Fluttertoast.showToast(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
                             }
                           } else {
-                            inputErrorTimes++;
-                            Fluttertoast.showToast(msg: "用户名错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+                            Fluttertoast.showToast(msg: "当前不存在用户，请先注册！");
                           }
                         }
                       },
@@ -103,21 +103,19 @@ class _LoginPage extends State<LoginPage> {
                     FlatButton(
                       child: Text("注册"),
                       onPressed: () {
-                        // 判断是否已有账号存在，sp中已有folder和label两个key
-                        if (Application.sp.getKeys().length < 3) {
+                        // 判断是否已有账号存在
+                        if (Application.sp.getString("username") == null) {
                           // 判断用户名和密码长度
-                          if (_usernameController.text.length >= 3 && _passwordController.text.length >= 3) {
-                            // 判断是否与其他key重复
-                            if (!Application.sp.containsKey(_usernameController.text)) {
-                              Application.sp.setString(_usernameController.text, _passwordController.text);
-                              Params.username = _usernameController.text;
-                              inputErrorTimes = 0;
-                              Fluttertoast.showToast(msg: "注册成功");
-                            } else {
-                              Fluttertoast.showToast(msg: "用户名不允许为folder和label！");
-                            }
+                          if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
+                            Application.sp.setString("username", _usernameController.text);
+                            Application.sp.setString("password", _passwordController.text);
+                            Params.username = _usernameController.text;
+                            Params.password = _passwordController.text;
+                            Params.enabledBiometrics = false;
+                            inputErrorTimes = 0;
+                            Fluttertoast.showToast(msg: "注册成功");
                           } else {
-                            Fluttertoast.showToast(msg: "用户名或密码长度必须大于3！");
+                            Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
                           }
                         } else {
                           Fluttertoast.showToast(msg: "已有账号注册过，只允许单账号");
