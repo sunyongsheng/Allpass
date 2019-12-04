@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:allpass/pages/login/login_page.dart';
+import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
@@ -33,7 +34,7 @@ class Allpass extends StatelessWidget {
     return MaterialApp(
       title: 'Allpass',
       theme: ThemeData.light(),
-      home: LoginPage(),
+      home: Params.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
     );
   }
