@@ -5,7 +5,8 @@ import 'package:allpass/utils/string_process.dart';
 class Params {
   Params._();
 
-  static String username = ""; // 当前使用者用户名
+  static String username; // 当前使用者用户名
+  static String password; // 使用者密码
   static bool enabledBiometrics = false; // 是否启用生物识别
 
   static List<String> folderList = List();
@@ -41,17 +42,18 @@ class Params {
     folderList.clear();
     labelList.clear();
 
-    // 寻找当前用户名
-    for (var it in Application.sp.getKeys()) {
-      if (it != "label" && it != "folder" && it != "biometrics") {
-        username = it;
-        break;
-      }
-    }
+    // 初始化当前用户名与密码
+    username = Application.sp.getString("username") == null
+        ? ""
+        : Application.sp.getString("username");
+    password = Application.sp.getString("password") == null
+        ? ""
+        : Application.sp.getString("password");
     // 判断是否开启生物识别
     enabledBiometrics = Application.sp.getBool("biometrics") == null
         ? false
         : Application.sp.getBool("biometrics");
+
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
