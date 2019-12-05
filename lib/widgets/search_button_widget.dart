@@ -11,7 +11,7 @@ class SearchButtonWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
       child: FlatButton(
-        onPressed: () => press(),
+        onPressed: press,
         child: Row(
           children: <Widget>[
             Icon(Icons.search),
