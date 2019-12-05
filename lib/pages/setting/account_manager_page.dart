@@ -127,7 +127,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
           Container(
             padding: EdgeInsets.only(left: 15, right: 15),
             child: ListTile(
-              title: Text("退出"),
+              title: Text("注销"),
               leading: Icon(Icons.exit_to_app),
               onTap: () => Params.enabledBiometrics
                   ? NavigationUtils.goAuthLoginPage(context)
