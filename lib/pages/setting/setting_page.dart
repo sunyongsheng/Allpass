@@ -12,17 +12,12 @@ import 'package:allpass/pages/setting/import_export_page.dart';
 import 'package:allpass/pages/about_page.dart';
 
 /// 设置页面
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => _SettingPage();
+  _SettingPage createState() => _SettingPage();
 }
 
-class _SettingPage extends StatefulWidget {
-  @override
-  _SettingPageState createState() => _SettingPageState();
-}
-
-class _SettingPageState extends State<_SettingPage> {
+class _SettingPage extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
