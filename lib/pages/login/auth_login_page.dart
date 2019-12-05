@@ -23,8 +23,10 @@ class AuthLoginPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
-      body:Center(
-          child: Row(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
@@ -40,6 +42,11 @@ class AuthLoginPage extends StatelessWidget {
                   }
                 },
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
               FlatButton(
                 child: Text("使用密码登录"),
                 onPressed: () {
@@ -48,6 +55,7 @@ class AuthLoginPage extends StatelessWidget {
               )
             ],
           )
+        ],
       ),
     );
   }
