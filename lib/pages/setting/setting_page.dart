@@ -60,6 +60,7 @@ class _SettingPage extends State<SettingPage> {
                         if (await LocalAuthentication().canCheckBiometrics) {
                           Application.sp.setBool("biometrics", sw);
                           Params.enabledBiometrics = sw;
+                          setState(() {});
                         } else {
                           Application.sp.setBool("biometrics", false);
                           Params.enabledBiometrics = false;
