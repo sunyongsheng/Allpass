@@ -41,6 +41,7 @@ class _LoginPage extends State<LoginPage> {
         brightness: Brightness.light,
         automaticallyImplyLeading: false,
       ),
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 150),
         child: Column(
@@ -48,7 +49,8 @@ class _LoginPage extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Card(
-              margin: EdgeInsets.only(left: 20, right: 20, bottom: 30),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              margin: EdgeInsets.only(left: 25, right: 25, bottom: 30),
               elevation: 8,
               child: Column(
                 children: <Widget>[
@@ -81,10 +83,10 @@ class _LoginPage extends State<LoginPage> {
             ),
             FlatButton(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30)
+                borderRadius: BorderRadius.circular(50)
               ),
-              padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-              child: Text("登录", style: TextStyle(color: Colors.white)),
+              padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+              child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
               color: AllpassColorUI.mainColor,
               onPressed: () async {
                 if (inputErrorTimes >= 5) {
@@ -99,6 +101,8 @@ class _LoginPage extends State<LoginPage> {
                         && Params.password == _passwordController.text) {
                       NavigationUtils.goHomePage(context);
                       Fluttertoast.showToast(msg: "登录成功");
+                    } else if (_usernameController.text == "" || _passwordController.text == "") {
+                      Fluttertoast.showToast(msg: "请输入用户名或密码");
                     } else {
                       inputErrorTimes++;
                       Fluttertoast.showToast(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
@@ -110,7 +114,7 @@ class _LoginPage extends State<LoginPage> {
               },
             ),
             Padding(
-              padding: EdgeInsets.only(top: 60, bottom: 40),
+              padding: EdgeInsets.only(top: 80, bottom: 80),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
