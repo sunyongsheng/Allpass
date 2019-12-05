@@ -143,6 +143,16 @@ class _CardPageState extends State<CardPage> {
     for (var item in _cardList) {
       _cardWidgetList.add(_getCardWidget(item));
     }
+    if (_cardWidgetList.length == 0) {
+      _cardWidgetList.add(Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text("什么也没有，赶快添加吧"),
+          )
+        ],
+      ));
+    }
   }
 
   Widget _getCardWidget(CardBean cardBean) {
