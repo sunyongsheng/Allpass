@@ -80,13 +80,13 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     if (categoryName == "标签") list = Params.labelList;
     else list = Params.folderList;
     for (int currIndex = 0; currIndex < list.length; currIndex++) {
-      String item = list[currIndex];
+      String currCategoryName = list[currIndex];
       widgets.add(Container(
         child: ListTile(
           // TODO 增加trailing属性显示有多少个密码账号含有此标签
-          title: Text(item),
+          title: Text(currCategoryName),
           onTap: () {
-            if (categoryName == "文件夹" && item == "默认") {
+            if (categoryName == "文件夹" && currCategoryName == "默认") {
               Fluttertoast.showToast(msg: "此文件夹不允许修改！");
               return;
             }
@@ -132,7 +132,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("确认"),
-                                          onPressed: () async => await deleteLabelAndUpdate(item),
+                                          onPressed: () async => await deleteLabelAndUpdate(currCategoryName),
                                         ),
                                         FlatButton(
                                           child: Text("取消"),
@@ -153,7 +153,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                       actions: <Widget>[
                                         FlatButton(
                                           child: Text("确认"),
-                                          onPressed: () async => await deleteFolderAndUpdate(item),
+                                          onPressed: () async => await deleteFolderAndUpdate(currCategoryName),
                                         ),
                                         FlatButton(
                                           child: Text("取消"),
