@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/navigation_utils.dart';
+import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/services/local_authentication_service.dart';
 
 
@@ -24,37 +24,42 @@ class AuthLoginPage extends StatelessWidget {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                child: Text("使用指纹登录"),
-                autofocus: true,
-                onPressed: () async {
-                  var authSucceed = await _localAuthService.authenticate();
-                  if (authSucceed) {
-                    Fluttertoast.showToast(msg: "验证成功");
-                    NavigationUtils.goHomePage(context);
-                  } else {
-                    Fluttertoast.showToast(msg: "认证失败，请重试");
-                  }
-                },
-              ),
-            ],
+          FlatButton(
+            splashColor: AllpassColorUI.mainBackgroundColor,
+            color: AllpassColorUI.mainBackgroundColor,
+            autofocus: true,
+            onPressed: () async {
+              var authSucceed = await _localAuthService.authenticate();
+              if (authSucceed) {
+                Fluttertoast.showToast(msg: "验证成功");
+                NavigationUtil.goHomePage(context);
+              } else {
+                Fluttertoast.showToast(msg: "认证失败，请重试");
+              }
+            },
+            child: Column(
+              children: <Widget>[
+                Icon(Icons.fingerprint, size: 50,),
+                Padding(padding: EdgeInsets.only(top: 10),),
+                Text("使用指纹登录")
+              ],
+            ),
           ),
+          Padding(padding: EdgeInsets.only(top: 80),),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
                 child: Text("使用密码登录"),
                 onPressed: () {
-                  NavigationUtils.goLoginPage(context);
+                  NavigationUtil.goLoginPage(context);
                 },
               )
             ],
-          )
+          ),
+          Padding(padding: EdgeInsets.only(bottom: 10),)
         ],
       ),
     );

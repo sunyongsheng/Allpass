@@ -7,7 +7,7 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/navigation_utils.dart';
+import 'package:allpass/utils/navigation_util.dart';
 
 
 /// 登陆页面
@@ -99,7 +99,7 @@ class _LoginPage extends State<LoginPage> {
                   if (Params.username != "" && Params.password != "") {
                     if (Params.username == _usernameController.text
                         && Params.password == _passwordController.text) {
-                      NavigationUtils.goHomePage(context);
+                      NavigationUtil.goHomePage(context);
                       Fluttertoast.showToast(msg: "登录成功");
                     } else if (_usernameController.text == "" || _passwordController.text == "") {
                       Fluttertoast.showToast(msg: "请输入用户名或密码");
@@ -145,7 +145,7 @@ class _LoginPage extends State<LoginPage> {
                 FlatButton(
                   child: Text("使用生物识别"),
                   onPressed: () {
-                    NavigationUtils.goAuthLoginPage(context);
+                    NavigationUtil.goAuthLoginPage(context);
                   },
                 )
               ],
