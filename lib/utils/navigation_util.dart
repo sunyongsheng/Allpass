@@ -5,7 +5,7 @@ import 'package:fluro/fluro.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
 
-class NavigationUtils {
+class NavigationUtil {
   static _navigateTo(BuildContext context, String path,
       {bool replace: false,
       bool clearStack: false,

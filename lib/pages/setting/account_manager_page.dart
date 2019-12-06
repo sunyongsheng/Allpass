@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/navigation_utils.dart';
+import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/widgets/modify_password_dialog.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
@@ -97,7 +97,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                                       Params.paramsClear();
                                       Fluttertoast.showToast(msg: "已删除所有数据");
                                       passwordController.clear();
-                                      NavigationUtils.goLoginPage(context);
+                                      NavigationUtil.goLoginPage(context);
                                     } else {
                                       Fluttertoast.showToast(msg: "密码错误");
                                       Navigator.pop(context);
@@ -130,8 +130,8 @@ class _AccountManagerPage extends State<AccountManagerPage> {
               title: Text("注销"),
               leading: Icon(Icons.exit_to_app),
               onTap: () => Params.enabledBiometrics
-                  ? NavigationUtils.goAuthLoginPage(context)
-                  : NavigationUtils.goLoginPage(context),
+                  ? NavigationUtil.goAuthLoginPage(context)
+                  : NavigationUtil.goLoginPage(context),
             ),
           )
         ],
