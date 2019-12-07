@@ -15,6 +15,7 @@ class AuthLoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    askAuth(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -30,15 +31,7 @@ class AuthLoginPage extends StatelessWidget {
             splashColor: AllpassColorUI.mainBackgroundColor,
             color: AllpassColorUI.mainBackgroundColor,
             autofocus: true,
-            onPressed: () async {
-              var authSucceed = await _localAuthService.authenticate();
-              if (authSucceed) {
-                Fluttertoast.showToast(msg: "验证成功");
-                NavigationUtil.goHomePage(context);
-              } else {
-                Fluttertoast.showToast(msg: "认证失败，请重试");
-              }
-            },
+            onPressed: () => askAuth,
             child: Column(
               children: <Widget>[
                 Icon(Icons.fingerprint, size: 50,),
@@ -65,4 +58,13 @@ class AuthLoginPage extends StatelessWidget {
     );
   }
 
+  Future<Null> askAuth(BuildContext context) async {
+    var authSucceed = await _localAuthService.authenticate();
+    if (authSucceed) {
+      Fluttertoast.showToast(msg: "验证成功");
+      NavigationUtil.goHomePage(context);
+    } else {
+      Fluttertoast.showToast(msg: "认证失败，请重试");
+    }
+  }
 }
