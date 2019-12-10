@@ -48,7 +48,7 @@ class _SettingPage extends State<SettingPage> {
                               builder: (context) => AccountManagerPage()));
                     },
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset,
                 ),
                 Container(
                   child: ListTile(
@@ -69,10 +69,10 @@ class _SettingPage extends State<SettingPage> {
                       },
                     ),
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 30, right: 30),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: Divider(
                     thickness: 1,
                   ),
@@ -88,7 +88,7 @@ class _SettingPage extends State<SettingPage> {
                               builder: (context) => CategoryManagerPage("标签")));
                     },
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
                   child: ListTile(
@@ -102,10 +102,10 @@ class _SettingPage extends State<SettingPage> {
                                   CategoryManagerPage("文件夹")));
                     },
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 30, right: 30),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: Divider(
                     thickness: 1,
                   ),
@@ -122,10 +122,10 @@ class _SettingPage extends State<SettingPage> {
                           ));
                     },
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 30, right: 30),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: Divider(
                     thickness: 1,
                   ),
@@ -142,7 +142,7 @@ class _SettingPage extends State<SettingPage> {
                           ));
                     },
                   ),
-                  padding: EdgeInsets.only(left: 15, right: 15),
+                  padding: AllpassEdgeInsets.listInset
                 ),
               ],
             ),

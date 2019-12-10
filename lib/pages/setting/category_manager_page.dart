@@ -97,7 +97,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(right: 15, left: 15),
+                        padding: AllpassEdgeInsets.listInset,
                         child: ListTile(
                           title: Text("编辑$categoryName"),
                           leading: Icon(Icons.edit_attributes),
@@ -117,7 +117,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 15, left: 15),
+                        padding: AllpassEdgeInsets.listInset,
                         child: ListTile(
                           title: Text("删除$categoryName"),
                           leading: Icon(Icons.delete),

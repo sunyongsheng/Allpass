@@ -40,7 +40,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
       body: ListView(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("修改主密码"),
               leading: Icon(Icons.lock_open),
@@ -52,7 +52,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("清除所有数据"),
               leading: Icon(Icons.clear),
@@ -125,7 +125,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("注销"),
               leading: Icon(Icons.exit_to_app),

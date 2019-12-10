@@ -34,7 +34,7 @@ class ImportExportPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("从Chrome中导入"),
               leading: Icon(CustomIcons.chrome),
@@ -46,7 +46,7 @@ class ImportExportPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("从CSV文件中导入"),
               leading: Icon(Icons.import_contacts),
@@ -58,7 +58,7 @@ class ImportExportPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("导出为CSV文件"),
               leading: Icon(Icons.call_missed_outgoing),
@@ -97,7 +97,7 @@ class ImportTypeSelectPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle),
@@ -125,7 +125,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card),
@@ -174,7 +174,7 @@ class ExportTypeSelectPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle),
@@ -192,7 +192,7 @@ class ExportTypeSelectPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card),
@@ -210,7 +210,7 @@ class ExportTypeSelectPage extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("所有"),
               leading: Icon(Icons.all_inclusive),
