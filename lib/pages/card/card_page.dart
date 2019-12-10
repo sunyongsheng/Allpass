@@ -170,9 +170,9 @@ class _CardPageState extends State<CardPage> {
                 });
           },
           child: Card(
-            elevation: 3,
+            elevation: 2,
             color: getRandomColor(cardBean.uniqueKey),
-            margin: EdgeInsets.only(left: 20, right: 20, top: 6, bottom: 12),
+            margin: AllpassEdgeInsets.forCardInset,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8.0))),
             child: ListTile(

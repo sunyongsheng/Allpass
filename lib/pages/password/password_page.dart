@@ -159,7 +159,7 @@ class _PasswordPageState extends State<PasswordPage> {
 
   Widget _getPasswordWidget(PasswordBean passwordBean) {
     return Container(
-      margin: EdgeInsets.only(right: 10, left: 10),
+      margin: AllpassEdgeInsets.listInset,
       //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
       child: ListTile(
         leading: CircleAvatar(
