@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
+import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/services/local_authentication_service.dart';
 
 
@@ -15,6 +17,7 @@ class AuthLoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     askAuth(context);
     return Scaffold(
       appBar: AppBar(
@@ -34,13 +37,13 @@ class AuthLoginPage extends StatelessWidget {
             onPressed: () => askAuth,
             child: Column(
               children: <Widget>[
-                Icon(Icons.fingerprint, size: 50,),
-                Padding(padding: EdgeInsets.only(top: 10),),
+                Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
+                Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(40)),),
                 Text("使用指纹登录")
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: 80),),
+          Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(200)),),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -52,7 +55,7 @@ class AuthLoginPage extends StatelessWidget {
               )
             ],
           ),
-          Padding(padding: EdgeInsets.only(bottom: 10),)
+          Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
         ],
       ),
     );

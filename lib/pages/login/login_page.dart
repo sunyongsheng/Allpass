@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
@@ -9,6 +10,7 @@ import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/screen_util.dart';
 
 /// 登陆页面
 class LoginPage extends StatefulWidget {
@@ -34,6 +36,7 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     return  Scaffold(
       appBar: AppBar(
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -43,19 +46,22 @@ class _LoginPage extends State<LoginPage> {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 150),
+        padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(500)),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              margin: EdgeInsets.only(left: 25, right: 25, bottom: 30),
+              margin: AllpassEdgeInsets.dividerInset,
               elevation: 8,
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
+                    padding: EdgeInsets.only(
+                        left: AllpassScreenUtil.setWidth(100),
+                        right: AllpassScreenUtil.setWidth(100),
+                        top: 10, bottom: 10),
                     child: TextField(
                       controller: _usernameController,
                       decoration: InputDecoration(
@@ -65,7 +71,10 @@ class _LoginPage extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
+                    padding: EdgeInsets.only(
+                        left: AllpassScreenUtil.setWidth(100),
+                        right: AllpassScreenUtil.setWidth(100),
+                        top: 10, bottom: 10),
                     child: TextField(
                       controller: _passwordController,
                       obscureText: true,
@@ -81,6 +90,7 @@ class _LoginPage extends State<LoginPage> {
                 ],
               ),
             ),
+            Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(100)),),
             FlatButton(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50)
@@ -91,7 +101,7 @@ class _LoginPage extends State<LoginPage> {
               onPressed: () => login(),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 80, bottom: 80),
+              padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(300)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +118,8 @@ class _LoginPage extends State<LoginPage> {
                   },
                 )
               ],
-            )
+            ),
+            Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
           ],
         ),
       ),
