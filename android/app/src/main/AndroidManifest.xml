@@ -37,9 +37,19 @@
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".AutofillService"
+            android:label="Allpass"
+            android:permission="android.permission.BIND_AUTOFILL_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService" />
+            </intent-filter>
+        </service>
+
     </application>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    
 </manifest>
