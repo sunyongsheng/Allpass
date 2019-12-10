@@ -47,6 +47,8 @@ dependencies:
   get_it: ^3.0.3
   # 生物识别
   local_auth: ^0.6.1
+  # 屏幕尺寸管理
+  flutter_screenutil: ^0.7.0
 
 dev_dependencies:
   flutter_test:
