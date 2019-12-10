@@ -79,11 +79,11 @@ class _SearchPage extends State<SearchPage> {
     if (_type == AllpassType.PASSWORD) {
       _searchList = await passwordDao.getAllPasswordBeanList();
       for (var item in _searchList) {
-        if (item.categoryName.contains(_searchText) ||
+        if (item.name.contains(_searchText) ||
             item.username.contains(_searchText) ||
             item.notes.contains(_searchText)) {
           _result.add(ListTile(
-              title: Text(item.categoryName),
+              title: Text(item.name),
               subtitle: Text(item.username),
               onTap: () {
                 _currentKey = item.uniqueKey;
@@ -99,11 +99,11 @@ class _SearchPage extends State<SearchPage> {
     } else {
       _searchList = await cardDao.getAllCardBeanList();
       for (var item in _searchList) {
-        if (item.categoryName.contains(_searchText) ||
+        if (item.name.contains(_searchText) ||
             item.ownerName.contains(_searchText) ||
             item.notes.contains(_searchText)) {
           _result.add(ListTile(
-            title: Text(item.categoryName),
+            title: Text(item.name),
             subtitle: Text(item.ownerName),
             onTap: () {
               _currentKey = item.uniqueKey;
