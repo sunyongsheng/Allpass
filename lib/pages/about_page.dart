@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/screen_util.dart';
 
 class AboutPage extends StatelessWidget {
   @override
@@ -22,17 +23,15 @@ class AboutPage extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Card(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.all(AllpassScreenUtil.setWidth(50)),
             elevation: 5,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Padding(padding: AllpassEdgeInsets.smallPadding,),
                 Container(
-                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                ),
-                Container(
-                    padding: EdgeInsets.only(left: 15, right: 15),
+                    padding: AllpassEdgeInsets.listInset,
                     child: ListTile(
                       title: Container(
                         padding: EdgeInsets.only(bottom: 10),
@@ -47,14 +46,14 @@ class AboutPage extends StatelessWidget {
                     )),
                 Container(
                   child: Divider(),
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: AllpassEdgeInsets.dividerInset,
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
                   child: Text("联系方式", style: TextStyle(fontWeight: FontWeight.bold),),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: FlatButton(
                     child: Text("微博：@Aengus_Sun"),
                     onPressed: () async {
@@ -63,7 +62,7 @@ class AboutPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: FlatButton(
                     child: Text("邮箱：sys6511@126.com"),
                     onPressed: () async {
@@ -72,9 +71,9 @@ class AboutPage extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
+                  padding: AllpassEdgeInsets.dividerInset,
                   child: FlatButton(
-                    child: Text("开发者网址：https://www.aengus.top"),
+                    child: Text("开发者网站：https://www.aengus.top"),
                     onPressed: () async {
                       await launch("https://www.aengus.top");
                     },
