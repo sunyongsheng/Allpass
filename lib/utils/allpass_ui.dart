@@ -55,6 +55,13 @@ class AllpassEdgeInsets {
     right: AllpassScreenUtil.setWidth(70),
   );
 
+  static EdgeInsets forCardInset = EdgeInsets.only(
+    left: AllpassScreenUtil.setWidth(50),
+    right: AllpassScreenUtil.setWidth(50),
+    top: AllpassScreenUtil.setHeight(15),
+    bottom: AllpassScreenUtil.setHeight(25)
+  );
+
   static EdgeInsets smallPadding = EdgeInsets.only(
     top: AllpassScreenUtil.setHeight(25),
     bottom: AllpassScreenUtil.setHeight(25),
