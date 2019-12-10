@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import 'package:allpass/utils/screen_util.dart';
+
 /// 保存所有Allpass用到的文本样式
 class AllpassTextUI {
   AllpassTextUI._();
@@ -39,6 +41,19 @@ class AllpassColorUI {
     Color.fromRGBO(52, 184, 105, 1),
     Color.fromRGBO(255, 86, 85, 1),
   ]);
+}
+
+/// 缩进样式
+class AllpassEdgeInsets {
+  static EdgeInsets listInset = EdgeInsets.only(
+    left: AllpassScreenUtil.setWidth(50),
+    right: AllpassScreenUtil.setWidth(50),
+  );
+
+  static EdgeInsets dividerInset = EdgeInsets.only(
+    left: AllpassScreenUtil.setWidth(70),
+    right: AllpassScreenUtil.setWidth(70),
+  );
 }
 
 /// 自定义图标
