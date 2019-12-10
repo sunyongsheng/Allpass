@@ -56,7 +56,8 @@ class AllpassEdgeInsets {
   );
 
   static EdgeInsets smallPadding = EdgeInsets.only(
-    top: AllpassScreenUtil.setHeight(50)
+    top: AllpassScreenUtil.setHeight(25),
+    bottom: AllpassScreenUtil.setHeight(25),
   );
 }
 
