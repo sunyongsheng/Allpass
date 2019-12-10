@@ -54,6 +54,10 @@ class AllpassEdgeInsets {
     left: AllpassScreenUtil.setWidth(70),
     right: AllpassScreenUtil.setWidth(70),
   );
+
+  static EdgeInsets smallPadding = EdgeInsets.only(
+    top: AllpassScreenUtil.setHeight(50)
+  );
 }
 
 /// 自定义图标
