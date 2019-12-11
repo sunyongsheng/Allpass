@@ -49,7 +49,8 @@ class AuthLoginPage extends StatelessWidget {
             children: <Widget>[
               FlatButton(
                 child: Text("使用密码登录"),
-                onPressed: () {
+                onPressed: () async {
+                  await _localAuthService.stopAuthenticate();
                   NavigationUtil.goLoginPage(context);
                 },
               )
