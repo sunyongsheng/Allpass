@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/pages/develop/debug_page.dart';
 
 class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    int pressTimes = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -43,6 +46,17 @@ class AboutPage extends StatelessWidget {
                       subtitle: Text("一款简单好用的密码管理软件"),
                       trailing: Text("beta_v0.0.1", style: TextStyle(color: Colors.grey),),
                       isThreeLine: true,
+                      onTap: () {
+                        pressTimes++;
+                        if (pressTimes >= 5 && pressTimes < 10) {
+                          Fluttertoast.showToast(msg: "再按${10-pressTimes}次进入开发者模式");
+                        } else if (pressTimes == 10) {
+                          Fluttertoast.showToast(msg: "进入开发者模式");
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => DebugPage()
+                          ));
+                        }
+                      },
                     )),
                 Container(
                   child: Divider(),
