@@ -26,6 +26,7 @@ class LocalAuthenticationService {
       lockOut: "指纹识别失败，请重新验证"
   );
 
+  /// 授权，返回[true]代表授权成功
   Future<bool> authenticate() async {
     if (Params.enabledBiometrics) {
       try {
@@ -52,5 +53,10 @@ class LocalAuthenticationService {
       }
     }
     return false;
+  }
+
+  /// 取消授权，返回[true]代表成功
+  Future<bool> stopAuthenticate() async {
+    return await _auth.stopAuthentication();
   }
 }
