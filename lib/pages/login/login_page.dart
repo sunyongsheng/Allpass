@@ -21,11 +21,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
-
   var _usernameController;
   var _passwordController;
 
-  int inputErrorTimes = 0;  // 超过五次自动清除所有内容
+  int inputErrorTimes = 0; // 超过五次自动清除所有内容
 
   @override
   void initState() {
@@ -37,7 +36,7 @@ class _LoginPage extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,
@@ -61,20 +60,20 @@ class _LoginPage extends State<LoginPage> {
                     padding: EdgeInsets.only(
                         left: AllpassScreenUtil.setWidth(100),
                         right: AllpassScreenUtil.setWidth(100),
-                        top: 10, bottom: 10),
+                        top: 10,
+                        bottom: 10),
                     child: TextField(
                       controller: _usernameController,
                       decoration: InputDecoration(
-                          labelText: "用户名",
-                          prefixIcon: Icon(Icons.person)
-                      ),
+                          labelText: "用户名", prefixIcon: Icon(Icons.person)),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
                         left: AllpassScreenUtil.setWidth(100),
                         right: AllpassScreenUtil.setWidth(100),
-                        top: 10, bottom: 10),
+                        top: 10,
+                        bottom: 10),
                     child: TextField(
                       controller: _passwordController,
                       obscureText: true,
@@ -82,6 +81,7 @@ class _LoginPage extends State<LoginPage> {
                         prefixIcon: Icon(Icons.lock),
                         labelText: "密码",
                       ),
+                      onSubmitted: (_) => login(),
                     ),
                   ),
                   Padding(
@@ -157,7 +157,7 @@ class _LoginPage extends State<LoginPage> {
     } else {
       if (Params.username != "" && Params.password != "") {
         if (Params.username == _usernameController.text
-            && Params.password == await EncryptHelper.encrypt(_passwordController.text)) {
+            && _passwordController.text == await EncryptHelper.decrypt(Params.password)) {
           NavigationUtil.goHomePage(context);
           Fluttertoast.showToast(msg: "登录成功");
         } else if (_usernameController.text == "" || _passwordController.text == "") {
@@ -171,5 +171,4 @@ class _LoginPage extends State<LoginPage> {
       }
     }
   }
-
 }
