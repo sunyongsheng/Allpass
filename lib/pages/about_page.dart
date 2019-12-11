@@ -48,9 +48,7 @@ class AboutPage extends StatelessWidget {
                       isThreeLine: true,
                       onTap: () {
                         pressTimes++;
-                        if (pressTimes >= 5 && pressTimes < 10) {
-                          Fluttertoast.showToast(msg: "再按${10-pressTimes}次进入开发者模式");
-                        } else if (pressTimes == 10) {
+                        if (pressTimes == 10) {
                           Fluttertoast.showToast(msg: "进入开发者模式");
                           Navigator.push(context, MaterialPageRoute(
                             builder: (context) => DebugPage()
