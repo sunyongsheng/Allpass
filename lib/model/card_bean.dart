@@ -87,7 +87,7 @@ class CardBean {
   }
 
   /// 将CardBean转化为Map
-  static Map<String, dynamic> cardBean2Map(CardBean bean) {
+  static Map<String, dynamic> toJson(CardBean bean) {
     String labels = list2Str(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,

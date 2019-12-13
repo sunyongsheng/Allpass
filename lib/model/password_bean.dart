@@ -101,7 +101,7 @@ class PasswordBean {
   }
 
   /// 将PasswordBean转化为Map
-  static Future<Map<String, dynamic>> passwordBean2Map(PasswordBean bean) async {
+  static Future<Map<String, dynamic>> toJson(PasswordBean bean) async {
     String labels = list2Str(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
