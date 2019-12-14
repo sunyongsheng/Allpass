@@ -2,7 +2,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/db_provider.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:allpass/utils/string_process.dart';
 
 class PasswordDao extends BaseDBProvider {
@@ -49,7 +48,7 @@ class PasswordDao extends BaseDBProvider {
   /// 插入密码
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    Map<String, dynamic> map = await PasswordBean.toJson(bean);
+    Map<String, dynamic> map = PasswordBean.toJson(bean);
     return await db.insert(name, map);
   }
 
@@ -58,7 +57,7 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      return await PasswordBean.fromJson(maps.first);
+      return PasswordBean.fromJson(maps.first);
     }
     return null;
   }
@@ -70,7 +69,7 @@ class PasswordDao extends BaseDBProvider {
     if (maps.length > 0) {
       List<PasswordBean> res = List();
       for (var map in maps) {
-        res.add(await PasswordBean.fromJson(map));
+        res.add(PasswordBean.fromJson(map));
       }
       return res;
     }
@@ -88,7 +87,7 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     String labels = list2Str(bean.label);
     return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.username, await EncryptHelper.encrypt(bean.password), bean.url, bean.folder, bean.fav, bean.notes, labels]);
+        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));
   }

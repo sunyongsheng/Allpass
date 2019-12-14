@@ -16,7 +16,7 @@ class CsvHelper {
       }
       String w = "name,username,password,url,folder,notes,label,fav\n";
       for (var item in list) {
-        w += PasswordBean.passwordBean2Csv(item);
+        w += await PasswordBean.passwordBean2Csv(item);
       }
       csv.writeAsStringSync(w);
       print("写入完成，路径：$path");
