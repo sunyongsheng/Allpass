@@ -81,7 +81,7 @@ class _CardPageState extends State<CardPage> {
       appBar: AppBar(
         title: Text(
           "卡片",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,

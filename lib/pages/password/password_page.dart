@@ -81,7 +81,7 @@ class _PasswordPageState extends State<PasswordPage> {
       appBar: AppBar(
         title: Text(
           "密码",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         elevation: 0,

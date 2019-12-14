@@ -24,7 +24,7 @@ class _SettingPage extends State<SettingPage> {
       appBar: AppBar(
         title: Text(
           "设置",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
