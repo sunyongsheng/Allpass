@@ -2,6 +2,7 @@ import 'dart:io' show Platform, File, Directory;
 
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:allpass/utils/string_process.dart';
 
 class CsvHelper {
@@ -87,6 +88,10 @@ class CsvHelper {
             favIndex = i;
             break;
         }
+        // Chrome 生成的CSV格式password列需要以这种形式进行判断
+        if (index[i].contains("password")) {
+          passwordIndex = i;
+        }
       }
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
@@ -129,7 +134,7 @@ class CsvHelper {
         res.add(PasswordBean(
           name: name,
           username: username,
-          password: password,
+          password: await EncryptHelper.encrypt(password),
           url: url,
           folder: folder,
           notes: notes,
