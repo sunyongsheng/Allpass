@@ -8,8 +8,16 @@ import 'package:allpass/utils/screen_util.dart';
 class AllpassTextUI {
   AllpassTextUI._();
 
-  static final TextStyle mainTitleStyle =
-      TextStyle(fontSize: 17, color: Colors.black,);
+  static final TextStyle titleBarStyle = TextStyle(
+      fontSize: 17,
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 1.5);
+
+  static final TextStyle mainTitleStyle = TextStyle(
+    fontSize: 17,
+    color: Colors.black,
+  );
   static final TextStyle firstTitleStyleBlue =
       TextStyle(fontSize: 16, color: Colors.blue);
   static final TextStyle secondTitleStyleBlue =
@@ -56,24 +64,30 @@ class AllpassEdgeInsets {
   );
 
   static EdgeInsets forCardInset = EdgeInsets.only(
-    left: AllpassScreenUtil.setWidth(50),
-    right: AllpassScreenUtil.setWidth(50),
-    top: AllpassScreenUtil.setHeight(15),
-    bottom: AllpassScreenUtil.setHeight(25)
-  );
+      left: AllpassScreenUtil.setWidth(50),
+      right: AllpassScreenUtil.setWidth(50),
+      top: AllpassScreenUtil.setHeight(15),
+      bottom: AllpassScreenUtil.setHeight(25));
 
-  static EdgeInsets smallPadding = EdgeInsets.only(
+  static EdgeInsets forSearchButtonInset = EdgeInsets.only(
+      left: AllpassScreenUtil.setWidth(50),
+      right: AllpassScreenUtil.setWidth(50),
+      bottom: AllpassScreenUtil.setHeight(15));
+
+  static EdgeInsets smallTBPadding = EdgeInsets.only(
     top: AllpassScreenUtil.setHeight(25),
     bottom: AllpassScreenUtil.setHeight(25),
+  );
+
+  static EdgeInsets smallLPadding = EdgeInsets.only(
+    left: AllpassScreenUtil.setWidth(50),
   );
 }
 
 /// 自定义图标
 class CustomIcons {
-  static const IconData chrome = const IconData(0xe684,
-      fontFamily: "IconFont",
-      matchTextDirection: true
-  );
+  static const IconData chrome =
+      const IconData(0xe684, fontFamily: "IconFont", matchTextDirection: true);
 }
 
 Color getRandomColor(int seed) {
