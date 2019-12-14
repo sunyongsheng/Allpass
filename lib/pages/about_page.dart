@@ -44,7 +44,7 @@ class AboutPage extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text("一款简单好用的密码管理软件"),
-                      trailing: Text("beta_v0.0.1", style: TextStyle(color: Colors.grey),),
+                      trailing: Text("beta_v1.0.0", style: TextStyle(color: Colors.grey),),
                       isThreeLine: true,
                       onTap: () {
                         pressTimes++;
