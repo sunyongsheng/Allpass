@@ -32,7 +32,7 @@ class AboutPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Padding(padding: AllpassEdgeInsets.smallPadding,),
+                Padding(padding: AllpassEdgeInsets.smallTBPadding,),
                 Container(
                     padding: AllpassEdgeInsets.listInset,
                     child: ListTile(
