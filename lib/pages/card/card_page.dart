@@ -92,9 +92,12 @@ class _CardPageState extends State<CardPage> {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
                 case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 case ConnectionState.active:
                   return Center(
-                    child: Text("加载中..."),
+                    child: CircularProgressIndicator(),
                   );
                 case ConnectionState.done:
                   return Expanded(
