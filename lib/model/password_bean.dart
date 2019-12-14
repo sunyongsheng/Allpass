@@ -76,7 +76,7 @@ class PasswordBean {
   }
 
   /// 将Map转化为PasswordBean
-  static Future<PasswordBean> fromJson(Map<String, dynamic> map) async {
+  static PasswordBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
     if (map['label'] != null) {
       newLabel = str2List(map['label']);
@@ -90,7 +90,7 @@ class PasswordBean {
     assert(map["name"] != null);
     return PasswordBean(
         username: map['username'],
-        password: await EncryptHelper.decrypt(map["password"]),
+        password: map["password"],
         url: map["url"],
         folder: map["folder"],
         notes: map["notes"],
@@ -101,13 +101,13 @@ class PasswordBean {
   }
 
   /// 将PasswordBean转化为Map
-  static Future<Map<String, dynamic>> toJson(PasswordBean bean) async {
+  static Map<String, dynamic> toJson(PasswordBean bean)  {
     String labels = list2Str(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
       "username": bean.username,
-      "password": await EncryptHelper.encrypt(bean.password),
+      "password": bean.password,
       "url": bean.url,
       "folder": bean.folder,
       "fav": bean.fav,
@@ -118,11 +118,18 @@ class PasswordBean {
   }
 
   /// 将PasswordBean转化为csv格式的字符
-  static String passwordBean2Csv(PasswordBean bean) {
+  static Future<String> passwordBean2Csv(PasswordBean bean) async {
     // 包含除[uniqueKey]的所有属性
     String labels = list2Str(bean.label);
     String csv =
-        "${bean.name},${bean.username},${bean.password},${bean.url},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
+        "${bean.name},"
+        "${bean.username},"
+        "${await EncryptHelper.decrypt(bean.password)},"
+        "${bean.url},"
+        "${bean.folder},"
+        "${bean.notes},"
+        "$labels,"
+        "${bean.fav}\n";
     return csv;
   }
 }
