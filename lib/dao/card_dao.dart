@@ -46,7 +46,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 插入卡片
-  Future insert(CardBean bean) async {
+  Future<int> insert(CardBean bean) async {
     Database db = await getDataBase();
     return await db.insert(name, CardBean.toJson(bean));
   }
