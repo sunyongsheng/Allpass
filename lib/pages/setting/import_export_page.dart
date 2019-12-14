@@ -110,7 +110,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                   try {
                     List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
                     for (var bean in passwordList) {
-                      passwordDao.insert(bean);
+                      await passwordDao.insert(bean);
                       Params.labelListAdd(bean.label);
                       Params.folderListAdd(bean.folder);
                     }
@@ -138,7 +138,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                   try {
                     List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
                     for (var bean in cardList) {
-                      cardDao.insert(bean);
+                      await cardDao.insert(bean);
                       Params.labelListAdd(bean.label);
                       Params.folderListAdd(bean.folder);
                     }
