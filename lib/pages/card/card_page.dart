@@ -33,13 +33,9 @@ class _CardPageState extends State<CardPage> {
 
   Future<Null> _getDataFromDB() async {
     List<CardBean> data = await cardDao.getAllCardBeanList();
-    if (data != null) {
-      if (data.length > 0) {
-        data.forEach((bean) {
-          _cardList.add(bean);
-        });
-      }
-    }
+    data?.forEach((bean) {
+      _cardList.add(bean);
+    });
     setState(() {});
   }
 
@@ -47,32 +43,28 @@ class _CardPageState extends State<CardPage> {
   Future<Null> _query() async {
     _cardList.clear();
     List<CardBean> data = await cardDao.getAllCardBeanList();
-    if (data != null) {
-      if (data.length > 0) {
-        data.forEach((bean) {
-          _cardList.add(bean);
-        });
-      }
-    }
+    data?.forEach((bean) {
+      _cardList.add(bean);
+    });
     setState(() {});
   }
 
   // 添加
   Future<Null> _add(CardBean newBean) async {
     await cardDao.insert(newBean);
-    _query();
+    await _query();
   }
 
   // 删除
   Future<Null> _delete(int key) async {
     await cardDao.deleteCardBeanById(key);
-    _query();
+    await _query();
   }
 
   // 更新
   Future<Null> _update(CardBean newBean) async {
     await cardDao.updatePasswordBean(newBean);
-    _query();
+    await _query();
   }
 
   @override

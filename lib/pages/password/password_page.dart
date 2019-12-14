@@ -33,13 +33,9 @@ class _PasswordPageState extends State<PasswordPage> {
 
   Future<Null> _getDataFromDB() async {
     List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
-    if (data != null) {
-      if (data.length > 0) {
-        data.forEach((bean) {
-          _passList.add(bean);
-        });
-      }
-    }
+    data?.forEach((bean) {
+      _passList.add(bean);
+    });
     setState(() {});
   }
 
@@ -47,32 +43,28 @@ class _PasswordPageState extends State<PasswordPage> {
   Future<Null> _query() async {
     _passList.clear();
     List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
-    if (data != null) {
-      if (data.length > 0) {
-        data.forEach((bean) {
-          _passList.add(bean);
-        });
-      }
-    }
+    data?.forEach((bean) {
+      _passList.add(bean);
+    });
     setState(() {});
   }
 
   // 添加
   Future<Null> _add(PasswordBean newBean) async {
     await passwordDao.insert(newBean);
-    _query();
+    await _query();
   }
 
   // 删除
   Future<Null> _delete(int key) async {
     await passwordDao.deletePasswordBeanById(key);
-    _query();
+    await _query();
   }
 
   // 更新
   Future<Null> _update(PasswordBean newBean) async {
     await passwordDao.updatePasswordBean(newBean);
-    _query();
+    await _query();
   }
 
   @override
