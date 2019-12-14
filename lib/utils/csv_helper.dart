@@ -16,10 +16,9 @@ class CsvHelper {
       }
       String w = "name,username,password,url,folder,notes,label,fav\n";
       for (var item in list) {
-        w += await PasswordBean.passwordBean2Csv(item);
+        w += await PasswordBean.toCsv(item);
       }
       csv.writeAsStringSync(w);
-      print("写入完成，路径：$path");
       return path;
     }
     return null;
@@ -35,10 +34,9 @@ class CsvHelper {
       }
       String w = "name,ownerName,cardId,url,telephone,folder,notes,label,fav\n";
       for (var item in list) {
-        w += CardBean.cardBean2Csv(item);
+        w += CardBean.toCsv(item);
       }
       csv.writeAsStringSync(w);
-      print("写入完成，路径：$path");
       return path;
     }
     return null;

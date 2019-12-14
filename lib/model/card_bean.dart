@@ -105,7 +105,7 @@ class CardBean {
   }
 
   /// 将CardBean转化为csv格式的字符
-  static String cardBean2Csv(CardBean bean) {
+  static String toCsv(CardBean bean) {
     // 包含除[uniqueKey]的所有属性
     String labels = list2Str(bean.label);
     String csv =

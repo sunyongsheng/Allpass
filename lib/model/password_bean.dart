@@ -118,7 +118,7 @@ class PasswordBean {
   }
 
   /// 将PasswordBean转化为csv格式的字符
-  static Future<String> passwordBean2Csv(PasswordBean bean) async {
+  static Future<String> toCsv(PasswordBean bean) async {
     // 包含除[uniqueKey]的所有属性
     String labels = list2Str(bean.label);
     String csv =
