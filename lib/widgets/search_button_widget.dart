@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:allpass/utils/allpass_ui.dart';
 
 class SearchButtonWidget extends StatelessWidget {
 
@@ -9,7 +10,7 @@ class SearchButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, bottom: 15),
+      padding: AllpassEdgeInsets.forSearchButtonInset,
       child: FlatButton(
         onPressed: press,
         child: Row(
