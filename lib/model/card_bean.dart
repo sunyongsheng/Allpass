@@ -109,7 +109,15 @@ class CardBean {
     // 包含除[uniqueKey]的所有属性
     String labels = list2Str(bean.label);
     String csv =
-        "${bean.name},${bean.ownerName},${bean.cardId},${bean.url},${bean.telephone},${bean.folder},${bean.notes},$labels,${bean.fav}\n";
+        "${bean.name},"
+        "${bean.ownerName},"
+        "${bean.cardId},"
+        "${bean.url},"
+        "${bean.telephone},"
+        "${bean.folder},"
+        "${bean.notes},"
+        "$labels,"
+        "${bean.fav}\n";
     return csv;
   }
 }
