@@ -101,7 +101,10 @@ class _PasswordPageState extends State<PasswordPage> {
                   );
                 case ConnectionState.done:
                   return Expanded(
-                    child: ListView(children: _passWidgetList),
+                    child: RefreshIndicator(
+                      onRefresh: _query,
+                      child: ListView(children: _passWidgetList),
+                    ),
                   );
                 default:
                   return Center(

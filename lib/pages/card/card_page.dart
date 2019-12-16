@@ -101,7 +101,10 @@ class _CardPageState extends State<CardPage> {
                   );
                 case ConnectionState.done:
                   return Expanded(
-                    child: ListView(children: _cardWidgetList),
+                    child: RefreshIndicator(
+                      onRefresh: _query,
+                      child: ListView(children: _cardWidgetList),
+                    ),
                   );
                 default:
                   return Center(
