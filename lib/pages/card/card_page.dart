@@ -103,7 +103,10 @@ class _CardPageState extends State<CardPage> {
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: _query,
-                      child: ListView(children: _cardWidgetList),
+                      child: ListView.builder(
+                        itemBuilder: (context, index) => _cardWidgetList[index],
+                        itemCount: _cardWidgetList.length,
+                      ),
                     ),
                   );
                 default:

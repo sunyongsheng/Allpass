@@ -103,7 +103,10 @@ class _PasswordPageState extends State<PasswordPage> {
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: _query,
-                      child: ListView(children: _passWidgetList),
+                      child: ListView.builder(
+                        itemBuilder: (context, index) => _passWidgetList[index],
+                        itemCount: _passWidgetList.length,
+                      ),
                     ),
                   );
                 default:
