@@ -29,6 +29,12 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   _AddLabelDialog(this.categoryName);
 
   @override
+  void dispose() {
+    _addTextController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("新建$categoryName"),

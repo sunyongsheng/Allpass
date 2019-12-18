@@ -41,6 +41,12 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   @override
+  void dispose() {
+    _editTextController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("编辑$categoryName"),

@@ -73,6 +73,17 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   }
 
   @override
+  void dispose() {
+    _nameController?.dispose();
+    _ownerNameController?.dispose();
+    _cardIdController?.dispose();
+    _telephoneController?.dispose();
+    _notesController?.dispose();
+    _urlController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {

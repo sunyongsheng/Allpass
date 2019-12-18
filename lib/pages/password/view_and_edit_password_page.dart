@@ -71,6 +71,16 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
     }
   }
 
+  @override
+  void dispose() {
+    _nameController?.dispose();
+    _usernameController?.dispose();
+    _passwordController?.dispose();
+    _notesController?.dispose();
+    _urlController?.dispose();
+    super.dispose();
+  }
+
   Future<Null> _decryptPassword() async {
     _password =  await EncryptHelper.decrypt(_tempData.password);
     _passwordController = TextEditingController(text: _password);
