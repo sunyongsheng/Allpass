@@ -17,7 +17,7 @@ class CardPage extends StatefulWidget {
   }
 }
 
-class _CardPageState extends State<CardPage> {
+class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin {
   CardDao cardDao = CardDao();
 
   int _currentKey = -1;
@@ -30,6 +30,9 @@ class _CardPageState extends State<CardPage> {
     super.initState();
     _getDataFromDB();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Future<Null> _getDataFromDB() async {
     List<CardBean> data = await cardDao.getAllCardBeanList();

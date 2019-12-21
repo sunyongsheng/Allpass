@@ -17,7 +17,7 @@ class PasswordPage extends StatefulWidget {
   }
 }
 
-class _PasswordPageState extends State<PasswordPage> {
+class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
   PasswordDao passwordDao = new PasswordDao();
 
   int _currentKey = -1;
@@ -30,6 +30,9 @@ class _PasswordPageState extends State<PasswordPage> {
     super.initState();
     _getDataFromDB();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   Future<Null> _getDataFromDB() async {
     List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
