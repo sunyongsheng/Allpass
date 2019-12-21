@@ -127,6 +127,10 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(15),),
+                                      ),
                                       title: Text("确认删除"),
                                       content: Text("拥有此标签的密码或卡片将删除此标签，确认吗？"),
                                       actions: <Widget>[
