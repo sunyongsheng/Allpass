@@ -26,9 +26,9 @@ dependencies:
   # 弹出底部通知
   fluttertoast: ^3.1.3
   # 数据库
-  sqflite: ^1.1.7
+  sqflite: ^1.2.0
   # 应用路径
-  path_provider: ^1.4.4
+  path_provider: ^1.5.1
   # 密码加密
   cipher2: ^0.3.5
   # 文件管理
@@ -42,7 +42,7 @@ dependencies:
   # 路由管理
   fluro: ^1.5.1
   # 持久化
-  shared_preferences: ^0.5.4+6
+  shared_preferences: ^0.5.6
   # 依赖注入
   get_it: ^3.0.3
   # 生物识别
