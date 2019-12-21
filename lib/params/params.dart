@@ -43,16 +43,16 @@ class Params {
     labelList.clear();
 
     // 初始化当前用户名与密码
-    username = Application.sp.getString("username") == null
+    username = Application.sp?.getString("username") == null
         ? ""
         : Application.sp.getString("username");
-    password = Application.sp.getString("password") == null
+    password = Application.sp?.getString("password") == null
         ? ""
-        : Application.sp.getString("password");
+        : Application.sp?.getString("password");
     // 判断是否开启生物识别
-    enabledBiometrics = Application.sp.getBool("biometrics") == null
+    enabledBiometrics = Application.sp?.getBool("biometrics") == null
         ? false
-        : Application.sp.getBool("biometrics");
+        : Application.sp?.getBool("biometrics");
 
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
