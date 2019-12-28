@@ -8,7 +8,7 @@ class PasswordList with ChangeNotifier {
   List<PasswordBean> _passwordList = [];
   PasswordDao _dao = PasswordDao();
 
-  List<PasswordBean> get passwordList => _passwordList;
+  List<PasswordBean> get passwordList => _passwordList??[];
 
   PasswordList() {
     init();

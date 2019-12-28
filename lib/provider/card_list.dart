@@ -9,7 +9,7 @@ class CardList with ChangeNotifier {
 
   CardDao _dao = CardDao();
 
-  List<CardBean> get cardList =>_cardList;
+  List<CardBean> get cardList =>_cardList??[];
 
   CardList() {
     init();
