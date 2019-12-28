@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
@@ -148,6 +150,11 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
               builder: (BuildContext context) {
                 return _createBottomSheet(context, passwordBean);
               });
+        },
+        onLongPress: () async {
+          String pw = await EncryptHelper.decrypt(passwordBean.password);
+          Clipboard.setData(ClipboardData(text: pw));
+          Fluttertoast.showToast(msg: "已复制密码");
         },
       ),
     );
