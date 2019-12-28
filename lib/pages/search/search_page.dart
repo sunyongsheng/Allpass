@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
@@ -7,8 +8,10 @@ import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
+import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
+
 
 class SearchPage extends StatefulWidget {
   final AllpassType type;
@@ -24,13 +27,7 @@ class _SearchPage extends State<SearchPage> {
 
   String _searchText = "";
   var _searchController;
-  List<dynamic> _searchList = List();
   List<Widget> _result = List();
-
-  PasswordDao passwordDao = PasswordDao();
-  CardDao cardDao = CardDao();
-
-  int _currentKey = -1;
 
   _SearchPage(this._type) {
     _searchController = TextEditingController();
@@ -77,8 +74,7 @@ class _SearchPage extends State<SearchPage> {
   Future<Null> getSearchResult() async {
     _result.clear();
     if (_type == AllpassType.PASSWORD) {
-      _searchList = await passwordDao.getAllPasswordBeanList();
-      for (var item in _searchList) {
+      for (var item in Provider.of<PasswordList>(context).passwordList) {
         if (item.name.contains(_searchText) ||
             item.username.contains(_searchText) ||
             item.notes.contains(_searchText)) {
@@ -86,7 +82,6 @@ class _SearchPage extends State<SearchPage> {
               title: Text(item.name),
               subtitle: Text(item.username),
               onTap: () {
-                _currentKey = item.uniqueKey;
                 // 显示模态BottomSheet
                 showModalBottomSheet(
                     context: context,
@@ -97,8 +92,7 @@ class _SearchPage extends State<SearchPage> {
         }
       }
     } else {
-      _searchList = await cardDao.getAllCardBeanList();
-      for (var item in _searchList) {
+      for (var item in Provider.of<CardList>(context).cardList) {
         if (item.name.contains(_searchText) ||
             item.ownerName.contains(_searchText) ||
             item.notes.contains(_searchText)) {
@@ -106,7 +100,6 @@ class _SearchPage extends State<SearchPage> {
             title: Text(item.name),
             subtitle: Text(item.ownerName),
             onTap: () {
-              _currentKey = item.uniqueKey;
               // 显示模态BottomSheet
               showModalBottomSheet(
                   context: context,
@@ -178,7 +171,7 @@ class _SearchPage extends State<SearchPage> {
                         builder: (context) =>
                             ViewAndEditPasswordPage(data, "查看密码", true)))
                 .then((reData) {
-              if (reData != null) passwordDao.updatePasswordBean(reData);
+              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
             });
           },
         ),
@@ -192,7 +185,7 @@ class _SearchPage extends State<SearchPage> {
                         builder: (context) =>
                             ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) {
-              if (reData != null) passwordDao.updatePasswordBean(reData);
+              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
             });
           },
         ),
@@ -207,16 +200,17 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.content_copy),
           title: Text("复制密码"),
-          onTap: () {
-            print("复制密码：" + data.password);
-            Clipboard.setData(ClipboardData(text: data.password));
+          onTap: () async {
+            String pw = await EncryptHelper.decrypt(data.password);
+            print("复制密码：" + pw);
+            Clipboard.setData(ClipboardData(text: pw));
           },
         ),
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
           onTap: () {
-            passwordDao.deletePasswordBeanById(_currentKey);
+            Provider.of<PasswordList>(context).deletePassword(data);
           },
         )
       ],
@@ -238,7 +232,7 @@ class _SearchPage extends State<SearchPage> {
                           builder: (context) =>
                               ViewAndEditCardPage(data, "查看卡片", true)))
                   .then((resData) {
-                if (resData != null) cardDao.updatePasswordBean(resData);
+                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
               });
             }),
         ListTile(
@@ -251,7 +245,7 @@ class _SearchPage extends State<SearchPage> {
                           builder: (context) =>
                               ViewAndEditCardPage(data, "编辑卡片", false)))
                   .then((resData) {
-                if (resData != null) cardDao.updatePasswordBean(resData);
+                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
               });
             }),
         ListTile(
@@ -271,7 +265,7 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除卡片"),
-          onTap: () => cardDao.deleteCardBeanById(_currentKey),
+          onTap: () => Provider.of<CardList>(context).deleteCard(data)
         )
       ],
     );
