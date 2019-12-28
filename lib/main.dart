@@ -30,13 +30,15 @@ void main() async {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
+  final PasswordList passwords = PasswordList()..init();
+  final CardList cards = CardList()..init();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<PasswordList>(
-        create: (_) => PasswordList(),
+      ChangeNotifierProvider<PasswordList>.value(
+        value: passwords,
       ),
-      ChangeNotifierProvider<CardList>(
-        create: (_) => CardList(),
+      ChangeNotifierProvider<CardList>.value(
+        value: cards,
       )
     ],
     child: Allpass(),

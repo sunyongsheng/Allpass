@@ -12,15 +12,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
 
-  List<Widget> _pagesList = List();
+  final List<Widget> _pagesList = List()
+    ..add(PasswordPage())
+    ..add(CardPage())
+    ..add(SettingPage());
   int _currentIndex = 0;
 
   @override
   void initState() {
-    _pagesList..add(PasswordPage())
-             ..add(CardPage())
-             ..add(SettingPage());
-
     super.initState();
   }
 
