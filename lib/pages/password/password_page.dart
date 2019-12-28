@@ -6,8 +6,8 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -20,7 +20,6 @@ class PasswordPage extends StatefulWidget {
 }
 
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
-  PasswordDao passwordDao = new PasswordDao();
 
   PasswordList _passList; // 所有的PasswordBean
   List<Widget> _passWidgetList = List(); // 列表
@@ -28,16 +27,11 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((d){
-      if(mounted) {
-        _passList = Provider.of<PasswordList>(context);
-      }
-    });
-
   }
 
   Future<Null> _query() async {
     await Provider.of<PasswordList>(context).init();
+    _getPasswordWidgetList();
   }
 
   @override
@@ -117,7 +111,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
   }
 
   Future<Null> _getPasswordWidgetList() async {
-    setState(() {
       _passWidgetList.clear();
       for (var item in Provider.of<PasswordList>(context).passwordList) {
         _passWidgetList.add(_getPasswordWidget(item));
@@ -132,7 +125,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
           ],
         ));
       }
-    });
   }
 
   Widget _getPasswordWidget(PasswordBean passwordBean) {
@@ -205,9 +197,10 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         ListTile(
           leading: Icon(Icons.content_copy),
           title: Text("复制密码"),
-          onTap: () {
-            print("复制密码：" + data.password);
-            Clipboard.setData(ClipboardData(text: data.password));
+          onTap: () async {
+            String pw = await EncryptHelper.decrypt(data.password);
+            print("复制密码：" + pw);
+            Clipboard.setData(ClipboardData(text: pw));
           },
         ),
         ListTile(

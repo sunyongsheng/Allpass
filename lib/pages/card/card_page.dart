@@ -28,11 +28,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((d){
-      if(mounted) {
-        _cardList = Provider.of<CardList>(context);
-      }
-    });
   }
 
   @override
@@ -42,6 +37,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   // 查询
   Future<Null> _query() async {
     await Provider.of<CardList>(context).init();
+    _getCardWidgetList();
   }
 
   @override
