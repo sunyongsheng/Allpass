@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
@@ -8,6 +9,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
+import 'package:allpass/provider/card_list.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -20,58 +22,31 @@ class CardPage extends StatefulWidget {
 class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin {
   CardDao cardDao = CardDao();
 
-  int _currentKey = -1;
-
-  List<CardBean> _cardList = List(); // 所有的PasswordBean
+  CardList _cardList; // 所有的PasswordBean
   List<Widget> _cardWidgetList = List(); // 列表
 
   @override
   void initState() {
     super.initState();
-    _getDataFromDB();
+    WidgetsBinding.instance.addPostFrameCallback((d){
+      if(mounted) {
+        _cardList = Provider.of<CardList>(context);
+      }
+    });
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Future<Null> _getDataFromDB() async {
-    List<CardBean> data = await cardDao.getAllCardBeanList();
-    data?.forEach((bean) {
-      _cardList.add(bean);
-    });
-    setState(() {});
-  }
 
   // 查询
   Future<Null> _query() async {
-    _cardList.clear();
-    List<CardBean> data = await cardDao.getAllCardBeanList();
-    data?.forEach((bean) {
-      _cardList.add(bean);
-    });
-    setState(() {});
-  }
-
-  // 添加
-  Future<Null> _add(CardBean newBean) async {
-    await cardDao.insert(newBean);
-    await _query();
-  }
-
-  // 删除
-  Future<Null> _delete(int key) async {
-    await cardDao.deleteCardBeanById(key);
-    await _query();
-  }
-
-  // 更新
-  Future<Null> _update(CardBean newBean) async {
-    await cardDao.updatePasswordBean(newBean);
-    await _query();
+    await Provider.of<CardList>(context).init();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -134,7 +109,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                           ViewAndEditCardPage(newData, "添加卡片", false)))
               .then((resData) {
             if (resData != null) {
-              _add(resData);
+              Provider.of<CardList>(context).insertCard(resData);
             }
           });
         },
@@ -144,7 +119,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
   Future<Null> _getCardWidgetList() async {
     _cardWidgetList.clear();
-    for (var item in _cardList) {
+    for (var item in Provider.of<CardList>(context).cardList) {
       _cardWidgetList.add(_getCardWidget(item));
     }
     if (_cardWidgetList.length == 0) {
@@ -165,7 +140,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: GestureDetector(
           onTap: () {
-            _currentKey = cardBean.uniqueKey;
             // 显示模态BottomSheet
             showModalBottomSheet(
                 context: context,
@@ -219,7 +193,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                           builder: (context) =>
                               ViewAndEditCardPage(cardBean, "查看卡片", true)))
                   .then((resData) {
-                if (resData != null) _update(resData);
+                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
               });
             }),
         ListTile(
@@ -232,7 +206,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                           builder: (context) =>
                               ViewAndEditCardPage(cardBean, "编辑卡片", false)))
                   .then((resData) {
-                if (resData != null) _update(resData);
+                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
               });
             }),
         ListTile(
@@ -252,7 +226,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除卡片"),
-          onTap: () => _delete(_currentKey),
+          onTap: () => Provider.of<CardList>(context).deleteCard(cardBean),
         )
       ],
     );

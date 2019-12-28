@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
@@ -8,6 +9,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
+import 'package:allpass/provider/password_list.dart';
 
 /// 密码页面
 class PasswordPage extends StatefulWidget {
@@ -20,58 +22,30 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
   PasswordDao passwordDao = new PasswordDao();
 
-  int _currentKey = -1;
-
-  List<PasswordBean> _passList = List(); // 所有的PasswordBean
+  PasswordList _passList; // 所有的PasswordBean
   List<Widget> _passWidgetList = List(); // 列表
 
   @override
   void initState() {
     super.initState();
-    _getDataFromDB();
+    WidgetsBinding.instance.addPostFrameCallback((d){
+      if(mounted) {
+        _passList = Provider.of<PasswordList>(context);
+      }
+    });
+
+  }
+
+  Future<Null> _query() async {
+    await Provider.of<PasswordList>(context).init();
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  Future<Null> _getDataFromDB() async {
-    List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
-    data?.forEach((bean) {
-      _passList.add(bean);
-    });
-    setState(() {});
-  }
-
-  // 查询
-  Future<Null> _query() async {
-    _passList.clear();
-    List<PasswordBean> data = await passwordDao.getAllPasswordBeanList();
-    data?.forEach((bean) {
-      _passList.add(bean);
-    });
-    setState(() {});
-  }
-
-  // 添加
-  Future<Null> _add(PasswordBean newBean) async {
-    await passwordDao.insert(newBean);
-    await _query();
-  }
-
-  // 删除
-  Future<Null> _delete(int key) async {
-    await passwordDao.deletePasswordBeanById(key);
-    await _query();
-  }
-
-  // 更新
-  Future<Null> _update(PasswordBean newBean) async {
-    await passwordDao.updatePasswordBean(newBean);
-    await _query();
-  }
-
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -135,7 +109,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                             ViewAndEditPasswordPage(newData, "添加密码", false)))
                 .then((resData) {
               if (resData != null) {
-                _add(resData);
+                Provider.of<PasswordList>(context).insertPassword(resData);
               }
             });
           }),
@@ -145,7 +119,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
   Future<Null> _getPasswordWidgetList() async {
     setState(() {
       _passWidgetList.clear();
-      for (var item in _passList) {
+      for (var item in Provider.of<PasswordList>(context).passwordList) {
         _passWidgetList.add(_getPasswordWidget(item));
       }
       if (_passWidgetList.length == 0) {
@@ -176,7 +150,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         title: Text(passwordBean.name),
         subtitle: Text(passwordBean.username),
         onTap: () {
-          _currentKey = passwordBean.uniqueKey;
           // 显示模态BottomSheet
           showModalBottomSheet(
               context: context,
@@ -203,7 +176,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                         builder: (context) =>
                             ViewAndEditPasswordPage(data, "查看密码", true)))
                 .then((reData) {
-              if (reData != null) _update(reData);
+              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
             });
           },
         ),
@@ -217,7 +190,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                         builder: (context) =>
                             ViewAndEditPasswordPage(data, "编辑密码", false)))
                 .then((reData) {
-              if (reData != null) _update(reData);
+              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
             });
           },
         ),
@@ -241,7 +214,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
           leading: Icon(Icons.delete_outline),
           title: Text("删除密码"),
           onTap: () {
-            _delete(_currentKey);
+            Provider.of<PasswordList>(context).deletePassword(data);
           },
         )
       ],

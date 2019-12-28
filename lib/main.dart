@@ -3,12 +3,15 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +30,17 @@ void main() async {
         SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
-  runApp(Allpass());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<PasswordList>(
+        create: (_) => PasswordList(),
+      ),
+      ChangeNotifierProvider<CardList>(
+        create: (_) => CardList(),
+      )
+    ],
+    child: Allpass(),
+  ));
 }
 
 class Allpass extends StatelessWidget {
