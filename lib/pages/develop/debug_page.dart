@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 /// 调试页
 class DebugPage extends StatefulWidget {
@@ -34,7 +37,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除所有密码记录"),
                 onPressed: () async {
-                  await _passwordDao.deleteContent();
+                  await Provider.of<PasswordList>(context).clear();
                   Fluttertoast.showToast(msg: "已删除所有密码");
                 },
               ),
@@ -43,7 +46,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除所有卡片记录"),
                 onPressed: () async {
-                  await _cardDao.deleteContent();
+                  await Provider.of<CardList>(context).clear();
                   Fluttertoast.showToast(msg: "已删除所有卡片");
                 },
               ),
@@ -52,6 +55,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除密码数据库"),
                 onPressed: () async {
+                  await Provider.of<PasswordList>(context).clear();
                   await _passwordDao.deleteTable();
                   Fluttertoast.showToast(msg: "已删除密码数据库");
                 },
@@ -61,6 +65,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除卡片数据库"),
                 onPressed: () async {
+                  await Provider.of<PasswordList>(context).clear();
                   await _cardDao.deleteTable();
                   Fluttertoast.showToast(msg: "已删除卡片数据库");
                 },

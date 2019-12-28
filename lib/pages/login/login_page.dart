@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 /// 登陆页面
 class LoginPage extends StatefulWidget {
@@ -149,8 +150,8 @@ class _LoginPage extends State<LoginPage> {
 
   login() async {
     if (inputErrorTimes >= 5) {
-      PasswordDao().deleteContent();
-      CardDao().deleteContent();
+      Provider.of<PasswordList>(context).clear();
+      Provider.of<CardList>(context).clear();
       Params.paramsClear();
       await Application.sp.clear();
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");

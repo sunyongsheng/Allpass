@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_file_picker/flutter_document_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:directory_picker/directory_picker.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/params/params.dart';
 import 'package:allpass/dao/card_dao.dart';
@@ -16,6 +17,8 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/csv_helper.dart';
 import 'package:allpass/pages/setting/chrome_import_help.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 /// 导入导出页面
 class ImportExportPage extends StatelessWidget {
@@ -110,7 +113,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                   try {
                     List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
                     for (var bean in passwordList) {
-                      await passwordDao.insert(bean);
+                      await Provider.of<PasswordList>(context).insertPassword(bean);
                       Params.labelListAdd(bean.label);
                       Params.folderListAdd(bean.folder);
                     }
@@ -138,7 +141,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                   try {
                     List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
                     for (var bean in cardList) {
-                      await cardDao.insert(bean);
+                      await Provider.of<CardList>(context).insertCard(bean);
                       Params.labelListAdd(bean.label);
                       Params.folderListAdd(bean.folder);
                     }
