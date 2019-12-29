@@ -115,7 +115,9 @@ class _LoginPage extends State<LoginPage> {
                 FlatButton(
                   child: Text("使用生物识别"),
                   onPressed: () {
-                    NavigationUtil.goAuthLoginPage(context);
+                    if (Params.enabledBiometrics)
+                      NavigationUtil.goAuthLoginPage(context);
+                    else Fluttertoast.showToast(msg: "您还未开启生物识别");
                   },
                 )
               ],
