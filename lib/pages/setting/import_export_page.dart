@@ -10,6 +10,7 @@ import 'package:directory_picker/directory_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/params/params.dart';
+import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/card_bean.dart';
@@ -104,27 +105,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle),
-              onTap: () async {
-                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
-                  allowedFileExtensions: ["csv"]
-                );
-                String path = await FlutterDocumentPicker.openDocument(params: param);
-                if (path != null) {
-                  try {
-                    List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
-                    for (var bean in passwordList) {
-                      await Provider.of<PasswordList>(context).insertPassword(bean);
-                      Params.labelListAdd(bean.label);
-                      Params.folderListAdd(bean.folder);
-                    }
-                    Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
-                  } catch (assertError) {
-                    Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
-                  }
-                } else {
-                  Fluttertoast.showToast(msg: "取消导入");
-                }
-              },
+              onTap: () => filePickAndImport(context, AllpassType.PASSWORD),
             ),
           ),
           Container(
@@ -132,32 +113,44 @@ class ImportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card),
-              onTap: () async {
-                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
-                    allowedFileExtensions: ["csv"]
-                );
-                String path = await FlutterDocumentPicker.openDocument(params: param);
-                if (path != null) {
-                  try {
-                    List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
-                    for (var bean in cardList) {
-                      await Provider.of<CardList>(context).insertCard(bean);
-                      Params.labelListAdd(bean.label);
-                      Params.folderListAdd(bean.folder);
-                    }
-                    Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
-                  } catch (assertError) {
-                    Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
-                  }
-                } else {
-                  Fluttertoast.showToast(msg: "取消导入");
-                }
-              },
+              onTap: () => filePickAndImport(context, AllpassType.CARD),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<Null> filePickAndImport(BuildContext context, AllpassType type) async {
+    FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
+        allowedFileExtensions: ["csv"]
+    );
+    String path = await FlutterDocumentPicker.openDocument(params: param);
+    if (path != null) {
+      try {
+        if (type == AllpassType.PASSWORD) {
+          List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
+          for (var bean in passwordList) {
+            await Provider.of<PasswordList>(context).insertPassword(bean);
+            Params.labelListAdd(bean.label);
+            Params.folderListAdd(bean.folder);
+          }
+          Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
+        } else {
+          List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
+          for (var bean in cardList) {
+            await Provider.of<CardList>(context).insertCard(bean);
+            Params.labelListAdd(bean.label);
+            Params.folderListAdd(bean.folder);
+          }
+          Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
+        }
+      } catch (assertError) {
+        Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
+      }
+    } else {
+      Fluttertoast.showToast(msg: "取消导入");
+    }
   }
 }
 
@@ -235,5 +228,7 @@ class ExportTypeSelectPage extends StatelessWidget {
       ),
     );
   }
+
+
 
 }
