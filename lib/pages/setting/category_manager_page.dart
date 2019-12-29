@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 import 'package:allpass/widgets/edit_category_dialog.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 
 
@@ -28,9 +27,6 @@ class CategoryManagerPage extends StatefulWidget {
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   String categoryName;
-
-  PasswordDao passwordDao = PasswordDao();
-  CardDao cardDao = CardDao();
 
   _CategoryManagerPage(String name) {
     this.categoryName = name;
@@ -190,22 +186,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   deleteLabelAndUpdate(String label) async {
-    List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    if (passwordList != null) {
-      for (var bean in passwordList) {
-        if (bean.label.contains(label)) {
-          bean.label.remove(label);
-          passwordDao.updatePasswordBean(bean);
-        }
+    for (var bean in Provider.of<PasswordList>(context).passwordList) {
+      if (bean.label.contains(label)) {
+        bean.label.remove(label);
+        Provider.of<PasswordList>(context).updatePassword(bean);
       }
     }
-    List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    if (cardList != null) {
-      for (var bean in cardList) {
-        if (bean.label.contains(label)) {
-          bean.label.remove(label);
-          cardDao.updatePasswordBean(bean);
-        }
+    for (var bean in Provider.of<CardList>(context).cardList) {
+      if (bean.label.contains(label)) {
+        bean.label.remove(label);
+        Provider.of<CardList>(context).updateCard(bean);
       }
     }
     setState(() {
@@ -216,22 +206,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   deleteFolderAndUpdate(String folder) async {
-    List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
-    if (passwordList != null) {
-      for (var bean in passwordList) {
-        if (folder == bean.folder) {
-          bean.folder = "默认";
-          passwordDao.updatePasswordBean(bean);
-        }
+    for (var bean in Provider.of<PasswordList>(context).passwordList) {
+      if (folder == bean.folder) {
+        bean.folder = "默认";
+        Provider.of<PasswordList>(context).updatePassword(bean);
       }
     }
-    List<CardBean> cardList = await cardDao.getAllCardBeanList();
-    if (cardList != null) {
-      for (var bean in cardList) {
-        if (folder == bean.folder) {
-          bean.folder = "默认";
-          cardDao.updatePasswordBean(bean);
-        }
+    for (var bean in Provider.of<CardList>(context).cardList) {
+      if (folder == bean.folder) {
+        bean.folder = "默认";
+        Provider.of<CardList>(context).updateCard(bean);
       }
     }
     setState(() {
