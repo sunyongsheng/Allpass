@@ -17,7 +17,7 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/csv_helper.dart';
-import 'package:allpass/pages/setting/chrome_import_help.dart';
+import 'package:allpass/pages/setting/import/chrome_import_help.dart';
 import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
