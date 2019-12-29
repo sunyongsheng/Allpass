@@ -79,10 +79,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: _query,
-                      child: ListView.builder(
-                        itemBuilder: (context, index) => _cardWidgetList[index],
-                        itemCount: _cardWidgetList.length,
-                      ),
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => _cardWidgetList[index],
+                          itemCount: _cardWidgetList.length,
+                        ),
+                      )
                     ),
                   );
                 default:

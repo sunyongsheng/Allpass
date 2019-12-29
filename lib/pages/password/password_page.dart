@@ -76,10 +76,12 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                   return Expanded(
                     child: RefreshIndicator(
                       onRefresh: _query,
-                      child: ListView.builder(
-                        itemBuilder: (context, index) => _passWidgetList[index],
-                        itemCount: _passWidgetList.length,
-                      ),
+                      child: Scrollbar(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => _passWidgetList[index],
+                          itemCount: _passWidgetList.length,
+                        ),
+                      )
                     ),
                   );
                 default:
