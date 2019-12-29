@@ -7,13 +7,13 @@ import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/services/local_authentication_service.dart';
+import 'package:allpass/services/authentication_service.dart';
 
 
 /// 生物识别登录页
 class AuthLoginPage extends StatelessWidget {
 
-  final LocalAuthenticationService _localAuthService = Application.getIt<LocalAuthenticationService>();
+  final AuthenticationService _localAuthService = Application.getIt<AuthenticationService>();
 
   @override
   Widget build(BuildContext context) {

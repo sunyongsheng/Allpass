@@ -6,7 +6,7 @@ import 'package:local_auth/local_auth.dart';
 
 import 'package:allpass/params/params.dart';
 
-class LocalAuthenticationService {
+class AuthenticationService {
   final _auth = LocalAuthentication();
 
   bool isAuthenticated = false;
