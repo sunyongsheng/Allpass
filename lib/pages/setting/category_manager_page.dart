@@ -166,6 +166,10 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                           },
                                         )
                                       ],
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(15),),
+                                      ),
                                     );
                                   }
                               );
