@@ -53,15 +53,16 @@ class _SearchPage extends State<SearchPage> {
             case ConnectionState.waiting:
             case ConnectionState.active:
               return Center(
-                child: Text("搜索中..."),
+                child: CircularProgressIndicator(),
               );
             case ConnectionState.done:
               return _result.length == 0
                   ? Center(
                       child: Text("无结果"),
                     )
-                  : ListView(
-                      children: _result,
+                  : ListView.builder(
+                      itemBuilder: (_, index) => _result[index],
+                      itemCount: _result.length,
                     );
             default:
               return Center(child: Text("未知状态，请联系开发者：sys6511@126.com"));
@@ -79,24 +80,45 @@ class _SearchPage extends State<SearchPage> {
             item.username.contains(_searchText) ||
             item.notes.contains(_searchText)) {
           _result.add(ListTile(
-              title: Text(item.name),
-              subtitle: Text(item.username),
-              onTap: () {
-                // 显示模态BottomSheet
-                showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return createPassBottomSheet(context, item);
-                    });
-              }));
+            leading: CircleAvatar(
+              backgroundColor: getRandomColor(item.uniqueKey),
+              child: Text(
+                item.name.substring(0, 1),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            title: Text(item.name),
+            subtitle: Text(item.username),
+            onTap: () {
+              // 显示模态BottomSheet
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return createPassBottomSheet(context, item);
+                  });
+            }));
         }
       }
     } else {
       for (var item in Provider.of<CardList>(context).cardList) {
+        Color t = getRandomColor(item.uniqueKey);
         if (item.name.contains(_searchText) ||
             item.ownerName.contains(_searchText) ||
             item.notes.contains(_searchText)) {
           _result.add(ListTile(
+            leading: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: t
+              ),
+              child: CircleAvatar(
+                backgroundColor: t,
+                child: Text(
+                  item.name.substring(0, 1),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
             title: Text(item.name),
             subtitle: Text(item.ownerName),
             onTap: () {
@@ -124,16 +146,16 @@ class _SearchPage extends State<SearchPage> {
                 constraints: BoxConstraints(maxHeight: 40),
                 child: Container(
                     padding: const EdgeInsets.only(
-                        top: 10, bottom: 10, left: 15, right: 15),
+                        top: 0, bottom: 31, left: 15, right: 15),
                     alignment: Alignment.center,
-                    height: 60.0,
+                    height: 50.0,
                     decoration: BoxDecoration(
                         color: Colors.grey[200],
                         border: null,
                         borderRadius: new BorderRadius.circular(25.0)),
                     child: TextField(
                       decoration: InputDecoration.collapsed(hintText: ""),
-                      style: AllpassTextUI.secondTitleStyleBlack,
+                      style: AllpassTextUI.firstTitleStyleBlack,
                       controller: _searchController,
                       autofocus: true,
                       onEditingComplete: () {
