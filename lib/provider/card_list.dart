@@ -16,17 +16,17 @@ class CardList with ChangeNotifier {
   }
 
   init() async {
-    _cardList = await _dao.getAllCardBeanList();
+    _cardList = await _dao.getAllCardBeanList()??[];
   }
 
   insertCard(CardBean bean) async {
-    _cardList.add(bean);
+    _cardList?.add(bean);
     await _dao.insert(bean);
     notifyListeners();
   }
 
   deleteCard(CardBean bean) async {
-    _cardList.remove(bean);
+    _cardList?.remove(bean);
     await _dao.deleteCardBeanById(bean.uniqueKey);
     notifyListeners();
   }

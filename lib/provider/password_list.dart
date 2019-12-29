@@ -15,7 +15,7 @@ class PasswordList with ChangeNotifier {
   }
 
   init() async {
-    _passwordList = await _dao.getAllPasswordBeanList();
+    _passwordList = await _dao.getAllPasswordBeanList()??[];
   }
 
   insertPassword(PasswordBean bean) async {
