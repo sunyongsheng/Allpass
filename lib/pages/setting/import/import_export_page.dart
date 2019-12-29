@@ -18,6 +18,7 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/csv_helper.dart';
 import 'package:allpass/pages/setting/chrome_import_help.dart';
+import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -26,63 +27,83 @@ class ImportExportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        brightness: Brightness.light,
-        title: Text("导入/导出", style: AllpassTextUI.mainTitleStyle,),
-        centerTitle: true,
+        appBar: AppBar(
+          brightness: Brightness.light,
+          title: Text(
+            "导入/导出",
+            style: AllpassTextUI.mainTitleStyle,
+          ),
+          centerTitle: true,
+          backgroundColor: AllpassColorUI.mainBackgroundColor,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0,
+        ),
         backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-      ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: AllpassEdgeInsets.listInset,
-            child: ListTile(
-              title: Text("从Chrome中导入"),
-              leading: Icon(CustomIcons.chrome),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ChromeImportHelpPage(),
-                ));
-              },
+        body: Column(
+          children: <Widget>[
+            Container(
+              padding: AllpassEdgeInsets.listInset,
+              child: ListTile(
+                title: Text("从Chrome中导入"),
+                leading: Icon(CustomIcons.chrome),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChromeImportHelpPage(),
+                      ));
+                },
+              ),
             ),
-          ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
-            child: ListTile(
-              title: Text("从CSV文件中导入"),
-              leading: Icon(Icons.import_contacts),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ImportTypeSelectPage(),
-                ));
-              },
+            Container(
+              padding: AllpassEdgeInsets.listInset,
+              child: ListTile(
+                title: Text("从CSV文件中导入"),
+                leading: Icon(Icons.import_contacts),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImportTypeSelectPage(),
+                      ));
+                },
+              ),
             ),
-          ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
-            child: ListTile(
-              title: Text("导出为CSV文件"),
-              leading: Icon(Icons.call_missed_outgoing),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ExportTypeSelectPage(),
-                ));
-              },
+            Container(
+              padding: AllpassEdgeInsets.listInset,
+              child: ListTile(
+                title: Text("从剪贴板中导入"),
+                leading: Icon(Icons.content_paste),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ImportFromClipboard(),
+                      ));
+                },
+              ),
             ),
-          )
-        ],
-      )
-    );
+            Container(
+              padding: AllpassEdgeInsets.listInset,
+              child: ListTile(
+                title: Text("导出为CSV文件"),
+                leading: Icon(Icons.call_missed_outgoing),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExportTypeSelectPage(),
+                      ));
+                },
+              ),
+            )
+          ],
+        ));
   }
-
 }
 
 /// 导入类型选择
 class ImportTypeSelectPage extends StatelessWidget {
-
   final CardDao cardDao = CardDao();
   final PasswordDao passwordDao = PasswordDao();
 
@@ -90,7 +111,10 @@ class ImportTypeSelectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("选择导入类型", style: AllpassTextUI.mainTitleStyle,),
+        title: Text(
+          "选择导入类型",
+          style: AllpassTextUI.mainTitleStyle,
+        ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
@@ -160,7 +184,10 @@ class ExportTypeSelectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("选择导出内容", style: AllpassTextUI.mainTitleStyle,),
+        title: Text(
+          "选择导出内容",
+          style: AllpassTextUI.mainTitleStyle,
+        ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
@@ -177,10 +204,11 @@ class ExportTypeSelectPage extends StatelessWidget {
               onTap: () async {
                 Directory dir = await getExternalStorageDirectory();
                 Directory newDir = await DirectoryPicker.pick(
-                    context: context,
-                    rootDirectory: dir,
+                  context: context,
+                  rootDirectory: dir,
                 );
-                List<PasswordBean> list = await PasswordDao().getAllPasswordBeanList();
+                List<PasswordBean> list =
+                    await PasswordDao().getAllPasswordBeanList();
                 String path = await CsvHelper().passwordExportCsv(list, newDir);
                 Clipboard.setData(ClipboardData(text: path));
                 Fluttertoast.showToast(msg: "已导出到$newDir");
@@ -216,7 +244,8 @@ class ExportTypeSelectPage extends StatelessWidget {
                   context: context,
                   rootDirectory: dir,
                 );
-                List<PasswordBean> passList = await PasswordDao().getAllPasswordBeanList();
+                List<PasswordBean> passList =
+                    await PasswordDao().getAllPasswordBeanList();
                 await CsvHelper().passwordExportCsv(passList, newDir);
                 List<CardBean> cardList = await CardDao().getAllCardBeanList();
                 await CsvHelper().cardExportCsv(cardList, newDir);
@@ -228,7 +257,4 @@ class ExportTypeSelectPage extends StatelessWidget {
       ),
     );
   }
-
-
-
 }

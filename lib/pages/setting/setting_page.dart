@@ -8,7 +8,7 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
-import 'package:allpass/pages/setting/import_export_page.dart';
+import 'package:allpass/pages/setting/import/import_export_page.dart';
 import 'package:allpass/pages/about_page.dart';
 
 /// 设置页面
