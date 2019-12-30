@@ -17,16 +17,37 @@ class _HomePage extends State<HomePage> {
     ..add(CardPage())
     ..add(SettingPage());
   int _currentIndex = 0;
+  PageController _controller;
 
   @override
   void initState() {
     super.initState();
+    _controller = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pagesList[_currentIndex],
+      body: PageView.builder(
+        itemBuilder: (context, index) {
+            return _pagesList[index];
+          },
+        itemCount: _pagesList.length,
+        controller: _controller,
+        onPageChanged: (index) {
+          if (index  != _currentIndex) {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
+        },
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -53,10 +74,8 @@ class _HomePage extends State<HomePage> {
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
+        onTap: (index) {
+          _controller.jumpToPage(index);
         },
       ),
     );
