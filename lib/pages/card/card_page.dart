@@ -113,6 +113,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             }
           });
         },
+        heroTag: "card",
       ),
     );
   }

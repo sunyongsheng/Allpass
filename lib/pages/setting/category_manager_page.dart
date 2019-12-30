@@ -52,6 +52,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "add$categoryName",
         child: Icon(Icons.add),
         onPressed: () {
           showDialog(

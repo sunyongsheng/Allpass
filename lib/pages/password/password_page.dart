@@ -96,21 +96,23 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加 按钮
       floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            var newData =
-                PasswordBean(username: "", password: "", url: "", folder: "默认");
-            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ViewAndEditPasswordPage(newData, "添加密码", false)))
-                .then((resData) {
-              if (resData != null) {
-                Provider.of<PasswordList>(context).insertPassword(resData);
-              }
-            });
-          }),
+        child: Icon(Icons.add),
+        onPressed: () {
+          var newData =
+              PasswordBean(username: "", password: "", url: "", folder: "默认");
+          Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewAndEditPasswordPage(newData, "添加密码", false)))
+              .then((resData) {
+            if (resData != null) {
+              Provider.of<PasswordList>(context).insertPassword(resData);
+            }
+          });
+        },
+        heroTag: "password",
+      ),
     );
   }
 
