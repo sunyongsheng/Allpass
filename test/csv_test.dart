@@ -6,7 +6,7 @@ import 'package:allpass/model/password_bean.dart';
 void main() {
   test("CSV测试", () async {
     CsvHelper helper = CsvHelper();
-    List<PasswordBean> res = await helper.passwordImportFromCsv("D:/Chrome 密码.csv");
+    List<PasswordBean> res = await helper.passwordImportFromCsv(path: "D:/Chrome 密码.csv");
     print(res);
   });
 }

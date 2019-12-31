@@ -44,11 +44,17 @@ class CsvHelper {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  Future<List<PasswordBean>> passwordImportFromCsv(String path) async {
+  Future<List<PasswordBean>> passwordImportFromCsv({String path, String toParseText}) async {
+    assert(path == null || toParseText == null, "只能传入一个参数！");
     List<PasswordBean> res = List();
-    File file = File(path);
-    if (!file.existsSync()) throw UnsupportedError("文件不存在!");
-    String fileContext = file.readAsStringSync();
+    String fileContext;
+    if (toParseText.length > 3) {
+      fileContext = toParseText;
+    } else {
+      File file = File(path);
+      if (!file.existsSync()) throw UnsupportedError("文件不存在!");
+      fileContext = file.readAsStringSync();
+    }
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
     else {

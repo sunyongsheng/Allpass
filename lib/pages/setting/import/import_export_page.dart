@@ -153,7 +153,7 @@ class ImportTypeSelectPage extends StatelessWidget {
     if (path != null) {
       try {
         if (type == AllpassType.PASSWORD) {
-          List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path);
+          List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
             await Provider.of<PasswordList>(context).insertPassword(bean);
             Params.labelListAdd(bean.label);
