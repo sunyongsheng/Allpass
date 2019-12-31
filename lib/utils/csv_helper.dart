@@ -48,12 +48,14 @@ class CsvHelper {
     assert(path == null || toParseText == null, "只能传入一个参数！");
     List<PasswordBean> res = List();
     String fileContext;
-    if (toParseText.length > 3) {
+    if (toParseText != null) {
       fileContext = toParseText;
-    } else {
+    } else if (path != null) {
       File file = File(path);
       if (!file.existsSync()) throw UnsupportedError("文件不存在!");
       fileContext = file.readAsStringSync();
+    } else {
+      throw Exception("传入参数为空！");
     }
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
