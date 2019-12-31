@@ -21,6 +21,7 @@ void main() async {
   Application.router = router;
   Application.setupLocator();
   await Application.initSp();
+  Application.initChannelAndHandle();
 
   await Params.paramsInit();
 
