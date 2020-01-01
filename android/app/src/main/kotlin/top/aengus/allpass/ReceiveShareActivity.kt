@@ -16,7 +16,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
-class ShareActivity : FlutterActivity() {
+class ReceiveShareActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
@@ -28,7 +28,7 @@ class ShareActivity : FlutterActivity() {
             if (type.startsWith("text/")) {
                 val res = processIntent(intent)
                 MethodChannel(flutterView, "allpass.aengus.top/share").invokeMethod("getChromeData", res)
-                Log.v("ShareAcvitity", "调用Dart方法完成")
+                Log.v("ShareActivity", "调用Dart方法完成")
             }
         }
     }
