@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:allpass/params/params.dart';
-import 'package:allpass/utils/csv_helper.dart';
+import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/services/navigate_service.dart';
@@ -33,7 +33,7 @@ class Application {
     platform.setMethodCallHandler((handler) {
       if (handler.method == "getChromeData") {
         print("调用了getChromeData方法");
-        Future<List<PasswordBean>> res = CsvHelper().passwordImportFromCsv(toParseText: handler.arguments);
+        Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: handler.arguments);
         _importPasswordFromFutureList(res);
         return res;
       } else {

@@ -5,7 +5,7 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/encrypt_helper.dart';
 import 'package:allpass/utils/string_process.dart';
 
-class CsvHelper {
+class CsvUtil {
 
   /// 将PasswordList导出为csv，[,]分隔，[\n]换行，返回文件路径
   Future<String> passwordExportCsv(List<PasswordBean> list, Directory dst) async {

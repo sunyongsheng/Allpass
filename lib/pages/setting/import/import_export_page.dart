@@ -16,7 +16,7 @@ import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/csv_helper.dart';
+import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/pages/setting/import/chrome_import_help.dart';
 import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/provider/card_list.dart';
@@ -153,7 +153,7 @@ class ImportTypeSelectPage extends StatelessWidget {
     if (path != null) {
       try {
         if (type == AllpassType.PASSWORD) {
-          List<PasswordBean> passwordList = await CsvHelper().passwordImportFromCsv(path: path);
+          List<PasswordBean> passwordList = await CsvUtil().passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
             await Provider.of<PasswordList>(context).insertPassword(bean);
             Params.labelListAdd(bean.label);
@@ -161,7 +161,7 @@ class ImportTypeSelectPage extends StatelessWidget {
           }
           Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
         } else {
-          List<CardBean> cardList = await CsvHelper().cardImportFromCsv(path);
+          List<CardBean> cardList = await CsvUtil().cardImportFromCsv(path);
           for (var bean in cardList) {
             await Provider.of<CardList>(context).insertCard(bean);
             Params.labelListAdd(bean.label);
@@ -209,7 +209,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                 );
                 List<PasswordBean> list =
                     await PasswordDao().getAllPasswordBeanList();
-                String path = await CsvHelper().passwordExportCsv(list, newDir);
+                String path = await CsvUtil().passwordExportCsv(list, newDir);
                 Clipboard.setData(ClipboardData(text: path));
                 Fluttertoast.showToast(msg: "已导出到$newDir");
               },
@@ -227,7 +227,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                   rootDirectory: dir,
                 );
                 List<CardBean> list = await CardDao().getAllCardBeanList();
-                String path = await CsvHelper().cardExportCsv(list, newDir);
+                String path = await CsvUtil().cardExportCsv(list, newDir);
                 Clipboard.setData(ClipboardData(text: path));
                 Fluttertoast.showToast(msg: "已导出到$newDir");
               },
@@ -246,9 +246,9 @@ class ExportTypeSelectPage extends StatelessWidget {
                 );
                 List<PasswordBean> passList =
                     await PasswordDao().getAllPasswordBeanList();
-                await CsvHelper().passwordExportCsv(passList, newDir);
+                await CsvUtil().passwordExportCsv(passList, newDir);
                 List<CardBean> cardList = await CardDao().getAllCardBeanList();
-                await CsvHelper().cardExportCsv(cardList, newDir);
+                await CsvUtil().cardExportCsv(cardList, newDir);
                 Fluttertoast.showToast(msg: "已导出到$newDir");
               },
             ),
