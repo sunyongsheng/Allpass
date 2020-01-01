@@ -20,6 +20,7 @@ class ShareActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
+        setContentView(R.layout.loading)
         val intent: Intent = intent
         val action: String? = intent.action
         val type: String = if (intent.type != null) intent.type!! else "unknown"
