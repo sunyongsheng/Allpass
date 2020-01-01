@@ -2,7 +2,7 @@ import 'dart:io' show Platform, File, Directory;
 
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/string_process.dart';
 
 class CsvUtil {
@@ -142,7 +142,7 @@ class CsvUtil {
         res.add(PasswordBean(
           name: name,
           username: username,
-          password: await EncryptHelper.encrypt(password),
+          password: await EncryptUtil.encrypt(password),
           url: url,
           folder: folder,
           notes: notes,

@@ -1,7 +1,7 @@
 import 'package:cipher2/cipher2.dart';
 
 /// 加密解密辅助类
-class EncryptHelper {
+class EncryptUtil {
   static final String _key = "f821kfo1we241ew0";
   static final String _iv = "e4n8dol2390z834n";
 

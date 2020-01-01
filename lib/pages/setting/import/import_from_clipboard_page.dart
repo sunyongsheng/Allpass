@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -204,7 +204,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: defaultUsername,
-          password: await EncryptHelper.encrypt(fields[1]),
+          password: await EncryptUtil.encrypt(fields[1]),
           url: ""
         ));
       }
@@ -224,7 +224,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
-          password: await EncryptHelper.encrypt(fields[2]),
+          password: await EncryptUtil.encrypt(fields[2]),
           url: fields[3],
         ));
       } else if (value == 2) {
@@ -232,21 +232,21 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
-          password: await EncryptHelper.encrypt(fields[2]),
+          password: await EncryptUtil.encrypt(fields[2]),
           url: "",
         ));
       } else if (value == 3) {
         if (fields.length < 3) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
           username: fields[0],
-          password: await EncryptHelper.encrypt(fields[1]),
+          password: await EncryptUtil.encrypt(fields[1]),
           url: fields[2],
         ));
       } else if (value == 4) {
         if (fields.length < 2) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
           username: fields[0],
-          password: await EncryptHelper.encrypt(fields[1]),
+          password: await EncryptUtil.encrypt(fields[1]),
           url: "",
         ));
       }

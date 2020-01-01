@@ -8,7 +8,7 @@ import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -223,7 +223,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.content_copy),
           title: Text("复制密码"),
           onTap: () async {
-            String pw = await EncryptHelper.decrypt(data.password);
+            String pw = await EncryptUtil.decrypt(data.password);
             print("复制密码：" + pw);
             Clipboard.setData(ClipboardData(text: pw));
           },

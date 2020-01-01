@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/string_process.dart';
 
 /// 存储新建的“密码”
@@ -124,7 +124,7 @@ class PasswordBean {
     String csv =
         "${bean.name},"
         "${bean.username},"
-        "${await EncryptHelper.decrypt(bean.password)},"
+        "${await EncryptUtil.decrypt(bean.password)},"
         "${bean.url},"
         "${bean.folder},"
         "${bean.notes},"

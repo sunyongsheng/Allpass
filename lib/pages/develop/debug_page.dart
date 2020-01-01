@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -75,7 +75,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("查看主密码"),
                 onPressed: () async {
-                  String _pass = await EncryptHelper.decrypt(Application.sp.getString("password"));
+                  String _pass = await EncryptUtil.decrypt(Application.sp.getString("password"));
                   Fluttertoast.showToast(msg: "$_pass");
                 },
               ),

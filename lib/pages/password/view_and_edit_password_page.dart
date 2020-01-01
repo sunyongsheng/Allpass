@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/encrypt_helper.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 
 /// 查看或编辑密码页面
@@ -82,7 +82,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
   }
 
   Future<Null> _decryptPassword() async {
-    _password =  await EncryptHelper.decrypt(_tempData.password);
+    _password =  await EncryptUtil.decrypt(_tempData.password);
     _passwordController = TextEditingController(text: _password);
   }
 
@@ -126,7 +126,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
                   if (_usernameController.text.length >= 1
                       && _passwordController.text.length >= 1
                       && _urlController.text.length >= 1) {
-                    _tempData.password = await EncryptHelper.encrypt(_password);
+                    _tempData.password = await EncryptUtil.encrypt(_password);
                     Navigator.pop<PasswordBean>(context, _tempData);
                   } else {
                     Fluttertoast.showToast(msg: "用户名、密码和链接不允许为空！");
