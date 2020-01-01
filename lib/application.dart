@@ -31,10 +31,14 @@ class Application {
 
   static initChannelAndHandle() {
     platform.setMethodCallHandler((handler) {
-      print("调用了getChromeData方法");
-      Future<List<PasswordBean>> res = CsvHelper().passwordImportFromCsv(toParseText: handler.arguments);
-      _importPasswordFromFutureList(res);
-      return res;
+      if (handler.method == "getChromeData") {
+        print("调用了getChromeData方法");
+        Future<List<PasswordBean>> res = CsvHelper().passwordImportFromCsv(toParseText: handler.arguments);
+        _importPasswordFromFutureList(res);
+        return res;
+      } else {
+        return null;
+      }
     });
   }
 
@@ -48,6 +52,10 @@ class Application {
         Params.folderListAdd(bean.folder);
       }
       Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
+      SystemNavigator.pop();
+    } else {
+      Fluttertoast.showToast(msg: "导入了0条记录");
+      SystemNavigator.pop();
     }
   }
 }
