@@ -32,7 +32,6 @@ class Application {
   static initChannelAndHandle() {
     platform.setMethodCallHandler((call) {
       if (call.method == "getChromeData") {
-        print("调用了getChromeData方法");
         Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
         return res;
@@ -54,7 +53,7 @@ class Application {
       Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
       SystemNavigator.pop();
     } else {
-      Fluttertoast.showToast(msg: "导入了0条记录");
+      Fluttertoast.showToast(msg: "导入了0条记录，可能是文件格式不正确");
       SystemNavigator.pop();
     }
   }
