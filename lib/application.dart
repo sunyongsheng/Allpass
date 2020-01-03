@@ -30,10 +30,10 @@ class Application {
   }
 
   static initChannelAndHandle() {
-    platform.setMethodCallHandler((handler) {
-      if (handler.method == "getChromeData") {
+    platform.setMethodCallHandler((call) {
+      if (call.method == "getChromeData") {
         print("调用了getChromeData方法");
-        Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: handler.arguments);
+        Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
         return res;
       } else {
