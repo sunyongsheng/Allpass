@@ -316,6 +316,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                       if (bean.isChanged) {
                                         setState(() {
                                           _bean = bean;
+                                          _decryptPassword();
                                         });
                                       }
                                     });
