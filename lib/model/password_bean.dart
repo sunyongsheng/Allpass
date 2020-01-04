@@ -14,6 +14,7 @@ class PasswordBean {
   String notes; // 7 备注
   List<String> label; // 8 标签
   int fav; // 9 是否标心，0代表否
+  bool isChanged;  // 是否被修改
 
   PasswordBean(
       {@required String username,
@@ -24,7 +25,8 @@ class PasswordBean {
       int fav: 0,
       int key,
       String name,
-      List<String> label}) {
+      List<String> label,
+      bool isChanged: false}) {
     this.username = username;
     this.password = password;
     this.url = url;
@@ -32,6 +34,7 @@ class PasswordBean {
     this.notes = notes;
     this.fav = fav;
     this.uniqueKey = key;
+    this.isChanged = isChanged;
 
     if (name == null) {
       if (url.contains("weibo")) {

@@ -7,6 +7,7 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 import 'package:allpass/widgets/edit_category_dialog.dart';
+import 'package:allpass/widgets/confirm_dialog.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -123,54 +124,21 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             if (categoryName == '标签') {
                               showDialog(
                                   context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(15),),
-                                      ),
-                                      title: Text("确认删除"),
-                                      content: Text("拥有此标签的密码或卡片将删除此标签，确认吗？"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("确认"),
-                                          onPressed: () async => await deleteLabelAndUpdate(currCategoryName),
-                                        ),
-                                        FlatButton(
-                                          child: Text("取消"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
+                                  builder: (context) =>
+                                      ConfirmDialog("拥有此标签的密码或卡片将删除此标签，确认吗？"))
+                                  .then((delete) async {
+                                    if (delete) {
+                                      await deleteLabelAndUpdate(currCategoryName);
+                                    }});
                             } else {
                               showDialog(
                                   context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text("确认删除"),
-                                      content: Text("此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text("确认"),
-                                          onPressed: () async => await deleteFolderAndUpdate(currCategoryName),
-                                        ),
-                                        FlatButton(
-                                          child: Text("取消"),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(15),),
-                                      ),
-                                    );
-                                  }
-                              );
+                                  builder: (context) =>
+                                      ConfirmDialog("此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
+                                  .then((delete) async {
+                                    if (delete) {
+                                      await deleteFolderAndUpdate(currCategoryName);
+                                    }});
                             }
                           },
                         ),
