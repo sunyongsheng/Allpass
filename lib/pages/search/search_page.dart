@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/pages/card/view_and_edit_card_page.dart';
-import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-
+import 'package:allpass/pages/card/view_and_edit_card_page.dart';
+import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/pages/password/view_password_page.dart';
 
 class SearchPage extends StatefulWidget {
   final AllpassType type;
@@ -191,9 +191,15 @@ class _SearchPage extends State<SearchPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ViewAndEditPasswordPage(data, "查看密码", true)))
+                            ViewPasswordPage(data)))
                 .then((reData) {
-              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
+              if (reData != null) {
+                if (reData.isChanged) {
+                  Provider.of<PasswordList>(context).updatePassword(reData);
+                } else {
+                  Provider.of<PasswordList>(context).deletePassword(data);
+                }
+              }
             });
           },
         ),
@@ -205,9 +211,13 @@ class _SearchPage extends State<SearchPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ViewAndEditPasswordPage(data, "编辑密码", false)))
+                            ViewAndEditPasswordPage(data, "编辑密码")))
                 .then((reData) {
-              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
+              if (reData != null) {
+                if (reData.isChanged) {
+                  Provider.of<PasswordList>(context).updatePassword(reData);
+                }
+              }
             });
           },
         ),
