@@ -75,38 +75,15 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
                       _inputFormatCorr = true;
                     });
                   }
-                }
+                },
+              onSubmitted: (_) => _submit(),
             ),
           ],
         ),
       ),
       actions: <Widget>[
         FlatButton(
-          onPressed: () async {
-            if (_inputFormatCorr && _editTextController.text != "") {
-              if (categoryName == "标签") {
-                if (!Params.labelList.contains(_editTextController.text)) {
-                  await editLabelAndUpdate();
-                  Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
-                  Navigator.pop<bool>(context, true);
-                } else {
-                  Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
-                  Navigator.pop<bool>(context, false);
-                }
-              } else {
-                if (!Params.folderList.contains(_editTextController.text)) {
-                  await editFolderAndUpdate();
-                  Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
-                  Navigator.pop<bool>(context, true);
-                } else {
-                  Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
-                  Navigator.pop<bool>(context, false);
-                }
-              }
-            } else {
-              Fluttertoast.showToast(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
-            }
-          },
+          onPressed: () => _submit(),
           child: Text('提交'),
           textColor: AllpassColorUI.mainColor,
         ),
@@ -119,6 +96,32 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         ),
       ],
     );
+  }
+
+  _submit() async {
+    if (_inputFormatCorr && _editTextController.text != "") {
+      if (categoryName == "标签") {
+        if (!Params.labelList.contains(_editTextController.text)) {
+          await editLabelAndUpdate();
+          Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
+          Navigator.pop<bool>(context, true);
+        } else {
+          Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
+          Navigator.pop<bool>(context, false);
+        }
+      } else {
+        if (!Params.folderList.contains(_editTextController.text)) {
+          await editFolderAndUpdate();
+          Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
+          Navigator.pop<bool>(context, true);
+        } else {
+          Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
+          Navigator.pop<bool>(context, false);
+        }
+      }
+    } else {
+      Fluttertoast.showToast(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
+    }
   }
 
   editLabelAndUpdate() async {
