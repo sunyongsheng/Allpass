@@ -5,12 +5,13 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/params.dart';
+import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/pages/password/view_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -24,7 +25,6 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
 
-  PasswordList _passList; // 所有的PasswordBean
   List<Widget> _passWidgetList = List(); // 列表
 
   @override
@@ -105,7 +105,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ViewAndEditPasswordPage(newData, "添加密码", false)))
+                          ViewAndEditPasswordPage(newData, "添加密码")))
               .then((resData) {
             if (resData != null) {
               Provider.of<PasswordList>(context).insertPassword(resData);
@@ -149,12 +149,17 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         title: Text(passwordBean.name),
         subtitle: Text(passwordBean.username),
         onTap: () {
-          // 显示模态BottomSheet
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return _createBottomSheet(context, passwordBean);
-              });
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ViewPasswordPage(passwordBean)
+          )).then((bean) {
+            if (bean != null) {
+              if (bean.isChanged) {
+                Provider.of<PasswordList>(context).updatePassword(bean);
+              } else {
+                Provider.of<PasswordList>(context).deletePassword(passwordBean);
+              }
+            }
+          });
         },
         onLongPress: () async {
           if (Params.longPressCopy) {
@@ -169,74 +174,13 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
     );
   }
 
-  // 点击密码弹出模态菜单
-  Widget _createBottomSheet(BuildContext context, PasswordBean data) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTile(
-          leading: Icon(Icons.remove_red_eye),
-          title: Text("查看"),
-          onTap: () {
-            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ViewAndEditPasswordPage(data, "查看密码", true)))
-                .then((reData) {
-              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
-            });
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.edit),
-          title: Text("编辑"),
-          onTap: () {
-            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            ViewAndEditPasswordPage(data, "编辑密码", false)))
-                .then((reData) {
-              if (reData != null) Provider.of<PasswordList>(context).updatePassword(reData);
-            });
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.person),
-          title: Text("复制用户名"),
-          onTap: () {
-            print("复制用户名：" + data.username);
-            Clipboard.setData(ClipboardData(text: data.username));
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.content_copy),
-          title: Text("复制密码"),
-          onTap: () async {
-            String pw = await EncryptUtil.decrypt(data.password);
-            print("复制密码：" + pw);
-            Clipboard.setData(ClipboardData(text: pw));
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.delete_outline),
-          title: Text("删除密码"),
-          onTap: () {
-            Provider.of<PasswordList>(context).deletePassword(data);
-          },
-        )
-      ],
-    );
-  }
-
   _searchPress () {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
                 SearchPage(AllpassType.PASSWORD)))
-        .then((value) => setState(() {
+        .then((_) => setState(() {
       _query();
     }));
   }
