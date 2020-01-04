@@ -10,7 +10,7 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/widgets/confirm_dialog.dart';
 
 
@@ -308,7 +308,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                       heroTag: "edit",
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => ViewAndEditPasswordPage(_bean, "编辑密码")
+                            builder: (context) => EditPasswordPage(_bean, "编辑密码")
                         )).then((bean) {
                           if (bean.isChanged) {
                             setState(() {

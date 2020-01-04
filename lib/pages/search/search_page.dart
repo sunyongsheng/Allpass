@@ -10,7 +10,7 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
-import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -211,7 +211,7 @@ class _SearchPage extends State<SearchPage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            ViewAndEditPasswordPage(data, "编辑密码")))
+                            EditPasswordPage(data, "编辑密码")))
                 .then((reData) {
               if (reData != null) {
                 if (reData.isChanged) {

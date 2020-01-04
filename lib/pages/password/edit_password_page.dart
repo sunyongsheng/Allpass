@@ -10,19 +10,19 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 
 /// 查看或编辑密码页面
-class ViewAndEditPasswordPage extends StatefulWidget {
+class EditPasswordPage extends StatefulWidget {
   final PasswordBean data;
   final String pageTitle;
 
-  ViewAndEditPasswordPage(this.data, this.pageTitle);
+  EditPasswordPage(this.data, this.pageTitle);
 
   @override
-  _ViewPasswordPage createState() {
-    return _ViewPasswordPage(data, pageTitle);
+  _EditPasswordPage createState() {
+    return _EditPasswordPage(data, pageTitle);
   }
 }
 
-class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
+class _EditPasswordPage extends State<EditPasswordPage> {
   String pageName;
 
   PasswordBean _tempData;
@@ -39,7 +39,7 @@ class _ViewPasswordPage extends State<ViewAndEditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _ViewPasswordPage(PasswordBean data, this.pageName) {
+  _EditPasswordPage(PasswordBean data, this.pageName) {
     this._oldData = data;
     _tempData = PasswordBean(
         username: _oldData.username,

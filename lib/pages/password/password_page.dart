@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/pages/password/view_and_edit_password_page.dart';
+import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -105,7 +105,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ViewAndEditPasswordPage(newData, "添加密码")))
+                          EditPasswordPage(newData, "添加密码")))
               .then((resData) {
             if (resData != null) {
               Provider.of<PasswordList>(context).insertPassword(resData);
