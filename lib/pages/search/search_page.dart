@@ -202,6 +202,7 @@ class _SearchPage extends State<SearchPage> {
                   Provider.of<PasswordList>(context).deletePassword(data);
                 }
               }
+              Navigator.pop(context);
             });
           },
         ),
@@ -222,6 +223,7 @@ class _SearchPage extends State<SearchPage> {
                 } else {
                   Provider.of<PasswordList>(context).deletePassword(data);
                 }
+                Navigator.pop(context);
               }
             });
           },
@@ -232,6 +234,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             print("复制用户名：" + data.username);
             Clipboard.setData(ClipboardData(text: data.username));
+            Navigator.pop(context);
           },
         ),
         ListTile(
@@ -241,6 +244,7 @@ class _SearchPage extends State<SearchPage> {
             String pw = await EncryptUtil.decrypt(data.password);
             print("复制密码：" + pw);
             Clipboard.setData(ClipboardData(text: pw));
+            Navigator.pop(context);
           },
         ),
         ListTile(
@@ -248,6 +252,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("删除密码"),
           onTap: () {
             Provider.of<PasswordList>(context).deletePassword(data);
+            Navigator.pop(context);
           },
         )
       ],
@@ -270,6 +275,7 @@ class _SearchPage extends State<SearchPage> {
                               ViewAndEditCardPage(data, "查看卡片", true)))
                   .then((resData) {
                 if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+                Navigator.pop(context);
               });
             }),
         ListTile(
@@ -283,6 +289,7 @@ class _SearchPage extends State<SearchPage> {
                               ViewAndEditCardPage(data, "编辑卡片", false)))
                   .then((resData) {
                 if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+                Navigator.pop(context);
               });
             }),
         ListTile(
@@ -290,6 +297,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.ownerName));
+            Navigator.pop(context);
           },
         ),
         ListTile(
@@ -297,12 +305,16 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.cardId));
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.delete_outline),
           title: Text("删除卡片"),
-          onTap: () => Provider.of<CardList>(context).deleteCard(data)
+          onTap: () {
+            Provider.of<CardList>(context).deleteCard(data);
+            Navigator.pop(context);
+          }
         )
       ],
     );
