@@ -89,18 +89,21 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
                 if (!Params.labelList.contains(_editTextController.text)) {
                   await editLabelAndUpdate();
                   Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
+                  Navigator.pop<bool>(context, true);
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
+                  Navigator.pop<bool>(context, false);
                 }
               } else {
                 if (!Params.folderList.contains(_editTextController.text)) {
                   await editFolderAndUpdate();
                   Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
+                  Navigator.pop<bool>(context, true);
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
+                  Navigator.pop<bool>(context, false);
                 }
               }
-              Navigator.pop(context);
             } else {
               Fluttertoast.showToast(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
             }
@@ -110,7 +113,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         ),
         FlatButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pop<bool>(context, false);
           },
           child: Text('取消'),
           textColor: AllpassColorUI.mainColor,
