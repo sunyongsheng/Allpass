@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 
 /// 编辑属性对话框
 class EditCategoryDialog extends StatefulWidget {
@@ -29,8 +30,6 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   final String categoryName;
 
   var _editTextController;
-  PasswordDao passwordDao = PasswordDao();
-  CardDao cardDao = CardDao();
 
   bool _inputFormatCorr = true;
   int _index;
@@ -123,23 +122,23 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   editLabelAndUpdate() async {
-    List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
+    List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
         if (bean.label.contains(Params.labelList[_index])) {
           bean.label.remove(Params.labelList[_index]);
           bean.label.add(_editTextController.text);
-          passwordDao.updatePasswordBean(bean);
+          Provider.of<PasswordList>(context).updatePassword(bean);
         }
       }
     }
-    List<CardBean> cardList = await cardDao.getAllCardBeanList();
+    List<CardBean> cardList = Provider.of<CardList>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
         if (bean.label.contains(Params.labelList[_index])) {
           bean.label.remove(Params.labelList[_index]);
           bean.label.add(_editTextController.text);
-          cardDao.updatePasswordBean(bean);
+          Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }
@@ -148,21 +147,21 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   editFolderAndUpdate() async {
-    List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
+    List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
         if (bean.folder == Params.folderList[_index]) {
           bean.folder = _editTextController.text;
-          passwordDao.updatePasswordBean(bean);
+          Provider.of<PasswordList>(context).updatePassword(bean);
         }
       }
     }
-    List<CardBean> cardList = await cardDao.getAllCardBeanList();
+    List<CardBean> cardList = Provider.of<CardList>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
         if (bean.folder == Params.folderList[_index]) {
           bean.folder = _editTextController.text;
-          cardDao.updatePasswordBean(bean);
+          Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }
