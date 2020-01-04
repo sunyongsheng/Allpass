@@ -308,6 +308,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                               children: <Widget>[
                                 FloatingActionButton(
                                   heroTag: "edit",
+                                  elevation: 0,
                                   onPressed: () {
                                     Navigator.push(context,
                                       MaterialPageRoute(
@@ -328,6 +329,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 ),
                                 FloatingActionButton(
                                   heroTag: "delete",
+                                  elevation: 0,
                                   backgroundColor: Colors.redAccent,
                                   onPressed: () {
                                     showDialog(
