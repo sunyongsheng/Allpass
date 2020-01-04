@@ -72,6 +72,25 @@ class _SettingPage extends State<SettingPage> {
                   padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
+                    child: ListTile(
+                      title: Text("长按复制密码或卡号"),
+                      leading: Icon(Icons.present_to_all),
+                      subtitle: Params.longPressCopy
+                          ?Text("当前长按为复制密码或卡号")
+                          :Text("当前长按为多选"),
+                      trailing: Switch(
+                        value: Params.longPressCopy,
+                        onChanged: (sw) async {
+                          Application.sp.setBool("longPressCopy", sw);
+                          setState(() {
+                            Params.longPressCopy = sw;
+                          });
+                        },
+                      ),
+                    ),
+                    padding: AllpassEdgeInsets.listInset
+                ),
+                Container(
                   padding: AllpassEdgeInsets.dividerInset,
                   child: Divider(
                     thickness: 1,
