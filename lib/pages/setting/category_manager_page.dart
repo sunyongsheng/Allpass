@@ -104,10 +104,12 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             showDialog(
                               context: context,
                               barrierDismissible: false,
-                              builder: (context) {
-                                return EditCategoryDialog(categoryName, currIndex);
-                              },
-                            );
+                              builder: (context) => EditCategoryDialog(categoryName, currIndex))
+                                .then((changed) {
+                              if (changed) {
+                                setState(() {});
+                              }
+                            });
                           },
                         ),
                       ),
