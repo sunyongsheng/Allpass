@@ -27,6 +27,7 @@ class _SearchPage extends State<SearchPage> {
 
   String _searchText = "";
   var _searchController;
+  bool _changed = false;
   List<Widget> _result = List();
 
   _SearchPage(this._type) {
@@ -168,7 +169,7 @@ class _SearchPage extends State<SearchPage> {
             ),
             FlatButton(
               onPressed: () {
-                Navigator.pop(context, null);
+                Navigator.pop<bool>(context, _changed);
               },
               child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
               splashColor: AllpassColorUI.mainBackgroundColor,
@@ -194,6 +195,7 @@ class _SearchPage extends State<SearchPage> {
                             ViewPasswordPage(data)))
                 .then((reData) {
               if (reData != null) {
+                _changed = true;
                 if (reData.isChanged) {
                   Provider.of<PasswordList>(context).updatePassword(reData);
                 } else {
@@ -214,8 +216,11 @@ class _SearchPage extends State<SearchPage> {
                             EditPasswordPage(data, "编辑密码")))
                 .then((reData) {
               if (reData != null) {
+                _changed = true;
                 if (reData.isChanged) {
                   Provider.of<PasswordList>(context).updatePassword(reData);
+                } else {
+                  Provider.of<PasswordList>(context).deletePassword(data);
                 }
               }
             });
