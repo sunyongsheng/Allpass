@@ -180,8 +180,12 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         MaterialPageRoute(
             builder: (context) =>
                 SearchPage(AllpassType.PASSWORD)))
-        .then((_) => setState(() {
-      _query();
-    }));
+        .then((changed) {
+          if (changed) {
+            setState(() {
+              _query();
+            });
+          }
+    });
   }
 }
