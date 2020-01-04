@@ -8,6 +8,7 @@ class Params {
   static String username; // 当前使用者用户名
   static String password; // 使用者密码
   static bool enabledBiometrics = false; // 是否启用生物识别
+  static bool longPressCopy = true;     // 是否开启长按复制，否则为长按多选
 
   static List<String> folderList = List();
   static List<String> labelList = List();
@@ -43,16 +44,12 @@ class Params {
     labelList.clear();
 
     // 初始化当前用户名与密码
-    username = Application.sp?.getString("username") == null
-        ? ""
-        : Application.sp.getString("username");
-    password = Application.sp?.getString("password") == null
-        ? ""
-        : Application.sp?.getString("password");
+    username = Application.sp?.getString("username")??"";
+    password = Application.sp?.getString("password")??"";
     // 判断是否开启生物识别
-    enabledBiometrics = Application.sp?.getBool("biometrics") == null
-        ? false
-        : Application.sp?.getBool("biometrics");
+    enabledBiometrics = Application.sp?.getBool("biometrics")??false;
+    // 判断长按功能
+    longPressCopy = Application.sp?.getBool("longPressCopy")??true;
 
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
