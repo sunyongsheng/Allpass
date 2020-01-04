@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/params/params.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/view_and_edit_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
@@ -156,9 +157,13 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
               });
         },
         onLongPress: () async {
-          String pw = await EncryptUtil.decrypt(passwordBean.password);
-          Clipboard.setData(ClipboardData(text: pw));
-          Fluttertoast.showToast(msg: "已复制密码");
+          if (Params.longPressCopy) {
+            String pw = await EncryptUtil.decrypt(passwordBean.password);
+            Clipboard.setData(ClipboardData(text: pw));
+            Fluttertoast.showToast(msg: "已复制密码");
+          } else {
+            Fluttertoast.showToast(msg: "多选");
+          }
         },
       ),
     );

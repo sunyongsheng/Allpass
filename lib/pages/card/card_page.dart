@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/params/params.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/view_and_edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
@@ -149,8 +150,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 });
           },
           onLongPress: () async {
-            Clipboard.setData(ClipboardData(text: cardBean.cardId));
-            Fluttertoast.showToast(msg: "已复制卡号");
+            if (Params.longPressCopy) {
+              Clipboard.setData(ClipboardData(text: cardBean.cardId));
+              Fluttertoast.showToast(msg: "已复制卡号");
+            } else {
+              Fluttertoast.showToast(msg: "多选");
+            }
           },
           child: Card(
             elevation: 2,
