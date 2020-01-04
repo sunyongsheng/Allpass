@@ -105,11 +105,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                               context: context,
                               barrierDismissible: false,
                               builder: (context) {
-                                return StatefulBuilder(
-                                  builder: (context, state) {
-                                    return EditCategoryDialog(categoryName, currIndex);
-                                  },
-                                );
+                                return EditCategoryDialog(categoryName, currIndex);
                               },
                             );
                           },
