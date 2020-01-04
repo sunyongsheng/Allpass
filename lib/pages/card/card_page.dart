@@ -140,7 +140,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     return SizedBox(
         height: 100,
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             // 显示模态BottomSheet
             showModalBottomSheet(
