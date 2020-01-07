@@ -11,8 +11,9 @@ import 'package:allpass/widgets/confirm_dialog.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
-
-
+/// 属性管理页
+/// 通过指定[name]来指定属性页的名称，属性页中是[ListView]
+/// 点击每一个[ListTile]弹出模态菜单，菜单中有编辑与删除选项
 class CategoryManagerPage extends StatefulWidget {
 
   final String name;
