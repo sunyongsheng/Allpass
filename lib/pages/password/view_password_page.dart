@@ -12,6 +12,7 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/widgets/confirm_dialog.dart';
+import 'package:allpass/widgets/detail_text_page.dart';
 
 /// 查看密码页
 class ViewPasswordPage extends StatefulWidget {
@@ -300,6 +301,45 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                 style: AllpassTextUI.secondTitleStyleBlue,
                                               ),
                                             )
+                                          ],
+                                        ),
+                                      ),
+                                      // 备注标题
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: AllpassScreenUtil.setWidth(100),
+                                            right: AllpassScreenUtil.setWidth(100),
+                                            bottom: AllpassScreenUtil.setHeight(10)),
+                                        child: Text("备注",
+                                          style: AllpassTextUI.firstTitleStyleBlue,
+                                        ),
+                                      ),
+                                      // 备注主体
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: AllpassScreenUtil.setWidth(100),
+                                            right: AllpassScreenUtil.setWidth(100),
+                                            bottom: AllpassScreenUtil.setHeight(50)),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    if (_bean.notes.length >= 1) {
+                                                      Navigator.push(context, MaterialPageRoute(
+                                                        builder: (context) => DetailTextPage(_bean.notes, false),));
+                                                    }
+                                                  },
+                                                  child: Text(_bean.notes.length<1?"无备注":_bean.notes,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 3,
+                                                    style: _bean.notes.length<1
+                                                        ?AllpassTextUI
+                                                        .hintTextStyle
+                                                        :AllpassTextUI.firstTitleStyleBlack,
+                                                  ),
+                                                )),
                                           ],
                                         ),
                                       ),
