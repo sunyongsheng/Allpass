@@ -8,7 +8,7 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
-import 'package:allpass/widgets/detail_text_page.dart';
+import 'package:allpass/pages/common/detail_text_page.dart';
 
 /// 查看或编辑密码页面
 class EditPasswordPage extends StatefulWidget {

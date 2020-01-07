@@ -12,7 +12,7 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/widgets/confirm_dialog.dart';
-import 'package:allpass/widgets/detail_text_page.dart';
+import 'package:allpass/pages/common/detail_text_page.dart';
 
 /// 查看密码页
 class ViewPasswordPage extends StatefulWidget {
