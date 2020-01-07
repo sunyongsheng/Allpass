@@ -82,7 +82,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       widgets.add(Container(
         child: ListTile(
           // TODO 增加trailing属性显示有多少个密码账号含有此标签
-          title: Text(currCategoryName),
+          title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
           leading: Icon(Icons.list),
           onTap: () {
             if (categoryName == "文件夹" && currCategoryName == "默认") {

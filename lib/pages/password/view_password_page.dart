@@ -135,9 +135,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           children: <Widget>[
                                             Padding(
                                               padding: EdgeInsets.only(left: 5),
-                                              child: Text(_bean.name,
-                                                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                                              ),
+                                              child: Container(
+                                                width: 150,
+                                                child: Text(_bean.name,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                ),
+                                              )
                                             ),
                                             Container(
                                                 margin: EdgeInsets.only(left: 5, right: 5, top: 3, bottom: 3),
@@ -147,7 +151,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                     Container(
                                                       margin: EdgeInsets.only(left: 5),
                                                       color: Colors.grey[250],
-                                                      child: Text(_bean.folder),
+                                                      child: Container(
+                                                        child: Text(_bean.folder,
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                        width: 50,
+                                                      ),
                                                     ),
                                                   ],
                                                 )),

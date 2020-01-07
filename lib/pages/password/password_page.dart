@@ -146,8 +146,8 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
             style: TextStyle(color: Colors.white),
           ),
         ),
-        title: Text(passwordBean.name),
-        subtitle: Text(passwordBean.username),
+        title: Text(passwordBean.name, overflow: TextOverflow.ellipsis,),
+        subtitle: Text(passwordBean.username, overflow: TextOverflow.ellipsis,),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(
             builder: (context) => ViewPasswordPage(passwordBean)
