@@ -172,6 +172,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(padding: AllpassEdgeInsets.smallTBPadding,),
+                                      // 用户名标题
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -180,6 +181,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                         child: Text("用户名", style: AllpassTextUI.firstTitleStyleBlue,
                                         ),
                                       ),
+                                      // 用户名主体
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -204,6 +206,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           ],
                                         ),
                                       ),
+                                      // 密码标题
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -211,6 +214,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             bottom: AllpassScreenUtil.setHeight(10)),
                                         child: Text("密码", style: AllpassTextUI.firstTitleStyleBlue,),
                                       ),
+                                      // 密码主体
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -254,6 +258,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           ],
                                         ),
                                       ),
+                                      // 链接标题
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -263,6 +268,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           style: AllpassTextUI.firstTitleStyleBlue,
                                         ),
                                       ),
+                                      // 链接主体
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
@@ -303,6 +309,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             Padding(
                               padding: AllpassEdgeInsets.smallTBPadding,
                             ),
+                            // 最下面一行点击按钮
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
