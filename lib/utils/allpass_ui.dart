@@ -31,7 +31,7 @@ class AllpassTextUI {
   static final TextStyle smallTextStyleBlack =
       TextStyle(fontSize: 12, color: Colors.black);
   static final TextStyle hintTextStyle =
-      TextStyle(fontSize: 14, color: Colors.black54);
+      TextStyle(fontSize: 16, color: Colors.black54);
 }
 
 /// 保存所有Allpass用到的颜色
