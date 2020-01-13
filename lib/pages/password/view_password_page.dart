@@ -342,7 +342,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                   },
                                                   child: Text(_bean.notes.length<1?"无备注":_bean.notes,
                                                     overflow: TextOverflow.ellipsis,
-                                                    maxLines: 3,
+                                                    maxLines: 2,
                                                     style: _bean.notes.length<1
                                                         ?AllpassTextUI
                                                         .hintTextStyle
@@ -352,6 +352,27 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           ],
                                         ),
                                       ),
+                                      // 标签标题
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: AllpassScreenUtil.setWidth(100),
+                                            right: AllpassScreenUtil.setWidth(100),
+                                            bottom: AllpassScreenUtil.setHeight(10)),
+                                        child: Text("标签",
+                                          style: AllpassTextUI.firstTitleStyleBlue,
+                                        ),
+                                      ),
+                                      // 标签主体
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            left: AllpassScreenUtil.setWidth(100),
+                                            right: AllpassScreenUtil.setWidth(100),
+                                            bottom: AllpassScreenUtil.setHeight(50)),
+                                        child: Wrap(
+                                          children: _getTag(),
+                                          spacing: 5,
+                                        ),
+                                      )
                                     ],
                                   ),
                                 )),
@@ -422,16 +443,16 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     List<Widget> labelChoices = List();
     _bean.label.forEach((item) {
       labelChoices.add(ChoiceChip(
-        label: Text(
-          item,
-          style: TextStyle(fontSize: 10),
-        ),
+        label: Text(item,),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: _bean.label.contains(item),
-        onSelected: (selected) {},
+        selected: true,
+        onSelected: (_){},
         selectedColor: AllpassColorUI.mainColor,
       ));
     });
+    if (labelChoices.length == 0) {
+      labelChoices.add(Text("无标签", style: AllpassTextUI.hintTextStyle,));
+    }
     return labelChoices;
   }
 }
