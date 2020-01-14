@@ -61,13 +61,11 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
             context: context,
             barrierDismissible: false,
             builder: (context) {
-              return StatefulBuilder(
-                builder: (context, state) {
-                  return AddCategoryDialog(categoryName);
-                },
-              );
+              return AddCategoryDialog(categoryName);
             },
-          );
+          ).then((_) {
+            setState(() {});
+          });
         },
       ),
     );
