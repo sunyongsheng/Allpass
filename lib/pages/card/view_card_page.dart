@@ -28,6 +28,7 @@ class ViewCardPage extends StatefulWidget {
 class _ViewCardPage extends State<ViewCardPage> {
 
   CardBean _bean;
+  bool _cardIdVisible = false;
 
   _ViewCardPage(CardBean data) {
     _bean = CardBean(
@@ -233,11 +234,12 @@ class _ViewCardPage extends State<ViewCardPage> {
                                     right: AllpassScreenUtil.setWidth(100),
                                     bottom: AllpassScreenUtil.setHeight(30)),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
-                                      child: Text(_bean.cardId,
+                                      child: Text(_cardIdVisible
+                                          ? _bean.cardId
+                                          : "*" * _bean.cardId.length,
                                         overflow: TextOverflow.ellipsis,
                                         style: AllpassTextUI
                                             .firstTitleStyleBlack,
@@ -246,11 +248,22 @@ class _ViewCardPage extends State<ViewCardPage> {
                                     Row(
                                       children: <Widget>[
                                         InkWell(
+                                          child: _cardIdVisible
+                                              ? Icon(Icons.visibility)
+                                              : Icon(Icons.visibility_off),
+                                          onTap: () {
+                                            setState(() {
+                                              _cardIdVisible = !_cardIdVisible;
+                                            });
+                                          },
+                                        ),
+                                        Padding(padding: AllpassEdgeInsets.smallLPadding,),
+                                        InkWell(
                                           onTap: () {
                                             Clipboard.setData(
                                                 ClipboardData(text: _bean.cardId));
                                             Fluttertoast.showToast(
-                                                msg: "已复制密码");
+                                                msg: "已复制卡号");
                                           },
                                           child: Text("复制",
                                             style: AllpassTextUI
