@@ -136,7 +136,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             Padding(
                                               padding: EdgeInsets.only(left: 5),
                                               child: Container(
-                                                width: 150,
+                                                width: _bean.name.length*20.0 > 150
+                                                  ? 150
+                                                  : _bean.name.length*20.0,
                                                 child: Text(_bean.name,
                                                   overflow: TextOverflow.ellipsis,
                                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
