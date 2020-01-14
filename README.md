@@ -1,10 +1,26 @@
 # Allpass
 
 ## 介绍
-Allpass是一款跨平台的密码管理软件
+Allpass是一款简单的私密数据管理软件，包括支持密码存储与卡片信息存储。
+
+- 支持指纹登陆
+- aes128位加密
+- 支持从csv文件中导入或导出为csv文件
+- 支持从Chrome中导入密码
+
 
 ## 软件架构
-1. 使用Flutter作为软件整体框架
+使用Flutter构建项目
+
+- dao/ 与数据库交互层
+- model/ 密码或卡片实体类
+- pages/ 页面
+- params/ 软件相关参数
+- provider/ 状态管理
+- route/ 路由管理
+- services/ 服务管理，包括生物识别授权及路由服务
+- utils/ 工具
+- widgets/ 自定义组件
 
 ## 命名规范
 
