@@ -14,6 +14,7 @@ class CardBean {
   String notes; // 8 备注
   List<String> label; // 9 标签
   int fav; // 10 是否标心
+  bool isChanged;
 
   CardBean(
       {@required String ownerName,
@@ -25,7 +26,8 @@ class CardBean {
       int key, //: CARD_MAGIC,
       String url: "",
       String name,
-      List<String> label}) {
+      List<String> label,
+      bool isChanged: false}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -34,6 +36,7 @@ class CardBean {
     this.telephone = telephone;
     this.uniqueKey = key;
     this.url = url;
+    this.isChanged = isChanged;
 
     if (name == null && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
