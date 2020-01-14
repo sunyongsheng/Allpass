@@ -181,7 +181,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
-              contentPadding: EdgeInsets.only(left: 30, right: 30, top: 4),
+              contentPadding: EdgeInsets.only(left: 30, right: 30, top: 5),
             ),
           ),
         )
