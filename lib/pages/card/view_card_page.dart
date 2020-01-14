@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
-import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/confirm_dialog.dart';
@@ -44,17 +43,6 @@ class _ViewCardPage extends State<ViewCardPage> {
         label: List()
           ..addAll(data.label)
     );
-
-    // 如果文件夹未知，添加
-    if (!Params.folderList.contains(_bean.folder)) {
-      Params.folderList.add(_bean.folder);
-    }
-    // 检查标签未知，添加
-    for (var label in _bean.label) {
-      if (!Params.labelList.contains(label)) {
-        Params.labelList.add(label);
-      }
-    }
   }
 
   @override

@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:allpass/params/params.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -45,17 +44,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         label: data.label,
         notes: data.notes,
         fav: data.fav);
-
-    // 如果文件夹未知，添加
-    if (!Params.folderList.contains(_bean.folder)) {
-      Params.folderList.add(_bean.folder);
-    }
-    // 检查标签未知，添加
-    for (var label in _bean.label) {
-      if (!Params.labelList.contains(label)) {
-        Params.labelList.add(label);
-      }
-    }
   }
 
   Future<Null> _decryptPassword() async {
