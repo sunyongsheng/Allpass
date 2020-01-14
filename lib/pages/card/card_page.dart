@@ -6,7 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/params.dart';
 import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/pages/card/view_and_edit_card_page.dart';
+import 'package:allpass/pages/card/view_card_page.dart';
+import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/params/allpass_type.dart';
@@ -25,7 +26,6 @@ class CardPage extends StatefulWidget {
 class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin {
   CardDao cardDao = CardDao();
 
-  CardList _cardList; // 所有的PasswordBean
   List<Widget> _cardWidgetList = List(); // 列表
 
   @override
@@ -107,7 +107,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          ViewAndEditCardPage(newData, "添加卡片", false)))
+                          EditCardPage(newData, "添加卡片")))
               .then((resData) {
             if (resData != null) {
               Provider.of<CardList>(context).insertCard(resData);
@@ -141,14 +141,18 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         height: 100,
         //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
         child: InkWell(
-          onTap: () {
-            // 显示模态BottomSheet
-            showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return _createBottomSheet(context, cardBean);
-                });
-          },
+          onTap: () => Navigator.push(context, MaterialPageRoute(
+            builder: (context) => ViewCardPage(cardBean),
+          )).then((bean) {
+            if (bean != null) {
+              // 改变了就更新，没改变就删除
+              if (bean.isChanged) {
+                Provider.of<CardList>(context).updateCard(bean);
+              } else {
+                Provider.of<CardList>(context).deleteCard(cardBean);
+              }
+            }
+          }),
           onLongPress: () async {
             if (Params.longPressCopy) {
               Clipboard.setData(ClipboardData(text: cardBean.cardId));
@@ -188,59 +192,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  // 点击卡片弹出模态菜单
-  Widget _createBottomSheet(BuildContext context, CardBean cardBean) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        ListTile(
-            leading: Icon(Icons.remove_red_eye),
-            title: Text("查看"),
-            onTap: () {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewAndEditCardPage(cardBean, "查看卡片", true)))
-                  .then((resData) {
-                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
-              });
-            }),
-        ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("编辑"),
-            onTap: () {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewAndEditCardPage(cardBean, "编辑卡片", false)))
-                  .then((resData) {
-                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
-              });
-            }),
-        ListTile(
-          leading: Icon(Icons.person),
-          title: Text("复制用户名"),
-          onTap: () {
-            Clipboard.setData(ClipboardData(text: cardBean.ownerName));
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.content_copy),
-          title: Text("复制卡号"),
-          onTap: () {
-            Clipboard.setData(ClipboardData(text: cardBean.cardId));
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.delete_outline),
-          title: Text("删除卡片"),
-          onTap: () => Provider.of<CardList>(context).deleteCard(cardBean),
-        )
-      ],
-    );
-  }
   _searchPress() {
     Navigator.push(
         context,

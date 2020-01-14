@@ -9,7 +9,8 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/pages/card/view_and_edit_card_page.dart';
+import 'package:allpass/pages/card/view_card_page.dart';
+import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 
@@ -272,7 +273,7 @@ class _SearchPage extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ViewAndEditCardPage(data, "查看卡片", true)))
+                              ViewCardPage(data)))
                   .then((resData) {
                 if (resData != null) Provider.of<CardList>(context).updateCard(resData);
                 Navigator.pop(context);
@@ -286,7 +287,7 @@ class _SearchPage extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              ViewAndEditCardPage(data, "编辑卡片", false)))
+                              EditCardPage(data, "编辑卡片")))
                   .then((resData) {
                 if (resData != null) Provider.of<CardList>(context).updateCard(resData);
                 Navigator.pop(context);
