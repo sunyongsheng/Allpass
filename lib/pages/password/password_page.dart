@@ -58,7 +58,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress),
+          SearchButtonWidget(_searchPress, "密码"),
           // 密码列表
           FutureBuilder(
             future: _getPasswordWidgetList(),

@@ -3,9 +3,10 @@ import 'package:allpass/utils/allpass_ui.dart';
 
 class SearchButtonWidget extends StatelessWidget {
 
+  final String searchType;
   final void Function() press;
 
-  SearchButtonWidget(this.press);
+  SearchButtonWidget(this.press, this.searchType);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class SearchButtonWidget extends StatelessWidget {
         child: Row(
           children: <Widget>[
             Icon(Icons.search),
-            Text("搜索"),
+            Text("搜索$searchType"),
           ],
         ),
         color: Colors.grey[200],

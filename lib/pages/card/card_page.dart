@@ -61,7 +61,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress),
+          SearchButtonWidget(_searchPress, "卡片"),
           // 卡片列表
           FutureBuilder(
             future: _getCardWidgetList(),
