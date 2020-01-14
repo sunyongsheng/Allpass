@@ -7,22 +7,22 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
+import 'package:allpass/pages/common/detail_text_page.dart';
 
 /// 查看或编辑“卡片”页面
-class ViewAndEditCardPage extends StatefulWidget {
+class EditCardPage extends StatefulWidget {
   final CardBean data;
   final String pageTitle;
-  final bool readOnly;
 
-  ViewAndEditCardPage(this.data, this.pageTitle, this.readOnly);
+  EditCardPage(this.data, this.pageTitle);
 
   @override
   State<StatefulWidget> createState() {
-    return _ViewAndEditCardPage(data, pageTitle, readOnly);
+    return _EditCardPage(data, pageTitle);
   }
 }
 
-class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
+class _EditCardPage extends State<EditCardPage> {
   String pageName;
 
   CardBean _oldData;
@@ -35,9 +35,8 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   var _notesController;
   var _urlController;
 
-  bool _readOnly;
 
-  _ViewAndEditCardPage(CardBean inData, this.pageName, this._readOnly) {
+  _EditCardPage(CardBean inData, this.pageName) {
     this._oldData = inData;
 
     _tempData = CardBean(
@@ -47,7 +46,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
       name: _oldData.name,
       telephone: _oldData.telephone,
       folder: _oldData.folder,
-      label: _oldData.label,
+      label: List()..addAll(_oldData.label),
       fav: _oldData.fav,
       notes: _oldData.notes,
       url: _oldData.url,
@@ -87,7 +86,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-          Navigator.pop<CardBean>(context, null);
+          Navigator.pop<CardBean>(context, _oldData);
           return Future<bool>.value(false);
         },
         child: Scaffold(
@@ -98,27 +97,16 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: _readOnly
-                      ? Icon(
-                          Icons.edit,
-                          color: Colors.black,
-                        )
-                      : Icon(
+                  icon: Icon(
                           Icons.check,
                           color: Colors.black,
                         ),
                   onPressed: () {
-                    if (_readOnly) {
-                      setState(() {
-                        _readOnly = false;
-                        pageName = "编辑卡片";
-                      });
+                    if (_tempData.ownerName.length >= 1 && _tempData.cardId.length >= 1) {
+                      _tempData.isChanged = true;
+                      Navigator.pop<CardBean>(context, _tempData);
                     } else {
-                      if (_tempData.ownerName.length >= 1 && _tempData.cardId.length >= 1) {
-                        Navigator.pop<CardBean>(context, _tempData);
-                      } else {
-                        Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
-                      }
+                      Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
                     }
                   },
                 )
@@ -143,7 +131,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         TextField(
                           controller: _nameController,
                           onChanged: (text) => _tempData.name = text,
-                          readOnly: this._readOnly,
                         ),
                       ],
                     ),
@@ -163,7 +150,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                               child: TextField(
                                 controller: _ownerNameController,
                                 onChanged: (text) => _tempData.ownerName = text,
-                                readOnly: this._readOnly,
                               ),
                             ),
                             IconButton(
@@ -191,7 +177,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                               child: TextField(
                                 controller: _cardIdController,
                                 onChanged: (text) => _tempData.cardId = text,
-                                readOnly: this._readOnly,
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -222,7 +207,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                                 onChanged: (text) {
                                   _tempData.url = text;
                                 },
-                                readOnly: this._readOnly,
                               ),
                             ),
                             IconButton(
@@ -252,7 +236,6 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                                 onChanged: (text) {
                                   _tempData.telephone = text;
                                 },
-                                readOnly: this._readOnly,
                                 keyboardType: TextInputType.numberWithOptions(
                                     signed: true),
                               ),
@@ -279,9 +262,7 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         DropdownButton(
                           onChanged: (newValue) {
-                            if (!_readOnly) {
-                              setState(() => _tempData.folder = newValue);
-                            }
+                            setState(() => _tempData.folder = newValue);
                           },
                           items: Params.folderList
                               .map<DropdownMenuItem<String>>((item) {
@@ -335,8 +316,17 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
                         ),
                         TextField(
                           controller: _notesController,
-                          onChanged: (text) => _tempData.notes = text,
-                          readOnly: this._readOnly,
+                          readOnly: true,
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => DetailTextPage(_tempData.notes, true),
+                            )).then((newValue) {
+                              setState(() {
+                                _tempData.notes = newValue;
+                                _notesController.text = newValue;
+                              });
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -354,11 +344,9 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
         selected: _tempData.label.contains(item),
         onSelected: (selected) {
-          if (!_readOnly) {
-            setState(() => _tempData.label.contains(item)
-                ? _tempData.label.remove(item)
-                : _tempData.label.add(item));
-          }
+          setState(() => _tempData.label.contains(item)
+              ? _tempData.label.remove(item)
+              : _tempData.label.add(item));
         },
         selectedColor: AllpassColorUI.mainColor,
       ));
@@ -367,21 +355,15 @@ class _ViewAndEditCardPage extends State<ViewAndEditCardPage> {
       ChoiceChip(
           label: Icon(Icons.add),
           selected: false,
-          onSelected: (_) {
-            if (!_readOnly) {
+          onSelected: (_) =>
               showDialog(
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  return StatefulBuilder(
-                    builder: (context, state) {
-                      return AddCategoryDialog("标签");
-                    },
-                  );
+                  return AddCategoryDialog("标签");
                 },
-              );
-            }
-          }),
+              ),
+      ),
     );
     return labelChoices;
   }
