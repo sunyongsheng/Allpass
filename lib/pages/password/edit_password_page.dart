@@ -28,45 +28,36 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   PasswordBean _tempData;
   PasswordBean _oldData;
-  String _password;
 
   var _futureHelper;
 
+  String _password;
+  String _folder = "默认";
   var _nameController;
   var _usernameController;
   var _passwordController;
   var _notesController;
   var _urlController;
+  List<String> _labels;
 
   bool _passwordVisible = false;
 
   _EditPasswordPage(PasswordBean data, this.pageName) {
-    this._oldData = data;
-    _tempData = PasswordBean(
-        username: _oldData.username,
-        password: _oldData.password,
-        url: _oldData.url,
-        key: _oldData.uniqueKey,
-        name: _oldData.name,
-        folder: _oldData.folder,
-        label: List()..addAll(_oldData.label),
-        notes: _oldData.notes,
-        fav: _oldData.fav);
-
-    _nameController = TextEditingController(text: _tempData.name);
-    _usernameController = TextEditingController(text: _tempData.username);
-    _notesController = TextEditingController(text: _tempData.notes);
-    _urlController = TextEditingController(text: _tempData.url);
-
-    // 如果文件夹未知，添加
-    if (!Params.folderList.contains(_tempData.folder)) {
-      Params.folderList.add(_tempData.folder);
-    }
-    // 检查标签未知，添加
-    for (var label in _tempData.label) {
-      if (!Params.labelList.contains(label)) {
-        Params.labelList.add(label);
-      }
+    if (data != null) {
+      this._oldData = data;
+      _nameController = TextEditingController(text: _oldData.name);
+      _usernameController = TextEditingController(text: _oldData.username);
+      _notesController = TextEditingController(text: _oldData.notes);
+      _urlController = TextEditingController(text: _oldData.url);
+      _folder = _oldData.folder;
+      _labels = List()..addAll(_oldData.label);
+    } else {
+      _nameController = TextEditingController();
+      _usernameController = TextEditingController();
+      _notesController = TextEditingController();
+      _urlController = TextEditingController();
+      _passwordController = TextEditingController();
+      _labels = List();
     }
   }
 
@@ -81,7 +72,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   }
 
   Future<Null> _decryptPassword() async {
-    _password =  await EncryptUtil.decrypt(_tempData.password);
+    _password =  await EncryptUtil.decrypt(_oldData.password);
     _passwordController = TextEditingController(text: _password);
   }
 
@@ -114,8 +105,19 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 if (_usernameController.text.length >= 1
                     && _passwordController.text.length >= 1
                     && _urlController.text.length >= 1) {
-                  _tempData.password = await EncryptUtil.encrypt(_password);
-                  _tempData.isChanged = true;
+                  String pw = await EncryptUtil.encrypt(_passwordController.text);
+                  _tempData = PasswordBean(
+                    key: _oldData?.uniqueKey,
+                    username: _usernameController.text,
+                    password: pw,
+                    url: _urlController.text,
+                    name: _nameController.text,
+                    folder: _folder,
+                    label: _labels,
+                    notes: _notesController.text,
+                    isChanged: true,
+                    fav: 0
+                  );
                   Navigator.pop<PasswordBean>(context, _tempData);
                 } else {
                   Fluttertoast.showToast(msg: "用户名、密码和链接不允许为空！");
@@ -156,7 +158,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _nameController,
-                                onChanged: (text) => _tempData.name = text,
                               ),
                             ],
                           ),
@@ -175,13 +176,12 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   Expanded(
                                     child: TextField(
                                       controller: _urlController,
-                                      onChanged: (text) => _tempData.url = text,
                                     ),
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.content_copy),
                                     onPressed: () => Clipboard.setData(
-                                        ClipboardData(text: _tempData.url)),
+                                        ClipboardData(text: _oldData.url)),
                                   )
                                 ],
                               )
@@ -202,13 +202,12 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   Expanded(
                                     child: TextField(
                                       controller: _usernameController,
-                                      onChanged: (text) => _tempData.username = text,
                                     ),
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.content_copy),
                                     onPressed: () => Clipboard.setData(
-                                        ClipboardData(text: _tempData.username)),
+                                        ClipboardData(text: _oldData.username)),
                                   )
                                 ],
                               )
@@ -230,7 +229,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                     child: TextField(
                                       controller: _passwordController,
                                       obscureText: !_passwordVisible,
-                                      onChanged: (text) => _password= text,
                                     ),
                                   ),
                                   IconButton(
@@ -264,7 +262,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               DropdownButton(
                                 onChanged: (newValue) {
                                   setState(() {
-                                    _tempData.folder = newValue;
+                                    _folder = newValue;
                                   });
                                 },
                                 items:
@@ -277,7 +275,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 style: AllpassTextUI.firstTitleStyleBlack,
                                 elevation: 8,
                                 iconSize: 30,
-                                value: _tempData.folder,
+                                value: _folder,
                               ),
                             ],
                           ),
@@ -319,13 +317,11 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _notesController,
-                                onChanged: (value) => _tempData.notes = value,
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => DetailTextPage(_tempData.notes, true),
+                                    builder: (context) => DetailTextPage(_notesController.text, true),
                                   )).then((newValue) {
                                     setState(() {
-                                      _tempData.notes = newValue;
                                       _notesController.text = newValue;
                                     });
                                   });
@@ -354,11 +350,11 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: _tempData.label.contains(item),
+        selected: _labels.contains(item),
         onSelected: (selected) {
-          setState(() => _tempData.label.contains(item)
-              ? _tempData.label.remove(item)
-              : _tempData.label.add(item));
+          setState(() => _labels.contains(item)
+              ? _labels.remove(item)
+              : _labels.add(item));
         },
         selectedColor: AllpassColorUI.mainColor,
       ));
