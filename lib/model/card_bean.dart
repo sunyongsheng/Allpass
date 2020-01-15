@@ -38,7 +38,7 @@ class CardBean {
     this.url = url;
     this.isChanged = isChanged;
 
-    if (name == null && ownerName.length > 0) {
+    if (name.trim().length < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
     } else {
       this.name = name;
