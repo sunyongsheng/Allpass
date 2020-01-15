@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
+import 'package:allpass/pages/classification/classification_page.dart';
 import 'package:allpass/pages/setting/setting_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,6 +16,7 @@ class _HomePage extends State<HomePage> {
   final List<Widget> _pagesList = List()
     ..add(PasswordPage())
     ..add(CardPage())
+    ..add(ClassificationPage())
     ..add(SettingPage());
   int _currentIndex = 0;
   PageController _controller;
@@ -63,6 +65,13 @@ class _HomePage extends State<HomePage> {
                 color: _currentIndex==1?null:Colors.grey,
               ),
               title: Text("卡片", style: TextStyle(fontSize: 12))
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.class_,
+                color: _currentIndex==2?null:Colors.grey,
+              ),
+              title: Text("分类", style: TextStyle(fontSize: 12))
           ),
           BottomNavigationBarItem(
               icon: Icon(
