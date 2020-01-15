@@ -127,7 +127,7 @@ class _ClassificationDetailsPage extends State<StatefulWidget> {
         }
       }
     }
-    if (list.length == 0) {
+    if (list.length == 1) {
       list.add(Center(child: Text("什么也没有，赶快添加吧"),));
     }
     return list;
