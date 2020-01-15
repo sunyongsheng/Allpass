@@ -129,13 +129,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       }
     }
     if (_cardWidgetList.length == 0) {
-      _cardWidgetList.add(Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: Text("什么也没有，赶快添加吧"),
-          )
-        ],
+      _cardWidgetList.add(Center(
+        child: Text("什么也没有，赶快添加吧"),
       ));
     }
   }
