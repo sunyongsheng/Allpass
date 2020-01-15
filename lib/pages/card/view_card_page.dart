@@ -67,6 +67,16 @@ class _ViewCardPage extends State<ViewCardPage> {
               iconTheme: IconThemeData(color: Colors.black),
               elevation: 0,
               brightness: Brightness.light,
+              actions: <Widget>[
+                Icon(
+                  _bean.fav == 1
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color: _bean.fav == 1 ? Colors.redAccent : Colors.black,
+                ),
+                Padding(padding: AllpassEdgeInsets.smallLPadding,),
+                Padding(padding: AllpassEdgeInsets.smallLPadding,)
+              ],
             ),
             backgroundColor: AllpassColorUI.mainBackgroundColor,
             body: SingleChildScrollView(

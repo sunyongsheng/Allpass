@@ -36,6 +36,7 @@ class _EditCardPage extends State<EditCardPage> {
   var _urlController;
   String _folder = "默认";
   List<String> _labels;
+  int _fav = 0;
 
 
   _EditCardPage(CardBean inData, this.pageName) {
@@ -49,6 +50,7 @@ class _EditCardPage extends State<EditCardPage> {
       _urlController = TextEditingController(text: _oldData.url);
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
+      _fav = _oldData.fav;
     } else {
       _nameController = TextEditingController();
       _ownerNameController = TextEditingController();
@@ -86,12 +88,22 @@ class _EditCardPage extends State<EditCardPage> {
               ),
               actions: <Widget>[
                 IconButton(
+                  icon: _fav == 1
+                      ? Icon(Icons.favorite, color: Colors.redAccent,)
+                      : Icon(Icons.favorite_border, color: Colors.black,),
+                  onPressed: () {
+                    setState(() {
+                      _fav = _fav == 1 ? 0 : 1;
+                    });
+                  },
+                ),
+                IconButton(
                   icon: Icon(
                           Icons.check,
                           color: Colors.black,
                         ),
                   onPressed: () {
-                    if (_tempData.ownerName.length >= 1 && _tempData.cardId.length >= 1) {
+                    if (_ownerNameController.text.length >= 1 && _cardIdController.text.length >= 1) {
                       _tempData = CardBean(
                         ownerName: _ownerNameController.text,
                         cardId: _cardIdController.text,
@@ -100,7 +112,7 @@ class _EditCardPage extends State<EditCardPage> {
                         telephone: _telephoneController.text,
                         folder: _folder,
                         label: _labels,
-                        fav: 0,
+                        fav: _fav,
                         notes: _notesController.text,
                         url: _urlController.text,
                         isChanged: true

@@ -39,6 +39,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   var _notesController;
   var _urlController;
   List<String> _labels;
+  int _fav = 0;
 
   bool _passwordVisible = false;
 
@@ -51,6 +52,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _urlController = TextEditingController(text: _oldData.url);
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
+      _fav = _oldData.fav;
     } else {
       _nameController = TextEditingController();
       _usernameController = TextEditingController();
@@ -97,6 +99,16 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           ),
           actions: <Widget>[
             IconButton(
+              icon: _fav == 1
+              ? Icon(Icons.favorite, color: Colors.redAccent,)
+              : Icon(Icons.favorite_border, color: Colors.black,),
+              onPressed: () {
+                setState(() {
+                  _fav = _fav == 1 ? 0 : 1;
+                });
+              },
+            ),
+            IconButton(
               icon: Icon(
                 Icons.check,
                 color: Colors.black,
@@ -116,7 +128,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     label: _labels,
                     notes: _notesController.text,
                     isChanged: true,
-                    fav: 0
+                    fav: _fav
                   );
                   Navigator.pop<PasswordBean>(context, _tempData);
                 } else {
