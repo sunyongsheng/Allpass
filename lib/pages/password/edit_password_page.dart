@@ -171,20 +171,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 "链接",
                                 style: AllpassTextUI.firstTitleStyleBlue,
                               ),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _urlController,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.content_copy),
-                                    onPressed: () => Clipboard.setData(
-                                        ClipboardData(text: _oldData.url)),
-                                  )
-                                ],
-                              )
+                              TextField(
+                                controller: _urlController,
+                              ),
                             ],
                           ),
                         ),
@@ -197,20 +186,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 "用户名",
                                 style: AllpassTextUI.firstTitleStyleBlue,
                               ),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _usernameController,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(Icons.content_copy),
-                                    onPressed: () => Clipboard.setData(
-                                        ClipboardData(text: _oldData.username)),
-                                  )
-                                ],
-                              )
+                              TextField(
+                                controller: _usernameController,
+                              ),
                             ],
                           ),
                         ),
