@@ -103,12 +103,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          var newData = CardBean(ownerName: "", cardId: "", folder: "默认");
           Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          EditCardPage(newData, "添加卡片")))
+                          EditCardPage(null, "添加卡片")))
               .then((resData) {
             if (resData != null) {
               Provider.of<CardList>(context).insertCard(resData);
@@ -123,7 +122,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   Future<Null> _getCardWidgetList() async {
     _cardWidgetList.clear();
     for (var item in Provider.of<CardList>(context).cardList) {
-      _cardWidgetList.add(_getCardWidget(item));
+      try {
+        _cardWidgetList.add(_getCardWidget(item));
+      } catch (e) {
+        print("有问题出现，key=${item.uniqueKey}");
+      }
     }
     if (_cardWidgetList.length == 0) {
       _cardWidgetList.add(Column(
