@@ -9,7 +9,7 @@ class ConfirmDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius:
-        BorderRadius.all(Radius.circular(15),),
+        BorderRadius.all(Radius.circular(10),),
       ),
       title: Text("确认删除"),
       content: Text(message),
