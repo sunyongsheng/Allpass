@@ -54,6 +54,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         brightness: Brightness.light,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: <Widget>[

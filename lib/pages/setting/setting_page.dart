@@ -31,6 +31,7 @@ class _SettingPage extends State<SettingPage> {
         elevation: 0,
         brightness: Brightness.light,
         automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: <Widget>[

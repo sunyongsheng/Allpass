@@ -57,6 +57,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         elevation: 0,
         brightness: Brightness.light,
         automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: <Widget>[
