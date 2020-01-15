@@ -36,7 +36,7 @@ class PasswordBean {
     this.uniqueKey = key;
     this.isChanged = isChanged;
 
-    if (name == null) {
+    if (name.trim().length < 1) {
       if (url.contains("weibo")) {
         this.name = "微博";
       } else if (url.contains("zhihu")) {
