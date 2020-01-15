@@ -34,40 +34,29 @@ class _EditCardPage extends State<EditCardPage> {
   var _telephoneController;
   var _notesController;
   var _urlController;
+  String _folder = "默认";
+  List<String> _labels;
 
 
   _EditCardPage(CardBean inData, this.pageName) {
-    this._oldData = inData;
-
-    _tempData = CardBean(
-      ownerName: _oldData.ownerName,
-      cardId: _oldData.cardId,
-      key: _oldData.uniqueKey,
-      name: _oldData.name,
-      telephone: _oldData.telephone,
-      folder: _oldData.folder,
-      label: List()..addAll(_oldData.label),
-      fav: _oldData.fav,
-      notes: _oldData.notes,
-      url: _oldData.url,
-    );
-
-    _nameController = TextEditingController(text: _tempData.name);
-    _ownerNameController = TextEditingController(text: _tempData.ownerName);
-    _cardIdController = TextEditingController(text: _tempData.cardId);
-    _telephoneController = TextEditingController(text: _tempData.telephone);
-    _notesController = TextEditingController(text: _tempData.notes);
-    _urlController = TextEditingController(text: _tempData.url);
-
-    // 如果文件夹未知，添加
-    if (!Params.folderList.contains(_tempData.folder)) {
-      Params.folderList.add(_tempData.folder);
-    }
-    // 检查标签未知，添加
-    for (var label in _tempData.label) {
-      if (!Params.labelList.contains(label)) {
-        Params.labelList.add(label);
-      }
+    if (inData != null) {
+      this._oldData = inData;
+      _nameController = TextEditingController(text: _oldData.name);
+      _ownerNameController = TextEditingController(text: _oldData.ownerName);
+      _cardIdController = TextEditingController(text: _oldData.cardId);
+      _telephoneController = TextEditingController(text: _oldData.telephone);
+      _notesController = TextEditingController(text: _oldData.notes);
+      _urlController = TextEditingController(text: _oldData.url);
+      _folder = _oldData.folder;
+      _labels = List()..addAll(_oldData.label);
+    } else {
+      _nameController = TextEditingController();
+      _ownerNameController = TextEditingController();
+      _cardIdController = TextEditingController();
+      _telephoneController = TextEditingController();
+      _notesController = TextEditingController();
+      _urlController = TextEditingController();
+      _labels = List();
     }
   }
 
@@ -103,7 +92,19 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                   onPressed: () {
                     if (_tempData.ownerName.length >= 1 && _tempData.cardId.length >= 1) {
-                      _tempData.isChanged = true;
+                      _tempData = CardBean(
+                        ownerName: _ownerNameController.text,
+                        cardId: _cardIdController.text,
+                        key: _oldData?.uniqueKey,
+                        name: _nameController.text,
+                        telephone: _telephoneController.text,
+                        folder: _folder,
+                        label: _labels,
+                        fav: 0,
+                        notes: _notesController.text,
+                        url: _urlController.text,
+                        isChanged: true
+                      );
                       Navigator.pop<CardBean>(context, _tempData);
                     } else {
                       Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
@@ -130,7 +131,6 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                         TextField(
                           controller: _nameController,
-                          onChanged: (text) => _tempData.name = text,
                         ),
                       ],
                     ),
@@ -144,21 +144,9 @@ class _EditCardPage extends State<EditCardPage> {
                           "拥有者姓名",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _ownerNameController,
-                                onChanged: (text) => _tempData.ownerName = text,
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.content_copy),
-                              onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: _tempData.ownerName)),
-                            )
-                          ],
-                        )
+                        TextField(
+                          controller: _ownerNameController,
+                        ),
                       ],
                     ),
                   ),
@@ -171,21 +159,9 @@ class _EditCardPage extends State<EditCardPage> {
                           "卡号",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _cardIdController,
-                                onChanged: (text) => _tempData.cardId = text,
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.content_copy),
-                              onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: _tempData.cardId)),
-                            )
-                          ],
+                        TextField(
+                          controller: _cardIdController,
+                          keyboardType: TextInputType.number,
                         ),
                       ],
                     ),
@@ -199,22 +175,8 @@ class _EditCardPage extends State<EditCardPage> {
                           "链接",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _urlController,
-                                onChanged: (text) {
-                                  _tempData.url = text;
-                                },
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.content_copy),
-                              onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: _tempData.telephone)),
-                            )
-                          ],
+                        TextField(
+                          controller: _urlController,
                         ),
                       ],
                     ),
@@ -228,24 +190,13 @@ class _EditCardPage extends State<EditCardPage> {
                           "绑定手机号",
                           style: AllpassTextUI.firstTitleStyleBlue,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _telephoneController,
-                                onChanged: (text) {
-                                  _tempData.telephone = text;
-                                },
-                                keyboardType: TextInputType.numberWithOptions(
-                                    signed: true),
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.content_copy),
-                              onPressed: () => Clipboard.setData(
-                                  ClipboardData(text: _tempData.telephone)),
-                            )
-                          ],
+                        TextField(
+                          controller: _telephoneController,
+                          onChanged: (text) {
+                            _tempData.telephone = text;
+                          },
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: true),
                         ),
                       ],
                     ),
@@ -262,7 +213,7 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                         DropdownButton(
                           onChanged: (newValue) {
-                            setState(() => _tempData.folder = newValue);
+                            setState(() => _folder = newValue);
                           },
                           items: Params.folderList
                               .map<DropdownMenuItem<String>>((item) {
@@ -274,7 +225,7 @@ class _EditCardPage extends State<EditCardPage> {
                           style: AllpassTextUI.firstTitleStyleBlack,
                           elevation: 8,
                           iconSize: 30,
-                          value: _tempData.folder,
+                          value: _folder,
                         ),
                       ],
                     ),
@@ -319,10 +270,9 @@ class _EditCardPage extends State<EditCardPage> {
                           readOnly: true,
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => DetailTextPage(_tempData.notes, true),
+                              builder: (context) => DetailTextPage(_notesController.text, true),
                             )).then((newValue) {
                               setState(() {
-                                _tempData.notes = newValue;
                                 _notesController.text = newValue;
                               });
                             });
@@ -342,11 +292,11 @@ class _EditCardPage extends State<EditCardPage> {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: _tempData.label.contains(item),
+        selected: _labels.contains(item),
         onSelected: (selected) {
-          setState(() => _tempData.label.contains(item)
-              ? _tempData.label.remove(item)
-              : _tempData.label.add(item));
+          setState(() => _labels.contains(item)
+              ? _labels.remove(item)
+              : _labels.add(item));
         },
         selectedColor: AllpassColorUI.mainColor,
       ));
