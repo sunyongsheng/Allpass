@@ -1,33 +1,44 @@
+import 'package:flutter/material.dart';
+
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:flutter/material.dart';
+import 'package:allpass/pages/classification/favorite_page.dart';
+import 'package:allpass/pages/classification/classification_details_page.dart';
 
-class ClassificationPage extends StatelessWidget {
+class ClassificationPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ClassificationPage();
+  }
+
+}
+
+class _ClassificationPage extends State<ClassificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "分类",
-          style: AllpassTextUI.titleBarStyle,
+        appBar: AppBar(
+          title: Text(
+            "分类",
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          centerTitle: true,
+          elevation: 0,
+          brightness: Brightness.light,
+          backgroundColor: AllpassColorUI.mainBackgroundColor,
+          automaticallyImplyLeading: false,
         ),
-        centerTitle: true,
-        elevation: 0,
-        brightness: Brightness.light,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
-      body: GridView(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: AllpassScreenUtil.setWidth(40),
-          crossAxisSpacing: AllpassScreenUtil.setWidth(40),
-        ),
-        padding: AllpassEdgeInsets.listInset,
-        children: getClassWidgets(),
-      )
+        body: GridView(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            mainAxisSpacing: AllpassScreenUtil.setWidth(40),
+            crossAxisSpacing: AllpassScreenUtil.setWidth(40),
+          ),
+          padding: AllpassEdgeInsets.listInset,
+          children: getClassWidgets(),
+        )
     );
   }
 
@@ -49,8 +60,9 @@ class ClassificationPage extends StatelessWidget {
               ),
             ),
           ),
-          onTap: () {
-          },
+          onTap: () => Navigator.push(context, MaterialPageRoute(
+            builder: (context) => FavoritePage()
+          )),
         )
     );
     list.addAll(Params.folderList.map((folder) =>
@@ -62,15 +74,17 @@ class ClassificationPage extends StatelessWidget {
               child: Text(folder,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
           onTap: () {
-            print(folder);
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ClassificationDetailsPage(folder)
+            ));
           },
         )
     ));
