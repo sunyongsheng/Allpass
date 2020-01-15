@@ -28,7 +28,7 @@ class _ClassificationDetailsPage extends State<StatefulWidget> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "详情",
+          type,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
