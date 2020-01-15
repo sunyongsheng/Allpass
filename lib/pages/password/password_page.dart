@@ -100,13 +100,11 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          var newData =
-              PasswordBean(username: "", password: "", url: "", folder: "默认");
           Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          EditPasswordPage(newData, "添加密码")))
+                          EditPasswordPage(null, "添加密码")))
               .then((resData) {
             if (resData != null) {
               Provider.of<PasswordList>(context).insertPassword(resData);
@@ -121,7 +119,11 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
   Future<Null> _getPasswordWidgetList() async {
       _passWidgetList.clear();
       for (var item in Provider.of<PasswordList>(context).passwordList) {
-        _passWidgetList.add(_getPasswordWidget(item));
+        try {
+          _passWidgetList.add(_getPasswordWidget(item));
+        } catch (e) {
+          print("有问题出现，key=${item.uniqueKey}");
+        }
       }
       if (_passWidgetList.length == 0) {
         _passWidgetList.add(Column(
