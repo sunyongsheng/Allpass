@@ -94,6 +94,12 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)
+                      )
+                  ),
                   context: context,
                   builder: (BuildContext context) {
                     return createPassBottomSheet(context, item);
@@ -126,6 +132,12 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10)
+                      )
+                  ),
                   context: context,
                   builder: (BuildContext context) {
                     return createCardBottomSheet(context, item);
@@ -179,7 +191,6 @@ class _SearchPage extends State<SearchPage> {
         ));
   }
 
-  /// 以下代码与password_page和card_page的重复
   // 点击密码弹出模态菜单
   Widget createPassBottomSheet(BuildContext context, PasswordBean data) {
     return Column(
