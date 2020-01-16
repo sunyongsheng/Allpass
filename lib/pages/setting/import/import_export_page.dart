@@ -31,7 +31,7 @@ class ImportExportPage extends StatelessWidget {
           brightness: Brightness.light,
           title: Text(
             "导入/导出",
-            style: AllpassTextUI.mainTitleStyle,
+            style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
           backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -113,7 +113,7 @@ class ImportTypeSelectPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "选择导入类型",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -186,7 +186,7 @@ class ExportTypeSelectPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "选择导出内容",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,

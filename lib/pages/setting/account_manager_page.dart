@@ -28,7 +28,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
       appBar: AppBar(
         title: Text(
           "主账号管理",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,

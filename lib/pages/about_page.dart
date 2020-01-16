@@ -14,7 +14,7 @@ class AboutPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "关于",
-          style: AllpassTextUI.mainTitleStyle,
+          style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
         brightness: Brightness.light,

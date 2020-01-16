@@ -38,7 +38,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("$categoryName管理", style: AllpassTextUI.mainTitleStyle,),
+        title: Text("$categoryName管理", style: AllpassTextUI.titleBarStyle,),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         elevation: 0,

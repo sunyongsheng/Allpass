@@ -28,7 +28,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
           brightness: Brightness.light,
           title: Text(
             "从剪贴板导入",
-            style: AllpassTextUI.mainTitleStyle,
+            style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
           backgroundColor: AllpassColorUI.mainBackgroundColor,
