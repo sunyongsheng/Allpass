@@ -94,16 +94,16 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)
-                      )
-                  ),
-                  context: context,
-                  builder: (BuildContext context) {
-                    return createPassBottomSheet(context, item);
-                  });
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)
+                    )
+                ),
+                context: context,
+                builder: (BuildContext context) {
+                  return createPassBottomSheet(context, item);
+                });
             }));
         }
       }
@@ -132,16 +132,16 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10)
-                      )
-                  ),
-                  context: context,
-                  builder: (BuildContext context) {
-                    return createCardBottomSheet(context, item);
-                  });
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)
+                    )
+                ),
+                context: context,
+                builder: (BuildContext context) {
+                  return createCardBottomSheet(context, item);
+                });
             },
           ));
         }
@@ -159,25 +159,25 @@ class _SearchPage extends State<SearchPage> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 40),
                 child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 0, bottom: 31, left: 15, right: 15),
-                    alignment: Alignment.center,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        border: null,
-                        borderRadius: new BorderRadius.circular(25.0)),
-                    child: TextField(
-                      decoration: InputDecoration.collapsed(hintText: ""),
-                      style: AllpassTextUI.firstTitleStyleBlack,
-                      controller: _searchController,
-                      autofocus: true,
-                      onEditingComplete: () {
-                        setState(() {
-                          _searchText = _searchController.text;
-                        });
-                      },
-                    )),
+                  padding: const EdgeInsets.only(
+                      top: 0, bottom: 31, left: 15, right: 15),
+                  alignment: Alignment.center,
+                  height: 50.0,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: null,
+                      borderRadius: new BorderRadius.circular(25.0)),
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(hintText: ""),
+                    style: AllpassTextUI.firstTitleStyleBlack,
+                    controller: _searchController,
+                    autofocus: true,
+                    onEditingComplete: () {
+                      setState(() {
+                        _searchText = _searchController.text;
+                      });
+                    },
+                  )),
               ),
             ),
             FlatButton(
@@ -200,11 +200,9 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye),
           title: Text("查看"),
           onTap: () {
-            Navigator.push(
-                    context,
+            Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            ViewPasswordPage(data)))
+                      builder: (context) => ViewPasswordPage(data)))
                 .then((reData) {
               if (reData != null) {
                 _changed = true;
@@ -222,11 +220,9 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.edit),
           title: Text("编辑"),
           onTap: () {
-            Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            EditPasswordPage(data, "编辑密码")))
+            Navigator.push(context,
+                MaterialPageRoute(
+                  builder: (context) => EditPasswordPage(data, "编辑密码")))
                 .then((reData) {
               if (reData != null) {
                 _changed = true;
@@ -277,33 +273,33 @@ class _SearchPage extends State<SearchPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-            leading: Icon(Icons.remove_red_eye),
-            title: Text("查看"),
-            onTap: () {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ViewCardPage(data)))
-                  .then((resData) {
-                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
-                Navigator.pop(context);
-              });
-            }),
+          leading: Icon(Icons.remove_red_eye),
+          title: Text("查看"),
+          onTap: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ViewCardPage(data)))
+                .then((resData) {
+              if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+              Navigator.pop(context);
+            });
+          }),
         ListTile(
-            leading: Icon(Icons.edit),
-            title: Text("编辑"),
-            onTap: () {
-              Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              EditCardPage(data, "编辑卡片")))
-                  .then((resData) {
-                if (resData != null) Provider.of<CardList>(context).updateCard(resData);
-                Navigator.pop(context);
-              });
-            }),
+          leading: Icon(Icons.edit),
+          title: Text("编辑"),
+          onTap: () {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditCardPage(data, "编辑卡片")))
+                .then((resData) {
+              if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+              Navigator.pop(context);
+            });
+          }),
         ListTile(
           leading: Icon(Icons.person),
           title: Text("复制用户名"),
