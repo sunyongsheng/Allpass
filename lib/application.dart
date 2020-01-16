@@ -58,3 +58,8 @@ class Application {
     }
   }
 }
+
+void initApp() {
+  Application.sp?.setString("folder", "默认~娱乐~办公~论坛~学习~社交");
+  Application.sp?.setBool("FIRST_RUN", false);
+}

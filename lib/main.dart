@@ -23,6 +23,9 @@ void main() async {
   await Application.initSp();
   Application.initChannelAndHandle();
 
+  if (Application.sp.getBool("FIRST_RUN")??true) {
+    initApp();
+  }
   await Params.paramsInit();
 
   if (Platform.isAndroid) {
