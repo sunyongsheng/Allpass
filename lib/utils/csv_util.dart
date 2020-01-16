@@ -133,7 +133,7 @@ class CsvUtil {
         }
         if (labelIndex != -1) {
           if (attribute[labelIndex].length > 0) {
-            label = str2List(attribute[labelIndex]);
+            label = waveLineSegStr2List(attribute[labelIndex]);
           }
         }
         if (favIndex != -1) {
@@ -240,7 +240,7 @@ class CsvUtil {
         }
         if (labelIndex != -1) {
           if (attribute[labelIndex].length > 0) {
-            label = str2List(attribute[labelIndex]);
+            label = waveLineSegStr2List(attribute[labelIndex]);
           }
         }
         if (favIndex != -1) {

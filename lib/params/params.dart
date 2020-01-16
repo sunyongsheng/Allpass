@@ -54,11 +54,11 @@ class Params {
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
-      folderList = str2List(folder);
+      folderList = waveLineSegStr2List(folder);
     }
     if (Application.sp.containsKey("label")) {
       String label = Application.sp.getString("label");
-      labelList = str2List(label);
+      labelList = waveLineSegStr2List(label);
     }
   }
 
@@ -74,12 +74,12 @@ class Params {
   /// 标签参数持久化
   static labelParamsPersistence() {
     // 采用SharedPreferences持久化数据
-    Application.sp.setString("label", list2Str(labelList));
+    Application.sp.setString("label", list2WaveLineSegStr(labelList));
   }
 
   /// 文件夹参数持久化
   static folderParamsPersistence() {
     // 采用SharedPreferences持久化数据
-    Application.sp.setString("folder", list2Str(folderList));
+    Application.sp.setString("folder", list2WaveLineSegStr(folderList));
   }
 }

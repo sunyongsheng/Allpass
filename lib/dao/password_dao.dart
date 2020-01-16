@@ -85,7 +85,7 @@ class PasswordDao extends BaseDBProvider {
   /// 更新
   Future<int> updatePasswordBean(PasswordBean bean) async {
     Database db = await getDataBase();
-    String labels = list2Str(bean.label);
+    String labels = list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
     // 下面的语句更新时提示UNIQUE constraint failed

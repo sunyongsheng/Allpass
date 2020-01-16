@@ -66,7 +66,7 @@ class CardBean {
   static CardBean fromJson(Map<String, dynamic> map) {
     List<String> newLabel = List();
     if (map['label'] != null) {
-      newLabel = str2List(map['label']);
+      newLabel = waveLineSegStr2List(map['label']);
     }
     assert(map["name"] != null);
     assert(map["ownerName"] != null);
@@ -91,7 +91,7 @@ class CardBean {
 
   /// 将CardBean转化为Map
   static Map<String, dynamic> toJson(CardBean bean) {
-    String labels = list2Str(bean.label);
+    String labels = list2WaveLineSegStr(bean.label);
     Map<String, dynamic> map = {
       "uniqueKey": bean.uniqueKey,
       "name": bean.name,
@@ -110,7 +110,7 @@ class CardBean {
   /// 将CardBean转化为csv格式的字符
   static String toCsv(CardBean bean) {
     // 包含除[uniqueKey]的所有属性
-    String labels = list2Str(bean.label);
+    String labels = list2WaveLineSegStr(bean.label);
     String csv =
         "${bean.name},"
         "${bean.ownerName},"
