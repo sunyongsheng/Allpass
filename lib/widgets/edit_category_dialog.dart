@@ -36,7 +36,10 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
 
   _EditCategoryDialog(this.categoryName, int index) {
     this._index = index;
-    _editTextController = TextEditingController(text: Params.labelList[_index]);
+    if (categoryName == "标签")
+      _editTextController = TextEditingController(text: Params.labelList[_index]);
+    else
+      _editTextController = TextEditingController(text: Params.folderList[_index]);
   }
 
   @override
