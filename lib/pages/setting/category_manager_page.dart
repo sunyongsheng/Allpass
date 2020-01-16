@@ -89,60 +89,65 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               return;
             }
             showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        padding: AllpassEdgeInsets.listInset,
-                        child: ListTile(
-                          title: Text("编辑$categoryName"),
-                          leading: Icon(Icons.edit_attributes),
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) => EditCategoryDialog(categoryName, currIndex))
-                                .then((changed) {
-                              if (changed) {
-                                setState(() {});
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      Container(
-                        padding: AllpassEdgeInsets.listInset,
-                        child: ListTile(
-                          title: Text("删除$categoryName"),
-                          leading: Icon(Icons.delete),
-                          onTap: () async {
-                            if (categoryName == '标签') {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      ConfirmDialog("拥有此标签的密码或卡片将删除此标签，确认吗？"))
-                                  .then((delete) async {
-                                    if (delete) {
-                                      await deleteLabelAndUpdate(currCategoryName);
-                                    }});
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) =>
-                                      ConfirmDialog("此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
-                                  .then((delete) async {
-                                    if (delete) {
-                                      await deleteFolderAndUpdate(currCategoryName);
-                                    }});
+              context: context,
+              builder: (context) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      padding: AllpassEdgeInsets.listInset,
+                      child: ListTile(
+                        title: Text("编辑$categoryName"),
+                        leading: Icon(Icons.edit_attributes),
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => EditCategoryDialog(categoryName, currIndex))
+                              .then((changed) {
+                            if (changed) {
+                              setState(() {});
                             }
-                          },
-                        ),
-                      )
-                    ],
-                  );
-                }
+                            Navigator.pop(context);
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      padding: AllpassEdgeInsets.listInset,
+                      child: ListTile(
+                        title: Text("删除$categoryName"),
+                        leading: Icon(Icons.delete),
+                        onTap: () async {
+                          if (categoryName == '标签') {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    ConfirmDialog("拥有此标签的密码或卡片将删除此标签，确认吗？"))
+                                .then((delete) async {
+                                  if (delete) {
+                                    await deleteLabelAndUpdate(currCategoryName);
+                                  }
+                                  Navigator.pop(context);
+                                });
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    ConfirmDialog("此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
+                                .then((delete) async {
+                                  if (delete) {
+                                    await deleteFolderAndUpdate(currCategoryName);
+                                  }
+                                  Navigator.pop(context);
+                                });
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                );
+              }
             );
           },
         ),
