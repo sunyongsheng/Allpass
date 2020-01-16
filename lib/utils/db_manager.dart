@@ -21,10 +21,7 @@ class DBManager {
       path = dbName + "/" + dbName;
     }
     // 打开数据库
-    _database = await openDatabase(path, version: _dbVersion,
-        onCreate: (Database db, int version) async {
-      // 若需要建表，则在此建立
-        });
+    _database = await openDatabase(path, version: _dbVersion);
   }
 
   /// 判断表是否存在
