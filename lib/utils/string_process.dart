@@ -21,3 +21,12 @@ List<String> waveLineSegStr2List(String string) {
   }
   return res;
 }
+
+/// 将List中的字符串直接拼接为一个字符串
+String list2PureStr(List<String> list) {
+  StringBuffer stringBuffer = StringBuffer();
+  for (String string in list??List()) {
+    stringBuffer.write(string);
+  }
+  return stringBuffer.toString();
+}
