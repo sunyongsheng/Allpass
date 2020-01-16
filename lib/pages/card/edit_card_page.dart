@@ -324,7 +324,7 @@ class _EditCardPage extends State<EditCardPage> {
                 builder: (context) {
                   return AddCategoryDialog("标签");
                 },
-              ),
+              ).then((_) => setState((){})),
       ),
     );
     return labelChoices;

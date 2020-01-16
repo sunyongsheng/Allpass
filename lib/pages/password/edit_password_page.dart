@@ -358,7 +358,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
               context: context,
               barrierDismissible: false,
               builder: (context) => AddCategoryDialog("标签"),
-            );
+            ).then((_) => setState((){}));
           }),
     );
     return labelChoices;
