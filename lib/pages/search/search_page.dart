@@ -7,6 +7,7 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/utils/string_process.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
@@ -80,7 +81,9 @@ class _SearchPage extends State<SearchPage> {
       for (var item in Provider.of<PasswordList>(context).passwordList) {
         if (item.name.contains(_searchText) ||
             item.username.contains(_searchText) ||
-            item.notes.contains(_searchText)) {
+            item.notes.contains(_searchText) || 
+            list2PureStr(item.label).contains(_searchText)
+        ) {
           _result.add(ListTile(
             leading: CircleAvatar(
               backgroundColor: getRandomColor(item.uniqueKey),
@@ -112,7 +115,9 @@ class _SearchPage extends State<SearchPage> {
         Color t = getRandomColor(item.uniqueKey);
         if (item.name.contains(_searchText) ||
             item.ownerName.contains(_searchText) ||
-            item.notes.contains(_searchText)) {
+            item.notes.contains(_searchText) || 
+            list2PureStr(item.label).contains(_searchText)
+        ) {
           _result.add(ListTile(
             leading: Container(
               decoration: BoxDecoration(
