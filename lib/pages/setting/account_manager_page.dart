@@ -43,7 +43,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("修改主密码"),
-              leading: Icon(Icons.lock_open),
+              leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
               onTap: () {
                 showDialog(
                     context: context,
@@ -55,7 +55,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("清除所有数据"),
-              leading: Icon(Icons.clear),
+              leading: Icon(Icons.clear, color: AllpassColorUI.allColor[1]),
               onTap: () {
                 showDialog(
                   context: context,
@@ -128,7 +128,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("注销"),
-              leading: Icon(Icons.exit_to_app),
+              leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
               onTap: () => Params.enabledBiometrics
                   ? NavigationUtil.goAuthLoginPage(context)
                   : NavigationUtil.goLoginPage(context),

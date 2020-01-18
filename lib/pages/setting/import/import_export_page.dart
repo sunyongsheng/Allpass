@@ -45,7 +45,7 @@ class ImportExportPage extends StatelessWidget {
               padding: AllpassEdgeInsets.listInset,
               child: ListTile(
                 title: Text("从Chrome中导入"),
-                leading: Icon(CustomIcons.chrome),
+                leading: Icon(CustomIcons.chrome, color: AllpassColorUI.allColor[6]),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -59,7 +59,7 @@ class ImportExportPage extends StatelessWidget {
               padding: AllpassEdgeInsets.listInset,
               child: ListTile(
                 title: Text("从CSV文件中导入"),
-                leading: Icon(Icons.import_contacts),
+                leading: Icon(Icons.import_contacts, color: AllpassColorUI.allColor[4]),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -73,7 +73,7 @@ class ImportExportPage extends StatelessWidget {
               padding: AllpassEdgeInsets.listInset,
               child: ListTile(
                 title: Text("从剪贴板中导入"),
-                leading: Icon(Icons.content_paste),
+                leading: Icon(Icons.content_paste, color: AllpassColorUI.allColor[1]),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -87,7 +87,7 @@ class ImportExportPage extends StatelessWidget {
               padding: AllpassEdgeInsets.listInset,
               child: ListTile(
                 title: Text("导出为CSV文件"),
-                leading: Icon(Icons.call_missed_outgoing),
+                leading: Icon(Icons.call_missed_outgoing, color: AllpassColorUI.allColor[3]),
                 onTap: () {
                   Navigator.push(
                       context,
@@ -128,7 +128,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("密码"),
-              leading: Icon(Icons.supervised_user_circle),
+              leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () => filePickAndImport(context, AllpassType.PASSWORD),
             ),
           ),
@@ -136,7 +136,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("卡片"),
-              leading: Icon(Icons.credit_card),
+              leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () => filePickAndImport(context, AllpassType.CARD),
             ),
           ),
@@ -201,7 +201,7 @@ class ExportTypeSelectPage extends StatelessWidget {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("密码"),
-              leading: Icon(Icons.supervised_user_circle),
+              leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () async {
                 Directory dir = await getExternalStorageDirectory();
                 Directory newDir = await DirectoryPicker.pick(
@@ -220,7 +220,7 @@ class ExportTypeSelectPage extends StatelessWidget {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("卡片"),
-              leading: Icon(Icons.credit_card),
+              leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () async {
                 Directory dir = await getExternalStorageDirectory();
                 Directory newDir = await DirectoryPicker.pick(
@@ -238,7 +238,7 @@ class ExportTypeSelectPage extends StatelessWidget {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("所有"),
-              leading: Icon(Icons.all_inclusive),
+              leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
               onTap: () async {
                 Directory dir = await getExternalStorageDirectory();
                 Directory newDir = await DirectoryPicker.pick(

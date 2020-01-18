@@ -41,7 +41,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("主账号管理"),
-                    leading: Icon(Icons.account_circle),
+                    leading: Icon(Icons.account_circle, color: AllpassColorUI.allColor[0],),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -54,7 +54,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("生物识别"),
-                    leading: Icon(Icons.fingerprint),
+                    leading: Icon(Icons.fingerprint, color: AllpassColorUI.allColor[1]),
                     trailing: Switch(
                       value: Params.enabledBiometrics,
                       onChanged: (sw) async {
@@ -75,7 +75,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                     child: ListTile(
                       title: Text("长按复制密码或卡号"),
-                      leading: Icon(Icons.present_to_all),
+                      leading: Icon(Icons.present_to_all, color: AllpassColorUI.allColor[2]),
                       subtitle: Params.longPressCopy
                           ?Text("当前长按为复制密码或卡号")
                           :Text("当前长按为多选"),
@@ -100,7 +100,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("标签管理"),
-                    leading: Icon(Icons.label_outline),
+                    leading: Icon(Icons.label_outline, color: AllpassColorUI.allColor[3]),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -113,7 +113,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("文件夹管理"),
-                    leading: Icon(Icons.folder_open),
+                    leading: Icon(Icons.folder_open, color: AllpassColorUI.allColor[4]),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -133,7 +133,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("导入/导出"),
-                    leading: Icon(Icons.import_export),
+                    leading: Icon(Icons.import_export, color: AllpassColorUI.allColor[5]),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -153,7 +153,7 @@ class _SettingPage extends State<SettingPage> {
                 Container(
                   child: ListTile(
                     title: Text("关于"),
-                    leading: Icon(Icons.details),
+                    leading: Icon(Icons.details, color: AllpassColorUI.allColor[6]),
                     onTap: () {
                       Navigator.push(
                           context,
