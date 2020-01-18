@@ -76,7 +76,7 @@ class _HomePage extends State<HomePage> {
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,
-                color: _currentIndex==2?null:Colors.grey,
+                color: _currentIndex==3?null:Colors.grey,
               ),
               title: Text("设置", style: TextStyle(fontSize: 12))
           ),
