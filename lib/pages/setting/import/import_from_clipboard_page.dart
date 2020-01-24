@@ -49,7 +49,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                       child: ListBody(
                         children: <Widget>[
                           Text("此功能帮助您轻松地从之前在记事本中保存的密码导入到Allpass中；\n"),
-                          Text("名称是密码的助记符，您可以随便请一个名称来让您知道此条记录是什么内容；\n"),
+                          Text("名称是密码的助记符，您可以随便起一个名称来让您知道此条记录是什么内容；\n"),
                           Text("用户名是登录使用的账号名，有可能是手机、邮箱或者其他您设置的账号；\n"),
                           Text("网站地址可以帮助Allpass在正确的网站填充您的密码，大多数情况下是网站登录页的URL地址；\n"),
                           Text("两个字段之间请以“空格”作为分隔符，这样Allpass才能正确分辨哪个是用户名，哪个是密码；\n"),
