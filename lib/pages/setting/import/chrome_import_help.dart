@@ -11,9 +11,10 @@ class ChromeImportHelpPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "从Chrome中导入",
-            style: AllpassTextUI.firstTitleStyleBlack,
+            style: AllpassTextUI.titleBarStyle,
           ),
-          backgroundColor: Colors.white,
+          centerTitle: true,
+          backgroundColor: AllpassColorUI.mainBackgroundColor,
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0,
           brightness: Brightness.light,
