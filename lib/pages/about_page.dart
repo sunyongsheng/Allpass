@@ -43,7 +43,7 @@ class AboutPage extends StatelessWidget {
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      subtitle: Text("一款简单好用的密码管理软件"),
+                      subtitle: Text("一款简单的密码管理软件"),
                       trailing: Text("beta_v1.0.0", style: TextStyle(color: Colors.grey),),
                       isThreeLine: true,
                       onTap: () {
@@ -85,7 +85,7 @@ class AboutPage extends StatelessWidget {
                 Container(
                   padding: AllpassEdgeInsets.dividerInset,
                   child: FlatButton(
-                    child: Text("开发者网站：https://www.aengus.top"),
+                    child: Text("开发者网址：ttps://www.aengus.top"),
                     onPressed: () async {
                       await launch("https://www.aengus.top");
                     },
@@ -97,7 +97,7 @@ class AboutPage extends StatelessWidget {
               ],
             ),
           ),
-          Text("Copyright@2019 Aengus Sun. All Rights Reserved.", style: TextStyle(color: Colors.grey),)
+          Text("Copyright 2020 Aengus Sun. Apache License 2.0", style: TextStyle(color: Colors.grey),)
         ],
       )
     );
