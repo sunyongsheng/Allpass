@@ -129,6 +129,7 @@ class _EditCardPage extends State<EditCardPage> {
               elevation: 0,
               brightness: Brightness.light,
             ),
+            backgroundColor: AllpassColorUI.mainBackgroundColor,
             body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
