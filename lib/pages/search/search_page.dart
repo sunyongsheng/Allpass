@@ -202,7 +202,7 @@ class _SearchPage extends State<SearchPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.remove_red_eye),
+          leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
             Navigator.push(context,
@@ -222,7 +222,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.edit),
+          leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
             Navigator.push(context,
@@ -242,7 +242,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.person),
+          leading: Icon(Icons.person, color: Colors.teal,),
           title: Text("复制用户名"),
           onTap: () {
             print("复制用户名：" + data.username);
@@ -251,7 +251,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.content_copy),
+          leading: Icon(Icons.content_copy, color: Colors.orange,),
           title: Text("复制密码"),
           onTap: () async {
             String pw = await EncryptUtil.decrypt(data.password);
@@ -261,7 +261,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.delete_outline),
+          leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除密码"),
           onTap: () {
             Provider.of<PasswordList>(context).deletePassword(data);
@@ -278,7 +278,7 @@ class _SearchPage extends State<SearchPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.remove_red_eye),
+          leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
             Navigator.push(
@@ -292,7 +292,7 @@ class _SearchPage extends State<SearchPage> {
             });
           }),
         ListTile(
-          leading: Icon(Icons.edit),
+          leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
             Navigator.push(
@@ -306,7 +306,7 @@ class _SearchPage extends State<SearchPage> {
             });
           }),
         ListTile(
-          leading: Icon(Icons.person),
+          leading: Icon(Icons.person, color: Colors.teal,),
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.ownerName));
@@ -314,7 +314,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.content_copy),
+          leading: Icon(Icons.content_copy, color: Colors.orange,),
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.cardId));
@@ -322,7 +322,7 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.delete_outline),
+          leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除卡片"),
           onTap: () {
             Provider.of<CardList>(context).deleteCard(data);

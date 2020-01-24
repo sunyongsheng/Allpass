@@ -104,7 +104,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                       padding: AllpassEdgeInsets.listInset,
                       child: ListTile(
                         title: Text("编辑$categoryName"),
-                        leading: Icon(Icons.edit_attributes),
+                        leading: Icon(Icons.edit_attributes, color: Colors.blue,),
                         onTap: () {
                           showDialog(
                             context: context,
@@ -123,7 +123,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                       padding: AllpassEdgeInsets.listInset,
                       child: ListTile(
                         title: Text("删除$categoryName"),
-                        leading: Icon(Icons.delete),
+                        leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
                           if (categoryName == '标签') {
                             showDialog(
