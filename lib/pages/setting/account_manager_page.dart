@@ -4,11 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
+import 'package:allpass/dao/card_dao.dart';
+import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/widgets/modify_password_dialog.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
+import 'package:allpass/widgets/input_main_password_dialog.dart';
 
 /// 主账号管理页
 class AccountManagerPage extends StatefulWidget {
@@ -74,44 +75,17 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                           // 二次确认
                           showDialog(
                             context: context,
-                            builder: (context) => AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(15),
-                                ),
-                              ),
-                              title: Text("请输入主密码"),
-                              content: TextField(
-                                controller: passwordController,
-                                obscureText: true,
-                                autofocus: true,
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
-                                  onPressed: () {
-                                    if (passwordController.text == Params.password) {
-                                      PasswordDao().deleteContent();
-                                      CardDao().deleteContent();
-                                      Application.sp.clear();
-                                      Params.paramsClear();
-                                      Fluttertoast.showToast(msg: "已删除所有数据");
-                                      passwordController.clear();
-                                      NavigationUtil.goLoginPage(context);
-                                    } else {
-                                      Fluttertoast.showToast(msg: "密码错误");
-                                      Navigator.pop(context);
-                                      passwordController.clear();
-                                    }
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text("取消", style: AllpassTextUI.secondTitleStyleBlue,),
-                                  onPressed: () => Navigator.pop(context),
-                                )
-                              ],
-                            )
-                          );
+                            builder: (context) => InputMainPasswordDialog(),
+                          ).then((right) {
+                            if (right) {
+                              PasswordDao().deleteContent();
+                              CardDao().deleteContent();
+                              Application.sp.clear();
+                              Params.paramsClear();
+                              Fluttertoast.showToast(msg: "已删除所有数据");
+                              NavigationUtil.goLoginPage(context);
+                            }
+                          });
                         },
                       ),
                       FlatButton(
