@@ -9,9 +9,9 @@ import 'package:allpass/utils/encrypt_util.dart';
 
 /// 修改密码对话框
 class ModifyPasswordDialog extends StatelessWidget {
-  final oldPasswordController = TextEditingController();
-  final newPasswordController = TextEditingController();
-  final secondInputController = TextEditingController();
+  final _oldPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _secondInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class ModifyPasswordDialog extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
-                  controller: oldPasswordController,
+                  controller: _oldPasswordController,
                   decoration: InputDecoration(labelText: "请输入旧密码"),
                   obscureText: true,
                   autofocus: true,
@@ -44,7 +44,7 @@ class ModifyPasswordDialog extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
-                  controller: newPasswordController,
+                  controller: _newPasswordController,
                   decoration: InputDecoration(labelText: "请输入新密码"),
                   obscureText: true,
                 ),
@@ -52,7 +52,7 @@ class ModifyPasswordDialog extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: TextField(
-                  controller: secondInputController,
+                  controller: _secondInputController,
                   decoration: InputDecoration(labelText: "请再输入一遍"),
                   obscureText: true,
                 ),
@@ -65,10 +65,10 @@ class ModifyPasswordDialog extends StatelessWidget {
         FlatButton(
           child: Text("提交"),
           onPressed: () async {
-            if (Params.password == await EncryptUtil.encrypt(oldPasswordController.text)) {
-              if (newPasswordController.text.length >= 6
-                  && newPasswordController.text == secondInputController.text) {
-                String newPassword = await EncryptUtil.encrypt(newPasswordController.text);
+            if (Params.password == await EncryptUtil.encrypt(_oldPasswordController.text)) {
+              if (_newPasswordController.text.length >= 6
+                  && _newPasswordController.text == _secondInputController.text) {
+                String newPassword = await EncryptUtil.encrypt(_newPasswordController.text);
                 Application.sp.setString(Params.password, newPassword);
                 Params.password = newPassword;
                 Fluttertoast.showToast(msg: "修改成功");
