@@ -6,15 +6,7 @@ import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/classification/favorite_page.dart';
 import 'package:allpass/pages/classification/classification_details_page.dart';
 
-class ClassificationPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ClassificationPage();
-  }
-
-}
-
-class _ClassificationPage extends State<ClassificationPage> {
+class ClassificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,12 +29,12 @@ class _ClassificationPage extends State<ClassificationPage> {
             crossAxisSpacing: AllpassScreenUtil.setWidth(40),
           ),
           padding: AllpassEdgeInsets.listInset,
-          children: getClassWidgets(),
+          children: getClassWidgets(context),
         )
     );
   }
 
-  List<Widget> getClassWidgets() {
+  List<Widget> getClassWidgets(BuildContext context) {
     List<Widget> list  = List();
     list.add(
         InkWell(

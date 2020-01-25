@@ -7,15 +7,8 @@ import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 
-class FavoritePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _FavoritePage();
-  }
+class FavoritePage extends StatelessWidget {
 
-}
-
-class _FavoritePage extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,12 +24,12 @@ class _FavoritePage extends State<StatefulWidget> {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: ListView(
-        children: _getFavWidgets(),
+        children: _getFavWidgets(context),
       ),
     );
   }
 
-  _getFavWidgets() {
+  List<Widget> _getFavWidgets(BuildContext context) {
     List<Widget> list = List();
     for (var passwordBean in Provider.of<PasswordList>(context).passwordList) {
       if (passwordBean.fav == 1) {
@@ -122,7 +115,6 @@ class _FavoritePage extends State<StatefulWidget> {
     if (list.length == 1) {
       list.add(Center(child: Text("什么也没有，赶快添加吧！"),));
     }
-
     return list;
   }
 

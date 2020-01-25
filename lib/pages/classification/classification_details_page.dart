@@ -7,21 +7,10 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 
-class ClassificationDetailsPage extends StatefulWidget {
+class ClassificationDetailsPage extends StatelessWidget {
+
   final String type;
   ClassificationDetailsPage(this.type);
-
-  @override
-  State<StatefulWidget> createState() {
-    return _ClassificationDetailsPage(type);
-  }
-
-}
-
-class _ClassificationDetailsPage extends State<StatefulWidget> {
-
-  String type;
-  _ClassificationDetailsPage(this.type);
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +28,18 @@ class _ClassificationDetailsPage extends State<StatefulWidget> {
       ),
       backgroundColor: Colors.white,
       body: ListView(
-        children: _getWidgetsList(),
+        children: _getWidgetsList(context),
       ),
     );
   }
 
-  List<Widget> _getWidgetsList() {
+  List<Widget> _getWidgetsList(BuildContext context) {
     List<Widget> list = List();
     for (var passwordBean in Provider.of<PasswordList>(context).passwordList) {
       if (passwordBean.folder == type) {
         try {
           list.add(Container(
             margin: AllpassEdgeInsets.listInset,
-            //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: getRandomColor(passwordBean.uniqueKey),
