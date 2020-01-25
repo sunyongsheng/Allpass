@@ -138,56 +138,55 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   Widget _getCardWidget(CardBean cardBean) {
     return SizedBox(
         height: 100,
-        //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-        child: InkWell(
-          onTap: () => Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ViewCardPage(cardBean),
-          )).then((bean) {
-            if (bean != null) {
-              // 改变了就更新，没改变就删除
-              if (bean.isChanged) {
-                Provider.of<CardList>(context).updateCard(bean);
-              } else {
-                Provider.of<CardList>(context).deleteCard(cardBean);
-              }
-            }
-          }),
-          onLongPress: () async {
-            if (Params.longPressCopy) {
-              Clipboard.setData(ClipboardData(text: cardBean.cardId));
-              Fluttertoast.showToast(msg: "已复制卡号");
-            } else {
-              Fluttertoast.showToast(msg: "多选");
-            }
-          },
-          child: Card(
-            elevation: 2,
-            color: getRandomColor(cardBean.uniqueKey),
-            margin: AllpassEdgeInsets.forCardInset,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            child: ListTile(
-              title: Text(
-                cardBean.name,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
+        child: Card(
+          elevation: 2,
+          color: getRandomColor(cardBean.uniqueKey),
+          margin: AllpassEdgeInsets.forCardInset,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(8.0))),
+          child: InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ViewCardPage(cardBean),
+              )).then((bean) {
+                if (bean != null) {
+                  // 改变了就更新，没改变就删除
+                  if (bean.isChanged) {
+                    Provider.of<CardList>(context).updateCard(bean);
+                  } else {
+                    Provider.of<CardList>(context).deleteCard(cardBean);
+                  }
+                }
+              }),
+              onLongPress: () async {
+                if (Params.longPressCopy) {
+                  Clipboard.setData(ClipboardData(text: cardBean.cardId));
+                  Fluttertoast.showToast(msg: "已复制卡号");
+                } else {
+                  Fluttertoast.showToast(msg: "多选");
+                }
+              },
+              child: ListTile(
+                title: Text(
+                  cardBean.name,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                subtitle: Text(
+                  "ID: ${cardBean.cardId}",
+                  style:
+                  TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                contentPadding: EdgeInsets.only(left: 30, right: 30, top: 5),
               ),
-              subtitle: Text(
-                "ID: ${cardBean.cardId}",
-                style:
-                TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-              contentPadding: EdgeInsets.only(left: 30, right: 30, top: 5),
-            ),
           ),
-        )
+        ),
     );
   }
 
