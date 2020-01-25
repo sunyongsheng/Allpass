@@ -26,7 +26,7 @@ class ClassificationDetailsPage extends StatelessWidget {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: ListView(
         children: _getWidgetsList(context),
       ),

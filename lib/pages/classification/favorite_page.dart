@@ -23,6 +23,7 @@ class FavoritePage extends StatelessWidget {
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         iconTheme: IconThemeData(color: Colors.black),
       ),
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: ListView(
         children: _getFavWidgets(context),
       ),
