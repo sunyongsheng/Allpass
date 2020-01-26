@@ -78,11 +78,12 @@ class _SearchPage extends State<SearchPage> {
 
   Future<Null> getSearchResult() async {
     _result.clear();
+    _searchText = _searchController.text;
     if (_type == AllpassType.PASSWORD) {
       for (var item in Provider.of<PasswordList>(context).passwordList) {
         if (item.name.contains(_searchText) ||
             item.username.contains(_searchText) ||
-            item.notes.contains(_searchText) || 
+            item.notes.contains(_searchText) ||
             list2PureStr(item.label).contains(_searchText)
         ) {
           _result.add(ListTile(
@@ -173,14 +174,17 @@ class _SearchPage extends State<SearchPage> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 20, right: 20),
-                    hintText: "搜索名称、用户名或关键字",
+                    hintText: "搜索名称、用户名、备注或关键字",
                     hintStyle: TextStyle(fontSize: 14),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       borderSide: BorderSide.none
                     ),
                   ),
-                  onEditingComplete: () => getSearchResult(),
+                  onEditingComplete: () async {
+                    await getSearchResult();
+                    setState(() {});
+                  },
                 ),
               )
             ),
