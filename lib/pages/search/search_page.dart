@@ -48,6 +48,7 @@ class _SearchPage extends State<SearchPage> {
         toolbarOpacity: 1,
         brightness: Brightness.light,
       ),
+      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: FutureBuilder(
         future: getSearchResult(),
         builder: (context, snapshot) {
@@ -161,37 +162,34 @@ class _SearchPage extends State<SearchPage> {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 40),
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      top: 0, bottom: 31, left: 15, right: 15),
-                  alignment: Alignment.center,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: null,
-                      borderRadius: new BorderRadius.circular(25.0)),
-                  child: TextField(
-                    decoration: InputDecoration.collapsed(hintText: ""),
-                    style: AllpassTextUI.firstTitleStyleBlack,
-                    controller: _searchController,
-                    autofocus: true,
-                    onEditingComplete: () {
-                      setState(() {
-                        _searchText = _searchController.text;
-                      });
-                    },
-                  )),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  color: Colors.grey[200],
+                ),
+                height: 35,
+                child: TextField(
+                  style: TextStyle(fontSize: 14),
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(left: 20, right: 20),
+                    hintText: "搜索名称、用户名或关键字",
+                    hintStyle: TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      borderSide: BorderSide.none
+                    )
+                  ),
+                ),
+              )
+            ),
+            InkWell(
+              child: Padding(
+                padding: EdgeInsets.only(left: 15, right: 10, top: 5, bottom: 5),
+                child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
               ),
-            ),
-            FlatButton(
-              onPressed: () {
-                Navigator.pop<bool>(context, _changed);
-              },
-              child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
-              splashColor: AllpassColorUI.mainBackgroundColor,
-            ),
+              onTap: () => Navigator.pop<bool>(context, _changed),
+            )
           ],
         ));
   }
