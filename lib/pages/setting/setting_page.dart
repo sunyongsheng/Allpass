@@ -10,6 +10,7 @@ import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
 import 'package:allpass/pages/about_page.dart';
+import 'package:allpass/widgets/input_main_password_dialog.dart';
 
 /// 设置页面
 class SettingPage extends StatefulWidget {
@@ -59,9 +60,15 @@ class _SettingPage extends State<SettingPage> {
                       value: Params.enabledBiometrics,
                       onChanged: (sw) async {
                         if (await LocalAuthentication().canCheckBiometrics) {
-                          Application.sp.setBool("biometrics", sw);
-                          Params.enabledBiometrics = sw;
-                          setState(() {});
+                          showDialog(context: context,
+                            builder: (context) => InputMainPasswordDialog(),
+                          ).then((right) {
+                            if (right) {
+                              Application.sp.setBool("biometrics", sw);
+                              Params.enabledBiometrics = sw;
+                              setState(() {});
+                            }
+                          });
                         } else {
                           Application.sp.setBool("biometrics", false);
                           Params.enabledBiometrics = false;
