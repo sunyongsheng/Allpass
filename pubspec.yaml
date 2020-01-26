@@ -30,7 +30,7 @@ dependencies:
   # 应用路径
   path_provider: ^1.5.1
   # 密码加密
-  cipher2: ^0.3.5
+  encrypt: ^4.0.0
   # 文件管理
   flutter_file_picker: ^0.0.3
   # 路径选择
