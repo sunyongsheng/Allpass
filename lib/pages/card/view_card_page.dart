@@ -428,7 +428,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                             showDialog(
                                 context: context,
                                 builder: (context) =>
-                                    ConfirmDialog("你将删除此卡片，确认吗？"))
+                                    ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"))
                                 .then((delete) {
                               if (delete) {
                                 // 如果想删除，则先将isChanged属性改为false

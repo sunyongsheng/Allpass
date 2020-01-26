@@ -129,7 +129,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             showDialog(
                                 context: context,
                                 builder: (context) =>
-                                    ConfirmDialog("拥有此标签的密码或卡片将删除此标签，确认吗？"))
+                                    ConfirmDialog("确认删除", "拥有此标签的密码或卡片将删除此标签，确认吗？"))
                                 .then((delete) async {
                                   if (delete) {
                                     await deleteLabelAndUpdate(currCategoryName);
@@ -140,7 +140,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             showDialog(
                                 context: context,
                                 builder: (context) =>
-                                    ConfirmDialog("此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
+                                    ConfirmDialog("确认删除", "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
                                 .then((delete) async {
                                   if (delete) {
                                     await deleteFolderAndUpdate(currCategoryName);

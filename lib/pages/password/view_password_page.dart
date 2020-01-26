@@ -411,7 +411,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                   onPressed: () {
                                     showDialog(
                                       context: context,
-                                      builder: (context) => ConfirmDialog("你将删除此密码，确认吗？"))
+                                      builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"))
                                         .then((delete) {
                                       if (delete) {
                                         // 如果想删除，则先将isChanged属性改为false
