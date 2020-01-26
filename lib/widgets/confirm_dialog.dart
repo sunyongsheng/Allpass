@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  final String message;
-  ConfirmDialog(this.message);
+  final String _dialogMessage;
+  final String _dialogTitle;
+
+  ConfirmDialog(this._dialogTitle, this._dialogMessage);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +15,8 @@ class ConfirmDialog extends StatelessWidget {
         borderRadius:
         BorderRadius.all(Radius.circular(AllpassUI.borderRadius),),
       ),
-      title: Text("确认删除"),
-      content: Text(message),
+      title: Text(_dialogTitle),
+      content: Text(_dialogMessage),
       actions: <Widget>[
         FlatButton(
           child: Text("确认"),
