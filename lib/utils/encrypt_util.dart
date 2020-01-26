@@ -1,15 +1,16 @@
-import 'package:cipher2/cipher2.dart';
+import 'package:encrypt/encrypt.dart';
 
 /// 加密解密辅助类
 class EncryptUtil {
-  static final String _key = "f821kfo1we241ew0";
-  static final String _iv = "e4n8dol2390z834n";
+  static final _key = Key.fromUtf8("6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG");
+  static final _iv = IV.fromLength(16);
+  static final _encrypter = Encrypter(AES(_key));
 
-  static Future<String> encrypt(String password) async {
-    return await Cipher2.encryptAesCbc128Padding7(password, _key, _iv);
+  static String encrypt(String password) {
+    return _encrypter.encrypt(password, iv: _iv).base64;
   }
 
-  static Future<String> decrypt(String encryptTxt) async {
-    return await Cipher2.decryptAesCbc128Padding7(encryptTxt, _key, _iv);
+  static String decrypt(String encryptTxt) {
+    return _encrypter.decrypt(Encrypted.fromBase64(encryptTxt), iv: _iv);
   }
 }
