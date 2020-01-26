@@ -74,7 +74,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   }
 
   Future<Null> _decryptPassword() async {
-    _password =  await EncryptUtil.decrypt(_oldData.password);
+    _password =  EncryptUtil.decrypt(_oldData.password);
     _passwordController = TextEditingController(text: _password);
   }
 
@@ -117,7 +117,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 if (_usernameController.text.length >= 1
                     && _passwordController.text.length >= 1
                     && _urlController.text.length >= 1) {
-                  String pw = await EncryptUtil.encrypt(_passwordController.text);
+                  String pw = EncryptUtil.encrypt(_passwordController.text);
                   _tempData = PasswordBean(
                     key: _oldData?.uniqueKey,
                     username: _usernameController.text,

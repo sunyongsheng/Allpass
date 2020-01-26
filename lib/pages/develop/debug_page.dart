@@ -75,7 +75,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("查看主密码"),
                 onPressed: () async {
-                  String _pass = await EncryptUtil.decrypt(Application.sp.getString("password"));
+                  String _pass = EncryptUtil.decrypt(Application.sp.getString("password"));
                   Fluttertoast.showToast(msg: "$_pass");
                 },
               ),

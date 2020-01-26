@@ -47,7 +47,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   }
 
   Future<Null> _decryptPassword() async {
-    _password = await EncryptUtil.decrypt(_bean.password);
+    _password = EncryptUtil.decrypt(_bean.password);
   }
 
   @override

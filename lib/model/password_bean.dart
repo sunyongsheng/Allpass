@@ -127,7 +127,7 @@ class PasswordBean {
     String csv =
         "${bean.name},"
         "${bean.username},"
-        "${await EncryptUtil.decrypt(bean.password)},"
+        "${EncryptUtil.decrypt(bean.password)},"
         "${bean.url},"
         "${bean.folder},"
         "${bean.notes},"

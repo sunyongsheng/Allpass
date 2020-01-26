@@ -161,7 +161,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         },
         onLongPress: () async {
           if (Params.longPressCopy) {
-            String pw = await EncryptUtil.decrypt(passwordBean.password);
+            String pw = EncryptUtil.decrypt(passwordBean.password);
             Clipboard.setData(ClipboardData(text: pw));
             Fluttertoast.showToast(msg: "已复制密码");
           } else {

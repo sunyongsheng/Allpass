@@ -254,7 +254,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.content_copy, color: Colors.orange,),
           title: Text("复制密码"),
           onTap: () async {
-            String pw = await EncryptUtil.decrypt(data.password);
+            String pw = EncryptUtil.decrypt(data.password);
             print("复制密码：" + pw);
             Clipboard.setData(ClipboardData(text: pw));
             Navigator.pop(context);

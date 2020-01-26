@@ -134,7 +134,7 @@ class _LoginPage extends State<LoginPage> {
     if (Application.sp.getString("username") == null) {
       // 判断用户名和密码长度
       if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
-        String _password = await EncryptUtil.encrypt(_passwordController.text);
+        String _password = EncryptUtil.encrypt(_passwordController.text);
         Application.sp.setString("username", _usernameController.text);
         Application.sp.setString("password", _password);
         Params.username = _usernameController.text;
@@ -160,7 +160,7 @@ class _LoginPage extends State<LoginPage> {
     } else {
       if (Params.username != "" && Params.password != "") {
         if (Params.username == _usernameController.text
-            && _passwordController.text == await EncryptUtil.decrypt(Params.password)) {
+            && _passwordController.text == EncryptUtil.decrypt(Params.password)) {
           NavigationUtil.goHomePage(context);
           Fluttertoast.showToast(msg: "登录成功");
         } else if (_usernameController.text == "" || _passwordController.text == "") {

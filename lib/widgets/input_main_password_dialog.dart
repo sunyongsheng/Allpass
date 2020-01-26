@@ -27,7 +27,7 @@ class InputMainPasswordDialog extends StatelessWidget {
         FlatButton(
           child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
           onPressed: () async {
-            if (await EncryptUtil.encrypt(_passwordController.text) == Params.password) {
+            if (EncryptUtil.encrypt(_passwordController.text) == Params.password) {
               _passwordController.clear();
               Navigator.pop<bool>(context, true);
             } else {

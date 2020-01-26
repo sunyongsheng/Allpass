@@ -232,7 +232,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: defaultUsername,
-          password: await EncryptUtil.encrypt(fields[1]),
+          password: EncryptUtil.encrypt(fields[1]),
           url: ""
         ));
       }
@@ -252,7 +252,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
-          password: await EncryptUtil.encrypt(fields[2]),
+          password: EncryptUtil.encrypt(fields[2]),
           url: fields[3],
         ));
       } else if (value == 2) {
@@ -260,21 +260,21 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
-          password: await EncryptUtil.encrypt(fields[2]),
+          password: EncryptUtil.encrypt(fields[2]),
           url: "",
         ));
       } else if (value == 3) {
         if (fields.length < 3) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
           username: fields[0],
-          password: await EncryptUtil.encrypt(fields[1]),
+          password: EncryptUtil.encrypt(fields[1]),
           url: fields[2],
         ));
       } else if (value == 4) {
         if (fields.length < 2) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
           username: fields[0],
-          password: await EncryptUtil.encrypt(fields[1]),
+          password: EncryptUtil.encrypt(fields[1]),
           url: "",
         ));
       }

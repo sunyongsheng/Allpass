@@ -65,10 +65,10 @@ class ModifyPasswordDialog extends StatelessWidget {
         FlatButton(
           child: Text("提交"),
           onPressed: () async {
-            if (Params.password == await EncryptUtil.encrypt(_oldPasswordController.text)) {
+            if (Params.password == EncryptUtil.encrypt(_oldPasswordController.text)) {
               if (_newPasswordController.text.length >= 6
                   && _newPasswordController.text == _secondInputController.text) {
-                String newPassword = await EncryptUtil.encrypt(_newPasswordController.text);
+                String newPassword = EncryptUtil.encrypt(_newPasswordController.text);
                 Application.sp.setString(Params.password, newPassword);
                 Params.password = newPassword;
                 Fluttertoast.showToast(msg: "修改成功");

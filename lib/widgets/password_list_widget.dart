@@ -50,7 +50,7 @@ class PasswordListWidget extends StatelessWidget {
         },
         onLongPress: () async {
           if (Params.longPressCopy) {
-            String pw = await EncryptUtil.decrypt(_bean.password);
+            String pw = EncryptUtil.decrypt(_bean.password);
             Clipboard.setData(ClipboardData(text: pw));
             Fluttertoast.showToast(msg: "已复制密码");
           } else {
