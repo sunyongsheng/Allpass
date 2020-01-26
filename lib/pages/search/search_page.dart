@@ -178,14 +178,15 @@ class _SearchPage extends State<SearchPage> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       borderSide: BorderSide.none
-                    )
+                    ),
                   ),
+                  onEditingComplete: () => getSearchResult(),
                 ),
               )
             ),
             InkWell(
               child: Padding(
-                padding: EdgeInsets.only(left: 15, right: 10, top: 5, bottom: 5),
+                padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                 child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
               ),
               onTap: () => Navigator.pop<bool>(context, _changed),
