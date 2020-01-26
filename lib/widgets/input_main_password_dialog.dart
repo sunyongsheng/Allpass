@@ -22,20 +22,12 @@ class InputMainPasswordDialog extends StatelessWidget {
         controller: _passwordController,
         obscureText: true,
         autofocus: true,
+        onSubmitted: (_) => submit(context),
       ),
       actions: <Widget>[
         FlatButton(
           child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
-          onPressed: () async {
-            if (EncryptUtil.encrypt(_passwordController.text) == Params.password) {
-              _passwordController.clear();
-              Navigator.pop<bool>(context, true);
-            } else {
-              Fluttertoast.showToast(msg: "密码错误");
-              _passwordController.clear();
-              Navigator.pop<bool>(context, false);
-            }
-          },
+          onPressed: () => submit(context),
         ),
         FlatButton(
           child: Text("取消", style: AllpassTextUI.secondTitleStyleBlue,),
@@ -43,6 +35,17 @@ class InputMainPasswordDialog extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void submit(BuildContext context) {
+    if (EncryptUtil.encrypt(_passwordController.text) == Params.password) {
+      _passwordController.clear();
+      Navigator.pop<bool>(context, true);
+    } else {
+      Fluttertoast.showToast(msg: "密码错误");
+      _passwordController.clear();
+      Navigator.pop<bool>(context, false);
+    }
   }
 
 }
