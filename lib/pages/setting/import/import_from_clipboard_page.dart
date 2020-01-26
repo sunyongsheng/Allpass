@@ -157,6 +157,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                           setState(() {
                             _groupValue = value;
                           });
+                          Fluttertoast.showToast(msg: "请在第一行输入默认用户名");
                         },
                       ),
                       title: Text("名称 密码"),
