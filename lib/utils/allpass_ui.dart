@@ -53,6 +53,8 @@ class AllpassColorUI {
 
 /// 缩进样式
 class AllpassEdgeInsets {
+  AllpassEdgeInsets._();
+
   static EdgeInsets listInset = EdgeInsets.only(
     left: AllpassScreenUtil.setWidth(50),
     right: AllpassScreenUtil.setWidth(50),
@@ -88,6 +90,13 @@ class AllpassEdgeInsets {
 class CustomIcons {
   static const IconData chrome =
       const IconData(0xe684, fontFamily: "IconFont", matchTextDirection: true);
+}
+
+/// 其他样式
+class AllpassUI {
+  AllpassUI._();
+
+  static const double borderRadius = 8.0;
 }
 
 Color getRandomColor(int seed) {
