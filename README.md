@@ -1,16 +1,21 @@
 # Allpass
 
 ## 介绍
-Allpass是一款简单的私密数据管理软件，包括支持密码存储与卡片信息存储。
+Allpass是一款简单的私密数据管理软件，包括支持密码存储与卡片信息存储。采用Flutter构建，目前完成了针对安卓9与10的适配。
 
-- 支持指纹登陆
-- aes128位加密
+- 密码与卡片信息管理
+- 支持指纹解锁软件
+- AES256位加密
 - 支持从csv文件中导入或导出为csv文件
 - 支持从Chrome中导入密码
+- 支持从剪贴板中导入密码
+- 标签功能
+- 文件夹功能
+- 收藏功能
+- 备注功能
 
 
-## 软件架构
-使用Flutter构建项目
+## 文件结构
 
 - dao/ 与数据库交互层
 - model/ 密码或卡片实体类
@@ -34,3 +39,6 @@ Allpass是一款简单的私密数据管理软件，包括支持密码存储与�
 ### 数据库相关
 1. 数据库表名使用下划线命名方式，且表名开头的第一个单词为`allpass`；
 2. 表的列名与model相同，采用小写驼峰命名方式；
+
+# LICENSE
+[![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
