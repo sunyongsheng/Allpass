@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/utils/allpass_ui.dart';
+
 class ConfirmDialog extends StatelessWidget {
   final String message;
   ConfirmDialog(this.message);
@@ -9,7 +11,7 @@ class ConfirmDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius:
-        BorderRadius.all(Radius.circular(10),),
+        BorderRadius.all(Radius.circular(AllpassUI.borderRadius),),
       ),
       title: Text("确认删除"),
       content: Text(message),

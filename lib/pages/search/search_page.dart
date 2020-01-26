@@ -99,8 +99,8 @@ class _SearchPage extends State<SearchPage> {
               showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)
+                        topLeft: Radius.circular(AllpassUI.borderRadius),
+                        topRight: Radius.circular(AllpassUI.borderRadius)
                     )
                 ),
                 context: context,
@@ -139,8 +139,8 @@ class _SearchPage extends State<SearchPage> {
               showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10)
+                        topLeft: Radius.circular(AllpassUI.borderRadius),
+                        topRight: Radius.circular(AllpassUI.borderRadius)
                     )
                 ),
                 context: context,

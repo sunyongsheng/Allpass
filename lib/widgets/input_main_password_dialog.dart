@@ -14,7 +14,7 @@ class InputMainPasswordDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(15),
+          Radius.circular(AllpassUI.borderRadius),
         ),
       ),
       title: Text("请输入主密码"),

@@ -18,7 +18,7 @@ class ModifyPasswordDialog extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
-          Radius.circular(10),
+          Radius.circular(AllpassUI.borderRadius),
         ),
       ),
       title: Text(

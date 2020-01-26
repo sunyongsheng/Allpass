@@ -28,7 +28,7 @@ class AboutPage extends StatelessWidget {
           Card(
             margin: EdgeInsets.all(AllpassScreenUtil.setWidth(50)),
             elevation: 5,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.borderRadius)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[

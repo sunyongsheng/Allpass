@@ -43,7 +43,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   builder: (context) => AlertDialog(
                     title: Text("帮助"),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))
+                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))
                     ),
                     content: SingleChildScrollView(
                       child: ListBody(
@@ -178,7 +178,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(AllpassUI.borderRadius),
                     ),
                   ),
                   maxLines: 1000,
