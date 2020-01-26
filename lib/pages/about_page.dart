@@ -85,7 +85,7 @@ class AboutPage extends StatelessWidget {
                 Container(
                   padding: AllpassEdgeInsets.dividerInset,
                   child: FlatButton(
-                    child: Text("开发者网址：ttps://www.aengus.top"),
+                    child: Text("开发者网址：https://www.aengus.top"),
                     onPressed: () async {
                       await launch("https://www.aengus.top");
                     },
