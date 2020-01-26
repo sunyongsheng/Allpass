@@ -1,6 +1,8 @@
 # Allpass
 
 ## 介绍
+![Allpass](https://www.aengus.top/assets/common/allpass-icon.png)
+
 Allpass是一款简单的私密数据管理软件，包括支持密码存储与卡片信息存储。采用Flutter构建，目前完成了针对安卓9与10的适配。
 
 - 密码与卡片信息管理
@@ -39,6 +41,11 @@ Allpass是一款简单的私密数据管理软件，包括支持密码存储与�
 ### 数据库相关
 1. 数据库表名使用下划线命名方式，且表名开头的第一个单词为`allpass`；
 2. 表的列名与model相同，采用小写驼峰命名方式；
+
+# 其他仓库地址
+| 位置 | 地址                                   |
+| ---- | -------------------------------------- |
+| 码云 | https://gitee.com/sunyongsheng/Allpass |
 
 # LICENSE
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
