@@ -8,6 +8,7 @@ import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
+import 'package:allpass/widgets/confirm_dialog.dart';
 import 'package:allpass/widgets/modify_password_dialog.dart';
 import 'package:allpass/widgets/input_main_password_dialog.dart';
 
@@ -60,42 +61,26 @@ class _AccountManagerPage extends State<AccountManagerPage> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    title: Text("确认清除"),
-                    content: Text("此操作将删除所有记录，确认继续吗？"),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
-                        onPressed: () {
-                          // 二次确认
-                          showDialog(
-                            context: context,
-                            builder: (context) => InputMainPasswordDialog(),
-                          ).then((right) {
-                            if (right) {
-                              PasswordDao().deleteContent();
-                              CardDao().deleteContent();
-                              Application.sp.clear();
-                              Params.paramsClear();
-                              Fluttertoast.showToast(msg: "已删除所有数据");
-                              initApp();
-                              NavigationUtil.goLoginPage(context);
-                            }
-                          });
-                        },
-                      ),
-                      FlatButton(
-                        child: Text("取消", style: AllpassTextUI.secondTitleStyleBlue,),
-                        onPressed: () => Navigator.pop(context),
-                      )
-                    ],
-                  )
-                );
+                  builder: (context) => ConfirmDialog("此操作将删除所有数据，继续吗？")
+                ).then((confirm) {
+                  if (confirm) {
+                    // 二次确认
+                    showDialog(
+                      context: context,
+                      builder: (context) => InputMainPasswordDialog(),
+                    ).then((right) {
+                      if (right) {
+                        PasswordDao().deleteContent();
+                        CardDao().deleteContent();
+                        Application.sp.clear();
+                        Params.paramsClear();
+                        Fluttertoast.showToast(msg: "已删除所有数据");
+                        initApp();
+                        NavigationUtil.goLoginPage(context);
+                      }
+                    });
+                  }
+                });
               },
             ),
           ),
