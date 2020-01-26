@@ -47,5 +47,13 @@ Allpass是一款简单的私密数据管理软件，包括支持密码存储与�
 | ---- | -------------------------------------- |
 | 码云 | https://gitee.com/sunyongsheng/Allpass |
 
+# Flutter环境
+```
+[√] Flutter (Channel stable, v1.12.13+hotfix.5, on Microsoft Windows [Version 10.0.18363.592], locale zh-CN)
+
+[√] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
+[√] Android Studio (version 3.5)
+```
+
 # LICENSE
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
