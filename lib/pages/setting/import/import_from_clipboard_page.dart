@@ -73,101 +73,124 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                 padding: AllpassEdgeInsets.forCardInset,
                 child: Text(
                   "请选择密码格式（空格为分隔符）",
-                  style: AllpassTextUI.titleBarStyle,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16
+                  ),
                 ),
               ),
               Container(
                 alignment: Alignment.centerLeft,
-                padding: AllpassEdgeInsets.forCardInset,
+                padding: AllpassEdgeInsets.dividerInset,
                 child: Column(
                   children: <Widget>[
-                    ListTile(
-                      leading: Radio(
-                        value: 1, // "名称 账号 密码 网站地址"
-                        groupValue: _groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _groupValue = value;
-                          });
-                        },
+                    InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 1, // "名称 账号 密码 网站地址"
+                            groupValue: _groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _groupValue = value;
+                              });
+                            },
+                          ),
+                          Text("名称 账号 密码 网站地址", style: AllpassTextUI.firstTitleStyleBlack,),
+                        ],
                       ),
-                      title: Text("名称 账号 密码 网站地址"),
                       onTap: () {
                         setState(() {
                           _groupValue = 1;
                         });
                       },
                     ),
-                    ListTile(
-                      leading: Radio(
-                        value: 2, // "名称 账号 密码",
-                        groupValue: _groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _groupValue = value;
-                          });
-                        },
+                    InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 2, // "名称 账号 密码",
+                            groupValue: _groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _groupValue = value;
+                              });
+                            },
+                          ),
+                          Text("名称 账号 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                        ],
                       ),
-                      title: Text("名称 账号 密码"),
                       onTap: () {
                         setState(() {
                           _groupValue = 2;
                         });
                       },
                     ),
-                    ListTile(
-                      leading: Radio(
-                        value: 3, // "账号 密码 网站地址",
-                        groupValue: _groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _groupValue = value;
-                          });
-                        },
+                    InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 3, // "账号 密码 网站地址",
+                            groupValue: _groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _groupValue = value;
+                              });
+                            },
+                          ),
+                          Text("账号 密码 网站地址", style: AllpassTextUI.firstTitleStyleBlack,),
+                        ],
                       ),
-                      title: Text("账号 密码 网站地址"),
                       onTap: () {
                         setState(() {
                           _groupValue = 3;
                         });
                       },
                     ),
-                    ListTile(
-                      leading: Radio(
-                        value: 4, // "账号 密码",
-                        groupValue: _groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _groupValue = value;
-                          });
-                        },
+                    InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 4, // "账号 密码",
+                            groupValue: _groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _groupValue = value;
+                              });
+                            },
+                          ),
+                          Text("账号 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                        ],
                       ),
-                      title: Text("账号 密码"),
                       onTap: () {
                         setState(() {
                           _groupValue = 4;
                         });
                       },
                     ),
-                    ListTile(
-                      leading: Radio(
-                        value: 5, // "密码",
-                        groupValue: _groupValue,
-                        onChanged: (value) {
-                          setState(() {
-                            _groupValue = value;
-                          });
-                          Fluttertoast.showToast(msg: "请在第一行输入默认账号");
-                        },
+                    InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          Radio(
+                            value: 5, // "密码",
+                            groupValue: _groupValue,
+                            onChanged: (value) {
+                              setState(() {
+                                _groupValue = value;
+                              });
+                              Fluttertoast.showToast(msg: "请在第一行输入默认账号");
+                            },
+                          ),
+                          Text("名称 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                        ],
                       ),
-                      title: Text("名称 密码"),
                       onTap: () {
                         setState(() {
                           _groupValue = 5;
                         });
                         Fluttertoast.showToast(msg: "请在第一行输入默认账号");
                       },
-                    )
+                    ),
                   ],
                 ),
               ),
