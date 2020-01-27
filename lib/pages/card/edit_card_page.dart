@@ -262,7 +262,7 @@ class _EditCardPage extends State<EditCardPage> {
                           Container(
                             margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
