@@ -30,6 +30,20 @@ class AuthLoginPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          Padding(
+            child: Text(
+              "登录 Allpass",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold
+              ),
+            ),
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
+          Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
           FlatButton(
             splashColor: AllpassColorUI.mainBackgroundColor,
             color: AllpassColorUI.mainBackgroundColor,
@@ -39,7 +53,7 @@ class AuthLoginPage extends StatelessWidget {
               children: <Widget>[
                 Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
                 Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(40)),),
-                Text("使用指纹登录")
+                Text("点击此处使用指纹登录")
               ],
             ),
           ),
