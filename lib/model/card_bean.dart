@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/utils/string_process.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 
 /// 保存“卡片”数据
 class CardBean {
@@ -8,7 +9,7 @@ class CardBean {
   String name; // 2 卡片名称
   String ownerName; // 3 卡片拥有者
   String cardId; // 4 卡片ID/卡号
-  String url; // 5 URL
+  String password; // 5 URL
   String telephone; // 6 手机号
   String folder; // 7 文件夹
   String notes; // 8 备注
@@ -24,7 +25,7 @@ class CardBean {
       int fav: 0,
       String telephone: "",
       int key, //: CARD_MAGIC,
-      String url: "",
+      String password: "",
       String name,
       List<String> label,
       bool isChanged: false}) {
@@ -35,7 +36,7 @@ class CardBean {
     this.fav = fav;
     this.telephone = telephone;
     this.uniqueKey = key;
-    this.url = url;
+    this.password = password;
     this.isChanged = isChanged;
 
     if (name.trim().length < 1 && ownerName.length > 0) {
@@ -57,7 +58,7 @@ class CardBean {
         "ownerName:" "$ownerName, " +
         "cardId:" "$cardId, " +
         "telephone: " "$telephone, " +
-        "url: " "$url, " +
+        "password: " "$password, " +
         "fav: " "$fav" +
         "}";
   }
@@ -74,7 +75,7 @@ class CardBean {
     assert(map["folder"] != null);
     assert(map["telephone"] != null);
     assert(map["fav"] != null);
-    assert(map["url"] != null);
+    assert(map["password"] != null);
     assert(map['notes'] != null);
     return CardBean(
         ownerName: map['ownerName'],
@@ -85,7 +86,7 @@ class CardBean {
         key: map["uniqueKey"],
         name: map["name"],
         telephone: map["telephone"],
-        url: map['url'],
+        password: map['password'],
         label: newLabel);
   }
 
@@ -98,7 +99,7 @@ class CardBean {
       "ownerName": bean.ownerName,
       "cardId": bean.cardId,
       "telephone": bean.telephone,
-      "url": bean.url,
+      "password": bean.password,
       "folder": bean.folder,
       "fav": bean.fav,
       "notes": bean.notes,
@@ -111,11 +112,12 @@ class CardBean {
   static String toCsv(CardBean bean) {
     // 包含除[uniqueKey]的所有属性
     String labels = list2WaveLineSegStr(bean.label);
+    String pwd = EncryptUtil.decrypt(bean.password);
     String csv =
         "${bean.name},"
         "${bean.ownerName},"
         "${bean.cardId},"
-        "${bean.url},"
+        "$pwd,"
         "${bean.telephone},"
         "${bean.folder},"
         "${bean.notes},"

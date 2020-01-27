@@ -22,9 +22,9 @@ class CardDao extends BaseDBProvider {
     return tableBaseString(name, columnId) +
         '''
       name TEXT NOT NULL,
-      ownerName TEXT NOT NULL,
+      ownerName TEXT,
       cardId TEXT NOT NULL,
-      url TEXT,
+      password TEXT,
       telephone TEXT,
       folder TEXT DEFALUT '默认',
       notes TEXT,
@@ -82,7 +82,7 @@ class CardDao extends BaseDBProvider {
   Future<int> updatePasswordBean(CardBean bean) async {
     Database db = await getDataBase();
     String labels = list2WaveLineSegStr(bean.label);
-    return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, url=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.ownerName, bean.cardId, bean.url, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
+    return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, password=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.ownerName, bean.cardId, bean.password, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
   }
 }

@@ -33,7 +33,7 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      String w = "name,ownerName,cardId,url,telephone,folder,notes,label,fav\n";
+      String w = "name,ownerName,cardId,password,telephone,folder,notes,label,fav\n";
       for (var item in list) {
         w += CardBean.toCsv(item);
       }
@@ -142,7 +142,7 @@ class CsvUtil {
         res.add(PasswordBean(
           name: name,
           username: username,
-          password: await EncryptUtil.encrypt(password),
+          password: EncryptUtil.encrypt(password),
           url: url,
           folder: folder,
           notes: notes,
@@ -167,7 +167,7 @@ class CsvUtil {
       int ownerNameIndex = -1;
       int cardIdIndex = -1;
       int telephoneIndex = -1;
-      int urlIndex = -1;
+      int passwordIndex = -1;
       int folderIndex = -1;
       int notesIndex = -1;
       int labelIndex = -1;
@@ -184,8 +184,8 @@ class CsvUtil {
           case "cardId":
             cardIdIndex = i;
             break;
-          case "url":
-            urlIndex = i;
+          case "password":
+            passwordIndex = i;
             break;
           case "telephone":
             telephoneIndex = i;
@@ -212,7 +212,7 @@ class CsvUtil {
         String name = "";
         String ownerName = "";
         String cardId = "";
-        String url = "";
+        String password = "";
         String telephone = "";
         String folder = "默认";
         String notes = "";
@@ -226,8 +226,8 @@ class CsvUtil {
         if (cardIdIndex != -1) {
           cardId = attribute[cardIdIndex] == null ? "" : attribute[cardIdIndex];
         }
-        if (urlIndex != -1) {
-          url = attribute[urlIndex] == null ? "" : attribute[urlIndex];
+        if (passwordIndex != -1) {
+          password = attribute[passwordIndex] == null ? "" : attribute[passwordIndex];
         }
         if (telephoneIndex != -1) {
           telephone = attribute[telephoneIndex] == null ? "" : attribute[telephoneIndex];
@@ -250,7 +250,7 @@ class CsvUtil {
           name: name,
           ownerName: ownerName,
           cardId: cardId,
-          url: url,
+          password: EncryptUtil.encrypt(password),
           telephone: telephone,
           folder: folder,
           notes: notes,
