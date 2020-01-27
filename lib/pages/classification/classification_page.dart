@@ -4,6 +4,7 @@ import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/classification/favorite_page.dart';
+import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/classification/classification_details_page.dart';
 
 class ClassificationPage extends StatelessWidget {
@@ -78,6 +79,9 @@ class ClassificationPage extends StatelessWidget {
                 builder: (context) => ClassificationDetailsPage(folder)
             ));
           },
+          onLongPress: () => Navigator.push(context, MaterialPageRoute(
+            builder: (context) => CategoryManagerPage("文件夹"),
+          )),
         )
     ));
     return list;
