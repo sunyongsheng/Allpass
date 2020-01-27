@@ -129,9 +129,30 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       }
     }
     if (_cardWidgetList.length == 0) {
-      _cardWidgetList.add(Center(
-        child: Text("什么也没有，赶快添加吧"),
+      _cardWidgetList.add(
+          Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+          )
+      );
+      _cardWidgetList.add(Padding(
+        child: Center(
+          child: Text("什么也没有，赶快添加吧"),
+        ),
+        padding: AllpassEdgeInsets.forCardInset,
       ));
+      _cardWidgetList.add(
+        Padding(
+          padding: AllpassEdgeInsets.smallTBPadding,
+        )
+      );
+      _cardWidgetList.add(
+        Padding(
+          padding: AllpassEdgeInsets.forCardInset,
+          child: Center(
+            child: Text("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等",textAlign: TextAlign.center,),
+          ),
+        )
+      );
     }
   }
 

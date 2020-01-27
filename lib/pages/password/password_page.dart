@@ -126,9 +126,28 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         }
       }
       if (_passWidgetList.length == 0) {
-        _passWidgetList.add(Center(
-          child: Text("什么也没有，赶快添加吧"),
+        _passWidgetList.add(Padding(
+          padding: AllpassEdgeInsets.smallTBPadding,
         ));
+        _passWidgetList.add(Padding(
+          child: Center(
+            child: Text("什么也没有，赶快添加吧"),
+          ),
+          padding: AllpassEdgeInsets.forCardInset,
+        ));
+        _passWidgetList.add(
+          Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+          )
+        );
+        _passWidgetList.add(
+          Padding(
+            child: Center(
+              child: Text("这里存储你的密码信息，例如\n微博账号、知乎账号等", textAlign: TextAlign.center,),
+            ),
+            padding: AllpassEdgeInsets.forCardInset,
+          )
+        );
       }
   }
 
