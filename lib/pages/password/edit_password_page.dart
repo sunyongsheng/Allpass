@@ -357,19 +357,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _notesController,
-                                decoration: InputDecoration(
-                                    suffix: InkWell(
-                                      child: Icon(
-                                        Icons.cancel,
-                                        size: 20,
-                                        color: Colors.black26,
-                                      ),
-                                      onTap: () {
-                                        // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                        WidgetsBinding.instance.addPostFrameCallback((_) => _notesController.clear());
-                                      },
-                                    )
-                                ),
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => DetailTextPage(_notesController.text, true),
