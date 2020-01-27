@@ -182,13 +182,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(padding: AllpassEdgeInsets.smallTBPadding,),
-                                      // 用户名标题
+                                      // 账号标题
                                       Container(
                                         margin: EdgeInsets.only(
                                             left: AllpassScreenUtil.setWidth(100),
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
-                                        child: Text("用户名", style: AllpassTextUI.firstTitleStyleBlue,
+                                        child: Text("账号", style: AllpassTextUI.firstTitleStyleBlue,
                                         ),
                                       ),
                                       // 用户名主体
@@ -210,7 +210,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                               child: Text("复制", style: AllpassTextUI.secondTitleStyleBlue,),
                                               onTap: () {
                                                 Clipboard.setData(ClipboardData(text: _bean.username));
-                                                Fluttertoast.showToast(msg: "已复制用户名");
+                                                Fluttertoast.showToast(msg: "已复制账号");
                                               },
                                             )
                                           ],
