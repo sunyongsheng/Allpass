@@ -34,7 +34,7 @@ class AuthLoginPage extends StatelessWidget {
             splashColor: AllpassColorUI.mainBackgroundColor,
             color: AllpassColorUI.mainBackgroundColor,
             autofocus: true,
-            onPressed: () => askAuth,
+            onPressed: () => askAuth(context),
             child: Column(
               children: <Widget>[
                 Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
