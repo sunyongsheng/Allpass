@@ -169,6 +169,16 @@ class _EditCardPage extends State<EditCardPage> {
                                 ),
                                 TextField(
                                   controller: _nameController,
+                                  decoration: InputDecoration(
+                                      suffix: InkWell(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 20,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () => _nameController.clear(),
+                                      )
+                                  ),
                                 ),
                               ],
                             ),
@@ -184,6 +194,16 @@ class _EditCardPage extends State<EditCardPage> {
                                 ),
                                 TextField(
                                   controller: _ownerNameController,
+                                  decoration: InputDecoration(
+                                      suffix: InkWell(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 20,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () => _ownerNameController.clear(),
+                                      )
+                                  ),
                                 ),
                               ],
                             ),
@@ -200,6 +220,16 @@ class _EditCardPage extends State<EditCardPage> {
                                 TextField(
                                   controller: _cardIdController,
                                   keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                      suffix: InkWell(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 20,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () => _cardIdController.clear(),
+                                      )
+                                  ),
                                 ),
                               ],
                             ),
@@ -219,6 +249,16 @@ class _EditCardPage extends State<EditCardPage> {
                                       child: TextField(
                                         controller: _passwordController,
                                         obscureText: !_passwordVisible,
+                                        decoration: InputDecoration(
+                                            suffix: InkWell(
+                                              child: Icon(
+                                                Icons.cancel,
+                                                size: 20,
+                                                color: Colors.black26,
+                                              ),
+                                              onTap: () => _passwordController.clear(),
+                                            )
+                                        ),
                                       ),
                                     ),
                                     IconButton(
@@ -250,11 +290,18 @@ class _EditCardPage extends State<EditCardPage> {
                                 ),
                                 TextField(
                                   controller: _telephoneController,
-                                  onChanged: (text) {
-                                    _tempData.telephone = text;
-                                  },
                                   keyboardType: TextInputType.numberWithOptions(
                                       signed: true),
+                                  decoration: InputDecoration(
+                                      suffix: InkWell(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 20,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () => _telephoneController.clear(),
+                                      )
+                                  ),
                                 ),
                               ],
                             ),

@@ -169,6 +169,16 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _nameController,
+                                decoration: InputDecoration(
+                                  suffix: InkWell(
+                                    child: Icon(
+                                      Icons.cancel,
+                                      size: 20,
+                                      color: Colors.black26,
+                                    ),
+                                    onTap: () => _nameController.clear(),
+                                  )
+                                ),
                               ),
                             ],
                           ),
@@ -184,6 +194,16 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _usernameController,
+                                decoration: InputDecoration(
+                                    suffix: InkWell(
+                                      child: Icon(
+                                        Icons.cancel,
+                                        size: 20,
+                                        color: Colors.black26,
+                                      ),
+                                      onTap: () => _usernameController.clear(),
+                                    )
+                                ),
                               ),
                             ],
                           ),
@@ -203,6 +223,15 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                     child: TextField(
                                       controller: _passwordController,
                                       obscureText: !_passwordVisible,
+                                      decoration: InputDecoration(
+                                          suffix: InkWell(
+                                            child: Icon(
+                                              Icons.cancel,
+                                              size: 20,
+                                              color: Colors.black26,),
+                                            onTap: () => _passwordController.clear(),
+                                          )
+                                      ),
                                     ),
                                   ),
                                   IconButton(
@@ -234,6 +263,16 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _urlController,
+                                decoration: InputDecoration(
+                                    suffix: InkWell(
+                                      child: Icon(
+                                        Icons.cancel,
+                                        size: 20,
+                                        color: Colors.black26,
+                                      ),
+                                      onTap: () => _urlController.clear(),
+                                    )
+                                ),
                               ),
                             ],
                           ),
