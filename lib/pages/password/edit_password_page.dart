@@ -115,8 +115,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
               ),
               onPressed: () async {
                 if (_usernameController.text.length >= 1
-                    && _passwordController.text.length >= 1
-                    && _urlController.text.length >= 1) {
+                    && _passwordController.text.length >= 1) {
                   String pw = EncryptUtil.encrypt(_passwordController.text);
                   _tempData = PasswordBean(
                     key: _oldData?.uniqueKey,
@@ -132,7 +131,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   );
                   Navigator.pop<PasswordBean>(context, _tempData);
                 } else {
-                  Fluttertoast.showToast(msg: "用户名、密码和链接不允许为空！");
+                  Fluttertoast.showToast(msg: "账号和密码不允许为空！");
                 }
               },
             )
@@ -180,22 +179,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                "链接",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              TextField(
-                                controller: _urlController,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "用户名",
+                                "账号",
                                 style: AllpassTextUI.firstTitleStyleBlue,
                               ),
                               TextField(
@@ -235,6 +219,21 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                     },
                                   )
                                 ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "链接",
+                                style: AllpassTextUI.firstTitleStyleBlue,
+                              ),
+                              TextField(
+                                controller: _urlController,
                               ),
                             ],
                           ),
