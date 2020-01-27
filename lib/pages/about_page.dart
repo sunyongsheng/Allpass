@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/develop/debug_page.dart';
@@ -44,7 +45,7 @@ class AboutPage extends StatelessWidget {
                         ),
                       ),
                       subtitle: Text("一款简单的密码管理软件"),
-                      trailing: Text("beta_v1.0.0", style: TextStyle(color: Colors.grey),),
+                      trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
                       isThreeLine: true,
                       onTap: () {
                         pressTimes++;
