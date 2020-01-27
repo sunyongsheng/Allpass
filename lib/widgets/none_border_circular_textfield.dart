@@ -7,8 +7,9 @@ class NoneBorderCircularTextField extends StatelessWidget {
   final String _hintText;
   final Widget _prefixIcon;
   final bool _obscureText;
+  final VoidCallback _onEditingComplete;
 
-  NoneBorderCircularTextField(this._controller, this._hintText, this._prefixIcon, this._obscureText);
+  NoneBorderCircularTextField(this._controller, this._hintText, this._prefixIcon, this._obscureText, this._onEditingComplete);
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
         textAlign: TextAlign.center,
         controller: _controller,
         obscureText: _obscureText,
+        onEditingComplete: _onEditingComplete,
       ),
     );
   }
