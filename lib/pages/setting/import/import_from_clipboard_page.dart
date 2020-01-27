@@ -50,7 +50,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                         children: <Widget>[
                           Text("此功能帮助您轻松地从之前在记事本中保存的密码导入到Allpass中；\n"),
                           Text("名称是密码的助记符，您可以随便起一个名称来让您知道此条记录是什么内容；\n"),
-                          Text("用户名是登录使用的账号名，有可能是手机、邮箱或者其他您设置的账号；\n"),
+                          Text("账号是登录使用的账号名，有可能是手机、邮箱或者其他您设置的账号；\n"),
                           Text("网站地址可以帮助Allpass在正确的网站填充您的密码，大多数情况下是网站登录页的URL地址；\n"),
                           Text("两个字段之间请以“空格”作为分隔符，这样Allpass才能正确分辨哪个是用户名，哪个是密码；\n"),
                           Text("如果选择了最后一个导入格式，请在第一行输入统一的用户名；如果有多个用户名，可以分为几次导入；")
@@ -83,7 +83,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   children: <Widget>[
                     ListTile(
                       leading: Radio(
-                        value: 1, // "名称 用户名 密码 网站地址"
+                        value: 1, // "名称 账号 密码 网站地址"
                         groupValue: _groupValue,
                         onChanged: (value) {
                           setState(() {
@@ -91,7 +91,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                           });
                         },
                       ),
-                      title: Text("名称 用户名 密码 网站地址"),
+                      title: Text("名称 账号 密码 网站地址"),
                       onTap: () {
                         setState(() {
                           _groupValue = 1;
@@ -100,7 +100,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                     ),
                     ListTile(
                       leading: Radio(
-                        value: 2, // "名称 用户名 密码",
+                        value: 2, // "名称 账号 密码",
                         groupValue: _groupValue,
                         onChanged: (value) {
                           setState(() {
@@ -108,7 +108,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                           });
                         },
                       ),
-                      title: Text("名称 用户名 密码"),
+                      title: Text("名称 账号 密码"),
                       onTap: () {
                         setState(() {
                           _groupValue = 2;
@@ -117,7 +117,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                     ),
                     ListTile(
                       leading: Radio(
-                        value: 3, // "用户名 密码 网站地址",
+                        value: 3, // "账号 密码 网站地址",
                         groupValue: _groupValue,
                         onChanged: (value) {
                           setState(() {
@@ -125,7 +125,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                           });
                         },
                       ),
-                      title: Text("用户名 密码 网站地址"),
+                      title: Text("账号 密码 网站地址"),
                       onTap: () {
                         setState(() {
                           _groupValue = 3;
@@ -134,7 +134,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                     ),
                     ListTile(
                       leading: Radio(
-                        value: 4, // "用户名 密码",
+                        value: 4, // "账号 密码",
                         groupValue: _groupValue,
                         onChanged: (value) {
                           setState(() {
@@ -142,7 +142,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                           });
                         },
                       ),
-                      title: Text("用户名 密码"),
+                      title: Text("账号 密码"),
                       onTap: () {
                         setState(() {
                           _groupValue = 4;
