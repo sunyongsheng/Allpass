@@ -33,11 +33,11 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   String _password;
   String _folder = "默认";
-  var _nameController;
-  var _usernameController;
-  var _passwordController;
-  var _notesController;
-  var _urlController;
+  TextEditingController _nameController;
+  TextEditingController _usernameController;
+  TextEditingController _passwordController;
+  TextEditingController _notesController;
+  TextEditingController _urlController;
   List<String> _labels;
   int _fav = 0;
 
