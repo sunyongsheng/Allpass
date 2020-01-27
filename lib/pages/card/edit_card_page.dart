@@ -139,7 +139,7 @@ class _EditCardPage extends State<EditCardPage> {
                       }
                       Navigator.pop<CardBean>(context, _tempData);
                     } else {
-                      Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
+                      Fluttertoast.showToast(msg: "拥有者姓名和卡号不允许为空！");
                     }
                   },
                 )
