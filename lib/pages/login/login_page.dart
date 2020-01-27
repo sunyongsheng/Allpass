@@ -12,6 +12,8 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/pages/login/register_page.dart';
+import 'package:allpass/widgets/none_border_circular_textfield.dart';
 
 /// 登陆页面
 class LoginPage extends StatefulWidget {
@@ -46,117 +48,91 @@ class _LoginPage extends State<LoginPage> {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(500)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              margin: AllpassEdgeInsets.dividerInset,
-              elevation: 8,
-              child: Column(
+        padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+        child: Padding(
+          padding: EdgeInsets.only(left: ScreenUtil().setWidth(150), right: ScreenUtil().setWidth(150)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                child: Text(
+                  "登录 Allpass",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
+                padding: AllpassEdgeInsets.smallTBPadding,
+              ),
+              NoneBorderCircularTextField(
+                _usernameController,
+                "请输入用户名",
+                null,
+                false,
+                null
+              ),
+              NoneBorderCircularTextField(
+                _passwordController,
+                "请输入密码",
+                null,
+                true,
+                login,
+              ),
+              Padding(
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50)
+                  ),
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+                  child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
+                  color: AllpassColorUI.mainColor,
+                  onPressed: () => login(),
+                ),
+                padding: AllpassEdgeInsets.smallTBPadding,
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(300)),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: AllpassScreenUtil.setWidth(100),
-                        right: AllpassScreenUtil.setWidth(100),
-                        top: 10,
-                        bottom: 10),
-                    child: TextField(
-                      controller: _usernameController,
-                      decoration: InputDecoration(
-                          labelText: "用户名", prefixIcon: Icon(Icons.person)),
-                    ),
+                  FlatButton(
+                    child: Text("注册"),
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => RegisterPage()
+                    )),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: AllpassScreenUtil.setWidth(100),
-                        right: AllpassScreenUtil.setWidth(100),
-                        top: 10,
-                        bottom: 10),
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        labelText: "密码",
-                      ),
-                      onSubmitted: (_) => login(),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 30),
+                  Text("|"),
+                  FlatButton(
+                    child: Text("使用生物识别"),
+                    onPressed: () {
+                      if (Params.enabledBiometrics)
+                        NavigationUtil.goAuthLoginPage(context);
+                      else Fluttertoast.showToast(msg: "您还未开启生物识别");
+                    },
                   )
                 ],
               ),
-            ),
-            Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(100)),),
-            FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50)
-              ),
-              padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
-              child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
-              color: AllpassColorUI.mainColor,
-              onPressed: () => login(),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(300)),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FlatButton(
-                  child: Text("注册"),
-                  onPressed: () => register(),
-                ),
-                Text("|"),
-                FlatButton(
-                  child: Text("使用生物识别"),
-                  onPressed: () {
-                    if (Params.enabledBiometrics)
-                      NavigationUtil.goAuthLoginPage(context);
-                    else Fluttertoast.showToast(msg: "您还未开启生物识别");
-                  },
-                )
-              ],
-            ),
-            Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
-          ],
+              Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void register() async {
-    // 判断是否已有账号存在
-    if (Application.sp.getString("username") == null) {
-      // 判断用户名和密码长度
-      if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
-        String _password = EncryptUtil.encrypt(_passwordController.text);
-        Application.sp.setString("username", _usernameController.text);
-        Application.sp.setString("password", _password);
-        Params.username = _usernameController.text;
-        Params.password = _password;
-        Params.enabledBiometrics = false;
-        inputErrorTimes = 0;
-        Fluttertoast.showToast(msg: "注册成功");
-      } else {
-        Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
-      }
-    } else {
-      Fluttertoast.showToast(msg: "已有账号注册过，只允许单账号");
-    }
-  }
-
-  login() async {
+  void login() async {
     if (inputErrorTimes >= 5) {
       Provider.of<PasswordList>(context).clear();
       Provider.of<CardList>(context).clear();
       Params.paramsClear();
       await Application.sp.clear();
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => RegisterPage()
+      ));
     } else {
       if (Params.username != "" && Params.password != "") {
         if (Params.username == _usernameController.text
