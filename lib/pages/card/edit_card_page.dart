@@ -176,7 +176,10 @@ class _EditCardPage extends State<EditCardPage> {
                                           size: 20,
                                           color: Colors.black26,
                                         ),
-                                        onTap: () => _nameController.clear(),
+                                        onTap: () {
+                                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                          WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
+                                        },
                                       )
                                   ),
                                 ),
@@ -201,7 +204,10 @@ class _EditCardPage extends State<EditCardPage> {
                                           size: 20,
                                           color: Colors.black26,
                                         ),
-                                        onTap: () => _ownerNameController.clear(),
+                                        onTap: () {
+                                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                          WidgetsBinding.instance.addPostFrameCallback((_) => _ownerNameController.clear());
+                                        },
                                       )
                                   ),
                                 ),
@@ -227,7 +233,10 @@ class _EditCardPage extends State<EditCardPage> {
                                           size: 20,
                                           color: Colors.black26,
                                         ),
-                                        onTap: () => _cardIdController.clear(),
+                                        onTap: () {
+                                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                          WidgetsBinding.instance.addPostFrameCallback((_) => _cardIdController.clear());
+                                        },
                                       )
                                   ),
                                 ),
@@ -256,7 +265,10 @@ class _EditCardPage extends State<EditCardPage> {
                                                 size: 20,
                                                 color: Colors.black26,
                                               ),
-                                              onTap: () => _passwordController.clear(),
+                                              onTap: () {
+                                                // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                                WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                              },
                                             )
                                         ),
                                       ),
@@ -299,7 +311,10 @@ class _EditCardPage extends State<EditCardPage> {
                                           size: 20,
                                           color: Colors.black26,
                                         ),
-                                        onTap: () => _telephoneController.clear(),
+                                        onTap: () {
+                                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                          WidgetsBinding.instance.addPostFrameCallback((_) => _telephoneController.clear());
+                                        },
                                       )
                                   ),
                                 ),
@@ -373,6 +388,19 @@ class _EditCardPage extends State<EditCardPage> {
                                 TextField(
                                   controller: _notesController,
                                   readOnly: true,
+                                  decoration: InputDecoration(
+                                      suffix: InkWell(
+                                        child: Icon(
+                                          Icons.cancel,
+                                          size: 20,
+                                          color: Colors.black26,
+                                        ),
+                                        onTap: () {
+                                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                          WidgetsBinding.instance.addPostFrameCallback((_) => _notesController.clear());
+                                        },
+                                      )
+                                  ),
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => DetailTextPage(_notesController.text, true),
