@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
 
@@ -27,13 +28,16 @@ class _EditCardPage extends State<EditCardPage> {
 
   CardBean _oldData;
   CardBean _tempData;
+  bool _passwordVisible = false;
+  var _futureHelper;
 
-  var _nameController;
-  var _ownerNameController;
-  var _cardIdController;
-  var _telephoneController;
-  var _notesController;
-  var _urlController;
+  TextEditingController _nameController;
+  TextEditingController _ownerNameController;
+  TextEditingController _cardIdController;
+  TextEditingController _telephoneController;
+  TextEditingController _notesController;
+  TextEditingController _passwordController;
+  String _password;
   String _folder = "默认";
   List<String> _labels;
   int _fav = 0;
@@ -47,7 +51,6 @@ class _EditCardPage extends State<EditCardPage> {
       _cardIdController = TextEditingController(text: _oldData.cardId);
       _telephoneController = TextEditingController(text: _oldData.telephone);
       _notesController = TextEditingController(text: _oldData.notes);
-      _urlController = TextEditingController(text: _oldData.url);
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;
@@ -57,9 +60,20 @@ class _EditCardPage extends State<EditCardPage> {
       _cardIdController = TextEditingController();
       _telephoneController = TextEditingController();
       _notesController = TextEditingController();
-      _urlController = TextEditingController();
+      _passwordController = TextEditingController();
       _labels = List();
     }
+  }
+
+  Future<Null> _decryptPassword() async {
+    _password =  EncryptUtil.decrypt(_oldData.password);
+    _passwordController = TextEditingController(text: _password);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _futureHelper = _decryptPassword();
   }
 
   @override
@@ -69,7 +83,7 @@ class _EditCardPage extends State<EditCardPage> {
     _cardIdController?.dispose();
     _telephoneController?.dispose();
     _notesController?.dispose();
-    _urlController?.dispose();
+    _passwordController?.dispose();
     super.dispose();
   }
 
@@ -104,6 +118,9 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                   onPressed: () {
                     if (_ownerNameController.text.length >= 1 && _cardIdController.text.length >= 1) {
+                      String pwd = _passwordController.text.length >= 1
+                          ? EncryptUtil.encrypt(_passwordController.text)
+                          : EncryptUtil.encrypt("000000");
                       _tempData = CardBean(
                         ownerName: _ownerNameController.text,
                         cardId: _cardIdController.text,
@@ -114,9 +131,12 @@ class _EditCardPage extends State<EditCardPage> {
                         label: _labels,
                         fav: _fav,
                         notes: _notesController.text,
-                        url: _urlController.text,
+                        password: pwd,
                         isChanged: true
                       );
+                      if (_passwordController.text.length < 1) {
+                        Fluttertoast.showToast(msg: "未输入密码，自动初始化为00000");
+                      }
                       Navigator.pop<CardBean>(context, _tempData);
                     } else {
                       Fluttertoast.showToast(msg: "用户名和卡号不允许为空！");
@@ -130,172 +150,204 @@ class _EditCardPage extends State<EditCardPage> {
               brightness: Brightness.light,
             ),
             backgroundColor: AllpassColorUI.mainBackgroundColor,
-            body: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "名称",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _nameController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "拥有者姓名",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _ownerNameController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "卡号",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _cardIdController,
-                          keyboardType: TextInputType.number,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "链接",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _urlController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "绑定手机号",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _telephoneController,
-                          onChanged: (text) {
-                            _tempData.telephone = text;
-                          },
-                          keyboardType: TextInputType.numberWithOptions(
-                              signed: true),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "文件夹",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        DropdownButton(
-                          onChanged: (newValue) {
-                            setState(() => _folder = newValue);
-                          },
-                          items: Params.folderList
-                              .map<DropdownMenuItem<String>>((item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(item),
-                            );
-                          }).toList(),
-                          style: AllpassTextUI.firstTitleStyleBlack,
-                          elevation: 8,
-                          iconSize: 30,
-                          value: _folder,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: Text(
-                            "标签",
-                            style: AllpassTextUI.firstTitleStyleBlue,
+            body: FutureBuilder(
+              future: _futureHelper,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.done:
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "名称",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                TextField(
+                                  controller: _nameController,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.start,
-                                  spacing: 8.0,
-                                  runSpacing: 10.0,
-                                  children: _getTag()),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "备注",
-                          style: AllpassTextUI.firstTitleStyleBlue,
-                        ),
-                        TextField(
-                          controller: _notesController,
-                          readOnly: true,
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => DetailTextPage(_notesController.text, true),
-                            )).then((newValue) {
-                              setState(() {
-                                _notesController.text = newValue;
-                              });
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "拥有者姓名",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                TextField(
+                                  controller: _ownerNameController,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "卡号",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                TextField(
+                                  controller: _cardIdController,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "密码",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: TextField(
+                                        controller: _passwordController,
+                                        obscureText: !_passwordVisible,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: _passwordVisible == true
+                                          ? Icon(Icons.visibility)
+                                          : Icon(Icons.visibility_off),
+                                      onPressed: () {
+                                        this.setState(() {
+                                          if (_passwordVisible == false)
+                                            _passwordVisible = true;
+                                          else
+                                            _passwordVisible = false;
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "绑定手机号",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                TextField(
+                                  controller: _telephoneController,
+                                  onChanged: (text) {
+                                    _tempData.telephone = text;
+                                  },
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      signed: true),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "文件夹",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                DropdownButton(
+                                  onChanged: (newValue) {
+                                    setState(() => _folder = newValue);
+                                  },
+                                  items: Params.folderList
+                                      .map<DropdownMenuItem<String>>((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(item),
+                                    );
+                                  }).toList(),
+                                  style: AllpassTextUI.firstTitleStyleBlack,
+                                  elevation: 8,
+                                  iconSize: 30,
+                                  value: _folder,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 10),
+                                  child: Text(
+                                    "标签",
+                                    style: AllpassTextUI.firstTitleStyleBlue,
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Wrap(
+                                          crossAxisAlignment: WrapCrossAlignment.start,
+                                          spacing: 8.0,
+                                          runSpacing: 10.0,
+                                          children: _getTag()),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "备注",
+                                  style: AllpassTextUI.firstTitleStyleBlue,
+                                ),
+                                TextField(
+                                  controller: _notesController,
+                                  readOnly: true,
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => DetailTextPage(_notesController.text, true),
+                                    )).then((newValue) {
+                                      setState(() {
+                                        _notesController.text = newValue;
+                                      });
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  default:
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                }
+              },
             )));
   }
 
