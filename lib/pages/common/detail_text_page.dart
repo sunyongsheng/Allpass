@@ -41,7 +41,18 @@ class DetailTextPage extends StatelessWidget {
                       maxLines: 1000,
                       style: AllpassTextUI.firstTitleStyleBlack,
                       decoration: InputDecoration(
-                          hintText: "添加备注",
+                        suffix: InkWell(
+                          child: Icon(
+                            Icons.cancel,
+                            size: 20,
+                            color: Colors.black26,
+                          ),
+                          onTap: () {
+                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                            WidgetsBinding.instance.addPostFrameCallback((_) => _controller.clear());
+                          },
+                        ),
+                        hintText: "添加备注",
                       ),
                     ),
                     padding: AllpassEdgeInsets.listInset,
