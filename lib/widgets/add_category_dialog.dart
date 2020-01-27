@@ -40,7 +40,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
       title: Text("新建$categoryName"),
       shape: RoundedRectangleBorder(
         borderRadius:
-        BorderRadius.all(Radius.circular(AllpassUI.borderRadius),),
+        BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
       ),
       content: Theme(
         data: ThemeData(primaryColor: AllpassColorUI.mainColor),

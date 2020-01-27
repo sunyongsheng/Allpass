@@ -164,7 +164,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           color: getRandomColor(cardBean.uniqueKey),
           margin: AllpassEdgeInsets.forCardInset,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))),
+              borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
           child: InkWell(
               onTap: () => Navigator.push(context, MaterialPageRoute(
                 builder: (context) => ViewCardPage(cardBean),

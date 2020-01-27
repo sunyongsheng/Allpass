@@ -43,7 +43,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   builder: (context) => AlertDialog(
                     title: Text("帮助"),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))
+                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
                     ),
                     content: SingleChildScrollView(
                       child: ListBody(
@@ -178,31 +178,36 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.borderRadius),
+                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
                     ),
                   ),
                   maxLines: 1000,
                   controller: _controller,
                 ),
               ),
-              Container(padding: AllpassEdgeInsets.smallTBPadding,),
-              FlatButton(
-                color: AllpassColorUI.mainColor,
-                child: Text(
-                  "导入",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () async {
-                  try {
-                    List<PasswordBean> list = await parseText(_groupValue);
-                    for (var bean in list) {
-                      Provider.of<PasswordList>(context).insertPassword(bean);
+              Padding(
+                padding: AllpassEdgeInsets.smallTBPadding,
+                child: FlatButton(
+                  color: AllpassColorUI.mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                  ),
+                  child: Text(
+                    "导入",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    try {
+                      List<PasswordBean> list = await parseText(_groupValue);
+                      for (var bean in list) {
+                        Provider.of<PasswordList>(context).insertPassword(bean);
+                      }
+                      Fluttertoast.showToast(msg: "导入了${list.length}条记录");
+                    } catch (e) {
+                      Fluttertoast.showToast(msg: e.toString());
                     }
-                    Fluttertoast.showToast(msg: "导入了${list.length}条记录");
-                  } catch (e) {
-                    Fluttertoast.showToast(msg: e.toString());
-                  }
-                },
+                  },
+                ),
               )
             ],
           ),

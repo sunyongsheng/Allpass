@@ -106,7 +106,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 left: AllpassScreenUtil.setWidth(80),
                                 right: AllpassScreenUtil.setWidth(80),
                               ),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
                               color: AllpassColorUI.mainBackgroundColor,
                               elevation: 8,
                               child: SizedBox(
@@ -173,7 +173,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 margin: EdgeInsets.only(
                                     left: AllpassScreenUtil.setWidth(80),
                                     right: AllpassScreenUtil.setWidth(80)),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
                                 color: AllpassColorUI.mainBackgroundColor,
                                 elevation: 8,
                                 child: SizedBox(

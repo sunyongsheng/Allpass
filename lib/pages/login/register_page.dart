@@ -64,7 +64,7 @@ class RegisterPage extends StatelessWidget {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))
+                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.bigBorderRadius))
                   ),
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
                   color: AllpassColorUI.mainColor,

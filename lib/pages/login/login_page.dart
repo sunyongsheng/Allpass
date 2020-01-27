@@ -83,7 +83,7 @@ class _LoginPage extends State<LoginPage> {
               Padding(
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)
+                      borderRadius: BorderRadius.circular(AllpassUI.bigBorderRadius)
                   ),
                   padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),

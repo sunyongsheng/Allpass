@@ -21,7 +21,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
             hintText: _hintText,
             border: OutlineInputBorder(
               borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(AllpassUI.bigBorderRadius),
             ),
             fillColor: Colors.grey[200],
             filled: true,

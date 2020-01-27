@@ -108,7 +108,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                 right: AllpassScreenUtil.setWidth(80),
                               ),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(AllpassUI.borderRadius))),
+                                  borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
                               color: AllpassColorUI.mainBackgroundColor,
                               elevation: 8,
                               child: SizedBox(
@@ -183,7 +183,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                     right: AllpassScreenUtil.setWidth(80)),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
-                                        Radius.circular(AllpassUI.borderRadius))),
+                                        Radius.circular(AllpassUI.smallBorderRadius))),
                                 color: AllpassColorUI.mainBackgroundColor,
                                 elevation: 8,
                                 child: SizedBox(
