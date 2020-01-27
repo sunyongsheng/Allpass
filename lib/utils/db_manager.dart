@@ -5,7 +5,7 @@ import 'package:sqflite/sqlite_api.dart';
 
 class DBManager {
   /// 数据库版本
-  static const int _dbVersion = 2;
+  static const int _dbVersion = 1;
 
   /// 数据库名称
   static const String _dbName = "allpass_db";
