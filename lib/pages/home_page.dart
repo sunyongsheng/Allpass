@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> {
+class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin {
 
   final List<Widget> _pagesList = List()
     ..add(PasswordPage())
@@ -20,6 +20,9 @@ class _HomePage extends State<HomePage> {
     ..add(SettingPage());
   int _currentIndex = 0;
   PageController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -35,6 +38,7 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: PageView(
         children: _pagesList,
