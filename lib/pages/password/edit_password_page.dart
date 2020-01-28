@@ -9,6 +9,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/add_category_dialog.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
+import 'package:allpass/widgets/password_generation_dialog.dart';
 
 /// 查看或编辑密码页面
 class EditPasswordPage extends StatefulWidget {
@@ -98,6 +99,15 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             style: AllpassTextUI.firstTitleStyleBlack,
           ),
           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.code),
+              onPressed: () {
+                showDialog(context: context, child: PasswordGenerationDialog())
+                  .then((value) {
+                    if (value != null) _passwordController.text = value;
+                });
+              },
+            ),
             IconButton(
               icon: _fav == 1
               ? Icon(Icons.favorite, color: Colors.redAccent,)
