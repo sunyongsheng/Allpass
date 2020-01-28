@@ -134,7 +134,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                   if (delete) {
                                     await deleteLabelAndUpdate(currCategoryName);
                                   }
-                                  Navigator.pop(context);
                                 });
                           } else {
                             showDialog(
@@ -145,7 +144,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                                   if (delete) {
                                     await deleteFolderAndUpdate(currCategoryName);
                                   }
-                                  Navigator.pop(context);
                                 });
                           }
                         },
