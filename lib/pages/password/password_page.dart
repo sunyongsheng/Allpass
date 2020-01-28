@@ -193,16 +193,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
 
   _searchPress () {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                SearchPage(AllpassType.PASSWORD)))
-        .then((changed) {
-          if (changed) {
-            setState(() {
-              _query();
-            });
-          }
-    });
+      context,
+      MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
   }
 }
