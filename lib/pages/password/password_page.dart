@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
 import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
-import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -25,7 +21,6 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
 
-  List<Widget> _passWidgetList = List(); // 列表
   List<int> _muliCheckList = List();
 
   @override
@@ -36,7 +31,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
 
   Future<Null> _query() async {
     await Provider.of<PasswordList>(context).init();
-    _getPasswordWidgetList();
   }
 
   @override
@@ -63,128 +57,42 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
           // 搜索框 按钮
           SearchButtonWidget(_searchPress, "密码"),
           // 密码列表
-          FutureBuilder(
-            future: _getPasswordWidgetList(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  return Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _query,
-                      child: Scrollbar(
-                        child: ListView.builder(
-                          itemBuilder: (context, index) => _passWidgetList[index],
-                          itemCount: _passWidgetList.length,
-                        ),
-                      )
-                    ),
-                  );
-                default:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-              }
-            },
+          Expanded(
+            child: RefreshIndicator(
+               onRefresh: _query,
+               child: Scrollbar(
+                 child: Consumer<PasswordList>(
+                   builder: (context, model, child) {
+                     return ListView.builder(
+                       itemBuilder: (context, index) => PasswordWidgetItem(index),
+                       itemCount: model.passwordList.length,
+                     );
+                   },
+                 )
+               )
+            ),
           )
         ],
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加 按钮
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                EditPasswordPage(null, "添加密码")))
-              .then((resData) {
-            if (resData != null) {
-              Provider.of<PasswordList>(context).insertPassword(resData);
-            }
-          });
-        },
-        heroTag: "password",
-      ),
-    );
-  }
-
-  Future<Null> _getPasswordWidgetList() async {
-      _passWidgetList.clear();
-      for (var item in Provider.of<PasswordList>(context).passwordList) {
-        try {
-          _passWidgetList.add(_getPasswordWidget(item));
-        } catch (e) {
-          print("有问题出现，key=${item.uniqueKey}");
-        }
-      }
-      if (_passWidgetList.length == 0) {
-        _passWidgetList..add(Padding(
-          padding: AllpassEdgeInsets.smallTBPadding,
-        ))..add(Padding(
-          child: Center(
-            child: Text("什么也没有，赶快添加吧"),
-          ),
-          padding: AllpassEdgeInsets.forCardInset,
-        ))..add(
-          Padding(
-            padding: AllpassEdgeInsets.smallTBPadding,
-          )
-        )..add(
-          Padding(
-            child: Center(
-              child: Text("这里存储你的密码信息，例如\n微博账号、知乎账号等", textAlign: TextAlign.center,),
-            ),
-            padding: AllpassEdgeInsets.forCardInset,
-          )
-        );
-      }
-  }
-
-  Widget _getPasswordWidget(PasswordBean passwordBean) {
-    return Container(
-      margin: AllpassEdgeInsets.listInset,
-      //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: getRandomColor(passwordBean.uniqueKey),
-          child: Text(
-            passwordBean.name.substring(0, 1),
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
-        title: Text(passwordBean.name, overflow: TextOverflow.ellipsis,),
-        subtitle: Text(passwordBean.username, overflow: TextOverflow.ellipsis,),
-        onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ViewPasswordPage(passwordBean)
-          )).then((bean) {
-            if (bean != null) {
-              if (bean.isChanged) {
-                Provider.of<PasswordList>(context).updatePassword(bean);
-              } else {
-                Provider.of<PasswordList>(context).deletePassword(passwordBean);
-              }
-            }
-          });
-        },
-        onLongPress: () async {
-          if (Params.longPressCopy) {
-            String pw = EncryptUtil.decrypt(passwordBean.password);
-            Clipboard.setData(ClipboardData(text: pw));
-            Fluttertoast.showToast(msg: "已复制密码");
-          } else {
-            setState(() {
-              if (_muliCheckList.contains(passwordBean.uniqueKey)) {
-                _muliCheckList.remove(passwordBean.uniqueKey);
-              } else {
-                _muliCheckList.add(passwordBean.uniqueKey);
+      floatingActionButton: Consumer<PasswordList>(
+        builder: (context, model, _) => FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => EditPasswordPage(null, "添加密码")))
+            .then((resData) {
+              if (resData != null) {
+                model.insertPassword(resData);
               }
             });
-          }
-        },
-        selected: _muliCheckList.contains(passwordBean.uniqueKey),
-      ),
+          },
+          heroTag: "password",
+        ),
+      )
     );
   }
 
@@ -192,5 +100,47 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
+  }
+}
+
+class PasswordWidgetItem extends StatelessWidget {
+  final int index;
+
+  PasswordWidgetItem(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PasswordList>(
+      builder: (context, model, child) {
+        return Container(
+          margin: AllpassEdgeInsets.listInset,
+          //ListTile可以作为listView的一种子组件类型，支持配置点击事件，一个拥有固定样式的Widget
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: getRandomColor(model.passwordList[index].uniqueKey),
+              child: Text(
+                model.passwordList[index].name.substring(0, 1),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
+            subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => ViewPasswordPage(model.passwordList[index])
+              )).then((bean) {
+                if (bean != null) {
+                  if (bean.isChanged) {
+                    model.updatePassword(bean);
+                  } else {
+                    model.deletePassword(model.passwordList[index]);
+                  }
+                }
+              });
+            },
+          ),
+        );
+      },
+    );
   }
 }
