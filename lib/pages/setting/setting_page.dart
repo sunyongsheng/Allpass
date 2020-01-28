@@ -18,9 +18,14 @@ class SettingPage extends StatefulWidget {
   _SettingPage createState() => _SettingPage();
 }
 
-class _SettingPage extends State<SettingPage> {
+class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin {
+
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
