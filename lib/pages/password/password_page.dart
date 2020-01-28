@@ -21,11 +21,8 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
 
-  List<int> _muliCheckList = List();
-
   @override
   void initState() {
-    _muliCheckList.clear();
     super.initState();
   }
 
