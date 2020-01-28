@@ -120,23 +120,20 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       }
     }
     if (_cardWidgetList.length == 0) {
-      _cardWidgetList.add(
+      _cardWidgetList..add(
           Padding(
             padding: AllpassEdgeInsets.smallTBPadding,
           )
-      );
-      _cardWidgetList.add(Padding(
+      )..add(Padding(
         child: Center(
           child: Text("什么也没有，赶快添加吧"),
         ),
         padding: AllpassEdgeInsets.forCardInset,
-      ));
-      _cardWidgetList.add(
+      ))..add(
         Padding(
           padding: AllpassEdgeInsets.smallTBPadding,
         )
-      );
-      _cardWidgetList.add(
+      )..add(
         Padding(
           padding: AllpassEdgeInsets.forCardInset,
           child: Center(
