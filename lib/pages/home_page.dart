@@ -36,11 +36,8 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView.builder(
-        itemBuilder: (context, index) {
-            return _pagesList[index];
-          },
-        itemCount: _pagesList.length,
+      body: PageView(
+        children: _pagesList,
         controller: _controller,
         onPageChanged: (index) {
           if (index  != _currentIndex) {
