@@ -68,15 +68,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             future: _getCardWidgetList(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case ConnectionState.active:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
                 case ConnectionState.done:
                   return Expanded(
                     child: RefreshIndicator(
@@ -91,7 +82,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                   );
                 default:
                   return Center(
-                    child: Text("未知状态，请联系开发者：sys6511@126.com"),
+                    child: CircularProgressIndicator(),
                   );
               }
             },

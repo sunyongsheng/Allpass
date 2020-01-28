@@ -26,9 +26,11 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
 
   List<Widget> _passWidgetList = List(); // 列表
+  List<int> _muliCheckList = List();
 
   @override
   void initState() {
+    _muliCheckList.clear();
     super.initState();
   }
 
@@ -65,15 +67,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
             future: _getPasswordWidgetList(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case ConnectionState.active:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
                 case ConnectionState.done:
                   return Expanded(
                     child: RefreshIndicator(
@@ -88,7 +81,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                   );
                 default:
                   return Center(
-                    child: Text("未知状态，请联系开发者：sys6511@126.com"),
+                    child: CircularProgressIndicator(),
                   );
               }
             },
@@ -101,10 +94,10 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          EditPasswordPage(null, "添加密码")))
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                EditPasswordPage(null, "添加密码")))
               .then((resData) {
             if (resData != null) {
               Provider.of<PasswordList>(context).insertPassword(resData);
@@ -184,9 +177,16 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
             Clipboard.setData(ClipboardData(text: pw));
             Fluttertoast.showToast(msg: "已复制密码");
           } else {
-            Fluttertoast.showToast(msg: "多选");
+            setState(() {
+              if (_muliCheckList.contains(passwordBean.uniqueKey)) {
+                _muliCheckList.remove(passwordBean.uniqueKey);
+              } else {
+                _muliCheckList.add(passwordBean.uniqueKey);
+              }
+            });
           }
         },
+        selected: _muliCheckList.contains(passwordBean.uniqueKey),
       ),
     );
   }
