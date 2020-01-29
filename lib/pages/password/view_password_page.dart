@@ -134,12 +134,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             Padding(
                                               padding: EdgeInsets.only(left: 5),
                                               child: Container(
-                                                width: _bean.name.length*20.0 > 150
-                                                  ? 150
-                                                  : _bean.name.length*20.0,
+                                                width: _bean.name.length*AllpassScreenUtil.setWidth(35) > AllpassScreenUtil.setWidth(450)
+                                                  ? AllpassScreenUtil.setWidth(450)
+                                                  : _bean.name.length*AllpassScreenUtil.setWidth(35),
                                                 child: Text(_bean.name,
                                                   overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                                                 ),
                                               )
                                             ),
