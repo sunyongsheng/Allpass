@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 
-import 'package:allpass/params/params.dart';
-
 class AuthenticationService {
   final _auth = LocalAuthentication();
 
@@ -28,29 +26,27 @@ class AuthenticationService {
 
   /// 授权，返回[true]代表授权成功
   Future<bool> authenticate() async {
-    if (Params.enabledBiometrics) {
-      try {
-        List<BiometricType> availableBiometrics =
-        await _auth.getAvailableBiometrics();
+    try {
+      List<BiometricType> availableBiometrics =
+      await _auth.getAvailableBiometrics();
 
-        if (Platform.isIOS) {
-          if (availableBiometrics.contains(BiometricType.face)) {
-            // Face ID.
-          } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
-            // Touch ID.
-          }
+      if (Platform.isIOS) {
+        if (availableBiometrics.contains(BiometricType.face)) {
+          // Face ID.
+        } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
+          // Touch ID.
         }
-        isAuthenticated = await _auth.authenticateWithBiometrics(
+      }
+      isAuthenticated = await _auth.authenticateWithBiometrics(
           localizedReason: '授权以访问账号',
           useErrorDialogs: true,
           stickyAuth: true,
           androidAuthStrings: androidString,
           iOSAuthStrings: iosString
-        );
-        return isAuthenticated;
-      } on PlatformException catch (e) {
-        print(e);
-      }
+      );
+      return isAuthenticated;
+    } on PlatformException catch (e) {
+      print(e);
     }
     return false;
   }
