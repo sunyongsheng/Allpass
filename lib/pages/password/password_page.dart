@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/params/params.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -158,6 +161,14 @@ class PasswordWidgetItem extends StatelessWidget {
                   }
                 }
               });
+            },
+            onLongPress: () {
+              if (Params.longPressCopy) {
+                Clipboard.setData(ClipboardData(
+                    text: EncryptUtil.decrypt(model.passwordList[index].password)
+                ));
+                Fluttertoast.showToast(msg: "已复制密码");
+              }
             },
           ),
         );
