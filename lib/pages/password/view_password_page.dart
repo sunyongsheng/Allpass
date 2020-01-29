@@ -1,3 +1,4 @@
+import 'package:allpass/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -32,6 +33,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   var _futureHelper;
 
   String _password = "";
+  Color _color;
 
   _ViewPasswordPage(PasswordBean data) {
     _bean = PasswordBean(
@@ -44,6 +46,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         label: data.label,
         notes: data.notes,
         fav: data.fav);
+    _color = getRandomColor(_bean.uniqueKey);
   }
 
   Future<Null> _decryptPassword() async {
@@ -96,86 +99,79 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
                     return SingleChildScrollView(
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Card(
-                              margin: EdgeInsets.only(
-                                top: AllpassScreenUtil.setHeight(50),
-                                left: AllpassScreenUtil.setWidth(80),
-                                right: AllpassScreenUtil.setWidth(80),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: AllpassEdgeInsets.forViewCardInset,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
                               ),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                              color: AllpassColorUI.mainBackgroundColor,
-                              elevation: 8,
-                              child: SizedBox(
-                                  width: ScreenUtil.screenWidth * 0.8,
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.all(20),
-                                          child: CircleAvatar(
-                                            radius: 30,
-                                            backgroundColor:
-                                                getRandomColor(_bean.uniqueKey),
-                                            child: Text(
-                                              _bean.name.substring(0, 1),
-                                              style: TextStyle(fontSize: 30, color: Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 5),
-                                              child: Container(
-                                                width: _bean.name.length*AllpassScreenUtil.setWidth(35) > AllpassScreenUtil.setWidth(450)
-                                                  ? AllpassScreenUtil.setWidth(450)
-                                                  : _bean.name.length*AllpassScreenUtil.setWidth(35),
-                                                child: Text(_bean.name,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                                                ),
-                                              )
-                                            ),
-                                            Container(
-                                                margin: EdgeInsets.only(left: 5, right: 5, top: 3, bottom: 3),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Icon(Icons.folder_open),
-                                                    Container(
-                                                      margin: EdgeInsets.only(left: 5),
-                                                      color: Colors.grey[250],
-                                                      child: Container(
-                                                        child: Text(_bean.folder,
-                                                          overflow: TextOverflow.ellipsis,
-                                                        ),
-                                                        width: 50,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )),
-                                          ],
-                                        )
-                                      ],
+                              elevation: 5,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 23, horizontal: 0),
+                                    child: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: _color,
+                                      child: Text(
+                                        _bean.name.substring(0, 1),
+                                        style: TextStyle(fontSize: 25, color: Colors.white),
+                                      ),
                                     ),
-                                  )),
+                                  ),
+                                  Padding(
+                                    padding: AllpassEdgeInsets.smallLPadding,
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                          padding: EdgeInsets.only(left: 0),
+                                          child: ConstrainedBox(
+                                            constraints: BoxConstraints(
+                                                maxWidth: AllpassScreenUtil.setWidth(450)
+                                            ),
+                                            child: Text(_bean.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                      ),
+                                      Container(
+                                          margin: EdgeInsets.only(left: 0, right: 5, top: 3, bottom: 0),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Icon(Icons.folder_open),
+                                              Container(
+                                                margin: EdgeInsets.only(left: 5),
+                                                color: Colors.grey[250],
+                                                child: Container(
+                                                  child: Text(_bean.folder,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  width: 50,
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
-                            Padding(
-                              padding: AllpassEdgeInsets.smallTBPadding,
-                            ),
-                            Card(
-                                margin: EdgeInsets.only(
-                                    left: AllpassScreenUtil.setWidth(80),
-                                    right: AllpassScreenUtil.setWidth(80)),
+                          ),
+                          Padding(
+                            padding: AllpassEdgeInsets.forViewCardInset,
+                            child: Card(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
                                 color: AllpassColorUI.mainBackgroundColor,
-                                elevation: 8,
+                                elevation: 5,
                                 child: SizedBox(
                                   width: ScreenUtil.screenWidth * 0.8,
                                   child: Column(
@@ -235,8 +231,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           children: <Widget>[
                                             Expanded(
                                               child: Text(_passwordVisible
-                                                    ? _password
-                                                    : "*" * _password.length,
+                                                  ? _password
+                                                  : "*" * _password.length,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: AllpassTextUI.firstTitleStyleBlack,
                                               ),
@@ -288,18 +284,18 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Expanded(
-                                              child: InkWell(
-                                                onTap: () async {
-                                                if (_bean.url.startsWith("https")
-                                                    || _bean.url.startsWith("http"))
-                                                  await launch(_bean.url);
-                                                },
-                                                child: Text(_bean.url,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: AllpassTextUI
-                                                      .firstTitleStyleBlack,
-                                                ),
-                                            )),
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    if (_bean.url.startsWith("https")
+                                                        || _bean.url.startsWith("http"))
+                                                      await launch(_bean.url);
+                                                  },
+                                                  child: Text(_bean.url,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: AllpassTextUI
+                                                        .firstTitleStyleBlack,
+                                                  ),
+                                                )),
                                             Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                             InkWell(
                                               onTap: () {
@@ -376,58 +372,58 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     ],
                                   ),
                                 )),
-                            Padding(
-                              padding: AllpassEdgeInsets.smallTBPadding,
-                            ),
-                            // 最下面一行点击按钮
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                FloatingActionButton(
-                                  heroTag: "edit",
-                                  elevation: 0,
-                                  onPressed: () {
-                                    Navigator.push(context,
+                          ),
+                          Padding(
+                            padding: AllpassEdgeInsets.smallTBPadding,
+                          ),
+                          // 最下面一行点击按钮
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              FloatingActionButton(
+                                heroTag: "edit",
+                                elevation: 0,
+                                onPressed: () {
+                                  Navigator.push(context,
                                       MaterialPageRoute(
-                                        builder: (context) => EditPasswordPage(_bean, "编辑密码")))
-                                        .then((bean) {
-                                      if (bean.isChanged) {
-                                        setState(() {
-                                          _bean = bean;
-                                          _decryptPassword();
-                                        });
-                                      }
-                                    });
-                                  },
-                                  child: Icon(Icons.edit),
-                                ),
-                                Padding(
-                                  padding: AllpassEdgeInsets.smallLPadding,
-                                ),
-                                FloatingActionButton(
-                                  heroTag: "delete",
-                                  elevation: 0,
-                                  backgroundColor: Colors.redAccent,
-                                  onPressed: () {
-                                    showDialog(
+                                          builder: (context) => EditPasswordPage(_bean, "编辑密码")))
+                                      .then((bean) {
+                                    if (bean.isChanged) {
+                                      setState(() {
+                                        _bean = bean;
+                                        _decryptPassword();
+                                      });
+                                    }
+                                  });
+                                },
+                                child: Icon(Icons.edit),
+                              ),
+                              Padding(
+                                padding: AllpassEdgeInsets.smallLPadding,
+                              ),
+                              FloatingActionButton(
+                                heroTag: "delete",
+                                elevation: 0,
+                                backgroundColor: Colors.redAccent,
+                                onPressed: () {
+                                  showDialog(
                                       context: context,
                                       builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"))
-                                        .then((delete) {
-                                      if (delete) {
-                                        // 如果想删除，则先将isChanged属性改为false
-                                        // 否则如果先修改再删除会导致password页不删除
-                                        _bean.isChanged = false;
-                                        Navigator.pop<PasswordBean>(
-                                            context, _bean);
-                                      }
-                                    });
-                                  },
-                                  child: Icon(Icons.delete),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                                      .then((delete) {
+                                    if (delete) {
+                                      // 如果想删除，则先将isChanged属性改为false
+                                      // 否则如果先修改再删除会导致password页不删除
+                                      _bean.isChanged = false;
+                                      Navigator.pop<PasswordBean>(
+                                          context, _bean);
+                                    }
+                                  });
+                                },
+                                child: Icon(Icons.delete),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     );
                   default:
