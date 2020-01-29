@@ -61,7 +61,7 @@ class Application {
   }
 }
 
-void initApp() {
+void initAppFirstRun() {
   Application.sp?.setString("folder", "默认~娱乐~办公~论坛~教育~社交");
   Application.sp?.setBool("FIRST_RUN", false);
 }

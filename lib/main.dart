@@ -24,7 +24,7 @@ void main() async {
   Application.initChannelAndHandle();
 
   if (Application.sp.getBool("FIRST_RUN")??true) {
-    initApp();
+    initAppFirstRun();
   }
   await Params.paramsInit();
 
