@@ -21,6 +21,8 @@ import 'package:allpass/pages/setting/import/chrome_import_help.dart';
 import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/widgets/confirm_dialog.dart';
+import 'package:allpass/widgets/input_main_password_dialog.dart';
 
 /// 导入导出页面
 class ImportExportPage extends StatelessWidget {
@@ -202,17 +204,32 @@ class ExportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
-              onTap: () async {
-                Directory dir = await getExternalStorageDirectory();
-                Directory newDir = await DirectoryPicker.pick(
+              onTap: () {
+                showDialog<bool>(
                   context: context,
-                  rootDirectory: dir,
-                );
-                List<PasswordBean> list =
-                    await PasswordDao().getAllPasswordBeanList();
-                String path = await CsvUtil().passwordExportCsv(list, newDir);
-                Clipboard.setData(ClipboardData(text: path));
-                Fluttertoast.showToast(msg: "已导出到$newDir");
+                  builder: (context) => ConfirmDialog("导出确认", "导出后的密码将被所有人可见，确认吗？")).then((confirm) {
+                    if (confirm) {
+                      showDialog<bool>(
+                        context: context,
+                        builder: (context) => InputMainPasswordDialog()
+                      ).then((right) async{
+                        if (right) {
+                          Directory dir = await getExternalStorageDirectory();
+                          Directory newDir = await DirectoryPicker.pick(
+                            context: context,
+                            rootDirectory: dir,
+                          );
+                          List<PasswordBean> list =
+                              await PasswordDao().getAllPasswordBeanList();
+                          String path = await CsvUtil().passwordExportCsv(list, newDir);
+                          Clipboard.setData(ClipboardData(text: path));
+                          Fluttertoast.showToast(msg: "已导出到$newDir");
+                        } else {
+                          Fluttertoast.showToast(msg: "密码错误");
+                        }
+                      });
+                    }
+                });
               },
             ),
           ),
@@ -221,16 +238,31 @@ class ExportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
-              onTap: () async {
-                Directory dir = await getExternalStorageDirectory();
-                Directory newDir = await DirectoryPicker.pick(
-                  context: context,
-                  rootDirectory: dir,
-                );
-                List<CardBean> list = await CardDao().getAllCardBeanList();
-                String path = await CsvUtil().cardExportCsv(list, newDir);
-                Clipboard.setData(ClipboardData(text: path));
-                Fluttertoast.showToast(msg: "已导出到$newDir");
+              onTap: () {
+                showDialog<bool>(
+                    context: context,
+                    builder: (context) => ConfirmDialog("导出确认", "导出后的卡片将被所有人可见，确认吗？")).then((confirm) {
+                  if (confirm) {
+                    showDialog<bool>(
+                        context: context,
+                        builder: (context) => InputMainPasswordDialog()
+                    ).then((right) async{
+                      if (right) {
+                        Directory dir = await getExternalStorageDirectory();
+                        Directory newDir = await DirectoryPicker.pick(
+                          context: context,
+                          rootDirectory: dir,
+                        );
+                        List<CardBean> list = await CardDao().getAllCardBeanList();
+                        String path = await CsvUtil().cardExportCsv(list, newDir);
+                        Clipboard.setData(ClipboardData(text: path));
+                        Fluttertoast.showToast(msg: "已导出到$newDir");
+                      } else {
+                        Fluttertoast.showToast(msg: "密码错误");
+                      }
+                    });
+                  }
+                });
               },
             ),
           ),
@@ -239,18 +271,33 @@ class ExportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("所有"),
               leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
-              onTap: () async {
-                Directory dir = await getExternalStorageDirectory();
-                Directory newDir = await DirectoryPicker.pick(
-                  context: context,
-                  rootDirectory: dir,
-                );
-                List<PasswordBean> passList =
-                    await PasswordDao().getAllPasswordBeanList();
-                await CsvUtil().passwordExportCsv(passList, newDir);
-                List<CardBean> cardList = await CardDao().getAllCardBeanList();
-                await CsvUtil().cardExportCsv(cardList, newDir);
-                Fluttertoast.showToast(msg: "已导出到$newDir");
+              onTap: () {
+                showDialog<bool>(
+                    context: context,
+                    builder: (context) => ConfirmDialog("导出确认", "导出后的数据将被所有人可见，确认吗？")).then((confirm) {
+                  if (confirm) {
+                    showDialog<bool>(
+                        context: context,
+                        builder: (context) => InputMainPasswordDialog()
+                    ).then((right) async{
+                      if (right) {
+                        Directory dir = await getExternalStorageDirectory();
+                        Directory newDir = await DirectoryPicker.pick(
+                          context: context,
+                          rootDirectory: dir,
+                        );
+                        List<PasswordBean> passList =
+                        await PasswordDao().getAllPasswordBeanList();
+                        await CsvUtil().passwordExportCsv(passList, newDir);
+                        List<CardBean> cardList = await CardDao().getAllCardBeanList();
+                        await CsvUtil().cardExportCsv(cardList, newDir);
+                        Fluttertoast.showToast(msg: "已导出到$newDir");
+                      } else {
+                        Fluttertoast.showToast(msg: "密码错误");
+                      }
+                    });
+                  }
+                });
               },
             ),
           ),
