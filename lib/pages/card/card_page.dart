@@ -63,10 +63,39 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 onRefresh: _query,
                 child: Scrollbar(
                     child: Consumer<CardList>(
-                      builder: (context, model, _) => ListView.builder(
-                        itemBuilder: (context, index) => CardWidgetItem(index),
-                        itemCount: model.cardList.length,
-                      ),
+                      builder: (context, model, _) {
+                        if (model.cardList.length >= 1) {
+                          return ListView.builder(
+                            itemBuilder: (context, index) =>
+                                CardWidgetItem(index),
+                            itemCount: model.cardList.length,
+                          );
+                        } else {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                padding: AllpassEdgeInsets.smallTBPadding,
+                              ),
+                              Padding(
+                                child: Center(
+                                  child: Text("什么也没有，赶快添加吧"),
+                                ),
+                                padding: AllpassEdgeInsets.forCardInset,
+                              ),
+                              Padding(
+                                padding: AllpassEdgeInsets.smallTBPadding,
+                              ),
+                              Padding(
+                                child: Center(
+                                  child: Text("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等",textAlign: TextAlign.center,),
+                                ),
+                                padding: AllpassEdgeInsets.forCardInset,
+                              )
+                            ],
+                          );
+                        }
+                      }
                     )
                 )
             ),

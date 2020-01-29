@@ -60,10 +60,37 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                child: Scrollbar(
                  child: Consumer<PasswordList>(
                    builder: (context, model, child) {
-                     return ListView.builder(
-                       itemBuilder: (context, index) => PasswordWidgetItem(index),
-                       itemCount: model.passwordList.length,
-                     );
+                     if (model.passwordList.length >= 1) {
+                       return ListView.builder(
+                         itemBuilder: (context, index) =>
+                             PasswordWidgetItem(index),
+                         itemCount: model.passwordList.length,
+                       );
+                     } else {
+                       return Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Padding(
+                             padding: AllpassEdgeInsets.smallTBPadding,
+                           ),
+                           Padding(
+                             child: Center(
+                               child: Text("什么也没有，赶快添加吧"),
+                             ),
+                             padding: AllpassEdgeInsets.forCardInset,
+                           ),
+                           Padding(
+                             padding: AllpassEdgeInsets.smallTBPadding,
+                           ),
+                           Padding(
+                             child: Center(
+                               child: Text("这里存储你的密码信息，例如\n微博账号、知乎账号等", textAlign: TextAlign.center,),
+                             ),
+                             padding: AllpassEdgeInsets.forCardInset,
+                           )
+                         ],
+                       );
+                     }
                    },
                  )
                )
