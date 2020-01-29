@@ -71,9 +71,6 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: <Widget>[
                            Padding(
-                             padding: AllpassEdgeInsets.smallTBPadding,
-                           ),
-                           Padding(
                              child: Center(
                                child: Text("什么也没有，赶快添加吧"),
                              ),

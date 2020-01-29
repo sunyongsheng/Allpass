@@ -75,9 +75,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Padding(
-                                padding: AllpassEdgeInsets.smallTBPadding,
-                              ),
-                              Padding(
                                 child: Center(
                                   child: Text("什么也没有，赶快添加吧"),
                                 ),
