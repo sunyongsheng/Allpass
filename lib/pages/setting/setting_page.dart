@@ -6,11 +6,13 @@ import 'package:local_auth/local_auth.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
-import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/widgets/input_main_password_dialog.dart';
+import 'package:allpass/services/authentication_service.dart';
+
 
 /// 设置页面
 class SettingPage extends StatefulWidget {
@@ -20,8 +22,16 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin {
 
+  AuthenticationService _localAuthService;
+
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    _localAuthService = Application.getIt<AuthenticationService>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +77,19 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                         if (await LocalAuthentication().canCheckBiometrics) {
                           showDialog(context: context,
                             builder: (context) => InputMainPasswordDialog(),
-                          ).then((right) {
+                          ).then((right) async {
                             if (right) {
-                              Application.sp.setBool("biometrics", sw);
-                              Params.enabledBiometrics = sw;
-                              setState(() {});
+                              var auth = await _localAuthService.authenticate();
+                              if (auth) {
+                                await _localAuthService.stopAuthenticate();
+                                Application.sp.setBool("biometrics", sw);
+                                Params.enabledBiometrics = sw;
+                                setState(() {});
+                              } else {
+                                Fluttertoast.showToast(msg: "授权失败");
+                              }
+                            } else {
+                              Fluttertoast.showToast(msg: "密码错误");
                             }
                           });
                         } else {
