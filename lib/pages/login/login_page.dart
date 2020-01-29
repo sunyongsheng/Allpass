@@ -35,6 +35,12 @@ class _LoginPage extends State<LoginPage> {
     _passwordController = TextEditingController();
     super.initState();
   }
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
