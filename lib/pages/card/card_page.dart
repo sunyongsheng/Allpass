@@ -162,8 +162,6 @@ class CardWidgetItem extends StatelessWidget {
                 if (Params.longPressCopy) {
                   Clipboard.setData(ClipboardData(text: model.cardList[index].cardId));
                   Fluttertoast.showToast(msg: "已复制卡号");
-                } else {
-                  Fluttertoast.showToast(msg: "多选");
                 }
               },
               child: ListTile(
