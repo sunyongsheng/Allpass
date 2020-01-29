@@ -35,88 +35,96 @@ class ClassificationDetailsPage extends StatelessWidget {
 
   List<Widget> _getWidgetsList(BuildContext context) {
     List<Widget> list = List();
-    for (var passwordBean in Provider.of<PasswordList>(context).passwordList) {
-      if (passwordBean.folder == type) {
-        try {
-          list.add(Container(
-            margin: AllpassEdgeInsets.listInset,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: getRandomColor(passwordBean.uniqueKey),
-                child: Text(
-                  passwordBean.name.substring(0, 1),
-                  style: TextStyle(color: Colors.white),
+    for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
+      try {
+        list.add(Consumer<PasswordList>(
+          builder: (context, model, _) {
+            if (model.passwordList[index].folder == type) {
+              return Container(
+                margin: AllpassEdgeInsets.listInset,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: getRandomColor(model.passwordList[index].uniqueKey),
+                    child: Text(
+                      model.passwordList[index].name.substring(0, 1),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
+                  subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => ViewPasswordPage(model.passwordList[index])
+                    )).then((bean) {
+                      if (bean != null) {
+                        if (bean.isChanged) {
+                          model.updatePassword(bean);
+                        } else {
+                          model.deletePassword(model.passwordList[index]);
+                        }
+                      }
+                    });
+                  },
                 ),
-              ),
-              title: Text(passwordBean.name, overflow: TextOverflow.ellipsis,),
-              subtitle: Text(passwordBean.username, overflow: TextOverflow.ellipsis,),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ViewPasswordPage(passwordBean)
-                )).then((bean) {
-                  if (bean != null) {
-                    if (bean.isChanged) {
-                      Provider.of<PasswordList>(context).updatePassword(bean);
-                    } else {
-                      Provider.of<PasswordList>(context).deletePassword(passwordBean);
-                    }
-                  }
-                });
-              },
-            ),
-          ));
-        } catch (e) {
-          print(passwordBean.uniqueKey);
-        }
+              );
+            } else {
+              return Container();
+            }
+          },
+        ));
+      } catch (e) {
       }
     }
     list.add(Container(
       child: Divider(thickness: 1.5,),
       padding: AllpassEdgeInsets.dividerInset,
     ));
-    for (var cardBean in Provider.of<CardList>(context).cardList) {
-      if (cardBean.folder == type) {
-        try {
-          Color t = getRandomColor(cardBean.uniqueKey);
-          list.add(Container(
-            margin: AllpassEdgeInsets.listInset,
-            child: ListTile(
-                leading: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: t
-                  ),
-                  child: CircleAvatar(
-                    backgroundColor: t,
-                    child: Text(
-                      cardBean.name.substring(0, 1),
-                      style: TextStyle(color: Colors.white),
+    for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
+      try {
+        list.add(Consumer<CardList>(
+          builder: (context, model, _) {
+            if (model.cardList[index].folder == type) {
+              Color t = getRandomColor(model.cardList[index].uniqueKey);
+              return Container(
+                margin: AllpassEdgeInsets.listInset,
+                child: ListTile(
+                  leading: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: t
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: t,
+                      child: Text(
+                        model.cardList[index].name.substring(0, 1),
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
-                title: Text(cardBean.name),
-                subtitle: Text(cardBean.ownerName),
-                onTap: () => Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ViewCardPage(cardBean)
-                )).then((bean) {
-                  if (bean != null) {
-                    // 改变了就更新，没改变就删除
-                    if (bean.isChanged) {
-                      Provider.of<CardList>(context).updateCard(bean);
-                    } else {
-                      Provider.of<CardList>(context).deleteCard(cardBean);
+                  title: Text(model.cardList[index].name),
+                  subtitle: Text(model.cardList[index].ownerName),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => ViewCardPage(model.cardList[index])
+                  )).then((bean) {
+                    if (bean != null) {
+                      // 改变了就更新，没改变就删除
+                      if (bean.isChanged) {
+                        model.updateCard(bean);
+                      } else {
+                        model.deleteCard(model.cardList[index]);
+                      }
                     }
-                  }
-                }),
-            ),
-          ));
-        } catch (e) {
-          print(e.toString());
-        }
+                  }),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ));
+      } catch (e) {
+        print(e.toString());
       }
-    }
-    if (list.length == 1) {
-      list.add(Center(child: Text("什么也没有，赶快添加吧"),));
     }
     return list;
   }
