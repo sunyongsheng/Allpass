@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -11,21 +10,34 @@ import 'package:allpass/services/authentication_service.dart';
 
 
 /// 生物识别登录页
-class AuthLoginPage extends StatelessWidget {
+class AuthLoginPage extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _AuthLoginPage();
+  }
+}
+
+class _AuthLoginPage extends State<StatefulWidget> {
 
   final AuthenticationService _localAuthService = Application.getIt<AuthenticationService>();
+  WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+
+  @override
+  void initState() {
+    widgetsBinding.addPostFrameCallback((callback) => askAuth(context));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
-    askAuth(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
-        automaticallyImplyLeading: false,
-      ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -52,12 +64,14 @@ class AuthLoginPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
-                Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(40)),),
+                Padding(padding: EdgeInsets.only(
+                    top: AllpassScreenUtil.setHeight(40)),),
                 Text("点击此处使用指纹登录")
               ],
             ),
           ),
-          Padding(padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(200)),),
+          Padding(
+            padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(200)),),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -70,7 +84,8 @@ class AuthLoginPage extends StatelessWidget {
               )
             ],
           ),
-          Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
+          Padding(
+            padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
         ],
       ),
     );
