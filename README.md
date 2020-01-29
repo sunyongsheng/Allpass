@@ -3,7 +3,7 @@
 ## 介绍
 ![Allpass](http://aengus.top/assets/common/allpass-icon.png)
 
-Allpass是一款简单的私密数据管理工具，包括支持密码存储与卡片信息存储。采用Flutter构建，目前完成了针对安卓9与10的适配。
+Allpass是一款简单的私密数据管理工具，包括支持密码存储与卡片信息存储。采用Flutter构建，目前完成了针对安卓的适配。
 
 - 密码与卡片信息管理
 - 支持指纹解锁软件
