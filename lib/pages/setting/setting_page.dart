@@ -106,9 +106,9 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     child: ListTile(
                       title: Text("长按复制密码或卡号"),
                       leading: Icon(Icons.present_to_all, color: AllpassColorUI.allColor[2]),
-                      subtitle: Params.longPressCopy
-                          ?Text("当前长按为复制密码或卡号")
-                          :Text("当前长按为多选"),
+                      // subtitle: Params.longPressCopy
+                      //     ?Text("当前长按为复制密码或卡号")
+                      //     :Text("当前长按为多选"),
                       trailing: Switch(
                         value: Params.longPressCopy,
                         onChanged: (sw) async {
