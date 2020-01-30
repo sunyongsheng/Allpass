@@ -9,6 +9,7 @@ import 'package:allpass/pages/card/view_card_page.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/card_list.dart';
@@ -71,9 +72,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                             itemCount: model.cardList.length,
                           );
                         } else {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          return ListView(
                             children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+                              ),
                               Padding(
                                 child: Center(
                                   child: Text("什么也没有，赶快添加吧"),

@@ -11,6 +11,7 @@ import 'package:allpass/pages/password/view_password_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/search_button_widget.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -70,9 +71,11 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                          itemCount: model.passwordList.length,
                        );
                      } else {
-                       return Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
+                       return ListView(
                          children: <Widget>[
+                           Padding(
+                             padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+                           ),
                            Padding(
                              child: Center(
                                child: Text("什么也没有，赶快添加吧"),
