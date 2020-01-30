@@ -67,6 +67,7 @@ class _LoginPage extends State<LoginPage> {
                   child: Text("同意并继续"),
                   onPressed: () {
                     initAppFirstRun();
+                    Params.paramsInit();
                     Navigator.pop(context);
                   },
                 ),
