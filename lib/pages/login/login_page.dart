@@ -177,10 +177,10 @@ class _LoginPage extends State<LoginPage> {
 
   void login() async {
     if (inputErrorTimes >= 5) {
-      Provider.of<PasswordList>(context).clear();
-      Provider.of<CardList>(context).clear();
-      Params.paramsClear();
+      await Provider.of<PasswordList>(context).clear();
+      await Provider.of<CardList>(context).clear();
       await Application.sp.clear();
+      Params.paramsClear();
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => RegisterPage()
