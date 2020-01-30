@@ -93,6 +93,26 @@ class AboutPage extends StatelessWidget {
                   ),
                 ),
                 Container(
+                  padding: AllpassEdgeInsets.dividerInset,
+                  child: Row(
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text("开源地址：Github"),
+                        onPressed: () async {
+                          await launch("https://github.com/sunyongsheng/Allpass");
+                        },
+                      ),
+                      Text("|"),
+                      FlatButton(
+                        child: Text("码云"),
+                        onPressed: () async {
+                          await launch("https://gitee.com/sunyongsheng/Allpass");
+                        },
+                      ),
+                    ],
+                  )
+                ),
+                Container(
                   padding: EdgeInsets.only(top: 10, bottom: 5),
                 )
               ],
