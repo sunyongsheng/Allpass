@@ -22,10 +22,6 @@ void main() async {
   Application.setupLocator();
   await Application.initSp();
   Application.initChannelAndHandle();
-
-  if (Application.sp.getBool("FIRST_RUN")??true) {
-    initAppFirstRun();
-  }
   await Params.paramsInit();
 
   if (Platform.isAndroid) {
