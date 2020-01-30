@@ -367,6 +367,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               ),
                               TextField(
                                 controller: _notesController,
+                                maxLines: null,
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => DetailTextPage(_notesController.text, true),

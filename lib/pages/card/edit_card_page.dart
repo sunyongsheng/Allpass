@@ -397,7 +397,7 @@ class _EditCardPage extends State<EditCardPage> {
                                 ),
                                 TextField(
                                   controller: _notesController,
-                                  readOnly: true,
+                                  maxLines: null,
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => DetailTextPage(_notesController.text, true),
