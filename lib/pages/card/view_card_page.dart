@@ -339,6 +339,46 @@ class _ViewCardPage extends State<ViewCardPage> {
                                         ],
                                       ),
                                     ),
+                                    // 绑定手机号标题
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: AllpassScreenUtil.setWidth(100),
+                                          right: AllpassScreenUtil.setWidth(100),
+                                          bottom: AllpassScreenUtil.setHeight(10)),
+                                      child: Text("绑定手机号",
+                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                      ),
+                                    ),
+                                    // 绑定手机号主体
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          left: AllpassScreenUtil.setWidth(100),
+                                          right: AllpassScreenUtil.setWidth(100),
+                                          bottom: AllpassScreenUtil.setHeight(50)),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Text(_bean.telephone,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AllpassTextUI
+                                                  .firstTitleStyleBlack,
+                                            ),),
+                                          Padding(padding: AllpassEdgeInsets
+                                              .smallLPadding,),
+                                          InkWell(
+                                            child: Text("复制", style: AllpassTextUI
+                                                .secondTitleStyleBlue,),
+                                            onTap: () {
+                                              Clipboard.setData(ClipboardData(
+                                                  text: _bean.telephone));
+                                              Fluttertoast.showToast(msg: "已复制手机号");
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                     // 备注标题
                                     Container(
                                       margin: EdgeInsets.only(
