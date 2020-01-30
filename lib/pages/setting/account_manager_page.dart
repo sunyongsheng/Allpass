@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/params.dart';
-import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/dao/password_dao.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/widgets/confirm_dialog.dart';
@@ -68,11 +69,11 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                     showDialog(
                       context: context,
                       builder: (context) => InputMainPasswordDialog(),
-                    ).then((right) {
+                    ).then((right) async {
                       if (right) {
-                        PasswordDao().deleteContent();
-                        CardDao().deleteContent();
-                        Application.sp.clear();
+                        await Provider.of<PasswordList>(context).clear();
+                        await Provider.of<CardList>(context).clear();
+                        await Application.sp.clear();
                         Params.paramsClear();
                         Fluttertoast.showToast(msg: "已删除所有数据");
                         NavigationUtil.goLoginPage(context);
