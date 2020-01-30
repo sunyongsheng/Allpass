@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/application.dart';
-import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 
@@ -68,15 +66,6 @@ class _DebugPage extends State<DebugPage> {
                   await Provider.of<PasswordList>(context).clear();
                   await _cardDao.deleteTable();
                   Fluttertoast.showToast(msg: "已删除卡片数据库");
-                },
-              ),
-            ),
-            ListTile(
-              title: FlatButton(
-                child: Text("查看主密码"),
-                onPressed: () async {
-                  String _pass = EncryptUtil.decrypt(Application.sp.getString("password"));
-                  Fluttertoast.showToast(msg: "$_pass");
                 },
               ),
             ),
