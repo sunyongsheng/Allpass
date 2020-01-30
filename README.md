@@ -21,6 +21,24 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 **若要构建Allpass，请修改**`lib/utils/encrypt_util.dart`**中的**`_key`**（32位字符串）**；
 
+# 软件截图
+
+![登录页](https://aengus.top/assets/screenshots/allpass/login.jpg)![注册页](https://aengus.top/assets/screenshots/allpass/register.jpg)![指纹登录页](https://aengus.top/assets/screenshots/allpass/auth_login.jpg)
+
+![密码页](https://aengus.top/assets/screenshots/allpass/password.jpg)![卡片页](https://aengus.top/assets/screenshots/allpass/card.jpg)![设置页](https://aengus.top/assets/screenshots/allpass/setting.jpg)
+
+![查看密码页](https://aengus.top/assets/screenshots/allpass/view_password.jpg)![查看卡片页](https://aengus.top/assets/screenshots/allpass/view_card.jpg)![编辑密码页](https://aengus.top/assets/screenshots/allpass/edit_password.jpg)
+
+![文件夹管理页](https://aengus.top/assets/screenshots/allpass/manager.jpg)![导入导出页](https://aengus.top/assets/screenshots/allpass/import_export.jpg)![从剪贴板导入](https://aengus.top/assets/screenshots/allpass/import_from_clip.jpg)
+
+![分类](https://aengus.top/assets/screenshots/allpass/classification.jpg)![收藏页](https://aengus.top/assets/screenshots/allpass/fav.jpg)![关于页](https://aengus.top/assets/screenshots/allpass/about.jpg)
+
+# 下载体验
+
+你可以在“酷安”搜索“Allpass”进行下载，或者扫描下面的二维码进行下载：
+
+
+
 # 未来规划
 
 - WebDAV同步功能
