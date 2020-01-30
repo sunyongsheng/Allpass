@@ -75,7 +75,6 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                         Application.sp.clear();
                         Params.paramsClear();
                         Fluttertoast.showToast(msg: "已删除所有数据");
-                        initAppFirstRun();
                         NavigationUtil.goLoginPage(context);
                       }
                     });
