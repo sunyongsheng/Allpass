@@ -49,6 +49,8 @@ dependencies:
   local_auth: ^0.6.1
   # 屏幕尺寸管理
   flutter_screenutil: ^0.7.0
+  # 汉字转拼音
+  lpinyin: ^1.0.9
 
 dev_dependencies:
   flutter_test:
