@@ -187,7 +187,13 @@ class _SearchPage extends State<SearchPage> {
                       borderSide: BorderSide.none
                     ),
                   ),
+                  onChanged: (_) async {
+                    await getSearchResult();
+                    setState(() {});
+                  },
                   onEditingComplete: () async {
+                    await Provider.of<PasswordList>(context).init();
+                    await Provider.of<CardList>(context).init();
                     await getSearchResult();
                     setState(() {});
                   },
