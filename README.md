@@ -21,6 +21,8 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 **若要构建Allpass，请修改**`lib/utils/encrypt_util.dart`**中的**`_key`**（32位字符串）**；
 
+**作者发布的Allpass已签名。所以如果在已安装作者发布的Allpass的情况下，安装自己构建的程序，请先卸载，否则可能导致安装失败或者密码数据丢失。**
+
 # 软件截图
 
 ![登录页](http://aengus.top/assets/screenshots/allpass/login.jpg)![注册页](http://aengus.top/assets/screenshots/allpass/register.jpg)![指纹登录页](http://aengus.top/assets/screenshots/allpass/auth_login.jpg)
