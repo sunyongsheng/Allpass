@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lpinyin/lpinyin.dart';
 
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
@@ -16,6 +17,10 @@ class PasswordList with ChangeNotifier {
 
   init() async {
     _passwordList = await _dao.getAllPasswordBeanList()??[];
+    _passwordList.sort((one, two) {
+      return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
+          .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
+    });
     notifyListeners();
   }
 

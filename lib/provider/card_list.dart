@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lpinyin/lpinyin.dart';
 
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/model/card_bean.dart';
@@ -17,6 +18,10 @@ class CardList with ChangeNotifier {
 
   init() async {
     _cardList = await _dao.getAllCardBeanList()??[];
+    _cardList.sort((one, two) {
+      return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
+          .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
+    });
   }
 
   insertCard(CardBean bean) async {
