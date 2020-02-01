@@ -370,7 +370,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 maxLines: null,
                                 onTap: () {
                                   Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => DetailTextPage(_notesController.text, true),
+                                    builder: (context) => DetailTextPage("备注", _notesController.text, true),
                                   )).then((newValue) {
                                     setState(() {
                                       _notesController.text = newValue;

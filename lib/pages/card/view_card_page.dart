@@ -406,8 +406,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                     Navigator.push(
                                                         context, MaterialPageRoute(
                                                       builder: (context) =>
-                                                          DetailTextPage(
-                                                              _bean.notes, false),));
+                                                          DetailTextPage("备注", _bean.notes, false),));
                                                   }
                                                 },
                                                 child: Text(_bean.notes.length < 1

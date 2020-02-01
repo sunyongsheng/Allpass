@@ -332,7 +332,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                   onTap: () {
                                                     if (_bean.notes.length >= 1) {
                                                       Navigator.push(context, MaterialPageRoute(
-                                                        builder: (context) => DetailTextPage(_bean.notes, false),));
+                                                        builder: (context) => DetailTextPage("备注", _bean.notes, false),));
                                                     }
                                                   },
                                                   child: Text(_bean.notes.length<1?"无备注":_bean.notes,
