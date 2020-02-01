@@ -5,11 +5,12 @@ import 'package:allpass/utils/allpass_ui.dart';
 /// 详细文字展示页，用于展示比较长而不能在上一页面进行全部显示的文字
 /// 可以设置[canChange]属性来决定其中文字是否可以修改，返回修改后的文字
 class DetailTextPage extends StatelessWidget {
+  final String title;
   final String text;
   final bool canChange;
   final TextEditingController _controller = TextEditingController();
 
-  DetailTextPage(this.text, this.canChange) {
+  DetailTextPage(this.title, this.text, this.canChange) {
     _controller.text = this.text;
   }
 
@@ -20,7 +21,7 @@ class DetailTextPage extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                "备注",
+                title,
                 style: AllpassTextUI.titleBarStyle,
               ),
               centerTitle: true,
