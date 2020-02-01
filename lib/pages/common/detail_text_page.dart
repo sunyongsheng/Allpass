@@ -72,7 +72,7 @@ class DetailTextPage extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                "备注",
+                title,
                 style: AllpassTextUI.titleBarStyle,
               ),
               centerTitle: true,
