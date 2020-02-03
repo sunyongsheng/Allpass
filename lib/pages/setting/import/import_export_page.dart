@@ -136,28 +136,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                     allowedFileExtensions: ["csv"]
                 );
                 String path = await FlutterDocumentPicker.openDocument(params: param);
-                showDialog(
-                    context: context,
-                    child: FutureBuilder(
-                      future: importFuture(context, AllpassType.PASSWORD, path),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.done:
-                            return Center(
-                              child: Icon(
-                                Icons.check_circle,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            );
-                          default:
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                        }
-                      },
-                    )
-                );
+                _process(context, importFuture(context, AllpassType.PASSWORD, path));
               }
             ),
           ),
@@ -171,28 +150,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                     allowedFileExtensions: ["csv"]
                 );
                 String path = await FlutterDocumentPicker.openDocument(params: param);
-                showDialog(
-                    context: context,
-                    child: FutureBuilder(
-                      future: importFuture(context, AllpassType.CARD, path),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.done:
-                            return Center(
-                              child: Icon(
-                                Icons.check_circle,
-                                size: 50,
-                                color: Colors.white,
-                              ),
-                            );
-                          default:
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                        }
-                      },
-                    )
-                );
+                _process(context, importFuture(context, AllpassType.CARD, path));
               }
             ),
           ),
@@ -269,11 +227,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                             context: context,
                             rootDirectory: dir,
                           );
-                          List<PasswordBean> list =
-                              await PasswordDao().getAllPasswordBeanList();
-                          String path = await CsvUtil().passwordExportCsv(list, newDir);
-                          Clipboard.setData(ClipboardData(text: path));
-                          Fluttertoast.showToast(msg: "已导出到$newDir");
+                          _process(context, exportFuture(context, newDir, type: AllpassType.PASSWORD));
                         } else {
                           Fluttertoast.showToast(msg: "密码错误");
                         }
@@ -303,10 +257,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                           context: context,
                           rootDirectory: dir,
                         );
-                        List<CardBean> list = await CardDao().getAllCardBeanList();
-                        String path = await CsvUtil().cardExportCsv(list, newDir);
-                        Clipboard.setData(ClipboardData(text: path));
-                        Fluttertoast.showToast(msg: "已导出到$newDir");
+                        _process(context, exportFuture(context, newDir, type: AllpassType.CARD));
                       } else {
                         Fluttertoast.showToast(msg: "密码错误");
                       }
@@ -336,12 +287,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                           context: context,
                           rootDirectory: dir,
                         );
-                        List<PasswordBean> passList =
-                        await PasswordDao().getAllPasswordBeanList();
-                        await CsvUtil().passwordExportCsv(passList, newDir);
-                        List<CardBean> cardList = await CardDao().getAllCardBeanList();
-                        await CsvUtil().cardExportCsv(cardList, newDir);
-                        Fluttertoast.showToast(msg: "已导出到$newDir");
+                        _process(context, exportFuture(context, newDir));
                       } else {
                         Fluttertoast.showToast(msg: "密码错误");
                       }
@@ -355,4 +301,50 @@ class ExportTypeSelectPage extends StatelessWidget {
       ),
     );
   }
+
+  Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType type}) async {
+    switch (type) {
+      case AllpassType.PASSWORD:
+        List<PasswordBean> list = await PasswordDao().getAllPasswordBeanList();
+        String path = await CsvUtil().passwordExportCsv(list, newDir);
+        Clipboard.setData(ClipboardData(text: path));
+        break;
+      case AllpassType.CARD:
+        List<CardBean> list = await CardDao().getAllCardBeanList();
+        String path = await CsvUtil().cardExportCsv(list, newDir);
+        Clipboard.setData(ClipboardData(text: path));
+        break;
+      default:
+        List<PasswordBean> passList = await PasswordDao().getAllPasswordBeanList();
+        await CsvUtil().passwordExportCsv(passList, newDir);
+        List<CardBean> cardList = await CardDao().getAllCardBeanList();
+        await CsvUtil().cardExportCsv(cardList, newDir);
+    }
+    Fluttertoast.showToast(msg: "已导出到$newDir");
+  }
+}
+
+void _process(BuildContext context, Future futureFunction) {
+  showDialog(
+      context: context,
+      child: FutureBuilder(
+        future: futureFunction,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return Center(
+                child: Icon(
+                  Icons.check_circle,
+                  size: 50,
+                  color: Colors.white,
+                ),
+              );
+            default:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        },
+      )
+  );
 }
