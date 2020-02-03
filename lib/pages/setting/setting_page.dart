@@ -11,6 +11,7 @@ import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
 import 'package:allpass/widgets/input_main_password_dialog.dart';
+import 'package:allpass/widgets/check_update_dialog.dart';
 import 'package:allpass/services/authentication_service.dart';
 
 
@@ -197,9 +198,22 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   ),
                 ),
                 Container(
+                    child: ListTile(
+                      title: Text("检查更新"),
+                      leading: Icon(Icons.check_circle_outline, color: AllpassColorUI.allColor[6]),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          child: CheckUpdateDialog()
+                        );
+                      }
+                    ),
+                    padding: AllpassEdgeInsets.listInset
+                ),
+                Container(
                   child: ListTile(
                     title: Text("关于"),
-                    leading: Icon(Icons.details, color: AllpassColorUI.allColor[6]),
+                    leading: Icon(Icons.details, color: AllpassColorUI.allColor[0]),
                     onTap: () {
                       Navigator.push(
                           context,
