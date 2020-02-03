@@ -9,13 +9,21 @@ import 'package:allpass/pages/password/view_password_page.dart';
 
 class FavoritePage extends StatelessWidget {
 
+  final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "收藏",
-          style: AllpassTextUI.titleBarStyle,
+        title: InkWell(
+          splashColor: Colors.transparent,
+          child: Text(
+            "收藏",
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          onTap: () {
+            _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
         centerTitle: true,
         elevation: 0,
@@ -25,6 +33,7 @@ class FavoritePage extends StatelessWidget {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: ListView(
+        controller: _controller,
         children: _getFavWidgets(context),
       ),
     );

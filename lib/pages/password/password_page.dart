@@ -25,9 +25,18 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
 
+  ScrollController _controller;
+
   @override
   void initState() {
+    _controller = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   Future<Null> _query() async {
@@ -42,9 +51,15 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "密码",
-          style: AllpassTextUI.titleBarStyle,
+        title: InkWell(
+          splashColor: Colors.transparent,
+          child: Text(
+            "密码",
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          onTap: () {
+            _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
         centerTitle: true,
         elevation: 0,
@@ -66,6 +81,7 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
                    builder: (context, model, child) {
                      if (model.passwordList.length >= 1) {
                        return ListView.builder(
+                         controller: _controller,
                          itemBuilder: (context, index) =>
                              PasswordWidgetItem(index),
                          itemCount: model.passwordList.length,

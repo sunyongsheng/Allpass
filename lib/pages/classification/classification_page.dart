@@ -8,13 +8,22 @@ import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/classification/classification_details_page.dart';
 
 class ClassificationPage extends StatelessWidget {
+
+  final ScrollController _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            "分类",
-            style: AllpassTextUI.titleBarStyle,
+          title: InkWell(
+            splashColor: Colors.transparent,
+            child: Text(
+              "分类",
+              style: AllpassTextUI.titleBarStyle,
+            ),
+            onTap: () {
+              _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+            },
           ),
           centerTitle: true,
           elevation: 0,
@@ -24,6 +33,7 @@ class ClassificationPage extends StatelessWidget {
         ),
         backgroundColor: AllpassColorUI.mainBackgroundColor,
         body: GridView(
+          controller: _controller,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             mainAxisSpacing: AllpassScreenUtil.setWidth(40),

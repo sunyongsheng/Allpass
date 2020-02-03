@@ -24,13 +24,22 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
   AuthenticationService _localAuthService;
 
+  ScrollController _controller;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     _localAuthService = Application.getIt<AuthenticationService>();
+    _controller = ScrollController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -38,9 +47,15 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "设置",
-          style: AllpassTextUI.titleBarStyle,
+        title: InkWell(
+          splashColor: Colors.transparent,
+          child: Text(
+            "设置",
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          onTap: () {
+            _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -53,6 +68,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         children: <Widget>[
           Expanded(
             child: ListView(
+              controller: _controller,
               children: <Widget>[
                 Container(
                   child: ListTile(

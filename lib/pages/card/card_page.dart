@@ -24,9 +24,18 @@ class CardPage extends StatefulWidget {
 
 class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin {
 
+  ScrollController _controller;
+
   @override
   void initState() {
     super.initState();
+    _controller = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -43,9 +52,15 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "卡片",
-          style: AllpassTextUI.titleBarStyle,
+        title: InkWell(
+          splashColor: Colors.transparent,
+          child: Text(
+            "卡片",
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          onTap: () {
+            _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
         centerTitle: true,
         backgroundColor: AllpassColorUI.mainBackgroundColor,
@@ -67,6 +82,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                       builder: (context, model, _) {
                         if (model.cardList.length >= 1) {
                           return ListView.builder(
+                            controller: _controller,
                             itemBuilder: (context, index) =>
                                 CardWidgetItem(index),
                             itemCount: model.cardList.length,

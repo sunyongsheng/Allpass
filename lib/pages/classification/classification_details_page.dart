@@ -9,6 +9,8 @@ import 'package:allpass/pages/password/view_password_page.dart';
 
 class ClassificationDetailsPage extends StatelessWidget {
 
+  final ScrollController _controller = ScrollController();
+
   final String type;
   ClassificationDetailsPage(this.type);
 
@@ -16,9 +18,15 @@ class ClassificationDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          type,
-          style: AllpassTextUI.titleBarStyle,
+        title: InkWell(
+          splashColor: Colors.transparent,
+          child: Text(
+            type,
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          onTap: () {
+            _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+          },
         ),
         centerTitle: true,
         elevation: 0,
@@ -28,6 +36,7 @@ class ClassificationDetailsPage extends StatelessWidget {
       ),
       backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: ListView(
+        controller: _controller,
         children: _getWidgetsList(context),
       ),
     );
