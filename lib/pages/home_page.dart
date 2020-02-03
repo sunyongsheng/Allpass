@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/params/params.dart';
+import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
 import 'package:allpass/pages/classification/classification_page.dart';
@@ -11,7 +13,7 @@ class HomePage extends StatefulWidget {
   _HomePage createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin {
+class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
 
   final List<Widget> _pagesList = List()
     ..add(PasswordPage())
@@ -34,6 +36,18 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin {
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      if (Params.enabledBiometrics) {
+        NavigationUtil.goAuthLoginPage(context);
+      } else {
+        NavigationUtil.goLoginPage(context);
+      }
+    }
   }
 
   @override
