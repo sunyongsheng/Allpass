@@ -131,7 +131,34 @@ class ImportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
-              onTap: () => filePickAndImport(context, AllpassType.PASSWORD),
+              onTap: () async {
+                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
+                    allowedFileExtensions: ["csv"]
+                );
+                String path = await FlutterDocumentPicker.openDocument(params: param);
+                showDialog(
+                    context: context,
+                    child: FutureBuilder(
+                      future: importFuture(context, AllpassType.PASSWORD, path),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return Center(
+                              child: Icon(
+                                Icons.check_circle,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            );
+                          default:
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                        }
+                      },
+                    )
+                );
+              }
             ),
           ),
           Container(
@@ -139,7 +166,34 @@ class ImportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
-              onTap: () => filePickAndImport(context, AllpassType.CARD),
+              onTap: () async {
+                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
+                    allowedFileExtensions: ["csv"]
+                );
+                String path = await FlutterDocumentPicker.openDocument(params: param);
+                showDialog(
+                    context: context,
+                    child: FutureBuilder(
+                      future: importFuture(context, AllpassType.CARD, path),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return Center(
+                              child: Icon(
+                                Icons.check_circle,
+                                size: 50,
+                                color: Colors.white,
+                              ),
+                            );
+                          default:
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                        }
+                      },
+                    )
+                );
+              }
             ),
           ),
         ],
@@ -147,11 +201,7 @@ class ImportTypeSelectPage extends StatelessWidget {
     );
   }
 
-  Future<Null> filePickAndImport(BuildContext context, AllpassType type) async {
-    FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
-        allowedFileExtensions: ["csv"]
-    );
-    String path = await FlutterDocumentPicker.openDocument(params: param);
+  Future<Null> importFuture(BuildContext context, AllpassType type, String path) async {
     if (path != null) {
       try {
         if (type == AllpassType.PASSWORD) {
