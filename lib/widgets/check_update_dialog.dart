@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import 'package:allpass/application.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+
 
 class CheckUpdateDialog extends StatefulWidget {
 
@@ -15,7 +21,9 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
   var _checkRes;
   bool _update = false;
   Widget _content;
-  String _updateContent;
+  String _updateContent = "";
+  String _downloadUrl;
+  Dio _dio;
 
   @override
   void initState() {
@@ -24,10 +32,22 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
   }
 
   Future<Null> checkUpdate() async {
-    await Future.delayed(Duration(seconds: 1)).then((_) {
-      _updateContent = "sadsadsadas";
-      _update = false;
-    });
+    _dio = Dio();
+    try {
+      Response response = await _dio.get(
+          "http://47.102.208.175:8080/AllpassUpdateService_war/update?version=${Application.version}");
+      if (response.headers.value("version") == Application.version) {
+        _update = false;
+      } else {
+        _update = true;
+        _downloadUrl = response.headers.value("download_url");
+      }
+      _updateContent = response.headers.value("update_content").replaceAll("~", "\n");
+    } catch (e) {
+      Fluttertoast.showToast(msg: "检查更新失败");
+      Navigator.pop(context);
+      return;
+    }
     _content = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -68,8 +88,8 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
                 _update
                 ? FlatButton(
                   child: Text("下载更新"),
-                  onPressed: () {
-
+                  onPressed: () async {
+                    await launch(_downloadUrl);
                   },
                 )
                 : FlatButton(
