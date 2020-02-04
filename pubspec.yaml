@@ -51,6 +51,8 @@ dependencies:
   flutter_screenutil: ^0.7.0
   # 汉字转拼音
   lpinyin: ^1.0.9
+  # 网络请求
+  dio: ^3.0.8
 
 dev_dependencies:
   flutter_test:
