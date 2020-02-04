@@ -35,17 +35,17 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
     _dio = Dio();
     try {
       Response response = await _dio.get(
-          "http://47.102.208.175:8080/AllpassUpdateService_war/update?version=${Application.version}");
+          "http://47.102.208.175:8080/AllpassUpdateService/update?version=${Application.version}");
       if (response.headers.value("version") == Application.version) {
         _update = false;
       } else {
         _update = true;
         _downloadUrl = response.headers.value("download_url");
       }
-      _updateContent = response.headers.value("update_content").replaceAll("~", "\n");
-    } catch (e) {
-      Fluttertoast.showToast(msg: "检查更新失败");
+      _updateContent = response.data.replaceAll("~", "\n");
+    } on DioError {
       Navigator.pop(context);
+      Fluttertoast.showToast(msg: "检查更新失败");
       return;
     }
     _content = Column(
