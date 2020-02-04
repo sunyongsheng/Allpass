@@ -43,29 +43,37 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
         _downloadUrl = response.headers.value("download_url");
       }
       _updateContent = response.data.replaceAll("~", "\n");
-    } on DioError {
+      _content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _update
+              ? Text("有新版本可以下载！")
+              : Text("您的版本是最新版！"),
+          _update
+              ? Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+            child: Text("更新内容：", style: TextStyle(fontWeight: FontWeight.bold),),
+          )
+              : Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+            child: Text("最近更新：", style: TextStyle(fontWeight: FontWeight.bold),),
+          ),
+          Text(_updateContent)
+        ],
+      );
+    } on DioError catch (e) {
       Navigator.pop(context);
+      _updateContent = "Unknow Error: $e";
       Fluttertoast.showToast(msg: "检查更新失败");
+      _content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("检查过程中有错误出现！"),
+          Text(_updateContent)
+        ],
+      );
       return;
     }
-    _content = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _update
-            ? Text("有新版本可以下载！")
-            : Text("您的版本是最新版！"),
-        _update
-            ? Padding(
-          padding: AllpassEdgeInsets.smallTBPadding,
-          child: Text("更新内容：", style: TextStyle(fontWeight: FontWeight.bold),),
-        )
-            : Padding(
-          padding: AllpassEdgeInsets.smallTBPadding,
-          child: Text("最近更新：", style: TextStyle(fontWeight: FontWeight.bold),),
-        ),
-        Text(_updateContent)
-      ],
-    );
   }
 
   @override
