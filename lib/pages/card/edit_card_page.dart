@@ -99,7 +99,7 @@ class _EditCardPage extends State<EditCardPage> {
             appBar: AppBar(
               title: Text(
                 pageName,
-                style: AllpassTextUI.firstTitleStyleBlack,
+                style: AllpassTextUI.titleBarStyle,
               ),
               actions: <Widget>[
                 IconButton(

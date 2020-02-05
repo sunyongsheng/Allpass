@@ -96,7 +96,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
         appBar: AppBar(
           title: Text(
             pageName,
-            style: AllpassTextUI.firstTitleStyleBlack,
+            style: AllpassTextUI.titleBarStyle,
           ),
           actions: <Widget>[
             IconButton(
