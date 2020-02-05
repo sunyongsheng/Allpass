@@ -21,8 +21,8 @@ class PasswordPage extends StatefulWidget {
   }
 }
 
-class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClientMixin{
-
+class _PasswordPageState extends State<PasswordPage>
+    with AutomaticKeepAliveClientMixin {
   ScrollController _controller;
 
   @override
@@ -48,135 +48,121 @@ class _PasswordPageState extends State<PasswordPage> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: AllpassEdgeInsets.smallLPadding,
-          child: InkWell(
-            splashColor: Colors.transparent,
-            child: Text(
-              "密码",
-              style: AllpassTextUI.titleBarStyle,
-            ),
-            onTap: () {
-              _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
-            },
-          ),
-        ),
-        elevation: 0,
-        brightness: Brightness.light,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: <Widget>[
-          Params.multiSelected
-          ? InkWell(
+        appBar: AppBar(
+          title: Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
+            child: InkWell(
               splashColor: Colors.transparent,
-              child: Icon(Icons.delete_outline),
+              child: Text("密码", style: AllpassTextUI.titleBarStyle,),
               onTap: () {
-                showDialog<bool>(
-                    context: context,
-                  builder: (context) => ConfirmDialog(
-                    "确认删除",
-                    "您将删除${Params.multiPasswordList.length}项密码，确认吗？"
+                _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+              },
+            ),
+          ),
+          elevation: 0,
+          brightness: Brightness.light,
+          backgroundColor: AllpassColorUI.mainBackgroundColor,
+          automaticallyImplyLeading: false,
+          iconTheme: IconThemeData(color: Colors.black),
+          actions: <Widget>[
+            Params.multiSelected
+                ? InkWell(
+                    splashColor: Colors.transparent,
+                    child: Icon(Icons.delete_outline),
+                    onTap: () {
+                      showDialog<bool>(
+                              context: context,
+                              builder: (context) => ConfirmDialog("确认删除",
+                                  "您将删除${Params.multiPasswordList.length}项密码，确认吗？"))
+                          .then((confirm) {
+                        if (confirm) {
+                          for (var item in Params.multiPasswordList) {
+                            Provider.of<PasswordList>(context)
+                                .deletePassword(item);
+                          }
+                          Params.multiPasswordList.clear();
+                        }
+                      });
+                    },
                   )
-                ).then((confirm) {
-                  if (confirm) {
-                    for (var item in Params.multiPasswordList) {
-                      Provider.of<PasswordList>(context).deletePassword(item);
-                    }
-                    Params.multiPasswordList.clear();
-                  }
+                : Container(),
+            FlatButton(
+              splashColor: Colors.transparent,
+              child: Params.multiSelected ? Text("取消") : Text("多选"),
+              onPressed: () {
+                setState(() {
+                  Params.multiPasswordList.clear();
+                  Params.multiSelected = !Params.multiSelected;
                 });
               },
-          ) : Container(),
-          FlatButton(
-            splashColor: Colors.transparent,
-            child: Params.multiSelected ? Text("取消") : Text("多选"),
+            )
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            // 搜索框 按钮
+            SearchButtonWidget(_searchPress, "密码"),
+            // 密码列表
+            Expanded(
+              child: RefreshIndicator(
+                  onRefresh: _query,
+                  child: Scrollbar(
+                    child: Provider.of<PasswordList>(context).passwordList.length >= 1
+                        ? Params.multiSelected
+                            ? ListView.builder(
+                                controller: _controller,
+                                itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
+                                itemCount: Provider.of<PasswordList>(context).passwordList.length,
+                              )
+                            : ListView.builder(
+                                controller: _controller,
+                                itemBuilder: (context, index) => PasswordWidgetItem(index),
+                                itemCount: Provider.of<PasswordList>(context).passwordList.length,
+                              )
+                        : ListView(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+                              ),
+                              Padding(
+                                child: Center(child: Text("什么也没有，赶快添加吧"),),
+                                padding: AllpassEdgeInsets.forCardInset,
+                              ),
+                              Padding(
+                                padding: AllpassEdgeInsets.smallTBPadding,
+                              ),
+                              Padding(
+                                child: Center(
+                                  child: Text(
+                                    "这里存储你的密码信息，例如\n微博账号、知乎账号等",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                padding: AllpassEdgeInsets.forCardInset,
+                              )
+                            ],
+                          ),
+                  )),
+            )
+          ],
+        ),
+        backgroundColor: AllpassColorUI.mainBackgroundColor,
+        // 添加 按钮
+        floatingActionButton: Consumer<PasswordList>(
+          builder: (context, model, _) => FloatingActionButton(
+            child: Icon(Icons.add),
             onPressed: () {
-              setState(() {
-                Params.multiPasswordList.clear();
-                Params.multiSelected = !Params.multiSelected;
+              Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
+                  .then((resData) {
+                if (resData != null) {
+                  model.insertPassword(resData);
+                }
               });
             },
-          )
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          // 搜索框 按钮
-          SearchButtonWidget(_searchPress, "密码"),
-          // 密码列表
-          Expanded(
-            child: RefreshIndicator(
-               onRefresh: _query,
-               child: Scrollbar(
-                 child: Consumer<PasswordList>(
-                   builder: (context, model, child) {
-                     if (model.passwordList.length >= 1) {
-                       return Params.multiSelected
-                         ? ListView.builder(
-                            controller: _controller,
-                            itemBuilder: (context, index) =>
-                                MultiPasswordWidgetItem(index),
-                            itemCount: model.passwordList.length,
-                       )
-                       : ListView.builder(
-                          controller: _controller,
-                          itemBuilder: (context, index) =>
-                              PasswordWidgetItem(index),
-                          itemCount: model.passwordList.length,
-                       );
-                     } else {
-                       return ListView(
-                         children: <Widget>[
-                           Padding(
-                             padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
-                           ),
-                           Padding(
-                             child: Center(
-                               child: Text("什么也没有，赶快添加吧"),
-                             ),
-                             padding: AllpassEdgeInsets.forCardInset,
-                           ),
-                           Padding(
-                             padding: AllpassEdgeInsets.smallTBPadding,
-                           ),
-                           Padding(
-                             child: Center(
-                               child: Text("这里存储你的密码信息，例如\n微博账号、知乎账号等", textAlign: TextAlign.center,),
-                             ),
-                             padding: AllpassEdgeInsets.forCardInset,
-                           )
-                         ],
-                       );
-                     }
-                   },
-                 )
-               )
-            ),
-          )
-        ],
-      ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
-      // 添加 按钮
-      floatingActionButton: Consumer<PasswordList>(
-        builder: (context, model, _) => FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => EditPasswordPage(null, "添加密码")))
-            .then((resData) {
-              if (resData != null) {
-                model.insertPassword(resData);
-              }
-            });
-          },
-          heroTag: "password",
-        ),
-      )
-    );
+            heroTag: "password",
+          ),
+        ));
   }
 
   _searchPress () {
