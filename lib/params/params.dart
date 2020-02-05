@@ -1,4 +1,6 @@
 import 'package:allpass/application.dart';
+import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/string_process.dart';
 
 /// 存储系统参数
@@ -9,6 +11,9 @@ class Params {
   static String password; // 使用者密码
   static bool enabledBiometrics = false; // 是否启用生物识别
   static bool longPressCopy = true;     // 是否开启长按复制，否则为长按多选
+  static bool multiSelected = false;      // 是否点击了多选按钮
+  static List<PasswordBean> multiPasswordList = List(); // 多选的密码
+  static List<CardBean> multiCardList = List();         // 多选的卡片
 
   static List<String> folderList = List();
   static List<String> labelList = List();
