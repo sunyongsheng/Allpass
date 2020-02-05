@@ -7,9 +7,9 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/widgets/add_category_dialog.dart';
+import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
-import 'package:allpass/widgets/password_generation_dialog.dart';
+import 'package:allpass/widgets/common/password_generation_dialog.dart';
 
 /// 查看或编辑“卡片”页面
 class EditCardPage extends StatefulWidget {

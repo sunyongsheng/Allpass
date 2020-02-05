@@ -10,8 +10,8 @@ import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
-import 'package:allpass/widgets/input_main_password_dialog.dart';
-import 'package:allpass/widgets/check_update_dialog.dart';
+import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
+import 'package:allpass/widgets/setting/check_update_dialog.dart';
 import 'package:allpass/services/authentication_service.dart';
 
 

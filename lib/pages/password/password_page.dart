@@ -9,8 +9,8 @@ import 'package:allpass/pages/password/password_widget_item.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/widgets/search_button_widget.dart';
-import 'package:allpass/widgets/confirm_dialog.dart';
+import 'package:allpass/widgets/common/search_button_widget.dart';
+import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/provider/password_list.dart';
 
 /// 密码页面

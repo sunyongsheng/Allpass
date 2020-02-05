@@ -9,9 +9,9 @@ import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
-import 'package:allpass/widgets/confirm_dialog.dart';
-import 'package:allpass/widgets/modify_password_dialog.dart';
-import 'package:allpass/widgets/input_main_password_dialog.dart';
+import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/widgets/setting/modify_password_dialog.dart';
+import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 
 /// 主账号管理页
 class AccountManagerPage extends StatefulWidget {

@@ -10,7 +10,7 @@ import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/widgets/confirm_dialog.dart';
+import 'package:allpass/widgets/common/confirm_dialog.dart';
 
 class ViewCardPage extends StatefulWidget {
   final CardBean oldData;

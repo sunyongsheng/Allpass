@@ -21,8 +21,8 @@ import 'package:allpass/pages/setting/import/chrome_import_help.dart';
 import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/widgets/confirm_dialog.dart';
-import 'package:allpass/widgets/input_main_password_dialog.dart';
+import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 
 /// 导入导出页面
 class ImportExportPage extends StatelessWidget {

@@ -8,7 +8,7 @@ import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/widgets/none_border_circular_textfield.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 import 'package:allpass/pages/login/login_page.dart';
 
 class RegisterPage extends StatelessWidget {

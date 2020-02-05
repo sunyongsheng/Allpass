@@ -15,7 +15,7 @@ import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/login/register_page.dart';
-import 'package:allpass/widgets/none_border_circular_textfield.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 登陆页面
 class LoginPage extends StatefulWidget {
