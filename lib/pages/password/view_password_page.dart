@@ -421,6 +421,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 child: Icon(Icons.delete),
                               ),
                             ],
+                          ),
+                          Padding(
+                            padding: AllpassEdgeInsets.smallTBPadding,
                           )
                         ],
                       ),

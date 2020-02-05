@@ -500,6 +500,9 @@ class _ViewCardPage extends State<ViewCardPage> {
                               child: Icon(Icons.delete),
                             ),
                           ],
+                        ),
+                        Padding(
+                          padding: AllpassEdgeInsets.smallTBPadding,
                         )
                       ],
                     ),
