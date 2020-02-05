@@ -110,51 +110,43 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           // 卡片列表
           Expanded(
             child: RefreshIndicator(
-                onRefresh: _query,
-                child: Scrollbar(
-                    child: Consumer<CardList>(
-                      builder: (context, model, _) {
-                        if (model.cardList.length >= 1) {
-                          return Params.multiSelected
-                            ? ListView.builder(
-                              controller: _controller,
-                              itemBuilder: (context, index) =>
-                                  MultiCardWidgetItem(index),
-                              itemCount: model.cardList.length,
-                            )
-                            : ListView.builder(
-                              controller: _controller,
-                              itemBuilder: (context, index) =>
-                                  CardWidgetItem(index),
-                              itemCount: model.cardList.length,
-                            );
-                        } else {
-                          return ListView(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
-                              ),
-                              Padding(
-                                child: Center(
-                                  child: Text("什么也没有，赶快添加吧"),
-                                ),
-                                padding: AllpassEdgeInsets.forCardInset,
-                              ),
-                              Padding(
-                                padding: AllpassEdgeInsets.smallTBPadding,
-                              ),
-                              Padding(
-                                child: Center(
-                                  child: Text("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等",textAlign: TextAlign.center,),
-                                ),
-                                padding: AllpassEdgeInsets.forCardInset,
-                              )
-                            ],
-                          );
-                        }
-                      }
+              onRefresh: _query,
+              child: Scrollbar(
+                child: Provider.of<CardList>(context).cardList.length >= 1
+                  ? Params.multiSelected
+                    ? ListView.builder(
+                        controller: _controller,
+                        itemBuilder: (context, index) => MultiCardWidgetItem(index),
+                        itemCount: Provider.of<CardList>(context).cardList.length,
                     )
-                )
+                    : ListView.builder(
+                        controller: _controller,
+                        itemBuilder: (context, index) => CardWidgetItem(index),
+                        itemCount: Provider.of<CardList>(context).cardList.length,
+                    )
+                  : ListView(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+                        ),
+                        Padding(
+                          child: Center(
+                            child: Text("什么也没有，赶快添加吧"),
+                          ),
+                          padding: AllpassEdgeInsets.forCardInset,
+                        ),
+                        Padding(
+                          padding: AllpassEdgeInsets.smallTBPadding,
+                        ),
+                        Padding(
+                          child: Center(
+                            child: Text("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等",textAlign: TextAlign.center,),
+                          ),
+                          padding: AllpassEdgeInsets.forCardInset,
+                        )
+                    ],
+                 )
+              )
             ),
           )
         ],
