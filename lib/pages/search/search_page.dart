@@ -120,7 +120,6 @@ class _SearchPage extends State<SearchPage> {
       }
     } else {
       for (var item in Provider.of<CardList>(context).cardList) {
-        Color t = getRandomColor(item.uniqueKey);
         if (item.name.contains(_searchText) ||
             item.ownerName.contains(_searchText) ||
             item.notes.contains(_searchText) || 
@@ -129,11 +128,11 @@ class _SearchPage extends State<SearchPage> {
           _result.add(ListTile(
             leading: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: t
+                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                  color: getRandomColor(item.uniqueKey),
               ),
               child: CircleAvatar(
-                backgroundColor: t,
+                backgroundColor: Colors.transparent,
                 child: Text(
                   item.name.substring(0, 1),
                   style: TextStyle(color: Colors.white),
