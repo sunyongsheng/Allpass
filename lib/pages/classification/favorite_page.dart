@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/pages/card/view_card_page.dart';
+import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -64,39 +64,7 @@ class FavoritePage extends StatelessWidget {
         list.add(Consumer<CardList>(
           builder: (context, model, _) {
             if (model.cardList[index].fav == 1) {
-              Color t = getRandomColor(model.cardList[index].uniqueKey);
-              return Container(
-                margin: AllpassEdgeInsets.listInset,
-                child: ListTile(
-                  leading: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: t
-                    ),
-                    child: CircleAvatar(
-                      backgroundColor: t,
-                      child: Text(
-                        model.cardList[index].name.substring(0, 1),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  title: Text(model.cardList[index].name),
-                  subtitle: Text(model.cardList[index].ownerName),
-                  onTap: () => Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => ViewCardPage(model.cardList[index])
-                  )).then((bean) {
-                    if (bean != null) {
-                      // 改变了就更新，没改变就删除
-                      if (bean.isChanged) {
-                        model.updateCard(bean);
-                      } else {
-                        model.deleteCard(model.cardList[index]);
-                      }
-                    }
-                  }),
-                ),
-              );
+              return SimpleCardWidgetItem(index);
             } else {
               return Container();
             }
