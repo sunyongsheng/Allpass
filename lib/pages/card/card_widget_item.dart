@@ -72,6 +72,52 @@ class CardWidgetItem extends StatelessWidget {
   }
 }
 
+class SimpleCardWidgetItem extends StatelessWidget {
+
+  final int index;
+  SimpleCardWidgetItem(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CardList>(
+      builder: (context, model, _) {
+        return Container(
+          margin: AllpassEdgeInsets.listInset,
+          child: ListTile(
+            leading: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                  color: getRandomColor(model.cardList[index].uniqueKey)
+              ),
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                child: Text(
+                  model.cardList[index].name.substring(0, 1),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            title: Text(model.cardList[index].name),
+            subtitle: Text(model.cardList[index].ownerName),
+            onTap: () => Navigator.push(context, MaterialPageRoute(
+                builder: (context) => ViewCardPage(model.cardList[index])
+            )).then((bean) {
+              if (bean != null) {
+                // 改变了就更新，没改变就删除
+                if (bean.isChanged) {
+                  model.updateCard(bean);
+                } else {
+                  model.deleteCard(model.cardList[index]);
+                }
+              }
+            }),
+          ),
+        );
+      },
+    );
+  }
+}
+
 class MultiCardWidgetItem extends StatefulWidget {
   final int index;
 
