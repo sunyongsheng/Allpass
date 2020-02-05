@@ -5,7 +5,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
-import 'package:allpass/pages/password/view_password_page.dart';
+import 'package:allpass/pages/password/password_widget_item.dart';
 
 class FavoritePage extends StatelessWidget {
 
@@ -46,33 +46,7 @@ class FavoritePage extends StatelessWidget {
         list.add(Consumer<PasswordList>(
           builder: (context, model, _) {
             if (model.passwordList[index].fav == 1) {
-              return Container(
-                margin: AllpassEdgeInsets.listInset,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: getRandomColor(model.passwordList[index].uniqueKey),
-                    child: Text(
-                      model.passwordList[index].name.substring(0, 1),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
-                  subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => ViewPasswordPage(model.passwordList[index])
-                    )).then((bean) {
-                      if (bean != null) {
-                        if (bean.isChanged) {
-                          model.updatePassword(bean);
-                        } else {
-                          model.deletePassword(model.passwordList[index]);
-                        }
-                      }
-                    });
-                  },
-                ),
-              );
+              return PasswordWidgetItem(index);
             } else {
               return Container();
             }
