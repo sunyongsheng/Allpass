@@ -465,7 +465,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                         builder: (context) =>
                                             EditCardPage(_bean, "编辑卡片")))
                                     .then((bean) {
-                                  if (bean.isChanged) {
+                                  if (bean != null) {
                                     setState(() {
                                       _bean = bean;
                                       _decryptPassword();

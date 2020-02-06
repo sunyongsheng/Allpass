@@ -387,7 +387,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                       MaterialPageRoute(
                                           builder: (context) => EditPasswordPage(_bean, "编辑密码")))
                                       .then((bean) {
-                                    if (bean.isChanged) {
+                                    if (bean != null) {
                                       setState(() {
                                         _bean = bean;
                                         _decryptPassword();
@@ -413,8 +413,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                       // 如果想删除，则先将isChanged属性改为false
                                       // 否则如果先修改再删除会导致password页不删除
                                       _bean.isChanged = false;
-                                      Navigator.pop<PasswordBean>(
-                                          context, _bean);
+                                      Navigator.pop<PasswordBean>(context, _bean);
                                     }
                                   });
                                 },

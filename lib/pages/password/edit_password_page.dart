@@ -26,8 +26,6 @@ class EditPasswordPage extends StatefulWidget {
 
 class _EditPasswordPage extends State<EditPasswordPage> {
   String pageName;
-
-  PasswordBean _tempData;
   PasswordBean _oldData;
 
   var _futureHelper;
@@ -87,47 +85,42 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () {
-        Navigator.pop<PasswordBean>(context, _oldData);
-        return Future<bool>.value(false);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            pageName,
-            style: AllpassTextUI.titleBarStyle,
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.code),
-              onPressed: () {
-                showDialog(context: context, child: PasswordGenerationDialog())
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          pageName,
+          style: AllpassTextUI.titleBarStyle,
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.code),
+            onPressed: () {
+              showDialog(context: context, child: PasswordGenerationDialog())
                   .then((value) {
-                    if (value != null) _passwordController.text = value;
-                });
-              },
+                if (value != null) _passwordController.text = value;
+              });
+            },
+          ),
+          IconButton(
+            icon: _fav == 1
+                ? Icon(Icons.favorite, color: Colors.redAccent,)
+                : Icon(Icons.favorite_border, color: Colors.black,),
+            onPressed: () {
+              setState(() {
+                _fav = _fav == 1 ? 0 : 1;
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.check,
+              color: Colors.black,
             ),
-            IconButton(
-              icon: _fav == 1
-              ? Icon(Icons.favorite, color: Colors.redAccent,)
-              : Icon(Icons.favorite_border, color: Colors.black,),
-              onPressed: () {
-                setState(() {
-                  _fav = _fav == 1 ? 0 : 1;
-                });
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.check,
-                color: Colors.black,
-              ),
-              onPressed: () async {
-                if (_usernameController.text.length >= 1
-                    && _passwordController.text.length >= 1) {
-                  String pw = EncryptUtil.encrypt(_passwordController.text);
-                  _tempData = PasswordBean(
+            onPressed: () async {
+              if (_usernameController.text.length >= 1
+                  && _passwordController.text.length >= 1) {
+                String pw = EncryptUtil.encrypt(_passwordController.text);
+                PasswordBean tempData = PasswordBean(
                     key: _oldData?.uniqueKey,
                     username: _usernameController.text,
                     password: pw,
@@ -138,48 +131,48 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     notes: _notesController.text,
                     isChanged: true,
                     fav: _fav
-                  );
-                  Navigator.pop<PasswordBean>(context, _tempData);
-                } else {
-                  Fluttertoast.showToast(msg: "账号和密码不允许为空！");
-                }
-              },
-            )
-          ],
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          brightness: Brightness.light,
-        ),
-        body: FutureBuilder(
-          future: _futureHelper,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
                 );
-              case ConnectionState.active:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              case ConnectionState.done:
-                return SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "名称",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              TextField(
-                                controller: _nameController,
-                                decoration: InputDecoration(
+                Navigator.pop<PasswordBean>(context, tempData);
+              } else {
+                Fluttertoast.showToast(msg: "账号和密码不允许为空！");
+              }
+            },
+          )
+        ],
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        brightness: Brightness.light,
+      ),
+      body: FutureBuilder(
+        future: _futureHelper,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.active:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case ConnectionState.done:
+              return SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "名称",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            TextField(
+                              controller: _nameController,
+                              decoration: InputDecoration(
                                   suffix: InkWell(
                                     child: Icon(
                                       Icons.cancel,
@@ -191,207 +184,206 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                       WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
                                     },
                                   )
-                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "账号",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              TextField(
-                                controller: _usernameController,
-                                decoration: InputDecoration(
-                                    suffix: InkWell(
-                                      child: Icon(
-                                        Icons.cancel,
-                                        size: 20,
-                                        color: Colors.black26,
-                                      ),
-                                      onTap: () {
-                                        // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                        WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
-                                      },
-                                    )
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "密码",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _passwordController,
-                                      obscureText: !_passwordVisible,
-                                      decoration: InputDecoration(
-                                          suffix: InkWell(
-                                            child: Icon(
-                                              Icons.cancel,
-                                              size: 20,
-                                              color: Colors.black26,),
-                                            onTap: () {
-                                              // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                              WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
-                                            },
-                                          )
-                                      ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "账号",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            TextField(
+                              controller: _usernameController,
+                              decoration: InputDecoration(
+                                  suffix: InkWell(
+                                    child: Icon(
+                                      Icons.cancel,
+                                      size: 20,
+                                      color: Colors.black26,
                                     ),
-                                  ),
-                                  IconButton(
-                                    icon: _passwordVisible == true
-                                        ? Icon(Icons.visibility)
-                                        : Icon(Icons.visibility_off),
-                                    onPressed: () {
-                                      this.setState(() {
-                                        if (_passwordVisible == false)
-                                          _passwordVisible = true;
-                                        else
-                                          _passwordVisible = false;
-                                      });
+                                    onTap: () {
+                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                      WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
                                     },
                                   )
-                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "链接",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              TextField(
-                                controller: _urlController,
-                                decoration: InputDecoration(
-                                    suffix: InkWell(
-                                      child: Icon(
-                                        Icons.cancel,
-                                        size: 20,
-                                        color: Colors.black26,
-                                      ),
-                                      onTap: () {
-                                        // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                        WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
-                                      },
-                                    )
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "密码",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: TextField(
+                                    controller: _passwordController,
+                                    obscureText: !_passwordVisible,
+                                    decoration: InputDecoration(
+                                        suffix: InkWell(
+                                          child: Icon(
+                                            Icons.cancel,
+                                            size: 20,
+                                            color: Colors.black26,),
+                                          onTap: () {
+                                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                            WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                          },
+                                        )
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "文件夹",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              DropdownButton(
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    _folder = newValue;
-                                  });
-                                },
-                                items:
-                                Params.folderList.map<DropdownMenuItem<String>>((item) {
-                                  return DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
-                                style: AllpassTextUI.firstTitleStyleBlack,
-                                elevation: 8,
-                                iconSize: 30,
-                                value: _folder,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(bottom: 10),
-                                child: Text(
-                                  "标签",
-                                  style: AllpassTextUI.firstTitleStyleBlue,
-                                ),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Wrap(
-                                        crossAxisAlignment: WrapCrossAlignment.start,
-                                        spacing: 8.0,
-                                        runSpacing: 10.0,
-                                        children: _getTag()),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "备注",
-                                style: AllpassTextUI.firstTitleStyleBlue,
-                              ),
-                              TextField(
-                                controller: _notesController,
-                                maxLines: null,
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => DetailTextPage("备注", _notesController.text, true),
-                                  )).then((newValue) {
-                                    setState(() {
-                                      _notesController.text = newValue;
+                                IconButton(
+                                  icon: _passwordVisible == true
+                                      ? Icon(Icons.visibility)
+                                      : Icon(Icons.visibility_off),
+                                  onPressed: () {
+                                    this.setState(() {
+                                      if (_passwordVisible == false)
+                                        _passwordVisible = true;
+                                      else
+                                        _passwordVisible = false;
                                     });
-                                  });
-                                },
+                                  },
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "链接",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            TextField(
+                              controller: _urlController,
+                              decoration: InputDecoration(
+                                  suffix: InkWell(
+                                    child: Icon(
+                                      Icons.cancel,
+                                      size: 20,
+                                      color: Colors.black26,
+                                    ),
+                                    onTap: () {
+                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                      WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
+                                    },
+                                  )
                               ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ));
-              default:
-                return Center(
-                  child: Text("未知状态，请与开发者联系：sys6511@126.com"),
-                );
-            }
-          },
-        ),
-        backgroundColor: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "文件夹",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            DropdownButton(
+                              onChanged: (newValue) {
+                                setState(() {
+                                  _folder = newValue;
+                                });
+                              },
+                              items:
+                              Params.folderList.map<DropdownMenuItem<String>>((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }).toList(),
+                              style: AllpassTextUI.firstTitleStyleBlack,
+                              elevation: 8,
+                              iconSize: 30,
+                              value: _folder,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                "标签",
+                                style: AllpassTextUI.firstTitleStyleBlue,
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Wrap(
+                                      crossAxisAlignment: WrapCrossAlignment.start,
+                                      spacing: 8.0,
+                                      runSpacing: 10.0,
+                                      children: _getTag()),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "备注",
+                              style: AllpassTextUI.firstTitleStyleBlue,
+                            ),
+                            TextField(
+                              controller: _notesController,
+                              maxLines: null,
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => DetailTextPage("备注", _notesController.text, true),
+                                )).then((newValue) {
+                                  setState(() {
+                                    _notesController.text = newValue;
+                                  });
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ));
+            default:
+              return Center(
+                child: Text("未知状态，请与开发者联系：sys6511@126.com"),
+              );
+          }
+        },
       ),
+      backgroundColor: Colors.white,
     );
   }
 

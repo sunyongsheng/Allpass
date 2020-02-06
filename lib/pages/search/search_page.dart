@@ -29,7 +29,6 @@ class _SearchPage extends State<SearchPage> {
 
   String _searchText = "";
   var _searchController;
-  bool _changed = false;
   List<Widget> _result = List();
 
   _SearchPage(this._type) {
@@ -204,7 +203,7 @@ class _SearchPage extends State<SearchPage> {
                 padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
                 child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
               ),
-              onTap: () => Navigator.pop<bool>(context, _changed),
+              onTap: () => Navigator.pop(context),
             )
           ],
         ));
@@ -224,7 +223,6 @@ class _SearchPage extends State<SearchPage> {
                       builder: (context) => ViewPasswordPage(data)))
                 .then((reData) {
               if (reData != null) {
-                _changed = true;
                 if (reData.isChanged) {
                   Provider.of<PasswordList>(context).updatePassword(reData);
                 } else {
@@ -244,14 +242,13 @@ class _SearchPage extends State<SearchPage> {
                   builder: (context) => EditPasswordPage(data, "编辑密码")))
                 .then((reData) {
               if (reData != null) {
-                _changed = true;
                 if (reData.isChanged) {
                   Provider.of<PasswordList>(context).updatePassword(reData);
                 } else {
                   Provider.of<PasswordList>(context).deletePassword(data);
                 }
-                Navigator.pop(context);
               }
+              Navigator.pop(context);
             });
           },
         ),
@@ -301,7 +298,13 @@ class _SearchPage extends State<SearchPage> {
                         builder: (context) =>
                             ViewCardPage(data)))
                 .then((resData) {
-              if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+              if (resData != null) {
+                if (resData.isChanged) {
+                  Provider.of<CardList>(context).updateCard(resData);
+                } else {
+                  Provider.of<CardList>(context).deleteCard(resData);
+                }
+              }
               Navigator.pop(context);
             });
           }),
@@ -315,7 +318,13 @@ class _SearchPage extends State<SearchPage> {
                         builder: (context) =>
                             EditCardPage(data, "编辑卡片")))
                 .then((resData) {
-              if (resData != null) Provider.of<CardList>(context).updateCard(resData);
+              if (resData != null) {
+                if (resData.isChanged) {
+                  Provider.of<CardList>(context).updateCard(resData);
+                } else {
+                  Provider.of<CardList>(context).deleteCard(resData);
+                }
+              }
               Navigator.pop(context);
             });
           }),
