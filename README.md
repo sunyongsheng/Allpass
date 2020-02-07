@@ -16,6 +16,7 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 - 收藏功能
 - 备注功能
 - 密码生成器
+- 多选编辑功能
 
 # 注意
 
@@ -37,15 +38,12 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 # 下载体验
 
-[点此下载](https://www.aengus.top/assets/app/Allpass_V1.0.0_signed.apk)或者扫描下面的二维码进行下载：
-
-![Allpass](http://aengus.top/assets/app/allpass_v1.0.0.png)
-
+[点此下载](https://www.aengus.top/assets/app/Allpass_V1.0.7_signed.apk)
 
 # 未来规划
 
 - WebDAV同步功能
-- 多选编辑功能
+- ~多选编辑功能~（已完成）
 - 自动填充
 - 自动获取网站favicon作为密码头像
 - 智能识别网址生成名称
