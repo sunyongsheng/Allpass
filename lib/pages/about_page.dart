@@ -9,13 +9,14 @@ import 'package:allpass/pages/develop/debug_page.dart';
 
 class AboutPage extends StatelessWidget {
 
-  final Text _service = Text(
+  static final Text serviceContent = Text(
     '''
         1. Allpass（下称“本产品”）是一款开源的私密数据管理工具，采用Apache 2.0协议，所以你可以在满足Apache 2.0协议的基础上对本产品进行再发布。
         2. 本产品不做任何担保。由于用户行为（Root等）导致用户信息泄露或丢失，本产品免责。
         3. 任何由于黑客攻击、计算机病毒侵入或发作、因政府管制而造成的暂时性关闭等影响网络正常经营的不可抗力而造成的个人资料泄露、丢失、被盗用或被窜改等，本产品均得免责。
         4. 使用者因为违反本声明的规定而触犯中华人民共和国法律的，一切后果自己负责，本产品不承担任何责任。
         5. 开发者不会向任何无关第三方提供、出售、出租、分享或交易您的个人信息。Allpass也不会收集普通用户的信息。
+        6. 在使用过程中，Allpass需要获取手机的存储权限（导入及导出功能）、生物识别验证（用于指纹登录）及联网权限（检查更新）。
         ''',
     style: AllpassTextUI.firstTitleStyleBlack,
   );
@@ -143,7 +144,7 @@ class AboutPage extends StatelessWidget {
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) => DetailsPage(
                       title: "服务条款",
-                      content: _service,
+                      content: serviceContent,
                     )
                   ));
                 },
