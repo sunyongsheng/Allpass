@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/params.dart';
 import 'package:allpass/params/allpass_type.dart';
@@ -66,14 +67,19 @@ class _PasswordPageState extends State<PasswordPage>
           iconTheme: IconThemeData(color: Colors.black),
           actions: <Widget>[
             Params.multiSelected
-                ? InkWell(
-                    splashColor: Colors.transparent,
-                    child: Icon(Icons.delete_outline),
-                    onTap: () {
+                ? Row(
+              children: <Widget>[
+                InkWell(
+                  splashColor: Colors.transparent,
+                  child: Icon(Icons.delete_outline),
+                  onTap: () {
+                    if (Params.multiPasswordList.length == 0) {
+                      Fluttertoast.showToast(msg: "请选择一项密码");
+                    } else {
                       showDialog<bool>(
-                              context: context,
-                              builder: (context) => ConfirmDialog("确认删除",
-                                  "您将删除${Params.multiPasswordList.length}项密码，确认吗？"))
+                          context: context,
+                          builder: (context) => ConfirmDialog("确认删除",
+                              "您将删除${Params.multiPasswordList.length}项密码，确认吗？"))
                           .then((confirm) {
                         if (confirm) {
                           for (var item in Params.multiPasswordList) {
@@ -83,18 +89,48 @@ class _PasswordPageState extends State<PasswordPage>
                           Params.multiPasswordList.clear();
                         }
                       });
-                    },
-                  )
-                : Container(),
-            FlatButton(
+                    }
+                  },
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallLPadding,
+                ),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  child: Icon(Icons.select_all),
+                  onTap: () {
+                    if (Params.multiPasswordList.length != Provider.of<PasswordList>(context).passwordList.length) {
+                      Params.multiPasswordList.clear();
+                      setState(() {
+                        Params.multiPasswordList.addAll(Provider.of<PasswordList>(context).passwordList);
+                      });
+                    } else {
+                      setState(() {
+                        Params.multiPasswordList.clear();
+                      });
+                    }
+                  },
+                ),
+              ],
+            ) : Container(),
+            Padding(
+              padding: AllpassEdgeInsets.smallLPadding,
+            ),
+            InkWell(
               splashColor: Colors.transparent,
-              child: Params.multiSelected ? Text("取消") : Text("多选"),
-              onPressed: () {
+              child: Params.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+              onTap: () {
                 setState(() {
                   Params.multiPasswordList.clear();
                   Params.multiSelected = !Params.multiSelected;
                 });
               },
+            ),
+            Padding(
+              padding: AllpassEdgeInsets.smallLPadding,
+            ),
+            Padding(
+              padding: AllpassEdgeInsets.smallLPadding,
             )
           ],
         ),

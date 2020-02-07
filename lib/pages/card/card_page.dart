@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/params.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
@@ -71,35 +72,68 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
           Params.multiSelected
-              ? InkWell(
-            splashColor: Colors.transparent,
-            child: Icon(Icons.delete_outline),
-            onTap: () {
-              showDialog<bool>(
-                  context: context,
-                  builder: (context) => ConfirmDialog(
-                      "确认删除",
-                      "您将删除${Params.multiCardList.length}项卡片，确认吗？"
-                  )
-              ).then((confirm) {
-                if (confirm) {
-                  for (var item in Params.multiCardList) {
-                    Provider.of<CardList>(context).deleteCard(item);
+              ? Row(
+            children: <Widget>[
+              InkWell(
+                splashColor: Colors.transparent,
+                child: Icon(Icons.delete_outline),
+                onTap: () {
+                  if (Params.multiCardList.length == 0) {
+                    Fluttertoast.showToast(msg: "请选择一项密码");
+                  } else {
+                    showDialog<bool>(
+                        context: context,
+                        builder: (context) => ConfirmDialog("确认删除", "您将删除${Params.multiCardList.length}项密码，确认吗？"))
+                        .then((confirm) {
+                      if (confirm) {
+                        for (var item in Params.multiCardList) {
+                          Provider.of<CardList>(context).deleteCard(item);
+                        }
+                        Params.multiCardList.clear();
+                      }
+                    });
                   }
-                  Params.multiCardList.clear();
-                }
-              });
-            },
+                },
+              ),
+              Padding(
+                padding: AllpassEdgeInsets.smallLPadding,
+              ),
+              InkWell(
+                splashColor: Colors.transparent,
+                child: Icon(Icons.select_all),
+                onTap: () {
+                  if (Params.multiCardList.length != Provider.of<CardList>(context).cardList.length) {
+                    Params.multiCardList.clear();
+                    setState(() {
+                      Params.multiCardList.addAll(Provider.of<CardList>(context).cardList);
+                    });
+                  } else {
+                    setState(() {
+                      Params.multiCardList.clear();
+                    });
+                  }
+                },
+              ),
+            ],
           ) : Container(),
-          FlatButton(
+          Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
+          ),
+          InkWell(
             splashColor: Colors.transparent,
-            child: Params.multiSelected ? Text("取消") : Text("多选"),
-            onPressed: () {
+            child: Params.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+            onTap: () {
               setState(() {
                 Params.multiCardList.clear();
                 Params.multiSelected = !Params.multiSelected;
               });
             },
+          ),
+          Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
+          ),
+          Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
           )
         ],
       ),
