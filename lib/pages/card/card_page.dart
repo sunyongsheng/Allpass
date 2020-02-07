@@ -12,6 +12,7 @@ import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/widgets/common/select_item_dialog.dart';
 import 'package:allpass/provider/card_list.dart';
 
 /// 卡片页面
@@ -74,26 +75,27 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           Params.multiSelected
               ? Row(
             children: <Widget>[
-              InkWell(
-                splashColor: Colors.transparent,
-                child: Icon(Icons.delete_outline),
-                onTap: () {
-                  if (Params.multiCardList.length == 0) {
-                    Fluttertoast.showToast(msg: "请选择一项密码");
-                  } else {
-                    showDialog<bool>(
-                        context: context,
-                        builder: (context) => ConfirmDialog("确认删除", "您将删除${Params.multiCardList.length}项密码，确认吗？"))
-                        .then((confirm) {
-                      if (confirm) {
-                        for (var item in Params.multiCardList) {
-                          Provider.of<CardList>(context).deleteCard(item);
-                        }
-                        Params.multiCardList.clear();
-                      }
-                    });
-                  }
-                },
+              PopupMenuButton<String>(
+                  onSelected: (value) {
+                    switch (value) {
+                      case "删除":
+                        _deleteCard(context);
+                        break;
+                      case "移动":
+                        _moveCard(context);
+                        break;
+                    }
+                  },
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                        value: "移动",
+                        child: Text("移动")
+                    ),
+                    PopupMenuItem(
+                        value: "删除",
+                        child: Text("删除")
+                    ),
+                  ]
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallLPadding,
@@ -212,5 +214,45 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchPage(AllpassType.CARD)));
+  }
+
+  void _deleteCard(BuildContext context) {
+    if (Params.multiCardList.length == 0) {
+      Fluttertoast.showToast(msg: "请选择至少一项卡片");
+    } else {
+      showDialog<bool>(
+          context: context,
+          builder: (context) => ConfirmDialog("确认删除", "您将删除${Params.multiCardList.length}项卡片，确认吗？"))
+          .then((confirm) {
+        if (confirm) {
+          for (var item in Params.multiCardList) {
+            Provider.of<CardList>(context).deleteCard(item);
+          }
+          Params.multiCardList.clear();
+        }
+      });
+    }
+  }
+
+  void _moveCard(BuildContext context) {
+    if (Params.multiCardList.length == 0) {
+      Fluttertoast.showToast(msg: "请选择至少一项卡片");
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => SelectItemDialog())
+          .then((value) async {
+        if (value != null) {
+          for (int i = 0; i < Params.multiCardList.length; i++) {
+            Params.multiCardList[i].folder = value;
+            await Provider.of<CardList>(context).updateCard(Params.multiCardList[i]);
+          }
+          Fluttertoast.showToast(msg: "已移动${Params.multiCardList.length}项密码至 $value 文件夹");
+          setState(() {
+            Params.multiCardList.clear();
+          });
+        }
+      });
+    }
   }
 }
