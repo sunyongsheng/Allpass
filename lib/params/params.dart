@@ -48,13 +48,16 @@ class Params {
     folderList.clear();
     labelList.clear();
 
+    if (Application.sp == null) {
+      await Application.initSp();
+    }
     // 初始化当前用户名与密码
-    username = Application.sp?.getString("username")??"";
-    password = Application.sp?.getString("password")??"";
+    username = Application.sp.getString("username")??"j213!djoas9120jd";
+    password = Application.sp.getString("password")??"213edsfr3@DE21d";
     // 判断是否开启生物识别
-    enabledBiometrics = Application.sp?.getBool("biometrics")??false;
+    enabledBiometrics = Application.sp.getBool("biometrics")??false;
     // 判断长按功能
-    longPressCopy = Application.sp?.getBool("longPressCopy")??true;
+    longPressCopy = Application.sp.getBool("longPressCopy")??true;
 
     // 采用SharedPreferences初始化数据
     if (Application.sp.containsKey("folder")) {
