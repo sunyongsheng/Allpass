@@ -55,46 +55,41 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         borderRadius:
         BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
       ),
-      content: Theme(
-        data: ThemeData(primaryColor: AllpassColorUI.mainColor),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
-                ),
-                controller: _editTextController,
-                onChanged: (text) {
-                  if (text.contains(",") || text.contains("~") || text.contains(" ")) {
-                    setState(() {
-                      _inputFormatCorr = false;
-                    });
-                  } else {
-                    setState(() {
-                      _inputFormatCorr = true;
-                    });
-                  }
-                },
-              onSubmitted: (_) => _submit(),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
+            autofocus: true,
+            decoration: InputDecoration(
+              errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
             ),
-          ],
-        ),
+            controller: _editTextController,
+            onChanged: (text) {
+              if (text.contains(",") || text.contains("~") || text.contains(" ")) {
+                setState(() {
+                  _inputFormatCorr = false;
+                });
+              } else {
+                setState(() {
+                  _inputFormatCorr = true;
+                });
+              }
+            },
+            onSubmitted: (_) => _submit(),
+          ),
+        ],
       ),
       actions: <Widget>[
         FlatButton(
           onPressed: () => _submit(),
           child: Text('提交'),
-          textColor: AllpassColorUI.mainColor,
         ),
         FlatButton(
           onPressed: () {
             Navigator.pop<bool>(context, false);
           },
           child: Text('取消'),
-          textColor: AllpassColorUI.mainColor,
         ),
       ],
     );

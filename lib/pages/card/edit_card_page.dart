@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/widgets/common/add_category_dialog.dart';
+import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
+import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/common/password_generation_dialog.dart';
 
 /// 查看或编辑“卡片”页面
@@ -29,6 +30,7 @@ class _EditCardPage extends State<EditCardPage> {
   CardBean _oldData;
   bool _passwordVisible = false;
   var _futureHelper;
+  Color _mainColor;
 
   TextEditingController _nameController;
   TextEditingController _ownerNameController;
@@ -71,8 +73,11 @@ class _EditCardPage extends State<EditCardPage> {
 
   @override
   void initState() {
-    super.initState();
     _futureHelper = _decryptPassword();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+    });
+    super.initState();
   }
 
   @override
@@ -152,7 +157,6 @@ class _EditCardPage extends State<EditCardPage> {
           elevation: 0,
           brightness: Brightness.light,
         ),
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
         body: FutureBuilder(
           future: _futureHelper,
           builder: (context, snapshot) {
@@ -168,7 +172,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "名称",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _nameController,
@@ -196,7 +200,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "拥有者姓名",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _ownerNameController,
@@ -224,7 +228,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "卡号",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _cardIdController,
@@ -253,7 +257,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "密码",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             Row(
                               children: <Widget>[
@@ -301,7 +305,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "绑定手机号",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _telephoneController,
@@ -332,7 +336,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "文件夹",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             DropdownButton(
                               onChanged: (newValue) {
@@ -361,7 +365,7 @@ class _EditCardPage extends State<EditCardPage> {
                               margin: EdgeInsets.only(bottom: 10),
                               child: Text(
                                 "标签",
-                                style: AllpassTextUI.firstTitleStyleBlue,
+                                style: TextStyle(fontSize: 16, color: _mainColor),
                               ),
                             ),
                             Row(
@@ -385,7 +389,7 @@ class _EditCardPage extends State<EditCardPage> {
                           children: <Widget>[
                             Text(
                               "备注",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _notesController,
@@ -427,7 +431,7 @@ class _EditCardPage extends State<EditCardPage> {
               ? _labels.remove(item)
               : _labels.add(item));
         },
-        selectedColor: AllpassColorUI.mainColor,
+        selectedColor: _mainColor,
       ));
     });
     labelChoices.add(

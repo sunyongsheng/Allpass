@@ -31,9 +31,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
-          backgroundColor: AllpassColorUI.mainBackgroundColor,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.help_outline, color: Colors.black,),
@@ -63,7 +60,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
             ),
           ],
         ),
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -211,7 +207,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: FlatButton(
-                  color: AllpassColorUI.mainColor,
+                  color: Theme.of(context).primaryColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
                   ),

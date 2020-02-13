@@ -38,7 +38,6 @@ class _AuthLoginPage extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     return Scaffold(
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -57,8 +56,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
             padding: AllpassEdgeInsets.smallTBPadding,
           ),
           FlatButton(
-            splashColor: AllpassColorUI.mainBackgroundColor,
-            color: AllpassColorUI.mainBackgroundColor,
+            color: Colors.transparent,
             autofocus: true,
             onPressed: () => askAuth(context),
             child: Column(

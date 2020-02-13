@@ -19,7 +19,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(500)),
         child: Padding(
@@ -67,7 +66,7 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(AllpassUI.bigBorderRadius))
                   ),
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
-                  color: AllpassColorUI.mainColor,
+                  color: Theme.of(context).primaryColor,
                   onPressed: () => register(context),
                 ),
               ),

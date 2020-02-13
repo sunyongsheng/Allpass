@@ -40,12 +40,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       appBar: AppBar(
         title: Text("$categoryName管理", style: AllpassTextUI.titleBarStyle,),
         centerTitle: true,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(color: Colors.black),
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(

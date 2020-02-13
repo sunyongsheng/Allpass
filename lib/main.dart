@@ -13,6 +13,7 @@ import 'package:allpass/route/routes.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,7 @@ void main() async {
 
   final PasswordList passwords = PasswordList()..init();
   final CardList cards = CardList()..init();
+  final ThemeProvider theme = ThemeProvider()..init();
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<PasswordList>.value(
@@ -66,6 +68,9 @@ void main() async {
       ),
       ChangeNotifierProvider<CardList>.value(
         value: cards,
+      ),
+      ChangeNotifierProvider<ThemeProvider>.value(
+        value: theme
       )
     ],
     child: Allpass(),
@@ -77,7 +82,7 @@ class Allpass extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Allpass',
-      theme: ThemeData.light(),
+      theme: Provider.of<ThemeProvider>(context).currTheme,
       home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
     );

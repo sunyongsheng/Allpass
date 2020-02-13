@@ -1,8 +1,10 @@
 import 'dart:math';
 
+import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
@@ -164,7 +166,10 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   child: TextField(controller: _controller,),
                 ),
                 InkWell(
-                  child: Text("复制", style: AllpassTextUI.secondTitleStyleBlue,),
+                  child: Text("复制",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Provider.of<ThemeProvider>(context).currTheme.primaryColor),),
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: _controller.text));
                   },

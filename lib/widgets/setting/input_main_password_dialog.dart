@@ -26,11 +26,11 @@ class InputMainPasswordDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         FlatButton(
-          child: Text("确认", style: AllpassTextUI.secondTitleStyleBlue,),
+          child: Text("确认"),
           onPressed: () => submit(context),
         ),
         FlatButton(
-          child: Text("取消", style: AllpassTextUI.secondTitleStyleBlue,),
+          child: Text("取消"),
           onPressed: () => Navigator.pop<bool>(context, false),
         )
       ],

@@ -31,12 +31,7 @@ class AboutPage extends StatelessWidget {
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
-        brightness: Brightness.light,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: Column(
         children: <Widget>[
           Card(
@@ -172,12 +167,7 @@ class DetailsPage extends StatelessWidget {
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-        brightness: Brightness.light,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

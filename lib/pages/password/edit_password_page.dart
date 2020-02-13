@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/widgets/common/add_category_dialog.dart';
+import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
+import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/common/password_generation_dialog.dart';
 
 /// 查看或编辑密码页面
@@ -38,6 +39,8 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   TextEditingController _urlController;
   List<String> _labels;
   int _fav = 0;
+
+  Color _mainColor;
 
   bool _passwordVisible = false;
 
@@ -79,6 +82,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   void initState() {
     _futureHelper = _decryptPassword();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+    });
     super.initState();
   }
 
@@ -138,10 +144,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             },
           )
         ],
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-        brightness: Brightness.light,
       ),
       body: FutureBuilder(
         future: _futureHelper,
@@ -167,7 +169,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "名称",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _nameController,
@@ -195,7 +197,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "账号",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _usernameController,
@@ -223,7 +225,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "密码",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             Row(
                               children: <Widget>[
@@ -270,7 +272,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "链接",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _urlController,
@@ -299,7 +301,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "文件夹",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             DropdownButton(
                               onChanged: (newValue) {
@@ -330,7 +332,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               margin: EdgeInsets.only(bottom: 10),
                               child: Text(
                                 "标签",
-                                style: AllpassTextUI.firstTitleStyleBlue,
+                                style: TextStyle(fontSize: 16, color: _mainColor),
                               ),
                             ),
                             Row(
@@ -354,7 +356,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                           children: <Widget>[
                             Text(
                               "备注",
-                              style: AllpassTextUI.firstTitleStyleBlue,
+                              style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
                             TextField(
                               controller: _notesController,
@@ -397,7 +399,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
               ? _labels.remove(item)
               : _labels.add(item));
         },
-        selectedColor: AllpassColorUI.mainColor,
+        selectedColor: _mainColor,
       ));
     });
     labelChoices.add(

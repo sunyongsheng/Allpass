@@ -47,13 +47,7 @@ class _SearchPage extends State<SearchPage> {
       appBar: AppBar(
         title: searchWidget(),
         automaticallyImplyLeading: false,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-        toolbarOpacity: 1,
-        brightness: Brightness.light,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: FutureBuilder(
         future: getSearchResult(),
         builder: (context, snapshot) {

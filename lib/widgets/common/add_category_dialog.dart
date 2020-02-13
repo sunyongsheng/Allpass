@@ -42,16 +42,14 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
         borderRadius:
         BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
       ),
-      content: Theme(
-        data: ThemeData(primaryColor: AllpassColorUI.mainColor),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextField(
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
               autofocus: true,
               decoration: InputDecoration(
-                  errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
+                errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
               ),
               controller: _addTextController,
               onChanged: (text) {
@@ -65,9 +63,8 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
                   });
                 }
               }
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       actions: <Widget>[
         FlatButton(
@@ -93,7 +90,6 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
             }
           },
           child: Text('提交'),
-          textColor: AllpassColorUI.mainColor,
         ),
         FlatButton(
           onPressed: () {
@@ -101,7 +97,6 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
             _addTextController.clear();
           },
           child: Text('取消'),
-          textColor: AllpassColorUI.mainColor,
         ),
       ],
     );

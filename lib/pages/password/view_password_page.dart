@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
-import 'package:allpass/pages/common/detail_text_page.dart';
 
 /// 查看密码页
 class ViewPasswordPage extends StatefulWidget {
@@ -32,6 +34,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   var _futureHelper;
 
   String _password = "";
+  Color _mainColor;
   Color _color;
 
   _ViewPasswordPage(PasswordBean data) {
@@ -45,7 +48,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         label: data.label,
         notes: data.notes,
         fav: data.fav);
-    _color = getRandomColor(_bean.uniqueKey);
   }
 
   Future<Null> _decryptPassword() async {
@@ -55,6 +57,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   @override
   void initState() {
     _futureHelper = _decryptPassword();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+    });
+    _color = getRandomColor(_bean.uniqueKey);
     super.initState();
   }
 
@@ -76,10 +82,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 style: AllpassTextUI.titleBarStyle,
               ),
               centerTitle: true,
-              backgroundColor: AllpassColorUI.mainBackgroundColor,
-              iconTheme: IconThemeData(color: Colors.black),
-              elevation: 0,
-              brightness: Brightness.light,
               actions: <Widget>[
                 Icon(
                   _bean.fav == 1
@@ -91,7 +93,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 Padding(padding: AllpassEdgeInsets.smallLPadding,)
               ],
             ),
-            backgroundColor: AllpassColorUI.mainBackgroundColor,
             body: FutureBuilder(
               future: _futureHelper,
               builder: (context, snapshot) {
@@ -169,7 +170,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             padding: AllpassEdgeInsets.forViewCardInset,
                             child: Card(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                                color: AllpassColorUI.mainBackgroundColor,
+                                color: Colors.white,
                                 elevation: 5,
                                 child: SizedBox(
                                   width: ScreenUtil.screenWidth * 0.8,
@@ -183,7 +184,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             left: AllpassScreenUtil.setWidth(100),
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
-                                        child: Text("账号", style: AllpassTextUI.firstTitleStyleBlue,
+                                        child: Text("账号", style: TextStyle(fontSize: 16, color: _mainColor),
                                         ),
                                       ),
                                       // 用户名主体
@@ -202,7 +203,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                               ),),
                                             Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                             InkWell(
-                                              child: Text("复制", style: AllpassTextUI.secondTitleStyleBlue,),
+                                              child: Text("复制", style: TextStyle(fontSize: 14, color: _mainColor),),
                                               onTap: () {
                                                 Clipboard.setData(ClipboardData(text: _bean.username));
                                                 Fluttertoast.showToast(msg: "已复制账号");
@@ -217,7 +218,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             left: AllpassScreenUtil.setWidth(100),
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
-                                        child: Text("密码", style: AllpassTextUI.firstTitleStyleBlue,),
+                                        child: Text("密码", style: TextStyle(fontSize: 16, color: _mainColor),),
                                       ),
                                       // 密码主体
                                       Container(
@@ -255,7 +256,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                     Fluttertoast.showToast(msg: "已复制密码");
                                                   },
                                                   child: Text("复制",
-                                                    style: AllpassTextUI.secondTitleStyleBlue,
+                                                    style: TextStyle(fontSize: 14, color: _mainColor),
                                                   ),
                                                 )
                                               ],
@@ -270,7 +271,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
                                         child: Text("链接",
-                                          style: AllpassTextUI.firstTitleStyleBlue,
+                                          style: TextStyle(fontSize: 16, color: _mainColor)
                                         ),
                                       ),
                                       // 链接主体
@@ -302,7 +303,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                 Fluttertoast.showToast(msg: "已复制链接");
                                               },
                                               child: Text("复制",
-                                                style: AllpassTextUI.secondTitleStyleBlue,
+                                                style: TextStyle(fontSize: 14, color: _mainColor),
                                               ),
                                             )
                                           ],
@@ -315,7 +316,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
                                         child: Text("备注",
-                                          style: AllpassTextUI.firstTitleStyleBlue,
+                                          style: TextStyle(fontSize: 16, color: _mainColor),
                                         ),
                                       ),
                                       // 备注主体
@@ -354,7 +355,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             right: AllpassScreenUtil.setWidth(100),
                                             bottom: AllpassScreenUtil.setHeight(10)),
                                         child: Text("标签",
-                                          style: AllpassTextUI.firstTitleStyleBlue,
+                                          style: TextStyle(fontSize: 16, color: _mainColor),
                                         ),
                                       ),
                                       // 标签主体
@@ -444,7 +445,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
         selected: true,
         onSelected: (_){},
-        selectedColor: AllpassColorUI.mainColor,
+        selectedColor: _mainColor,
       ));
     });
     if (labelChoices.length == 0) {

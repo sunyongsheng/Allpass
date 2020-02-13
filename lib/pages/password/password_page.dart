@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -62,11 +61,7 @@ class _PasswordPageState extends State<PasswordPage>
               },
             ),
           ),
-          elevation: 0,
-          brightness: Brightness.light,
-          backgroundColor: AllpassColorUI.mainBackgroundColor,
           automaticallyImplyLeading: false,
-          iconTheme: IconThemeData(color: Colors.black),
           actions: <Widget>[
             Config.multiSelected
                 ? Row(
@@ -183,7 +178,6 @@ class _PasswordPageState extends State<PasswordPage>
             )
           ],
         ),
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
         // 添加 按钮
         floatingActionButton: Consumer<PasswordList>(
           builder: (context, model, _) => FloatingActionButton(

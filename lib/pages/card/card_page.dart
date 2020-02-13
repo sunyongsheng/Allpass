@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -67,11 +66,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             },
           ),
         ),
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
         automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
           Config.multiSelected
               ? Row(
@@ -188,7 +183,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           )
         ],
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       // 添加按钮
       floatingActionButton: Consumer<CardList>(
         builder: (context, model, _) => FloatingActionButton(

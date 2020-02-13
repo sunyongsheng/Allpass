@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
@@ -11,6 +12,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 class ViewCardPage extends StatefulWidget {
   final CardBean oldData;
@@ -31,6 +33,7 @@ class _ViewCardPage extends State<ViewCardPage> {
   bool _passwordVisible = false;
   String _password = "";
   var _futureHelper;
+  Color _mainColor;
   Color _color;
 
   _ViewCardPage(CardBean data) {
@@ -46,7 +49,6 @@ class _ViewCardPage extends State<ViewCardPage> {
         fav: data.fav,
         label: data.label
     );
-    _color = getRandomColor(_bean.uniqueKey);
   }
 
   Future<Null> _decryptPassword() async {
@@ -56,6 +58,10 @@ class _ViewCardPage extends State<ViewCardPage> {
   @override
   void initState() {
     _futureHelper = _decryptPassword();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+    });
+    _color = getRandomColor(_bean.uniqueKey);
     super.initState();
   }
 
@@ -77,10 +83,6 @@ class _ViewCardPage extends State<ViewCardPage> {
               style: AllpassTextUI.titleBarStyle,
             ),
             centerTitle: true,
-            backgroundColor: AllpassColorUI.mainBackgroundColor,
-            iconTheme: IconThemeData(color: Colors.black),
-            elevation: 0,
-            brightness: Brightness.light,
             actions: <Widget>[
               Icon(
                 _bean.fav == 1
@@ -92,7 +94,6 @@ class _ViewCardPage extends State<ViewCardPage> {
               Padding(padding: AllpassEdgeInsets.smallLPadding,)
             ],
           ),
-          backgroundColor: AllpassColorUI.mainBackgroundColor,
           body: FutureBuilder(
             future: _futureHelper,
             builder: (context, snapshot) {
@@ -107,7 +108,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                            color: AllpassColorUI.mainBackgroundColor,
+                            color: Colors.white,
                             elevation: 5,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -118,11 +119,11 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                                      color: _color
+                                      color: _color,
                                     ),
                                     child: CircleAvatar(
                                       radius: 25,
-                                      backgroundColor: _color,
+                                      backgroundColor: Colors.transparent,
                                       child: Text(
                                         _bean.name.substring(0, 1),
                                         style: TextStyle(
@@ -179,7 +180,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(AllpassUI.smallBorderRadius))),
-                              color: AllpassColorUI.mainBackgroundColor,
+                              color: Colors.white,
                               elevation: 5,
                               child: SizedBox(
                                 width: ScreenUtil.screenWidth * 0.8,
@@ -195,7 +196,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("拥有者姓名",
-                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                        style: TextStyle(fontSize: 16, color: _mainColor),
                                       ),
                                     ),
                                     // 拥有者姓名主体
@@ -217,8 +218,8 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           Padding(padding: AllpassEdgeInsets
                                               .smallLPadding,),
                                           InkWell(
-                                            child: Text("复制", style: AllpassTextUI
-                                                .secondTitleStyleBlue,),
+                                            child: Text("复制",
+                                              style: TextStyle(fontSize: 14, color: _mainColor),),
                                             onTap: () {
                                               Clipboard.setData(ClipboardData(
                                                   text: _bean.ownerName));
@@ -235,7 +236,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("卡号",
-                                        style: AllpassTextUI.firstTitleStyleBlue,),
+                                        style: TextStyle(fontSize: 16, color: _mainColor),),
                                     ),
                                     // 卡号主体
                                     Container(
@@ -276,8 +277,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                       msg: "已复制卡号");
                                                 },
                                                 child: Text("复制",
-                                                  style: AllpassTextUI
-                                                      .secondTitleStyleBlue,
+                                                  style: TextStyle(fontSize: 14, color: _mainColor),
                                                 ),
                                               )
                                             ],
@@ -292,7 +292,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("密码",
-                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                        style: TextStyle(fontSize: 16, color: _mainColor)
                                       ),
                                     ),
                                     // 密码主体
@@ -331,7 +331,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                   Fluttertoast.showToast(msg: "已复制密码");
                                                 },
                                                 child: Text("复制",
-                                                  style: AllpassTextUI.secondTitleStyleBlue,
+                                                  style: TextStyle(fontSize: 14, color: _mainColor),
                                                 ),
                                               )
                                             ],
@@ -346,7 +346,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("绑定手机号",
-                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                        style: TextStyle(fontSize: 16, color: _mainColor),
                                       ),
                                     ),
                                     // 绑定手机号主体
@@ -368,8 +368,8 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           Padding(padding: AllpassEdgeInsets
                                               .smallLPadding,),
                                           InkWell(
-                                            child: Text("复制", style: AllpassTextUI
-                                                .secondTitleStyleBlue,),
+                                            child: Text("复制",
+                                              style: TextStyle(fontSize: 14, color: _mainColor),),
                                             onTap: () {
                                               Clipboard.setData(ClipboardData(
                                                   text: _bean.telephone));
@@ -386,7 +386,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("备注",
-                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                        style: TextStyle(fontSize: 16, color: _mainColor),
                                       ),
                                     ),
                                     // 备注主体
@@ -431,7 +431,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           right: AllpassScreenUtil.setWidth(100),
                                           bottom: AllpassScreenUtil.setHeight(10)),
                                       child: Text("标签",
-                                        style: AllpassTextUI.firstTitleStyleBlue,
+                                        style: TextStyle(fontSize: 16, color: _mainColor),
                                       ),
                                     ),
                                     // 标签主体
@@ -524,7 +524,7 @@ class _ViewCardPage extends State<ViewCardPage> {
         labelStyle: AllpassTextUI.secondTitleStyleBlack,
         selected: true,
         onSelected: (_) {},
-        selectedColor: AllpassColorUI.mainColor,
+        selectedColor: _mainColor,
       ));
     });
     if (labelChoices.length == 0) {

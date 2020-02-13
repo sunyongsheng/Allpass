@@ -25,40 +25,37 @@ class ModifyPasswordDialog extends StatelessWidget {
         "修改主密码",
         style: AllpassTextUI.firstTitleStyleBlack,
       ),
-      content: Theme(
-        data: ThemeData(primaryColor: AllpassColorUI.mainColor),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  controller: _oldPasswordController,
-                  decoration: InputDecoration(labelText: "请输入旧密码"),
-                  obscureText: true,
-                  autofocus: true,
-                ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: TextField(
+                controller: _oldPasswordController,
+                decoration: InputDecoration(labelText: "请输入旧密码"),
+                obscureText: true,
+                autofocus: true,
               ),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  controller: _newPasswordController,
-                  decoration: InputDecoration(labelText: "请输入新密码"),
-                  obscureText: true,
-                ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: TextField(
+                controller: _newPasswordController,
+                decoration: InputDecoration(labelText: "请输入新密码"),
+                obscureText: true,
               ),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: TextField(
-                  controller: _secondInputController,
-                  decoration: InputDecoration(labelText: "请再输入一遍"),
-                  obscureText: true,
-                ),
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: TextField(
+                controller: _secondInputController,
+                decoration: InputDecoration(labelText: "请再输入一遍"),
+                obscureText: true,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       actions: <Widget>[

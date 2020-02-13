@@ -84,12 +84,8 @@ class _LoginPage extends State<LoginPage> {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
         child: Padding(
@@ -130,7 +126,7 @@ class _LoginPage extends State<LoginPage> {
                   ),
                   padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
-                  color: AllpassColorUI.mainColor,
+                  color: Theme.of(context).primaryColor,
                   onPressed: () => login(),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,

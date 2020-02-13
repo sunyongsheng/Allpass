@@ -26,12 +26,8 @@ class ClassificationPage extends StatelessWidget {
             },
           ),
           centerTitle: true,
-          elevation: 0,
-          brightness: Brightness.light,
-          backgroundColor: AllpassColorUI.mainBackgroundColor,
           automaticallyImplyLeading: false,
         ),
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
         body: GridView(
           controller: _controller,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

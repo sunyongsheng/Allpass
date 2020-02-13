@@ -33,13 +33,8 @@ class _AccountManagerPage extends State<AccountManagerPage> {
           "主账号管理",
           style: AllpassTextUI.titleBarStyle,
         ),
-        iconTheme: IconThemeData(color: Colors.black),
         centerTitle: true,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
       body: ListView(
         children: <Widget>[
           Container(
