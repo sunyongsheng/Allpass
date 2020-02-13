@@ -7,20 +7,26 @@ class ThemeProvider with ChangeNotifier {
   ThemeData currTheme;
 
   init() {
-    changeTheme(Application.sp.getString("theme")??"blue");
+    currTheme = getTheme(Config.theme);
   }
 
   void changeTheme(String themeName) {
-    switch (themeName) {
-      case "blue":
-        currTheme = AllpassTheme.blueTheme;
-        break;
-      case "red":
-        currTheme = AllpassTheme.redTheme;
-        break;
-    }
+    currTheme = getTheme(themeName);
     Config.theme = themeName;
     Application.sp.setString("theme", themeName);
     notifyListeners();
+  }
+
+  ThemeData getTheme(String themeName) {
+    switch (themeName) {
+      case "blue":
+        return AllpassTheme.blueTheme;
+      case "red":
+        return AllpassTheme.redTheme;
+      case "teal":
+        return AllpassTheme.tealTheme;
+      default:
+        return AllpassTheme.blueTheme;
+    }
   }
 }
