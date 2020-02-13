@@ -11,6 +11,7 @@ import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/widgets/common/label_chip.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/provider/theme_provider.dart';
 
@@ -520,12 +521,10 @@ class _ViewCardPage extends State<ViewCardPage> {
   List<Widget> _getTag() {
     List<Widget> labelChoices = List();
     _bean.label.forEach((item) {
-      labelChoices.add(ChoiceChip(
-        label: Text(item,),
-        labelStyle: AllpassTextUI.secondTitleStyleBlack,
-        selected: true,
-        onSelected: (_) {},
-        selectedColor: _mainColor,
+      labelChoices.add(LabelChip(
+          text: item,
+          selected: true,
+          onSelected: (_) {}
       ));
     });
     if (labelChoices.length == 0) {

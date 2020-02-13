@@ -9,6 +9,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
+import 'package:allpass/widgets/common/label_chip.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/common/password_generation_dialog.dart';
 
@@ -422,16 +423,14 @@ class _EditCardPage extends State<EditCardPage> {
   List<Widget> _getTag() {
     List<Widget> labelChoices = List();
     RuntimeData.labelList.forEach((item) {
-      labelChoices.add(ChoiceChip(
-        label: Text(item),
-        labelStyle: AllpassTextUI.secondTitleStyleBlack,
+      labelChoices.add(LabelChip(
+        text: item,
         selected: _labels.contains(item),
         onSelected: (selected) {
           setState(() => _labels.contains(item)
               ? _labels.remove(item)
               : _labels.add(item));
         },
-        selectedColor: _mainColor,
       ));
     });
     labelChoices.add(
