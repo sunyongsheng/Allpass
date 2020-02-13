@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
@@ -42,7 +42,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      if (Params.enabledBiometrics) {
+      if (Config.enabledBiometrics) {
         NavigationUtil.goAuthLoginPage(context);
       } else {
         NavigationUtil.goLoginPage(context);

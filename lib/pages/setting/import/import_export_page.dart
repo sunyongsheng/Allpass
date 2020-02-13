@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:allpass/params/runtime_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,7 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:directory_picker/directory_picker.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/params/params.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
@@ -166,16 +166,16 @@ class ImportTypeSelectPage extends StatelessWidget {
           List<PasswordBean> passwordList = await CsvUtil().passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
             await Provider.of<PasswordList>(context).insertPassword(bean);
-            Params.labelListAdd(bean.label);
-            Params.folderListAdd(bean.folder);
+            RuntimeData.labelListAdd(bean.label);
+            RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
         } else {
           List<CardBean> cardList = await CsvUtil().cardImportFromCsv(path);
           for (var bean in cardList) {
             await Provider.of<CardList>(context).insertCard(bean);
-            Params.labelListAdd(bean.label);
-            Params.folderListAdd(bean.folder);
+            RuntimeData.labelListAdd(bean.label);
+            RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
         }

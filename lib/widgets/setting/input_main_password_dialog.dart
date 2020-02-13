@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 
@@ -38,7 +38,7 @@ class InputMainPasswordDialog extends StatelessWidget {
   }
 
   void submit(BuildContext context) {
-    if (EncryptUtil.encrypt(_passwordController.text) == Params.password) {
+    if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
       _passwordController.clear();
       Navigator.pop<bool>(context, true);
     } else {

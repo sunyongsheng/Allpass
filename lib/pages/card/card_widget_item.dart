@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
 class CardWidgetItem extends StatelessWidget {
@@ -39,7 +39,7 @@ class CardWidgetItem extends StatelessWidget {
                 }
               }),
               onLongPress: () async {
-                if (Params.longPressCopy) {
+                if (Config.longPressCopy) {
                   Clipboard.setData(ClipboardData(text: model.cardList[index].cardId));
                   Fluttertoast.showToast(msg: "已复制卡号");
                 }
@@ -141,13 +141,13 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
         return Container(
           margin: AllpassEdgeInsets.listInset,
           child: CheckboxListTile(
-            value: Params.multiCardList.contains(model.cardList[index]),
+            value: RuntimeData.multiCardList.contains(model.cardList[index]),
             onChanged: (value) {
               setState(() {
                 if (value) {
-                  Params.multiCardList.add(model.cardList[index]);
+                  RuntimeData.multiCardList.add(model.cardList[index]);
                 } else {
-                  Params.multiCardList.remove(model.cardList[index]);
+                  RuntimeData.multiCardList.remove(model.cardList[index]);
                 }
               });
             },

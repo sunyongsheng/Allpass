@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -44,7 +45,7 @@ class PasswordWidgetItem extends StatelessWidget {
               });
             },
             onLongPress: () {
-              if (Params.longPressCopy) {
+              if (Config.longPressCopy) {
                 Clipboard.setData(ClipboardData(
                     text: EncryptUtil.decrypt(model.passwordList[index].password)
                 ));
@@ -82,13 +83,13 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
         return Container(
           margin: AllpassEdgeInsets.listInset,
           child: CheckboxListTile(
-            value: Params.multiPasswordList.contains(model.passwordList[index]),
+            value: RuntimeData.multiPasswordList.contains(model.passwordList[index]),
             onChanged: (value) {
               setState(() {
                 if (value) {
-                  Params.multiPasswordList.add(model.passwordList[index]);
+                  RuntimeData.multiPasswordList.add(model.passwordList[index]);
                 } else {
-                  Params.multiPasswordList.remove(model.passwordList[index]);
+                  RuntimeData.multiPasswordList.remove(model.passwordList[index]);
                 }
               });
             },

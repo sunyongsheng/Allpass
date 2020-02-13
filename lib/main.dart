@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -23,7 +23,7 @@ void main() async {
   Application.setupLocator();
   await Application.initSp();
   Application.initChannelAndHandle();
-  await Params.paramsInit();
+  await Config.configInit();
 
   if (Platform.isAndroid) {
     //设置Android头部的导航栏透明
@@ -78,7 +78,7 @@ class Allpass extends StatelessWidget {
     return MaterialApp(
       title: 'Allpass',
       theme: ThemeData.light(),
-      home: Params.enabledBiometrics ? AuthLoginPage() : LoginPage(),
+      home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
     );
   }

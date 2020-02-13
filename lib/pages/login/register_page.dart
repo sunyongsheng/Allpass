@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -105,9 +105,9 @@ class RegisterPage extends StatelessWidget {
         String _password = EncryptUtil.encrypt(_passwordController.text);
         Application.sp.setString("username", _usernameController.text);
         Application.sp.setString("password", _password);
-        Params.username = _usernameController.text;
-        Params.password = _password;
-        Params.enabledBiometrics = false;
+        Config.username = _usernameController.text;
+        Config.password = _password;
+        Config.enabledBiometrics = false;
         Fluttertoast.showToast(msg: "注册成功");
         NavigationUtil.goLoginPage(context);
       } else {

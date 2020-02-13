@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -74,7 +74,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                         await Provider.of<PasswordList>(context).clear();
                         await Provider.of<CardList>(context).clear();
                         await Application.sp.clear();
-                        Params.paramsClear();
+                        Config.configClear();
                         Fluttertoast.showToast(msg: "已删除所有数据");
                         NavigationUtil.goLoginPage(context);
                       }
@@ -89,7 +89,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             child: ListTile(
               title: Text("注销"),
               leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
-              onTap: () => Params.enabledBiometrics
+              onTap: () => Config.enabledBiometrics
                   ? NavigationUtil.goAuthLoginPage(context)
                   : NavigationUtil.goLoginPage(context),
             ),

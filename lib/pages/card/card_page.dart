@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
@@ -72,7 +73,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         automaticallyImplyLeading: false,
         iconTheme: IconThemeData(color: Colors.black),
         actions: <Widget>[
-          Params.multiSelected
+          Config.multiSelected
               ? Row(
             children: <Widget>[
               PopupMenuButton<String>(
@@ -104,14 +105,14 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 splashColor: Colors.transparent,
                 child: Icon(Icons.select_all),
                 onTap: () {
-                  if (Params.multiCardList.length != Provider.of<CardList>(context).cardList.length) {
-                    Params.multiCardList.clear();
+                  if (RuntimeData.multiCardList.length != Provider.of<CardList>(context).cardList.length) {
+                    RuntimeData.multiCardList.clear();
                     setState(() {
-                      Params.multiCardList.addAll(Provider.of<CardList>(context).cardList);
+                      RuntimeData.multiCardList.addAll(Provider.of<CardList>(context).cardList);
                     });
                   } else {
                     setState(() {
-                      Params.multiCardList.clear();
+                      RuntimeData.multiCardList.clear();
                     });
                   }
                 },
@@ -123,11 +124,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           ),
           InkWell(
             splashColor: Colors.transparent,
-            child: Params.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+            child: Config.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
             onTap: () {
               setState(() {
-                Params.multiCardList.clear();
-                Params.multiSelected = !Params.multiSelected;
+                RuntimeData.multiCardList.clear();
+                Config.multiSelected = !Config.multiSelected;
               });
             },
           ),
@@ -149,7 +150,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               onRefresh: _query,
               child: Scrollbar(
                 child: Provider.of<CardList>(context).cardList.length >= 1
-                  ? Params.multiSelected
+                  ? Config.multiSelected
                     ? ListView.builder(
                         controller: _controller,
                         itemBuilder: (context, index) => MultiCardWidgetItem(index),
@@ -217,25 +218,25 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   }
 
   void _deleteCard(BuildContext context) {
-    if (Params.multiCardList.length == 0) {
+    if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {
       showDialog<bool>(
           context: context,
-          builder: (context) => ConfirmDialog("确认删除", "您将删除${Params.multiCardList.length}项卡片，确认吗？"))
+          builder: (context) => ConfirmDialog("确认删除", "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？"))
           .then((confirm) {
         if (confirm) {
-          for (var item in Params.multiCardList) {
+          for (var item in RuntimeData.multiCardList) {
             Provider.of<CardList>(context).deleteCard(item);
           }
-          Params.multiCardList.clear();
+          RuntimeData.multiCardList.clear();
         }
       });
     }
   }
 
   void _moveCard(BuildContext context) {
-    if (Params.multiCardList.length == 0) {
+    if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {
       showDialog(
@@ -243,13 +244,13 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           builder: (context) => SelectItemDialog())
           .then((value) async {
         if (value != null) {
-          for (int i = 0; i < Params.multiCardList.length; i++) {
-            Params.multiCardList[i].folder = value;
-            await Provider.of<CardList>(context).updateCard(Params.multiCardList[i]);
+          for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
+            RuntimeData.multiCardList[i].folder = value;
+            await Provider.of<CardList>(context).updateCard(RuntimeData.multiCardList[i]);
           }
-          Fluttertoast.showToast(msg: "已移动${Params.multiCardList.length}项密码至 $value 文件夹");
+          Fluttertoast.showToast(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
           setState(() {
-            Params.multiCardList.clear();
+            RuntimeData.multiCardList.clear();
           });
         }
       });

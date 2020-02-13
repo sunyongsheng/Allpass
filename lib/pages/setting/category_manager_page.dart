@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/setting/edit_category_dialog.dart';
@@ -74,8 +74,8 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   List<Widget> _getAllWidget() {
     List<Widget> widgets = List();
     List<String> list = List();
-    if (categoryName == "标签") list = Params.labelList;
-    else list = Params.folderList;
+    if (categoryName == "标签") list = RuntimeData.labelList;
+    else list = RuntimeData.folderList;
     for (int currIndex = 0; currIndex < list.length; currIndex++) {
       String currCategoryName = list[currIndex];
       widgets.add(Container(
@@ -175,9 +175,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       }
     }
     setState(() {
-      Params.labelList.remove(label);
+      RuntimeData.labelList.remove(label);
     });
-    Params.labelParamsPersistence();
+    RuntimeData.labelParamsPersistence();
     Navigator.pop(context);
   }
 
@@ -195,9 +195,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       }
     }
     setState(() {
-      Params.folderList.remove(folder);
+      RuntimeData.folderList.remove(folder);
     });
-    Params.folderParamsPersistence();
+    RuntimeData.folderParamsPersistence();
     Navigator.pop(context);
   }
 

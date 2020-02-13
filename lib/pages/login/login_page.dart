@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -34,7 +34,7 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
-    _usernameController = TextEditingController(text: Params.username);
+    _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
     if (Application.sp.getBool("FIRST_RUN")??true) {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
@@ -56,9 +56,9 @@ class _LoginPage extends State<LoginPage> {
               actions: <Widget>[
                 FlatButton(
                   child: Text("同意并继续"),
-                  onPressed: () {
+                  onPressed: () async {
                     initAppFirstRun();
-                    Params.paramsInit();
+                    await Config.configInit();
                     Navigator.pop(context);
                   },
                 ),
@@ -151,7 +151,7 @@ class _LoginPage extends State<LoginPage> {
                   FlatButton(
                     child: Text("使用生物识别"),
                     onPressed: () {
-                      if (Params.enabledBiometrics)
+                      if (Config.enabledBiometrics)
                         NavigationUtil.goAuthLoginPage(context);
                       else Fluttertoast.showToast(msg: "您还未开启生物识别");
                     },
@@ -171,15 +171,15 @@ class _LoginPage extends State<LoginPage> {
       await Provider.of<PasswordList>(context).clear();
       await Provider.of<CardList>(context).clear();
       await Application.sp.clear();
-      Params.paramsClear();
+      Config.configClear();
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => RegisterPage()
       ));
     } else {
-      if (Params.username != "" && Params.password != "") {
-        if (Params.username == _usernameController.text
-            && _passwordController.text == EncryptUtil.decrypt(Params.password)) {
+      if (Config.username != "" && Config.password != "") {
+        if (Config.username == _usernameController.text
+            && _passwordController.text == EncryptUtil.decrypt(Config.password)) {
           NavigationUtil.goHomePage(context);
           Fluttertoast.showToast(msg: "登录成功");
         } else if (_usernameController.text == "" || _passwordController.text == "") {

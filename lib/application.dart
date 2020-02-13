@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
@@ -49,8 +49,8 @@ class Application {
     if (passwordList != null) {
       for (var bean in passwordList) {
         await _dao.insert(bean);
-        Params.labelListAdd(bean.label);
-        Params.folderListAdd(bean.folder);
+        RuntimeData.labelListAdd(bean.label);
+        RuntimeData.folderListAdd(bean.folder);
       }
       Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
       SystemNavigator.pop();

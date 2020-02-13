@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
@@ -89,7 +89,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     title: Text("生物识别"),
                     leading: Icon(Icons.fingerprint, color: AllpassColorUI.allColor[1]),
                     trailing: Switch(
-                      value: Params.enabledBiometrics,
+                      value: Config.enabledBiometrics,
                       onChanged: (sw) async {
                         if (await LocalAuthentication().canCheckBiometrics) {
                           showDialog(context: context,
@@ -100,7 +100,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               if (auth) {
                                 await _localAuthService.stopAuthenticate();
                                 Application.sp.setBool("biometrics", sw);
-                                Params.enabledBiometrics = sw;
+                                Config.enabledBiometrics = sw;
                                 setState(() {});
                               } else {
                                 Fluttertoast.showToast(msg: "授权失败");
@@ -111,7 +111,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                           });
                         } else {
                           Application.sp.setBool("biometrics", false);
-                          Params.enabledBiometrics = false;
+                          Config.enabledBiometrics = false;
                           Fluttertoast.showToast(msg: "您的设备似乎不支持生物识别");
                         }
                       },
@@ -127,11 +127,11 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                       //     ?Text("当前长按为复制密码或卡号")
                       //     :Text("当前长按为多选"),
                       trailing: Switch(
-                        value: Params.longPressCopy,
+                        value: Config.longPressCopy,
                         onChanged: (sw) async {
                           Application.sp.setBool("longPressCopy", sw);
                           setState(() {
-                            Params.longPressCopy = sw;
+                            Config.longPressCopy = sw;
                           });
                         },
                       ),

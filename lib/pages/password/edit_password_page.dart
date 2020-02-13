@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/params/params.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
@@ -308,8 +307,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   _folder = newValue;
                                 });
                               },
-                              items:
-                              Params.folderList.map<DropdownMenuItem<String>>((item) {
+                              items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Text(item),
@@ -389,7 +387,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   List<Widget> _getTag() {
     List<Widget> labelChoices = List();
-    Params.labelList.forEach((item) {
+    RuntimeData.labelList.forEach((item) {
       labelChoices.add(ChoiceChip(
         label: Text(item),
         labelStyle: AllpassTextUI.secondTitleStyleBlack,

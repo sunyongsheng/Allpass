@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/classification/favorite_page.dart';
@@ -68,7 +68,7 @@ class ClassificationPage extends StatelessWidget {
           )),
         )
     );
-    list.addAll(Params.folderList.map((folder) =>
+    list.addAll(RuntimeData.folderList.map((folder) =>
         InkWell(
           child: Card(
             color: getRandomColor(folder.hashCode),

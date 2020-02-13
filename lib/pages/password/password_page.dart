@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/config.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
@@ -67,7 +68,7 @@ class _PasswordPageState extends State<PasswordPage>
           automaticallyImplyLeading: false,
           iconTheme: IconThemeData(color: Colors.black),
           actions: <Widget>[
-            Params.multiSelected
+            Config.multiSelected
                 ? Row(
               children: <Widget>[
                 PopupMenuButton<String>(
@@ -99,14 +100,14 @@ class _PasswordPageState extends State<PasswordPage>
                   splashColor: Colors.transparent,
                   child: Icon(Icons.select_all),
                   onTap: () {
-                    if (Params.multiPasswordList.length != Provider.of<PasswordList>(context).passwordList.length) {
-                      Params.multiPasswordList.clear();
+                    if (RuntimeData.multiPasswordList.length != Provider.of<PasswordList>(context).passwordList.length) {
+                      RuntimeData.multiPasswordList.clear();
                       setState(() {
-                        Params.multiPasswordList.addAll(Provider.of<PasswordList>(context).passwordList);
+                        RuntimeData.multiPasswordList.addAll(Provider.of<PasswordList>(context).passwordList);
                       });
                     } else {
                       setState(() {
-                        Params.multiPasswordList.clear();
+                        RuntimeData.multiPasswordList.clear();
                       });
                     }
                   },
@@ -118,11 +119,11 @@ class _PasswordPageState extends State<PasswordPage>
             ),
             InkWell(
               splashColor: Colors.transparent,
-              child: Params.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+              child: Config.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
               onTap: () {
                 setState(() {
-                  Params.multiPasswordList.clear();
-                  Params.multiSelected = !Params.multiSelected;
+                  RuntimeData.multiPasswordList.clear();
+                  Config.multiSelected = !Config.multiSelected;
                 });
               },
             ),
@@ -144,7 +145,7 @@ class _PasswordPageState extends State<PasswordPage>
                   onRefresh: _query,
                   child: Scrollbar(
                     child: Provider.of<PasswordList>(context).passwordList.length >= 1
-                        ? Params.multiSelected
+                        ? Config.multiSelected
                             ? ListView.builder(
                                 controller: _controller,
                                 itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
@@ -208,26 +209,26 @@ class _PasswordPageState extends State<PasswordPage>
   }
 
   void _deletePassword(BuildContext context) {
-    if (Params.multiPasswordList.length == 0) {
+    if (RuntimeData.multiPasswordList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项密码");
     } else {
       showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${Params.multiPasswordList.length}项密码，确认吗？"))
+              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？"))
           .then((confirm) {
         if (confirm) {
-          for (var item in Params.multiPasswordList) {
+          for (var item in RuntimeData.multiPasswordList) {
             Provider.of<PasswordList>(context).deletePassword(item);
           }
-          Params.multiPasswordList.clear();
+          RuntimeData.multiPasswordList.clear();
         }
       });
     }
   }
 
   void _movePassword(BuildContext context) {
-    if (Params.multiPasswordList.length == 0) {
+    if (RuntimeData.multiPasswordList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项密码");
     } else {
       showDialog(
@@ -235,13 +236,13 @@ class _PasswordPageState extends State<PasswordPage>
           builder: (context) => SelectItemDialog())
           .then((value) async {
         if (value != null) {
-          for (int i = 0; i < Params.multiPasswordList.length; i++) {
-            Params.multiPasswordList[i].folder = value;
-            await Provider.of<PasswordList>(context).updatePassword(Params.multiPasswordList[i]);
+          for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
+            RuntimeData.multiPasswordList[i].folder = value;
+            await Provider.of<PasswordList>(context).updatePassword(RuntimeData.multiPasswordList[i]);
           }
-          Fluttertoast.showToast(msg: "已移动${Params.multiPasswordList.length}项密码至 $value 文件夹");
+          Fluttertoast.showToast(msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹");
           setState(() {
-            Params.multiPasswordList.clear();
+            RuntimeData.multiPasswordList.clear();
           });
         }
       });

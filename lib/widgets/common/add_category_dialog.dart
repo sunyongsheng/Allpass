@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
 /// 添加属性对话框
@@ -74,13 +74,13 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
           onPressed: () {
             if (_inputFormatCorr && _addTextController.text != "") {
               if (categoryName == "标签") {
-                if (Params.labelListAdd([_addTextController.text])) {
+                if (RuntimeData.labelListAdd([_addTextController.text])) {
                   Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
                 }
               } else {
-                if (Params.folderListAdd(_addTextController.text)) {
+                if (RuntimeData.folderListAdd(_addTextController.text)) {
                   Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
                 } else {
                   Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/params.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
@@ -37,9 +36,9 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   _EditCategoryDialog(this.categoryName, int index) {
     this._index = index;
     if (categoryName == "标签")
-      _editTextController = TextEditingController(text: Params.labelList[_index]);
+      _editTextController = TextEditingController(text: RuntimeData.labelList[_index]);
     else
-      _editTextController = TextEditingController(text: Params.folderList[_index]);
+      _editTextController = TextEditingController(text: RuntimeData.folderList[_index]);
   }
 
   @override
@@ -104,7 +103,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   _submit() async {
     if (_inputFormatCorr && _editTextController.text != "") {
       if (categoryName == "标签") {
-        if (!Params.labelList.contains(_editTextController.text)) {
+        if (!RuntimeData.labelList.contains(_editTextController.text)) {
           await editLabelAndUpdate();
           Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
           Navigator.pop<bool>(context, true);
@@ -113,7 +112,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
           Navigator.pop<bool>(context, false);
         }
       } else {
-        if (!Params.folderList.contains(_editTextController.text)) {
+        if (!RuntimeData.folderList.contains(_editTextController.text)) {
           await editFolderAndUpdate();
           Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
           Navigator.pop<bool>(context, true);
@@ -131,8 +130,8 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
     List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
-        if (bean.label.contains(Params.labelList[_index])) {
-          bean.label.remove(Params.labelList[_index]);
+        if (bean.label.contains(RuntimeData.labelList[_index])) {
+          bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
           Provider.of<PasswordList>(context).updatePassword(bean);
         }
@@ -141,22 +140,22 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
     List<CardBean> cardList = Provider.of<CardList>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
-        if (bean.label.contains(Params.labelList[_index])) {
-          bean.label.remove(Params.labelList[_index]);
+        if (bean.label.contains(RuntimeData.labelList[_index])) {
+          bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
           Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }
-    Params.labelList[_index] = _editTextController.text;
-    Params.labelParamsPersistence();
+    RuntimeData.labelList[_index] = _editTextController.text;
+    RuntimeData.labelParamsPersistence();
   }
 
   editFolderAndUpdate() async {
     List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
-        if (bean.folder == Params.folderList[_index]) {
+        if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
           Provider.of<PasswordList>(context).updatePassword(bean);
         }
@@ -165,13 +164,13 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
     List<CardBean> cardList = Provider.of<CardList>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
-        if (bean.folder == Params.folderList[_index]) {
+        if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
           Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }
-    Params.folderList[_index] = _editTextController.text;
-    Params.folderParamsPersistence();
+    RuntimeData.folderList[_index] = _editTextController.text;
+    RuntimeData.folderParamsPersistence();
   }
 }
