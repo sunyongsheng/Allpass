@@ -149,16 +149,107 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                             child: Column(
                               children: <Widget>[
                                 ListTile(
-                                  title: Text("蓝色", style: TextStyle(color: Colors.blue),),
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.blue,
+                                    child: Center(
+                                      child: Text("蓝色", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
                                   onTap: () {
                                     Provider.of<ThemeProvider>(context).changeTheme("blue");
                                     Navigator.pop(context);
                                   },
                                 ),
                                 ListTile(
-                                  title: Text("红色", style: TextStyle(color: Colors.red)),
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.red,
+                                    child: Center(
+                                      child: Text("红色", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
                                   onTap: () {
                                     Provider.of<ThemeProvider>(context).changeTheme("red");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.teal,
+                                    child: Center(
+                                      child: Text("青色", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("teal");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.deepPurple,
+                                    child: Center(
+                                      child: Text("深紫", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("deepPurple");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.orange,
+                                    child: Center(
+                                      child: Text("橙色", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("orange");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.pink,
+                                    child: Center(
+                                      child: Text("粉色", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("pink");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                    color: Colors.blueGrey,
+                                    child: Center(
+                                      child: Text("蓝灰", style: TextStyle(
+                                          color: Colors.white
+                                      ),),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("blueGrey");
                                     Navigator.pop(context);
                                   },
                                 ),

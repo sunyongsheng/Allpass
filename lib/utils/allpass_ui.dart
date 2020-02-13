@@ -121,6 +121,86 @@ class AllpassTheme {
     indicatorColor: Colors.red,
     cursorColor: Colors.red,
   );
+  static ThemeData tealTheme = ThemeData(
+    primaryColor: Colors.teal,
+    primarySwatch: Colors.teal,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.teal,
+    cursorColor: Colors.teal,
+  );
+  static ThemeData deepPurpleTheme = ThemeData(
+    primaryColor: Colors.deepPurple,
+    primarySwatch: Colors.deepPurple,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.deepPurple,
+    cursorColor: Colors.deepPurple,
+  );
+  static ThemeData orangeTheme = ThemeData(
+    primaryColor: Colors.orange,
+    primarySwatch: Colors.orange,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.orange,
+    cursorColor: Colors.orange,
+  );
+  static ThemeData pinkTheme = ThemeData(
+    primaryColor: Colors.pink,
+    primarySwatch: Colors.pink,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.pink,
+    cursorColor: Colors.pink,
+  );
+  static ThemeData blueGreyTheme = ThemeData(
+    primaryColor: Colors.blueGrey,
+    primarySwatch: Colors.blueGrey,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.blueGrey,
+    cursorColor: Colors.blueGrey,
+  );
 }
 
 /// 其他样式
