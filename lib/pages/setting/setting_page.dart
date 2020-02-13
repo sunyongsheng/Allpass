@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/services/authentication_service.dart';
 import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
 import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 import 'package:allpass/widgets/setting/check_update_dialog.dart';
-import 'package:allpass/services/authentication_service.dart';
 
 
 /// 设置页面
@@ -59,11 +60,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           },
         ),
         centerTitle: true,
-        backgroundColor: AllpassColorUI.mainBackgroundColor,
-        elevation: 0,
-        brightness: Brightness.light,
         automaticallyImplyLeading: false,
-        iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
         children: <Widget>[
@@ -135,6 +132,41 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                           });
                         },
                       ),
+                    ),
+                    padding: AllpassEdgeInsets.listInset
+                ),
+                Container(
+                    child: ListTile(
+                      title: Text("修改主题"),
+                      leading: Icon(Icons.layers, color: AllpassColorUI.allColor[5]),
+                      onTap: () {
+                        showDialog(context: context, child: AlertDialog(
+                          title: Text("修改主题"),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+                          ),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: Text("蓝色", style: TextStyle(color: Colors.blue),),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("blue");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: Text("红色", style: TextStyle(color: Colors.red)),
+                                  onTap: () {
+                                    Provider.of<ThemeProvider>(context).changeTheme("red");
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            )
+                          ),
+                        ));
+                      },
                     ),
                     padding: AllpassEdgeInsets.listInset
                 ),
@@ -229,7 +261,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           )
         ],
       ),
-      backgroundColor: AllpassColorUI.mainBackgroundColor,
     );
   }
 }
