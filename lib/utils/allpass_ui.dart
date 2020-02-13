@@ -14,15 +14,6 @@ class AllpassTextUI {
       fontWeight: FontWeight.bold,
       letterSpacing: 1.5);
 
-  static final TextStyle mainTitleStyle = TextStyle(
-    fontSize: 17,
-    color: Colors.black,
-  );
-  static final TextStyle firstTitleStyleBlue =
-      TextStyle(fontSize: 16, color: Colors.blue);
-  static final TextStyle secondTitleStyleBlue =
-      TextStyle(fontSize: 14, color: Colors.blue);
-
   static final TextStyle firstTitleStyleBlack =
       TextStyle(fontSize: 16, color: Colors.black);
   static final TextStyle secondTitleStyleBlack =
@@ -37,9 +28,6 @@ class AllpassTextUI {
 /// 保存所有Allpass用到的颜色
 class AllpassColorUI {
   AllpassColorUI._();
-
-  static final Color mainColor = Colors.blue;
-  static final Color mainBackgroundColor = Colors.white;
   static final List<Color> allColor = List.of([
     Color.fromRGBO(8, 200, 224, 1),
     Color.fromRGBO(72, 120, 240, 1),
@@ -97,6 +85,42 @@ class AllpassEdgeInsets {
 class CustomIcons {
   static const IconData chrome =
       const IconData(0xe684, fontFamily: "IconFont", matchTextDirection: true);
+}
+
+/// 主题
+class AllpassTheme {
+  static ThemeData blueTheme =  ThemeData(
+    primaryColor: Colors.blue,
+    primarySwatch: Colors.blue,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.blue,
+    cursorColor: Colors.blue,
+  );
+  static ThemeData redTheme = ThemeData(
+    primaryColor: Colors.red,
+    primarySwatch: Colors.red,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    indicatorColor: Colors.red,
+    cursorColor: Colors.red,
+  );
 }
 
 /// 其他样式
