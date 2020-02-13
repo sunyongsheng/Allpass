@@ -458,6 +458,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           children: <Widget>[
                             FloatingActionButton(
                               heroTag: "edit",
+                              backgroundColor: Colors.blueAccent,
                               elevation: 0,
                               onPressed: () {
                                 Navigator.push(context,

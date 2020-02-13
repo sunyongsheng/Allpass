@@ -382,6 +382,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             children: <Widget>[
                               FloatingActionButton(
                                 heroTag: "edit",
+                                backgroundColor: Colors.blueAccent,
                                 elevation: 0,
                                 onPressed: () {
                                   Navigator.push(context,
