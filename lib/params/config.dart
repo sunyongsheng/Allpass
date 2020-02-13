@@ -10,7 +10,7 @@ class Config {
   static bool enabledBiometrics = false; // 是否启用生物识别
   static bool longPressCopy = true;     // 是否开启长按复制，否则为长按多选
   static bool multiSelected = false;      // 是否点击了多选按钮
-  static String theme;
+  static String theme;                    // 主题名
 
 
   /// 参数初始化
@@ -27,7 +27,7 @@ class Config {
     // 判断长按功能
     longPressCopy = Application.sp.getBool("longPressCopy")??true;
     // 初始化主题
-    theme = Application.sp.getString("theme")??"red";
+    theme = Application.sp.getString("theme")??"blue";
   }
 
   /// 清空参数
