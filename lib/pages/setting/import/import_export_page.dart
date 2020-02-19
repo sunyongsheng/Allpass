@@ -214,8 +214,6 @@ class ExportTypeSelectPage extends StatelessWidget {
                             rootDirectory: dir,
                           );
                           _process(context, exportFuture(context, newDir, type: AllpassType.PASSWORD));
-                        } else {
-                          Fluttertoast.showToast(msg: "密码错误");
                         }
                       });
                     }
@@ -244,8 +242,6 @@ class ExportTypeSelectPage extends StatelessWidget {
                           rootDirectory: dir,
                         );
                         _process(context, exportFuture(context, newDir, type: AllpassType.CARD));
-                      } else {
-                        Fluttertoast.showToast(msg: "密码错误");
                       }
                     });
                   }
@@ -274,8 +270,6 @@ class ExportTypeSelectPage extends StatelessWidget {
                           rootDirectory: dir,
                         );
                         _process(context, exportFuture(context, newDir));
-                      } else {
-                        Fluttertoast.showToast(msg: "密码错误");
                       }
                     });
                   }

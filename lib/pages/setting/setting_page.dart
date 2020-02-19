@@ -102,8 +102,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               } else {
                                 Fluttertoast.showToast(msg: "授权失败");
                               }
-                            } else {
-                              Fluttertoast.showToast(msg: "密码错误");
                             }
                           });
                         } else {
