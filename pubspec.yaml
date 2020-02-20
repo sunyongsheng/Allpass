@@ -53,6 +53,8 @@ dependencies:
   lpinyin: ^1.0.9
   # 网络请求
   dio: ^3.0.8
+  # 设备信息
+  device_info: ^0.4.1+4
 
 dev_dependencies:
   flutter_test:
