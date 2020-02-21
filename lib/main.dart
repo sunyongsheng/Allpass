@@ -2,18 +2,21 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
+import 'package:device_info/device_info.dart';
 
-import 'package:allpass/pages/login/login_page.dart';
-import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/pages/login/login_page.dart';
+import 'package:allpass/pages/login/auth_login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +61,8 @@ void main() async {
     );
   };
 
+  registerUser();
+
   final PasswordList passwords = PasswordList()..init();
   final CardList cards = CardList()..init();
   final ThemeProvider theme = ThemeProvider()..init();
@@ -86,5 +91,30 @@ class Allpass extends StatelessWidget {
       home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
     );
+  }
+}
+
+void registerUser() async {
+  if (Application.sp.getBool("NEED_REGISTER")??true) {
+    DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
+    String imei;
+    String systemInfo;
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo info = await infoPlugin.androidInfo;
+      imei = info.androidId;
+      systemInfo = "${info.model} android${info.version.release}";
+    } else if (Platform.isIOS) {
+      IosDeviceInfo info = await infoPlugin.iosInfo;
+      imei = info.identifierForVendor;
+      systemInfo = "${info.model} IOS${info.systemVersion}";
+    } else {
+      return;
+    }
+    Response response = await Dio().post("$allpassUrl/register?imei=$imei&system_info=$systemInfo");
+    if (response.headers.value("result") == "success") {
+      Application.sp.setBool("NEED_REGISTER", false);
+    } else {
+      Application.sp.setBool("NEED_REGISTER", true);
+    }
   }
 }
