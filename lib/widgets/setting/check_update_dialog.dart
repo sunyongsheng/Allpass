@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 
 
@@ -35,7 +36,7 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
     _dio = Dio();
     try {
       Response response = await _dio.get(
-          "http://47.102.208.175:8080/AllpassUpdateService/update?version=${Application.version}");
+          "$allpassUrl/update?version=${Application.version}");
       if (response.headers.value("version") == Application.version) {
         _update = false;
       } else {
