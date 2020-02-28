@@ -35,20 +35,20 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
   Future<Null> checkUpdate() async {
     _dio = Dio();
     try {
-      Response response = await _dio.get(
+      Response<Map> response = await _dio.get(
           "$allpassUrl/update?version=${Application.version}");
-      if (response.headers.value("version") == Application.version) {
+      if (response.data["have_update"] == "0") {
         _update = false;
       } else {
         _update = true;
-        _downloadUrl = response.headers.value("download_url");
+        _downloadUrl = response.data["download_url"];
       }
-      _updateContent = response.data.replaceAll("~", "\n");
+      _updateContent = response.data["update_content"].replaceAll("~", "\n");
       _content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _update
-              ? Text("有新版本可以下载！")
+              ? Text("有新版本可以下载！最新版本V${response.data["version"]}")
               : Text("您的版本是最新版！"),
           _update
               ? Padding(
