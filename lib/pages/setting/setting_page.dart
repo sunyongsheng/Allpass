@@ -135,8 +135,8 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                 ),
                 Container(
                     child: ListTile(
-                      title: Text("修改主题"),
-                      leading: Icon(Icons.layers, color: AllpassColorUI.allColor[5]),
+                      title: Text("主题颜色"),
+                      leading: Icon(Icons.color_lens, color: AllpassColorUI.allColor[5]),
                       onTap: () {
                         showDialog(context: context, child: AlertDialog(
                           title: Text("修改主题"),
