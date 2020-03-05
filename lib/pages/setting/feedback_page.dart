@@ -18,6 +18,8 @@ class _FeedbackPage extends State<StatefulWidget> {
   TextEditingController _contactController;
   Dio _dio;
 
+  bool _submitSuccess = false;
+
   @override
   void initState() {
     super.initState();
@@ -95,24 +97,45 @@ class _FeedbackPage extends State<StatefulWidget> {
                   Fluttertoast.showToast(msg: "反馈内容必须小于1000字！");
                   return;
                 }
-                Map<String, String> map = Map();
-                map['feedbackContent'] = _feedbackController.text;
-                map['contact'] = _contactController.text;
-                try {
-                  Response res = await _dio.post("$allpassUrl/feedback", data: map);
-                  if ((res.data['result']??'0') == '1') {
-                    Fluttertoast.showToast(msg: "感谢你的反馈！");
-                  }
-                } on DioError {
-                  Fluttertoast.showToast(msg: "提交失败，请检查网络连接或远程服务器错误");
-                }
-                Navigator.pop(context);
+                showDialog(
+                    context: context,
+                    child: FutureBuilder(
+                      future: submitFeedback(),
+                      builder: (context, snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.done:
+                            return Center();
+                          default:
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                        }
+                      },
+                    )).then((_) {
+                      if (_submitSuccess) Navigator.pop(context);
+                });
               },
             )
           ],
         ),
       ),
     );
+  }
+
+  Future<Null> submitFeedback() async {
+    Map<String, String> map = Map();
+    map['feedbackContent'] = _feedbackController.text;
+    map['contact'] = _contactController.text;
+    try {
+      Response res = await _dio.post("$allpassUrl/feedback", data: map);
+      if ((res.data['result']??'0') == '1') {
+        Fluttertoast.showToast(msg: "感谢你的反馈！");
+        _submitSuccess = true;
+      }
+    } on DioError {
+      Fluttertoast.showToast(msg: "提交失败，请检查网络连接或远程服务器错误");
+    }
+    Navigator.pop(context);
   }
 
 }
