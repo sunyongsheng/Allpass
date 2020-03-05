@@ -25,7 +25,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          brightness: Brightness.light,
           title: Text(
             "从剪贴板导入",
             style: AllpassTextUI.titleBarStyle,
@@ -33,7 +32,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.help_outline, color: Colors.black,),
+              icon: Icon(Icons.help_outline),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -92,7 +91,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               });
                             },
                           ),
-                          Text("名称 账号 密码 网站地址", style: AllpassTextUI.firstTitleStyleBlack,),
+                          Text("名称 账号 密码 网站地址", style: AllpassTextUI.firstTitleStyle,),
                         ],
                       ),
                       onTap: () {
@@ -113,7 +112,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               });
                             },
                           ),
-                          Text("名称 账号 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                          Text("名称 账号 密码", style: AllpassTextUI.firstTitleStyle,),
                         ],
                       ),
                       onTap: () {
@@ -134,7 +133,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               });
                             },
                           ),
-                          Text("账号 密码 网站地址", style: AllpassTextUI.firstTitleStyleBlack,),
+                          Text("账号 密码 网站地址", style: AllpassTextUI.firstTitleStyle,),
                         ],
                       ),
                       onTap: () {
@@ -155,7 +154,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               });
                             },
                           ),
-                          Text("账号 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                          Text("账号 密码", style: AllpassTextUI.firstTitleStyle,),
                         ],
                       ),
                       onTap: () {
@@ -177,7 +176,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               Fluttertoast.showToast(msg: "请在第一行输入默认账号");
                             },
                           ),
-                          Text("名称 密码", style: AllpassTextUI.firstTitleStyleBlack,),
+                          Text("名称 密码", style: AllpassTextUI.firstTitleStyle,),
                         ],
                       ),
                       onTap: () {

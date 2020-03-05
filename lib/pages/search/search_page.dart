@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -164,7 +165,7 @@ class _SearchPage extends State<SearchPage> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
-                  color: Colors.grey[200],
+                  color: Config.theme == 'dark' ? Colors.grey[900] : Colors.grey[200],
                 ),
                 height: 35,
                 child: TextField(
@@ -195,7 +196,7 @@ class _SearchPage extends State<SearchPage> {
             InkWell(
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Text("取消", style: AllpassTextUI.secondTitleStyleBlack),
+                child: Text("取消", style: AllpassTextUI.secondTitleStyle),
               ),
               onTap: () => Navigator.pop(context),
             )

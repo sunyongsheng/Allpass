@@ -35,7 +35,7 @@ class DetailTextPage extends StatelessWidget {
                       autofocus: true,
                       controller: _controller,
                       maxLines: 1000,
-                      style: AllpassTextUI.firstTitleStyleBlack,
+                      style: AllpassTextUI.firstTitleStyle,
                       decoration: InputDecoration(
                         suffix: InkWell(
                           child: Icon(
@@ -78,7 +78,7 @@ class DetailTextPage extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     child: Text(text,
-                      style: AllpassTextUI.firstTitleStyleBlack,
+                      style: AllpassTextUI.firstTitleStyle,
                     ),
                     padding: AllpassEdgeInsets.listInset,
                   )

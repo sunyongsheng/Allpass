@@ -23,7 +23,6 @@ class NoneBorderCircularTextField extends StatelessWidget {
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.circular(AllpassUI.bigBorderRadius),
             ),
-            fillColor: Colors.grey[200],
             filled: true,
             contentPadding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0)
         ),

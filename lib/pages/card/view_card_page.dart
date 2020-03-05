@@ -85,12 +85,9 @@ class _ViewCardPage extends State<ViewCardPage> {
             ),
             centerTitle: true,
             actions: <Widget>[
-              Icon(
-                _bean.fav == 1
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: _bean.fav == 1 ? Colors.redAccent : Colors.black,
-              ),
+              _bean.fav == 1
+                  ? Icon(Icons.favorite, color: Colors.redAccent,)
+                  : Icon(Icons.favorite_border,),
               Padding(padding: AllpassEdgeInsets.smallLPadding,),
               Padding(padding: AllpassEdgeInsets.smallLPadding,)
             ],
@@ -109,7 +106,6 @@ class _ViewCardPage extends State<ViewCardPage> {
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                            color: Colors.white,
                             elevation: 5,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -181,7 +177,6 @@ class _ViewCardPage extends State<ViewCardPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(AllpassUI.smallBorderRadius))),
-                              color: Colors.white,
                               elevation: 5,
                               child: SizedBox(
                                 width: ScreenUtil.screenWidth * 0.8,
@@ -214,7 +209,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                             child: Text(_bean.ownerName,
                                               overflow: TextOverflow.ellipsis,
                                               style: AllpassTextUI
-                                                  .firstTitleStyleBlack,
+                                                  .firstTitleStyle,
                                             ),),
                                           Padding(padding: AllpassEdgeInsets
                                               .smallLPadding,),
@@ -254,7 +249,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                 : "*" * _bean.cardId.length,
                                               overflow: TextOverflow.ellipsis,
                                               style: AllpassTextUI
-                                                  .firstTitleStyleBlack,
+                                                  .firstTitleStyle,
                                             ),
                                           ),
                                           Row(
@@ -310,7 +305,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                 ? _password
                                                 : "*" * _password.length,
                                               overflow: TextOverflow.ellipsis,
-                                              style: AllpassTextUI.firstTitleStyleBlack,
+                                              style: AllpassTextUI.firstTitleStyle,
                                             ),
                                           ),
                                           Row(
@@ -364,7 +359,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                             child: Text(_bean.telephone,
                                               overflow: TextOverflow.ellipsis,
                                               style: AllpassTextUI
-                                                  .firstTitleStyleBlack,
+                                                  .firstTitleStyle,
                                             ),),
                                           Padding(padding: AllpassEdgeInsets
                                               .smallLPadding,),
@@ -419,7 +414,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                       ? AllpassTextUI
                                                       .hintTextStyle
                                                       : AllpassTextUI
-                                                      .firstTitleStyleBlack,
+                                                      .firstTitleStyle,
                                                 ),
                                               )),
                                         ],

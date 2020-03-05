@@ -66,6 +66,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).bottomAppBarColor,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle,),

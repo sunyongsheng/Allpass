@@ -20,11 +20,10 @@ class SearchButtonWidget extends StatelessWidget {
             Text("搜索$searchType"),
           ],
         ),
-        color: Colors.grey[200],
+        color: Theme.of(context).inputDecorationTheme.fillColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(50)),
-        splashColor:
-        Colors.grey[200], // 设置成和FlatButton.color一样的值，点击时不会点击效果
+        splashColor: Colors.transparent,
       ),
     );
   }

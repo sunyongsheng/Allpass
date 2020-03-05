@@ -110,7 +110,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           IconButton(
             icon: _fav == 1
                 ? Icon(Icons.favorite, color: Colors.redAccent,)
-                : Icon(Icons.favorite_border, color: Colors.black,),
+                : Icon(Icons.favorite_border),
             onPressed: () {
               setState(() {
                 _fav = _fav == 1 ? 0 : 1;
@@ -118,10 +118,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             },
           ),
           IconButton(
-            icon: Icon(
-              Icons.check,
-              color: Colors.black,
-            ),
+            icon: Icon(Icons.check,),
             onPressed: () async {
               if (_usernameController.text.length >= 1
                   && _passwordController.text.length >= 1) {
@@ -316,7 +313,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   child: Text(item),
                                 );
                               }).toList(),
-                              style: AllpassTextUI.firstTitleStyleBlack,
+                              style: AllpassTextUI.firstTitleStyle,
                               elevation: 8,
                               iconSize: 30,
                               value: _folder,
@@ -384,7 +381,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           }
         },
       ),
-      backgroundColor: Colors.white,
     );
   }
 

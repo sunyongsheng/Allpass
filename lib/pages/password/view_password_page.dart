@@ -84,12 +84,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
               ),
               centerTitle: true,
               actions: <Widget>[
-                Icon(
                   _bean.fav == 1
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                  color: _bean.fav == 1 ? Colors.redAccent : Colors.black,
-                ),
+                      ? Icon(Icons.favorite, color: Colors.redAccent,)
+                      : Icon(Icons.favorite_border),
                 Padding(padding: AllpassEdgeInsets.smallLPadding,),
                 Padding(padding: AllpassEdgeInsets.smallLPadding,)
               ],
@@ -171,7 +168,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             padding: AllpassEdgeInsets.forViewCardInset,
                             child: Card(
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                                color: Colors.white,
                                 elevation: 5,
                                 child: SizedBox(
                                   width: ScreenUtil.screenWidth * 0.8,
@@ -200,7 +196,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                             Expanded(
                                               child: Text(_bean.username,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: AllpassTextUI.firstTitleStyleBlack,
+                                                style: AllpassTextUI.firstTitleStyle,
                                               ),),
                                             Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                             InkWell(
@@ -235,7 +231,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                   ? _password
                                                   : "*" * _password.length,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: AllpassTextUI.firstTitleStyleBlack,
+                                                style: AllpassTextUI.firstTitleStyle,
                                               ),
                                             ),
                                             Row(
@@ -294,7 +290,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                   child: Text(_bean.url,
                                                     overflow: TextOverflow.ellipsis,
                                                     style: AllpassTextUI
-                                                        .firstTitleStyleBlack,
+                                                        .firstTitleStyle,
                                                   ),
                                                 )),
                                             Padding(padding: AllpassEdgeInsets.smallLPadding,),
@@ -341,9 +337,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                     overflow: TextOverflow.ellipsis,
                                                     maxLines: 2,
                                                     style: _bean.notes.length<1
-                                                        ?AllpassTextUI
-                                                        .hintTextStyle
-                                                        :AllpassTextUI.firstTitleStyleBlack,
+                                                        ?AllpassTextUI.hintTextStyle
+                                                        :AllpassTextUI.firstTitleStyle,
                                                   ),
                                                 )),
                                           ],

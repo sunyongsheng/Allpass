@@ -113,7 +113,7 @@ class _EditCardPage extends State<EditCardPage> {
             IconButton(
               icon: _fav == 1
                   ? Icon(Icons.favorite, color: Colors.redAccent,)
-                  : Icon(Icons.favorite_border, color: Colors.black,),
+                  : Icon(Icons.favorite_border,),
               onPressed: () {
                 setState(() {
                   _fav = _fav == 1 ? 0 : 1;
@@ -121,10 +121,7 @@ class _EditCardPage extends State<EditCardPage> {
               },
             ),
             IconButton(
-              icon: Icon(
-                Icons.check,
-                color: Colors.black,
-              ),
+              icon: Icon(Icons.check,),
               onPressed: () {
                 if (_ownerNameController.text.length >= 1 && _cardIdController.text.length >= 1) {
                   String pwd = _passwordController.text.length >= 1
@@ -153,10 +150,6 @@ class _EditCardPage extends State<EditCardPage> {
               },
             )
           ],
-          backgroundColor: Colors.white,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          brightness: Brightness.light,
         ),
         body: FutureBuilder(
           future: _futureHelper,
@@ -349,7 +342,7 @@ class _EditCardPage extends State<EditCardPage> {
                                   child: Text(item),
                                 );
                               }).toList(),
-                              style: AllpassTextUI.firstTitleStyleBlack,
+                              style: AllpassTextUI.firstTitleStyle,
                               elevation: 8,
                               iconSize: 30,
                               value: _folder,

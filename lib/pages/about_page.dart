@@ -18,7 +18,7 @@ class AboutPage extends StatelessWidget {
         5. 开发者不会向任何无关第三方提供、出售、出租、分享或交易您的个人信息。Allpass也不会将普通用户的信息用于商业用途。
         6. 在使用过程中，Allpass需要获取手机的存储权限（导入及导出功能）、手机识别码（用于Allpass用户统计）、生物识别验证（用于指纹登录）及联网权限（检查更新）。
         ''',
-    style: AllpassTextUI.firstTitleStyleBlack,
+    style: AllpassTextUI.firstTitleStyle,
   );
 
   @override

@@ -23,7 +23,7 @@ class ModifyPasswordDialog extends StatelessWidget {
       ),
       title: Text(
         "修改主密码",
-        style: AllpassTextUI.firstTitleStyleBlack,
+        style: AllpassTextUI.firstTitleStyle,
       ),
       content: SingleChildScrollView(
         child: Column(
