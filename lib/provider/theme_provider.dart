@@ -40,6 +40,8 @@ class ThemeProvider with ChangeNotifier {
         return AllpassTheme.pinkTheme;
       case "blueGrey":
         return AllpassTheme.blueGreyTheme;
+      case "dark":
+        return AllpassTheme.darkTheme;
       default:
         return AllpassTheme.blueTheme;
     }

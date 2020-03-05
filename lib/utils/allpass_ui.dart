@@ -10,17 +10,16 @@ class AllpassTextUI {
 
   static final TextStyle titleBarStyle = TextStyle(
       fontSize: 17,
-      color: Colors.black,
       fontWeight: FontWeight.bold,
       letterSpacing: 1.5);
 
-  static final TextStyle firstTitleStyleBlack =
-      TextStyle(fontSize: 16, color: Colors.black);
-  static final TextStyle secondTitleStyleBlack =
-      TextStyle(fontSize: 14, color: Colors.black);
+  static final TextStyle firstTitleStyle =
+      TextStyle(fontSize: 16);
+  static final TextStyle secondTitleStyle =
+      TextStyle(fontSize: 14);
 
-  static final TextStyle smallTextStyleBlack =
-      TextStyle(fontSize: 12, color: Colors.black);
+  static final TextStyle smallTextStyle =
+      TextStyle(fontSize: 12);
   static final TextStyle hintTextStyle =
       TextStyle(fontSize: 16, color: Colors.black54);
 }
@@ -99,11 +98,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.blue,
     cursorColor: Colors.blue,
+    inputDecorationTheme: InputDecorationTheme(
+      fillColor: Colors.grey[200]
+    )
   );
   static ThemeData redTheme = ThemeData(
     primaryColor: Colors.red,
@@ -115,11 +118,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.red,
     cursorColor: Colors.red,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
   );
   static ThemeData tealTheme = ThemeData(
     primaryColor: Colors.teal,
@@ -131,11 +138,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.teal,
     cursorColor: Colors.teal,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
   );
   static ThemeData deepPurpleTheme = ThemeData(
     primaryColor: Colors.deepPurple,
@@ -147,11 +158,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.deepPurple,
     cursorColor: Colors.deepPurple,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
   );
   static ThemeData orangeTheme = ThemeData(
     primaryColor: Colors.orange,
@@ -163,11 +178,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.orange,
     cursorColor: Colors.orange,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
   );
   static ThemeData pinkTheme = ThemeData(
     primaryColor: Colors.pink,
@@ -179,11 +198,15 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.pink,
     cursorColor: Colors.pink,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
   );
   static ThemeData blueGreyTheme = ThemeData(
     primaryColor: Colors.blueGrey,
@@ -195,11 +218,66 @@ class AllpassTheme {
         brightness: Brightness.light,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white
+        color: Colors.white,
+        textTheme: TextTheme(title: TextStyle(color: Colors.black))
     ),
     scaffoldBackgroundColor: Colors.white,
     indicatorColor: Colors.blueGrey,
     cursorColor: Colors.blueGrey,
+    inputDecorationTheme: InputDecorationTheme(
+        fillColor: Colors.grey[200]
+    )
+  );
+  static ThemeData darkTheme = ThemeData(
+    primaryColor: Colors.blueAccent,
+    primarySwatch: Colors.blue,
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white
+    ),
+    appBarTheme: AppBarTheme(
+      brightness: Brightness.dark,
+      iconTheme: IconThemeData(color: Colors.white70),
+      elevation: 0,
+      color: Colors.black,
+    ),
+    iconTheme: IconThemeData(
+      color: Colors.grey[200]
+    ),
+    scaffoldBackgroundColor: Colors.black54,
+    cardColor: Colors.black,
+    indicatorColor: Colors.blueAccent,
+    cursorColor: Colors.blueAccent,
+    accentColor: Colors.grey,
+    textTheme: TextTheme(
+      title: TextStyle(color: Colors.white),
+      display1: TextStyle(color: Colors.white),
+      display2: TextStyle(color: Colors.white),
+      display3: TextStyle(color: Colors.white),
+      display4: TextStyle(color: Colors.white),
+      caption: TextStyle(color: Colors.white),
+      body1: TextStyle(color: Colors.white),
+      body2: TextStyle(color: Colors.white),
+      subtitle: TextStyle(color: Colors.white),
+      subhead: TextStyle(color: Colors.white),
+      button: TextStyle(color: Colors.white),
+      headline: TextStyle(color: Colors.white),
+    ),
+    bottomAppBarColor: Colors.grey[900],
+    dialogTheme: DialogTheme(
+      backgroundColor: Colors.grey[900],
+    ),
+    bottomSheetTheme: BottomSheetThemeData(
+      modalBackgroundColor: Colors.grey[900]
+    ),
+    dividerColor: Colors.grey,
+    inputDecorationTheme: InputDecorationTheme(
+      labelStyle: TextStyle(color: Colors.white),
+      fillColor: Colors.grey[900],
+      hintStyle: TextStyle(color: Colors.grey),
+    ),
+    buttonTheme: ButtonThemeData(
+      textTheme: ButtonTextTheme.accent
+    )
   );
 }
 
