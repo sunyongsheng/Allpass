@@ -99,7 +99,7 @@ class _FeedbackPage extends State<StatefulWidget> {
                 map['feedbackContent'] = _feedbackController.text;
                 map['contact'] = _contactController.text;
                 try {
-                  Response res = await _dio.post("$allpassUrl/feedback", queryParameters: map);
+                  Response res = await _dio.post("$allpassUrl/feedback", data: map);
                   if ((res.data['result']??'0') == '1') {
                     Fluttertoast.showToast(msg: "感谢你的反馈！");
                   }
