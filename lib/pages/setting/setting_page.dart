@@ -9,6 +9,7 @@ import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/services/authentication_service.dart';
 import 'package:allpass/pages/about_page.dart';
+import 'package:allpass/pages/setting/feedback_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
@@ -317,6 +318,16 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   child: Divider(
                     thickness: 1,
                   ),
+                ),
+                Container(
+                    child: ListTile(
+                        title: Text("意见反馈"),
+                        leading: Icon(Icons.feedback, color: AllpassColorUI.allColor[1]),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => FeedbackPage(),
+                        ))
+                    ),
+                    padding: AllpassEdgeInsets.listInset
                 ),
                 Container(
                     child: ListTile(
