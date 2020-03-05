@@ -87,6 +87,14 @@ class _FeedbackPage extends State<StatefulWidget> {
               ),
               child: Text("提交", style: TextStyle(color: Colors.white),),
               onPressed: () async {
+                if (_feedbackController.text.trim().length < 1) {
+                  Fluttertoast.showToast(msg: "请输入反馈内容");
+                  return;
+                }
+                if (_feedbackController.text.length >= 1000) {
+                  Fluttertoast.showToast(msg: "反馈内容必须小于1000字！");
+                  return;
+                }
                 Map<String, String> map = Map();
                 map['feedbackContent'] = _feedbackController.text;
                 map['contact'] = _contactController.text;
