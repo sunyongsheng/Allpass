@@ -253,12 +253,12 @@ class AllpassTheme {
           brightness: Brightness.dark,
           iconTheme: IconThemeData(color: Colors.white70),
           elevation: 0,
-          color: Colors.black,
+          color: Colors.grey[900],
         ),
         iconTheme: IconThemeData(
             color: Colors.grey[200]
         ),
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: Colors.grey[900],
         cardColor: Colors.black,
         indicatorColor: Colors.blueAccent,
         cursorColor: Colors.blueAccent,
@@ -287,7 +287,7 @@ class AllpassTheme {
         dividerColor: Colors.grey,
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: TextStyle(color: Colors.white),
-          fillColor: Colors.grey[900],
+          fillColor: Colors.black,
           hintStyle: TextStyle(color: Colors.grey),
         ),
         buttonTheme: ButtonThemeData(

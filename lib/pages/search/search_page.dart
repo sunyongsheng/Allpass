@@ -166,7 +166,7 @@ class _SearchPage extends State<SearchPage> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(30)),
-                  color: Config.theme == 'dark' ? Colors.grey[900] : Colors.grey[200],
+                  color: Config.theme == 'dark' ? Colors.black : Colors.grey[200],
                 ),
                 height: 35,
                 child: TextField(
@@ -175,7 +175,11 @@ class _SearchPage extends State<SearchPage> {
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 20, right: 20),
                     hintText: "搜索名称、用户名、备注或关键字",
-                    hintStyle: TextStyle(fontSize: 14),
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Config.theme == 'dark'
+                          ? Colors.grey
+                          : Colors.grey[900],),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       borderSide: BorderSide.none
