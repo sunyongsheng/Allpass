@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/screen_util.dart';
@@ -126,6 +128,16 @@ class _FeedbackPage extends State<StatefulWidget> {
     Map<String, String> map = Map();
     map['feedbackContent'] = _feedbackController.text;
     map['contact'] = _contactController.text;
+    DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo info = await infoPlugin.androidInfo;
+      map['imei'] = info.androidId;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo info = await infoPlugin.iosInfo;
+      map['imei'] = info.identifierForVendor;
+    } else {
+      map['imei'] = "unknow";
+    }
     try {
       Response res = await _dio.post("$allpassUrl/feedback", data: map);
       if ((res.data['result']??'0') == '1') {
