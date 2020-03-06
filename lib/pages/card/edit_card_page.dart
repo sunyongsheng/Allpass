@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/utils/allpass_ui.dart';
@@ -340,7 +341,11 @@ class _EditCardPage extends State<EditCardPage> {
                               items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
                                 return DropdownMenuItem<String>(
                                   value: item,
-                                  child: Text(item),
+                                  child: Text(item, style: TextStyle(
+                                      color: Config.theme == 'dark'
+                                          ? Colors.white
+                                          : Colors.black
+                                  ),),
                                 );
                               }).toList(),
                               style: AllpassTextUI.firstTitleStyle,
