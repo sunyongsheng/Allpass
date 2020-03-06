@@ -27,23 +27,23 @@ class ThemeProvider with ChangeNotifier {
   ThemeData getTheme(String themeName) {
     switch (themeName) {
       case "blue":
-        return AllpassTheme.blueTheme;
+        return AllpassTheme.blueTheme();
       case "red":
-        return AllpassTheme.redTheme;
+        return AllpassTheme.redTheme();
       case "teal":
-        return AllpassTheme.tealTheme;
+        return AllpassTheme.tealTheme();
       case "deepPurple":
-        return AllpassTheme.deepPurpleTheme;
+        return AllpassTheme.deepPurpleTheme();
       case "orange":
-        return AllpassTheme.orangeTheme;
+        return AllpassTheme.orangeTheme();
       case "pink":
-        return AllpassTheme.pinkTheme;
+        return AllpassTheme.pinkTheme();
       case "blueGrey":
-        return AllpassTheme.blueGreyTheme;
+        return AllpassTheme.blueGreyTheme();
       case "dark":
-        return AllpassTheme.darkTheme;
+        return AllpassTheme.darkTheme();
       default:
-        return AllpassTheme.blueTheme;
+        return AllpassTheme.blueTheme();
     }
   }
 }
