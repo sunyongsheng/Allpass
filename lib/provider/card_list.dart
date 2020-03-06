@@ -16,27 +16,32 @@ class CardList with ChangeNotifier {
     init();
   }
 
-  init() async {
+  void init() async {
     _cardList = await _dao.getAllCardBeanList()??[];
+    sortByAlphabeticalOrder();
+  }
+
+  void sortByAlphabeticalOrder() {
     _cardList.sort((one, two) {
       return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
           .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
     });
   }
 
-  insertCard(CardBean bean) async {
+  void insertCard(CardBean bean) async {
     _cardList?.add(bean);
     await _dao.insert(bean);
+    sortByAlphabeticalOrder();
     notifyListeners();
   }
 
-  deleteCard(CardBean bean) async {
+  void deleteCard(CardBean bean) async {
     _cardList?.remove(bean);
     await _dao.deleteCardBeanById(bean.uniqueKey);
     notifyListeners();
   }
 
-  updateCard(CardBean bean) async {
+  void updateCard(CardBean bean) async {
     int index = -1;
     for (int i = 0; i < _cardList.length; i++) {
       if (_cardList[i].uniqueKey == bean.uniqueKey) {
@@ -44,12 +49,16 @@ class CardList with ChangeNotifier {
         break;
       }
     }
+    String oldName = _cardList[index].name;
     _cardList[index] = bean;
+    if (oldName[0] != bean.name[0]) {
+      sortByAlphabeticalOrder();
+    }
     await _dao.updatePasswordBean(bean);
     notifyListeners();
   }
 
-  clear() async {
+  void clear() async {
     _cardList?.clear();
     await _dao.deleteContent();
     notifyListeners();

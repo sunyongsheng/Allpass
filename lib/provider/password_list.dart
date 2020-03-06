@@ -15,28 +15,33 @@ class PasswordList with ChangeNotifier {
     init();
   }
 
-  init() async {
+  void init() async {
     _passwordList = await _dao.getAllPasswordBeanList()??[];
+    sortByAlphabeticalOrder();
+    notifyListeners();
+  }
+
+  void sortByAlphabeticalOrder() {
     _passwordList.sort((one, two) {
       return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
           .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
     });
-    notifyListeners();
   }
 
-  insertPassword(PasswordBean bean) async {
+  void insertPassword(PasswordBean bean) async {
     _passwordList?.add(bean);
     await _dao.insert(bean);
+    sortByAlphabeticalOrder();
     notifyListeners();
   }
 
-  deletePassword(PasswordBean bean) async {
+  void deletePassword(PasswordBean bean) async {
     _passwordList?.remove(bean);
     await _dao.deletePasswordBeanById(bean.uniqueKey);
     notifyListeners();
   }
 
-  updatePassword(PasswordBean bean) async {
+  void updatePassword(PasswordBean bean) async {
     int index = -1;
     for (int i = 0; i < _passwordList.length; i++) {
       if (_passwordList[i].uniqueKey == bean.uniqueKey) {
@@ -44,12 +49,16 @@ class PasswordList with ChangeNotifier {
         break;
       }
     }
+    String oldName = _passwordList[index].name;
     _passwordList[index] = bean;
+    if (oldName[0] != bean.name[0]) {
+      sortByAlphabeticalOrder();
+    }
     await _dao.updatePasswordBean(bean);
     notifyListeners();
   }
 
-  clear() async {
+  void clear() async {
     _passwordList?.clear();
     await _dao.deleteContent();
     notifyListeners();
