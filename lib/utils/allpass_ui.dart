@@ -258,7 +258,7 @@ class AllpassTheme {
         iconTheme: IconThemeData(
             color: Colors.grey[200]
         ),
-        scaffoldBackgroundColor: Colors.black54,
+        scaffoldBackgroundColor: Colors.black,
         cardColor: Colors.black,
         indicatorColor: Colors.blueAccent,
         cursorColor: Colors.blueAccent,
