@@ -256,7 +256,6 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.person, color: Colors.teal,),
           title: Text("复制用户名"),
           onTap: () {
-            print("复制用户名：" + data.username);
             Clipboard.setData(ClipboardData(text: data.username));
             Navigator.pop(context);
           },
@@ -266,7 +265,6 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制密码"),
           onTap: () async {
             String pw = EncryptUtil.decrypt(data.password);
-            print("复制密码：" + pw);
             Clipboard.setData(ClipboardData(text: pw));
             Navigator.pop(context);
           },
