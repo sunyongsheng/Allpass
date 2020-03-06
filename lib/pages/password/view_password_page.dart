@@ -330,7 +330,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                 child: InkWell(
                                                   onTap: () {
                                                     if (_bean.notes.length >= 1) {
-                                                      Navigator.push(context, MaterialPageRoute(
+                                                      Navigator.push(context, CupertinoPageRoute(
                                                         builder: (context) => DetailTextPage("备注", _bean.notes, false),));
                                                     }
                                                   },
