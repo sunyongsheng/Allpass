@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:allpass/params/runtime_data.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,7 +48,7 @@ class ImportExportPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => ChromeImportHelpPage(),
                       ));
                 },
@@ -61,7 +62,7 @@ class ImportExportPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => ImportTypeSelectPage(),
                       ));
                 },
@@ -75,7 +76,7 @@ class ImportExportPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => ImportFromClipboard(),
                       ));
                 },
@@ -89,7 +90,7 @@ class ImportExportPage extends StatelessWidget {
                 onTap: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
+                      CupertinoPageRoute(
                         builder: (context) => ExportTypeSelectPage(),
                       ));
                 },

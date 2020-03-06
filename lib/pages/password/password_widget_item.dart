@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -32,7 +33,7 @@ class PasswordWidgetItem extends StatelessWidget {
             title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
             subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context) => ViewPasswordPage(model.passwordList[index])
               )).then((bean) {
                 if (bean != null) {

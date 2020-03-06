@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -76,7 +77,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                               builder: (context) => AccountManagerPage()));
                     },
                   ),
@@ -288,7 +289,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                               builder: (context) => CategoryManagerPage("标签")));
                     },
                   ),
@@ -301,7 +302,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                               builder: (context) =>
                                   CategoryManagerPage("文件夹")));
                     },
@@ -321,7 +322,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => ImportExportPage(),
                           ));
                     },
@@ -338,7 +339,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     child: ListTile(
                         title: Text("意见反馈"),
                         leading: Icon(Icons.feedback, color: AllpassColorUI.allColor[1]),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(
+                        onTap: () => Navigator.push(context, CupertinoPageRoute(
                           builder: (context) => FeedbackPage(),
                         ))
                     ),
@@ -364,7 +365,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                     onTap: () {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => AboutPage(),
                           ));
                     },

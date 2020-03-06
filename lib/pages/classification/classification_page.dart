@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/params/runtime_data.dart';
@@ -59,7 +60,7 @@ class ClassificationPage extends StatelessWidget {
               ),
             ),
           ),
-          onTap: () => Navigator.push(context, MaterialPageRoute(
+          onTap: () => Navigator.push(context, CupertinoPageRoute(
             builder: (context) => FavoritePage()
           )),
         )
@@ -85,7 +86,7 @@ class ClassificationPage extends StatelessWidget {
                 builder: (context) => ClassificationDetailsPage(folder)
             ));
           },
-          onLongPress: () => Navigator.push(context, MaterialPageRoute(
+          onLongPress: () => Navigator.push(context, CupertinoPageRoute(
             builder: (context) => CategoryManagerPage("文件夹"),
           )),
         )

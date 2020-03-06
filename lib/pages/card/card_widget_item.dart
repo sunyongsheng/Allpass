@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class CardWidgetItem extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
             child: InkWell(
-              onTap: () => Navigator.push(context, MaterialPageRoute(
+              onTap: () => Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewCardPage(model.cardList[index]),
               )).then((bean) {
                 if (bean != null) {
@@ -99,7 +100,7 @@ class SimpleCardWidgetItem extends StatelessWidget {
             ),
             title: Text(model.cardList[index].name),
             subtitle: Text(model.cardList[index].ownerName),
-            onTap: () => Navigator.push(context, MaterialPageRoute(
+            onTap: () => Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewCardPage(model.cardList[index])
             )).then((bean) {
               if (bean != null) {

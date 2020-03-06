@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -389,7 +390,7 @@ class _EditCardPage extends State<EditCardPage> {
                               controller: _notesController,
                               maxLines: null,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
+                                Navigator.push(context, CupertinoPageRoute(
                                   builder: (context) => DetailTextPage("备注", _notesController.text, true),
                                 )).then((newValue) {
                                   setState(() {

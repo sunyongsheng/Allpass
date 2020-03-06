@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -214,7 +215,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("查看"),
           onTap: () {
             Navigator.push(context,
-                    MaterialPageRoute(
+                CupertinoPageRoute(
                       builder: (context) => ViewPasswordPage(data)))
                 .then((reData) {
               if (reData != null) {
@@ -233,7 +234,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("编辑"),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(
+                CupertinoPageRoute(
                   builder: (context) => EditPasswordPage(data, "编辑密码")))
                 .then((reData) {
               if (reData != null) {
@@ -289,7 +290,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) =>
                             ViewCardPage(data)))
                 .then((resData) {
@@ -309,7 +310,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context) =>
                             EditCardPage(data, "编辑卡片")))
                 .then((resData) {

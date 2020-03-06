@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -184,7 +185,7 @@ class _PasswordPageState extends State<PasswordPage>
             child: Icon(Icons.add),
             onPressed: () {
               Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
+                  CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
                   .then((resData) {
                 if (resData != null) {
                   model.insertPassword(resData);

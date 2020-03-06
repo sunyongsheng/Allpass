@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -190,7 +191,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(
+                CupertinoPageRoute(
                     builder: (context) =>
                         EditCardPage(null, "添加卡片")))
                 .then((resData) {

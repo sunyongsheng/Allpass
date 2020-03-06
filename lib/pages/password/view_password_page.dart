@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -382,7 +383,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 elevation: 0,
                                 onPressed: () {
                                   Navigator.push(context,
-                                      MaterialPageRoute(
+                                      CupertinoPageRoute(
                                           builder: (context) => EditPasswordPage(_bean, "编辑密码")))
                                       .then((bean) {
                                     if (bean != null) {

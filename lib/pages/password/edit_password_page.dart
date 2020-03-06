@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -360,7 +361,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               controller: _notesController,
                               maxLines: null,
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
+                                Navigator.push(context, CupertinoPageRoute(
                                   builder: (context) => DetailTextPage("备注", _notesController.text, true),
                                 )).then((newValue) {
                                   setState(() {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -400,7 +401,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                                 onTap: () {
                                                   if (_bean.notes.length >= 1) {
                                                     Navigator.push(
-                                                        context, MaterialPageRoute(
+                                                        context, CupertinoPageRoute(
                                                       builder: (context) =>
                                                           DetailTextPage("备注", _bean.notes, false),));
                                                   }
@@ -458,7 +459,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                               elevation: 0,
                               onPressed: () {
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context) =>
                                             EditCardPage(_bean, "编辑卡片")))
                                     .then((bean) {
