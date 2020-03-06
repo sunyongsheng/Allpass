@@ -292,7 +292,19 @@ class AllpassTheme {
         ),
         buttonTheme: ButtonThemeData(
             textTheme: ButtonTextTheme.accent
-        )
+        ),
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.grey[700],
+        brightness: Brightness.dark,
+        disabledColor: Colors.grey[700],
+        labelPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+        labelStyle: TextStyle(color: Colors.white),
+        padding: EdgeInsets.all(4),
+        secondaryLabelStyle: TextStyle(color: Colors.white),
+        secondarySelectedColor: Colors.blue,
+        selectedColor: Colors.blue,
+        shape: StadiumBorder(),
+      )
     );
   }
 }

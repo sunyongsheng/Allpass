@@ -5,20 +5,14 @@ import 'package:allpass/utils/allpass_ui.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData currTheme;
-  Color chipTextColor;
 
   init() {
     currTheme = getTheme(Config.theme);
-    chipTextColor = Config.theme == "dark"
-        ? Colors.grey
-        : Colors.white;
   }
 
   void changeTheme(String themeName) {
+    if (themeName == Config.theme) return;
     currTheme = getTheme(themeName);
-    chipTextColor = Config.theme == "dark"
-        ? Colors.grey
-        : Colors.white;
     Config.theme = themeName;
     Application.sp.setString("theme", themeName);
     notifyListeners();

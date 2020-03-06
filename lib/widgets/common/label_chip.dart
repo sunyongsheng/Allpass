@@ -12,7 +12,7 @@ class LabelChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChoiceChip(
       label: Text(text),
-      labelStyle: TextStyle(fontSize: 14, color: Provider.of<ThemeProvider>(context).chipTextColor),
+      labelStyle: TextStyle(fontSize: 14, color: Colors.white),
       selected: selected,
       onSelected: onSelected,
       selectedColor: Provider.of<ThemeProvider>(context).currTheme.primaryColor,
