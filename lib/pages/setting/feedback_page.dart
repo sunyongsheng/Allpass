@@ -114,7 +114,9 @@ class _FeedbackPage extends State<StatefulWidget> {
                         }
                       },
                     )).then((_) {
-                      if (_submitSuccess) Navigator.pop(context);
+                      if (_submitSuccess) {
+                        Navigator.pop(context);
+                      }
                 });
               },
             )
@@ -131,12 +133,12 @@ class _FeedbackPage extends State<StatefulWidget> {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      map['imei'] = info.androidId;
+      map['identification'] = info.androidId;
     } else if (Platform.isIOS) {
       IosDeviceInfo info = await infoPlugin.iosInfo;
-      map['imei'] = info.identifierForVendor;
+      map['identification'] = info.identifierForVendor;
     } else {
-      map['imei'] = "unknow";
+      map['identification'] = "unknow";
     }
     try {
       Response res = await _dio.post("$allpassUrl/feedback", data: map);

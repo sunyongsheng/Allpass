@@ -97,20 +97,20 @@ class Allpass extends StatelessWidget {
 void registerUser() async {
   if (Application.sp.getBool("NEED_REGISTER")??true) {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-    String imei;
+    String identification;
     String systemInfo;
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      imei = info.androidId;
+      identification = info.androidId;
       systemInfo = "${info.model} android${info.version.release}";
     } else if (Platform.isIOS) {
       IosDeviceInfo info = await infoPlugin.iosInfo;
-      imei = info.identifierForVendor;
+      identification = info.identifierForVendor;
       systemInfo = "${info.model} IOS${info.systemVersion}";
     } else {
       return;
     }
-    Response response = await Dio().post("$allpassUrl/register?imei=$imei&system_info=$systemInfo");
+    Response response = await Dio().post("$allpassUrl/register?identification=$identification&system_info=$systemInfo");
     if (response.headers.value("result") == "success") {
       Application.sp.setBool("NEED_REGISTER", false);
     } else {
