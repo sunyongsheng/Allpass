@@ -24,12 +24,11 @@ class EditCardPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _EditCardPage(data, pageTitle);
+    return _EditCardPage();
   }
 }
 
 class _EditCardPage extends State<EditCardPage> {
-  String pageName;
   CardBean _oldData;
   bool _passwordVisible = false;
   var _futureHelper;
@@ -47,9 +46,15 @@ class _EditCardPage extends State<EditCardPage> {
   int _fav = 0;
 
 
-  _EditCardPage(CardBean inData, this.pageName) {
-    if (inData != null) {
-      this._oldData = inData;
+  Future<Null> _decryptPassword() async {
+    _password =  EncryptUtil.decrypt(_oldData.password);
+    _passwordController = TextEditingController(text: _password);
+  }
+
+  @override
+  void initState() {
+    if (widget.data != null) {
+      this._oldData = widget.data;
       _nameController = TextEditingController(text: _oldData.name);
       _ownerNameController = TextEditingController(text: _oldData.ownerName);
       _cardIdController = TextEditingController(text: _oldData.cardId);
@@ -67,15 +72,7 @@ class _EditCardPage extends State<EditCardPage> {
       _passwordController = TextEditingController();
       _labels = List();
     }
-  }
 
-  Future<Null> _decryptPassword() async {
-    _password =  EncryptUtil.decrypt(_oldData.password);
-    _passwordController = TextEditingController(text: _password);
-  }
-
-  @override
-  void initState() {
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
@@ -99,7 +96,7 @@ class _EditCardPage extends State<EditCardPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            pageName,
+            widget.pageTitle,
             style: AllpassTextUI.titleBarStyle,
           ),
           actions: <Widget>[

@@ -22,7 +22,7 @@ class CategoryManagerPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _CategoryManagerPage(name);
+    return _CategoryManagerPage();
   }
 }
 
@@ -30,8 +30,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   String categoryName;
 
-  _CategoryManagerPage(String name) {
-    this.categoryName = name;
+  @override
+  void initState() {
+    categoryName = widget.name;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(CategoryManagerPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    categoryName = widget.name;
   }
 
   @override

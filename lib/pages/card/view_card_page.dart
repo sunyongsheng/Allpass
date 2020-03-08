@@ -23,7 +23,7 @@ class ViewCardPage extends StatefulWidget {
 
   @override
   _ViewCardPage createState() {
-    return _ViewCardPage(oldData);
+    return _ViewCardPage();
   }
 
 }
@@ -38,7 +38,14 @@ class _ViewCardPage extends State<ViewCardPage> {
   Color _mainColor;
   Color _color;
 
-  _ViewCardPage(CardBean data) {
+
+  Future<Null> _decryptPassword() async {
+    _password = EncryptUtil.decrypt(_bean.password);
+  }
+
+  @override
+  void initState() {
+    CardBean data = widget.oldData;
     _bean = CardBean(
         ownerName: data.ownerName,
         cardId: data.cardId,
@@ -51,14 +58,7 @@ class _ViewCardPage extends State<ViewCardPage> {
         fav: data.fav,
         label: data.label
     );
-  }
 
-  Future<Null> _decryptPassword() async {
-    _password = EncryptUtil.decrypt(_bean.password);
-  }
-
-  @override
-  void initState() {
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;

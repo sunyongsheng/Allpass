@@ -25,7 +25,7 @@ class ViewPasswordPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _ViewPasswordPage(oldData);
+    return _ViewPasswordPage();
   }
 }
 
@@ -39,7 +39,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   Color _mainColor;
   Color _color;
 
-  _ViewPasswordPage(PasswordBean data) {
+  Future<Null> _decryptPassword() async {
+    _password = EncryptUtil.decrypt(_bean.password);
+  }
+
+  @override
+  void initState() {
+    PasswordBean data = widget.oldData;
     _bean = PasswordBean(
         username: data.username,
         password: data.password,
@@ -50,19 +56,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         label: data.label,
         notes: data.notes,
         fav: data.fav);
-  }
 
-  Future<Null> _decryptPassword() async {
-    _password = EncryptUtil.decrypt(_bean.password);
-  }
-
-  @override
-  void initState() {
+    _color = getRandomColor(_bean.uniqueKey);
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
     });
-    _color = getRandomColor(_bean.uniqueKey);
     super.initState();
   }
 

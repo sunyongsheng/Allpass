@@ -23,12 +23,11 @@ class EditPasswordPage extends StatefulWidget {
 
   @override
   _EditPasswordPage createState() {
-    return _EditPasswordPage(data, pageTitle);
+    return _EditPasswordPage();
   }
 }
 
 class _EditPasswordPage extends State<EditPasswordPage> {
-  String pageName;
   PasswordBean _oldData;
 
   var _futureHelper;
@@ -47,25 +46,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   bool _passwordVisible = false;
 
-  _EditPasswordPage(PasswordBean data, this.pageName) {
-    if (data != null) {
-      this._oldData = data;
-      _nameController = TextEditingController(text: _oldData.name);
-      _usernameController = TextEditingController(text: _oldData.username);
-      _notesController = TextEditingController(text: _oldData.notes);
-      _urlController = TextEditingController(text: _oldData.url);
-      _folder = _oldData.folder;
-      _labels = List()..addAll(_oldData.label);
-      _fav = _oldData.fav;
-    } else {
-      _nameController = TextEditingController();
-      _usernameController = TextEditingController();
-      _notesController = TextEditingController();
-      _urlController = TextEditingController();
-      _passwordController = TextEditingController();
-      _labels = List();
-    }
-  }
 
   @override
   void dispose() {
@@ -84,6 +64,23 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   @override
   void initState() {
+    if (widget.data != null) {
+      this._oldData = widget.data;
+      _nameController = TextEditingController(text: _oldData.name);
+      _usernameController = TextEditingController(text: _oldData.username);
+      _notesController = TextEditingController(text: _oldData.notes);
+      _urlController = TextEditingController(text: _oldData.url);
+      _folder = _oldData.folder;
+      _labels = List()..addAll(_oldData.label);
+      _fav = _oldData.fav;
+    } else {
+      _nameController = TextEditingController();
+      _usernameController = TextEditingController();
+      _notesController = TextEditingController();
+      _urlController = TextEditingController();
+      _passwordController = TextEditingController();
+      _labels = List();
+    }
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
@@ -96,7 +93,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          pageName,
+          widget.pageTitle,
           style: AllpassTextUI.titleBarStyle,
         ),
         actions: <Widget>[

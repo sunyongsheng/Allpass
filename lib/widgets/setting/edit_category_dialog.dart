@@ -19,26 +19,37 @@ class EditCategoryDialog extends StatefulWidget {
 
   @override
   _EditCategoryDialog createState() {
-    return _EditCategoryDialog(categoryName, index);
+    return _EditCategoryDialog();
   }
 
 }
 
 class _EditCategoryDialog extends State<EditCategoryDialog> {
 
-  final String categoryName;
+  String categoryName;
 
   var _editTextController;
 
   bool _inputFormatCorr = true;
   int _index;
 
-  _EditCategoryDialog(this.categoryName, int index) {
-    this._index = index;
+  @override
+  void initState() {
+    super.initState();
+    this.categoryName = widget.categoryName;
+    this._index = widget.index;
+
     if (categoryName == "标签")
       _editTextController = TextEditingController(text: RuntimeData.labelList[_index]);
     else
       _editTextController = TextEditingController(text: RuntimeData.folderList[_index]);
+  }
+
+  @override
+  void didUpdateWidget(EditCategoryDialog oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    this._index = widget.index;
+    this.categoryName = widget.categoryName;
   }
 
   @override

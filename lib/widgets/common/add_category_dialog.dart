@@ -14,7 +14,7 @@ class AddCategoryDialog extends StatefulWidget {
 
   @override
   _AddLabelDialog createState() {
-    return _AddLabelDialog(categoryName);
+    return _AddLabelDialog();
   }
 
 }
@@ -23,10 +23,19 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
 
   var _addTextController = TextEditingController();
   bool _inputFormatCorr = true;
+  String categoryName;
 
-  final String categoryName;
+  @override
+  void initState() {
+    categoryName = widget.categoryName;
+    super.initState();
+  }
 
-  _AddLabelDialog(this.categoryName);
+  @override
+  void didUpdateWidget(AddCategoryDialog oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    categoryName = widget.categoryName;
+  }
 
   @override
   void dispose() {
