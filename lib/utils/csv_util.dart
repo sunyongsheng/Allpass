@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io' show Platform, File, Directory;
 
 import 'package:allpass/model/card_bean.dart';
@@ -15,11 +16,11 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      String w = "name,username,password,url,folder,notes,label,fav\n";
+      StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav\n");
       for (var item in list) {
-        w += await PasswordBean.toCsv(item);
+        w.write(await PasswordBean.toCsv(item));
       }
-      csv.writeAsStringSync(w);
+      csv.writeAsStringSync(w.toString());
       return path;
     }
     return null;
@@ -33,11 +34,11 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      String w = "name,ownerName,cardId,password,telephone,folder,notes,label,fav\n";
+      StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav\n");
       for (var item in list) {
-        w += CardBean.toCsv(item);
+        w.write(CardBean.toCsv(item));
       }
-      csv.writeAsStringSync(w);
+      csv.writeAsStringSync(w.toString());
       return path;
     }
     return null;
@@ -60,85 +61,23 @@ class CsvUtil {
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
     else {
-      int nameIndex = -1;
-      int usernameIndex = -1;
-      int passwordIndex = -1;
-      int urlIndex = -1;
-      int folderIndex = -1;
-      int notesIndex = -1;
-      int labelIndex = -1;
-      int favIndex = -1;
       List<String> index = text[0].split(",");
-      for (int i = 0; i < index.length; i++) {
-        switch (index[i]) {
-          case "name":
-            nameIndex = i;
-            break;
-          case "username":
-            usernameIndex = i;
-            break;
-          case "password":
-            passwordIndex = i;
-            break;
-          case "url":
-            urlIndex = i;
-            break;
-          case "folder":
-            folderIndex = i;
-            break;
-          case "notes":
-            notesIndex = i;
-            break;
-          case "label":
-            labelIndex = i;
-            break;
-          case "fav":
-            favIndex = i;
-            break;
-        }
-        // Chrome 生成的CSV格式password列需要以这种形式进行判断
-        if (index[i].contains("password")) {
-          passwordIndex = i;
-        }
-      }
+      Map<String, int> indexMap = findIndex(index);
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
         if (attribute.length != index.length) continue;
         List<String> label = List();
-        String name = "";
-        String username = "";
-        String password = "";
-        String url = "";
-        String folder = "默认";
-        String notes = "";
-        int fav = 0;
-        if (nameIndex != -1) {
-          name = attribute[nameIndex] == null ? "" : attribute[nameIndex];
+        String name = getValueWithCatch(attribute, indexMap, 'name');
+        String username = getValueWithCatch(attribute, indexMap, 'username');
+        String password = getValueWithCatch(attribute, indexMap, 'password');
+        String url = getValueWithCatch(attribute, indexMap, 'url');
+        String folder = getValueWithCatch(attribute, indexMap, 'folder');
+        String notes = getValueWithCatch(attribute, indexMap, 'notes');
+        if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
+          label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
-        if (usernameIndex != -1) {
-          username = attribute[usernameIndex] == null ? "" : attribute[usernameIndex];
-        }
-        if (passwordIndex != -1) {
-          password = attribute[passwordIndex] == null ? "" : attribute[passwordIndex];
-        }
-        if (urlIndex != -1) {
-          url = attribute[urlIndex] == null ? "" : attribute[urlIndex];
-        }
-        if (folderIndex != -1) {
-          folder = attribute[folderIndex] == null ? "默认" : attribute[folderIndex];
-        }
-        if (notesIndex != -1) {
-          notes = attribute[notesIndex] == null ? "" : attribute[notesIndex];
-        }
-        if (labelIndex != -1) {
-          if (attribute[labelIndex].length > 0) {
-            label = waveLineSegStr2List(attribute[labelIndex]);
-          }
-        }
-        if (favIndex != -1) {
-          fav = int.parse(attribute[favIndex] == null ? "0" : attribute[favIndex]);
-        }
+        int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -163,88 +102,23 @@ class CsvUtil {
     List<String> text = fileContext.split("\n");
     if (text.length <= 1) return null;
     else {
-      int nameIndex = -1;
-      int ownerNameIndex = -1;
-      int cardIdIndex = -1;
-      int telephoneIndex = -1;
-      int passwordIndex = -1;
-      int folderIndex = -1;
-      int notesIndex = -1;
-      int labelIndex = -1;
-      int favIndex = -1;
       List<String> index = text[0].split(",");
-      for (int i = 0; i < index.length; i++) {
-        switch (index[i]) {
-          case "name":
-            nameIndex = i;
-            break;
-          case "ownerName":
-            ownerNameIndex = i;
-            break;
-          case "cardId":
-            cardIdIndex = i;
-            break;
-          case "password":
-            passwordIndex = i;
-            break;
-          case "telephone":
-            telephoneIndex = i;
-            break;
-          case "folder":
-            folderIndex = i;
-            break;
-          case "notes":
-            notesIndex = i;
-            break;
-          case "label":
-            labelIndex = i;
-            break;
-          case "fav":
-            favIndex = i;
-            break;
-        }
-      }
+      Map<String, int> indexMap = findIndex(index);
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
         if (attribute.length != index.length) continue;
         List<String> label = List();
-        String name = "";
-        String ownerName = "";
-        String cardId = "";
-        String password = "";
-        String telephone = "";
-        String folder = "默认";
-        String notes = "";
-        int fav = 0;
-        if (nameIndex != -1) {
-          name = attribute[nameIndex] == null ? "" : attribute[nameIndex];
-        }
-        if (ownerNameIndex != -1) {
-          ownerName = attribute[ownerNameIndex] == null ? "" : attribute[ownerNameIndex];
-        }
-        if (cardIdIndex != -1) {
-          cardId = attribute[cardIdIndex] == null ? "" : attribute[cardIdIndex];
-        }
-        if (passwordIndex != -1) {
-          password = attribute[passwordIndex] == null ? "" : attribute[passwordIndex];
-        }
-        if (telephoneIndex != -1) {
-          telephone = attribute[telephoneIndex] == null ? "" : attribute[telephoneIndex];
-        }
-        if (folderIndex != -1) {
-          folder = attribute[folderIndex] == null ? "默认" : attribute[folderIndex];
-        }
-        if (notesIndex != -1) {
-          notes = attribute[notesIndex] == null ? "" : attribute[notesIndex];
-        }
-        if (labelIndex != -1) {
-          if (attribute[labelIndex].length > 0) {
-            label = waveLineSegStr2List(attribute[labelIndex]);
-          }
-        }
-        if (favIndex != -1) {
-          fav = int.parse(attribute[favIndex] == null ? "0" : attribute[favIndex]);
+        String name = getValueWithCatch(attribute, indexMap, 'name');
+        String ownerName = getValueWithCatch(attribute, indexMap, 'ownerName');
+        String cardId = getValueWithCatch(attribute, indexMap, 'cardId');
+        String password = getValueWithCatch(attribute, indexMap, 'password');
+        String telephone = getValueWithCatch(attribute, indexMap, 'telephone');
+        String folder = getValueWithCatch(attribute, indexMap, 'folder');
+        String notes = getValueWithCatch(attribute, indexMap, 'notes');
+        int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
+        if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
+          label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
         res.add(CardBean(
           name: name,
@@ -260,6 +134,26 @@ class CsvUtil {
       }
     }
     return res;
+  }
+
+  Map<String, int> findIndex(List<String> index) {
+    Map<String, int> res = HashMap();
+    for (int i = 0; i < index.length; i++) {
+      res[index[i]] = i;
+      if (index[i].contains('password')) {
+        res['password'] = i;
+      }
+    }
+    return res;
+  }
+
+  String getValueWithCatch(List<String> values, Map<String, int> indexMap, String mapKey) {
+    try {
+      if (indexMap.containsKey(mapKey)) return values[indexMap[mapKey]];
+    } on RangeError {} catch (e) {}
+    if (mapKey == "folder") return "默认";
+    if (mapKey == 'fav') return '0';
+    return "";
   }
 
 }
