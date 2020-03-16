@@ -15,7 +15,7 @@ class PasswordList with ChangeNotifier {
     init();
   }
 
-  void init() async {
+  Future<Null> init() async {
     _passwordList = await _dao.getAllPasswordBeanList()??[];
     sortByAlphabeticalOrder();
     notifyListeners();

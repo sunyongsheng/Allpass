@@ -16,7 +16,7 @@ class CardList with ChangeNotifier {
     init();
   }
 
-  void init() async {
+  Future<Null> init() async {
     _cardList = await _dao.getAllCardBeanList()??[];
     sortByAlphabeticalOrder();
   }
