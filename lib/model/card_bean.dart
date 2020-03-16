@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:allpass/model/base_model.dart';
 import 'package:allpass/utils/string_process.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 
 /// 保存“卡片”数据
-class CardBean {
+class CardBean extends BaseModel {
   int uniqueKey; // 1 ID
   String name; // 2 卡片名称
   String ownerName; // 3 卡片拥有者
