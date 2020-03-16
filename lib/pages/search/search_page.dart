@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/model/base_model.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/params/config.dart';
@@ -30,7 +31,7 @@ class _SearchPage extends State<SearchPage> {
   final AllpassType _type;
 
   String _searchText = "";
-  var _searchController;
+  TextEditingController _searchController;
   List<Widget> _result = List();
 
   _SearchPage(this._type) {
@@ -54,8 +55,6 @@ class _SearchPage extends State<SearchPage> {
         future: getSearchResult(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
             case ConnectionState.active:
               return Center(
                 child: CircularProgressIndicator(),
@@ -79,14 +78,10 @@ class _SearchPage extends State<SearchPage> {
 
   Future<Null> getSearchResult() async {
     _result.clear();
-    _searchText = _searchController.text;
+    _searchText = _searchController.text.toLowerCase();
     if (_type == AllpassType.PASSWORD) {
       for (var item in Provider.of<PasswordList>(context).passwordList) {
-        if (item.name.contains(_searchText) ||
-            item.username.contains(_searchText) ||
-            item.notes.contains(_searchText) ||
-            list2PureStr(item.label).contains(_searchText)
-        ) {
+        if (containsKeyword(item)) {
           _result.add(ListTile(
             leading: CircleAvatar(
               backgroundColor: getRandomColor(item.uniqueKey),
@@ -115,11 +110,7 @@ class _SearchPage extends State<SearchPage> {
       }
     } else {
       for (var item in Provider.of<CardList>(context).cardList) {
-        if (item.name.contains(_searchText) ||
-            item.ownerName.contains(_searchText) ||
-            item.notes.contains(_searchText) || 
-            list2PureStr(item.label).contains(_searchText)
-        ) {
+        if (containsKeyword(item)) {
           _result.add(ListTile(
             leading: Container(
               decoration: BoxDecoration(
@@ -154,6 +145,21 @@ class _SearchPage extends State<SearchPage> {
         }
       }
     }
+  }
+
+  bool containsKeyword(BaseModel baseModel) {
+    if (baseModel is PasswordBean) {
+      return baseModel.name.toLowerCase().contains(_searchText) ||
+          baseModel.username.toLowerCase().contains(_searchText) ||
+          baseModel.notes.toLowerCase().contains(_searchText) ||
+          list2PureStr(baseModel.label).toLowerCase().contains(_searchText);
+    } else if (baseModel is CardBean) {
+      return baseModel.name.toLowerCase().contains(_searchText) ||
+          baseModel.ownerName.toLowerCase().contains(_searchText) ||
+          baseModel.notes.toLowerCase().contains(_searchText) ||
+          list2PureStr(baseModel.label).toLowerCase().contains(_searchText);
+    }
+    return false;
   }
 
   /// 搜索栏
