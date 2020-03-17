@@ -38,26 +38,28 @@ void main() async {
 
   // 自定义报错页面
   ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          child: Text("App出现错误，快去反馈给作者!"),
-          padding: AllpassEdgeInsets.smallTBPadding,
-        ),
-        Padding(
-          padding: AllpassEdgeInsets.smallTBPadding,
-        ),
-        Padding(
-          child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
-          padding: AllpassEdgeInsets.smallTBPadding,
-        ),
-        Padding(
-          child: Text(flutterErrorDetails.toString()),
-          padding: AllpassEdgeInsets.smallTBPadding,
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            child: Text("App出现错误，快去反馈给作者!"),
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
+          Padding(
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
+          Padding(
+            child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
+          Padding(
+            child: Text(flutterErrorDetails.toString()),
+            padding: AllpassEdgeInsets.smallTBPadding,
+          ),
+        ],
+      ),
     );
   };
 
