@@ -110,8 +110,8 @@ void registerUser() async {
     } else {
       return;
     }
-    Response response = await Dio().post("$allpassUrl/register?identification=$identification&system_info=$systemInfo");
-    if (response.headers.value("result") == "success") {
+    Response response = await Dio().get("$allpassUrl/register?identification=$identification&system_info=$systemInfo");
+    if ((response.data["result"]??'0') == "1") {
       Application.sp.setBool("NEED_REGISTER", false);
     } else {
       Application.sp.setBool("NEED_REGISTER", true);
