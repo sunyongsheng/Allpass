@@ -392,11 +392,20 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   Future<Null> _recommend() async {
-    Response<Map> response = await Dio().get("$allpassUrl/update?version=1.0.0");
-    if (response.data['have_update'] == "1") {
-      Share.share("【Allpass】我发现了一款应用，快来下载吧！下载地址：${response.data['download_url']}", subject: "软件推荐——Allpass");
-    } else {
-      Share.share("【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/allpass_V1.1.3_signed.apk");
+    try {
+      Response<Map> response = await Dio(BaseOptions(connectTimeout: 10)).get(
+          "$allpassUrl/update?version=1.0.0");
+      if (response.data['have_update'] == "1") {
+        Share.share(
+            "【Allpass】我发现了一款应用，快来下载吧！下载地址：${response.data['download_url']}",
+            subject: "软件推荐——Allpass");
+      } else {
+        Share.share(
+            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/allpass_V${Application.version}_signed.apk");
+      }
+    } catch (e) {
+      Share.share(
+        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/allpass_V${Application.version}_signed.apk");
     }
   }
 }
