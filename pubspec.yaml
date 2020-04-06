@@ -55,6 +55,8 @@ dependencies:
   dio: ^3.0.8
   # 设备信息
   device_info: ^0.4.1+4
+  # 分享功能
+  share: ^0.6.3+6
 
 dev_dependencies:
   flutter_test:

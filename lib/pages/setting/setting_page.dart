@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:share/share.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/allpass_ui.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/services/authentication_service.dart';
@@ -258,7 +261,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
                                     color: Colors.black,
                                     child: Center(
-                                      child: Text("暗黑（实验性）", style: TextStyle(
+                                      child: Text("暗黑", style: TextStyle(
                                           color: Colors.white
                                       ),),
                                     ),
@@ -337,6 +340,14 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                 ),
                 Container(
                     child: ListTile(
+                        title: Text("推荐给好友"),
+                        leading: Icon(Icons.share, color: AllpassColorUI.allColor[2]),
+                        onTap: () async => await _recommend()
+                    ),
+                    padding: AllpassEdgeInsets.listInset
+                ),
+                Container(
+                    child: ListTile(
                         title: Text("意见反馈"),
                         leading: Icon(Icons.feedback, color: AllpassColorUI.allColor[1]),
                         onTap: () => Navigator.push(context, CupertinoPageRoute(
@@ -378,5 +389,14 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         ],
       ),
     );
+  }
+
+  Future<Null> _recommend() async {
+    Response<Map> response = await Dio().get("$allpassUrl/update?version=1.0.0");
+    if (response.data['have_update'] == "1") {
+      Share.share("【Allpass】我发现了一款应用，快来下载吧！下载地址：${response.data['download_url']}", subject: "软件推荐——Allpass");
+    } else {
+      Share.share("【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/allpass_V1.1.3_signed.apk");
+    }
   }
 }
