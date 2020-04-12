@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/model/base_model.dart';
 import 'package:allpass/model/password_bean.dart';
@@ -201,6 +202,7 @@ class _SearchPage extends State<SearchPage> {
                     await getSearchResult();
                     setState(() {});
                   },
+                  autofocus: true,
                 ),
               )
             ),
@@ -263,6 +265,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.username));
+            Fluttertoast.showToast(msg: "已复制用户名");
             Navigator.pop(context);
           },
         ),
@@ -272,6 +275,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () async {
             String pw = EncryptUtil.decrypt(data.password);
             Clipboard.setData(ClipboardData(text: pw));
+            Fluttertoast.showToast(msg: "已复制密码");
             Navigator.pop(context);
           },
         ),
@@ -337,6 +341,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.ownerName));
+            Fluttertoast.showToast(msg: "已复制用户名");
             Navigator.pop(context);
           },
         ),
@@ -345,6 +350,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.cardId));
+            Fluttertoast.showToast(msg: "已复制卡号");
             Navigator.pop(context);
           },
         ),
