@@ -22,16 +22,16 @@ class Application {
 
   static String version = "1.1.5";
 
-  static initSp() async {
+  static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
   }
 
-  static setupLocator() {
+  static void setupLocator() {
     getIt.registerSingleton(NavigateService());
     getIt.registerSingleton(AuthenticationService());
   }
 
-  static initChannelAndHandle() {
+  static void initChannelAndHandle() {
     platform.setMethodCallHandler((call) {
       if (call.method == "getChromeData") {
         Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
@@ -43,7 +43,7 @@ class Application {
     });
   }
 
-  static _importPasswordFromFutureList(Future<List<PasswordBean>> list) async {
+  static void _importPasswordFromFutureList(Future<List<PasswordBean>> list) async {
     PasswordDao _dao = PasswordDao();
     List<PasswordBean> passwordList = await list;
     if (passwordList != null) {
@@ -58,6 +58,10 @@ class Application {
       Fluttertoast.showToast(msg: "导入了0条记录，可能是文件格式不正确");
       SystemNavigator.pop();
     }
+  }
+  /// 更新上次使用密码的时间
+  static void updateLatestUsePasswordTime() {
+    Application.sp.setString("latestUsePassword", DateTime.now().toIso8601String());
   }
 }
 
