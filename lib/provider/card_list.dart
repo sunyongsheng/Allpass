@@ -28,20 +28,20 @@ class CardList with ChangeNotifier {
     });
   }
 
-  void insertCard(CardBean bean) async {
+  Future<Null> insertCard(CardBean bean) async {
     _cardList?.add(bean);
     await _dao.insert(bean);
     sortByAlphabeticalOrder();
     notifyListeners();
   }
 
-  void deleteCard(CardBean bean) async {
+  Future<Null> deleteCard(CardBean bean) async {
     _cardList?.remove(bean);
     await _dao.deleteCardBeanById(bean.uniqueKey);
     notifyListeners();
   }
 
-  void updateCard(CardBean bean) async {
+  Future<Null> updateCard(CardBean bean) async {
     int index = -1;
     for (int i = 0; i < _cardList.length; i++) {
       if (_cardList[i].uniqueKey == bean.uniqueKey) {
@@ -58,7 +58,7 @@ class CardList with ChangeNotifier {
     notifyListeners();
   }
 
-  void clear() async {
+  Future<Null> clear() async {
     _cardList?.clear();
     await _dao.deleteContent();
     notifyListeners();

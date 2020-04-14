@@ -28,20 +28,20 @@ class PasswordList with ChangeNotifier {
     });
   }
 
-  void insertPassword(PasswordBean bean) async {
+  Future<Null> insertPassword(PasswordBean bean) async {
     _passwordList?.add(bean);
     await _dao.insert(bean);
     sortByAlphabeticalOrder();
     notifyListeners();
   }
 
-  void deletePassword(PasswordBean bean) async {
+  Future<Null> deletePassword(PasswordBean bean) async {
     _passwordList?.remove(bean);
     await _dao.deletePasswordBeanById(bean.uniqueKey);
     notifyListeners();
   }
 
-  void updatePassword(PasswordBean bean) async {
+  Future<Null> updatePassword(PasswordBean bean) async {
     int index = -1;
     for (int i = 0; i < _passwordList.length; i++) {
       if (_passwordList[i].uniqueKey == bean.uniqueKey) {
@@ -58,7 +58,7 @@ class PasswordList with ChangeNotifier {
     notifyListeners();
   }
 
-  void clear() async {
+  Future<Null> clear() async {
     _passwordList?.clear();
     await _dao.deleteContent();
     notifyListeners();
