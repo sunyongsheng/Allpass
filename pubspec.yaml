@@ -40,7 +40,7 @@ dependencies:
   # 状态管理
   provider: ^3.2.0
   # 路由管理
-  fluro: ^1.5.1
+  fluro: ^1.6.3
   # 持久化
   shared_preferences: ^0.5.6
   # 依赖注入
