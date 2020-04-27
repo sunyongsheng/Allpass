@@ -17,6 +17,7 @@ import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/pages/setting/import/chrome_import_help.dart';
 import 'package:allpass/pages/setting/import/import_from_clipboard_page.dart';
