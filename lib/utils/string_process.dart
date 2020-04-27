@@ -1,3 +1,7 @@
+import 'package:allpass/model/base_model.dart';
+import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/password_bean.dart';
+
 /// 字符串处理
 
 /// 将List转化为以[~]为分隔符的字符串
@@ -29,4 +33,22 @@ String list2PureStr(List<String> list) {
     stringBuffer.write(string);
   }
   return stringBuffer.toString();
+}
+
+/// 将csv格式的List转化为一个String
+Future<String> csvList2Str(List<BaseModel> list) async {
+  if (list[0] is PasswordBean) {
+    StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav\n");
+    for (var item in list) {
+      w.write(await PasswordBean.toCsv(item));
+    }
+    return w.toString();
+  } else if (list[0] is CardBean) {
+    StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav\n");
+    for (var item in list) {
+      w.write(CardBean.toCsv(item));
+    }
+    return w.toString();
+  }
+  return null;
 }
