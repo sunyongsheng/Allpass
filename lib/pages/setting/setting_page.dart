@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/services/authentication_service.dart';
 import 'package:allpass/pages/about_page.dart';

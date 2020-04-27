@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
 

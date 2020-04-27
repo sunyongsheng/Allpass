@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 
 /// 显示如何从Chrome中导入密码
 class ChromeImportHelpPage extends StatelessWidget {

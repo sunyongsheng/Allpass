@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
@@ -178,6 +178,7 @@ class _LoginPage extends State<LoginPage> {
             && _passwordController.text == EncryptUtil.decrypt(Config.password)) {
           NavigationUtil.goHomePage(context);
           Fluttertoast.showToast(msg: "登录成功");
+          Application.updateLatestUsePasswordTime();
         } else if (_usernameController.text == "" || _passwordController.text == "") {
           Fluttertoast.showToast(msg: "请输入用户名或密码");
         } else {

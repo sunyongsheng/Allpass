@@ -3,10 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/services/authentication_service.dart';
+import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 
 
 /// 生物识别登录页
@@ -90,6 +91,26 @@ class _AuthLoginPage extends State<StatefulWidget> {
   }
 
   Future<Null> askAuth(BuildContext context) async {
+    // 两次时间
+//    DateTime now = DateTime.now();
+//    DateTime latestUsePassword = DateTime.parse(Application.sp.get("latestUsePassword")??now.toIso8601String());
+//    if (now.difference(latestUsePassword).inDays >= 7) {
+//      showDialog<bool>(
+//        context: context,
+//        builder: (context) => InputMainPasswordDialog(),
+//      ).then((value) {
+//        if (value) {
+//          Application.updateLatestUsePasswordTime();
+//          Fluttertoast.showToast(msg: "验证成功");
+//          NavigationUtil.goHomePage(context);
+//        } else {
+//          Fluttertoast.showToast(msg: "您似乎忘记了主密码");
+//          NavigationUtil.goLoginPage(context);
+//        }
+//        return;
+//      });
+//    }
+
     var authSucceed = await _localAuthService.authenticate();
     if (authSucceed) {
       Fluttertoast.showToast(msg: "验证成功");

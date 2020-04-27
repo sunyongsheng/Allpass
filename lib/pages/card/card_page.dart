@@ -8,7 +8,7 @@ import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';

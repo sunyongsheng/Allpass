@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/develop/debug_page.dart';
 

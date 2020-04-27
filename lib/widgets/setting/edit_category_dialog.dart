@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/runtime_data.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/card_list.dart';

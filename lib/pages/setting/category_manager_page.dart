@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/runtime_data.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/setting/edit_category_dialog.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';

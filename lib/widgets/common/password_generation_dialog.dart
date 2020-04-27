@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:allpass/provider/theme_provider.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';

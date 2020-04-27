@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 
 /// 修改密码对话框

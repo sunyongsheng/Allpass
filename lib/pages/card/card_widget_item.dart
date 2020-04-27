@@ -8,7 +8,7 @@ import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 
 class CardWidgetItem extends StatelessWidget {
   final int index;

@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/common/label_chip.dart';

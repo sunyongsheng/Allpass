@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 
 class NoneBorderCircularTextField extends StatelessWidget {
   final TextEditingController _controller;

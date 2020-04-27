@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/params/runtime_data.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/classification/favorite_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';

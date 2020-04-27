@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 

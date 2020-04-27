@@ -9,7 +9,7 @@ import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
 import 'package:allpass/pages/search/search_page.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
