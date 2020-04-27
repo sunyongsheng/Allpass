@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/provider/card_list.dart';
@@ -31,6 +32,25 @@ class _DebugPage extends State<DebugPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            ListTile(
+              title: FlatButton(
+                child: Text("查看sp"),
+                onPressed: () async {
+                  Set<String> keys = Application.sp.getKeys();
+                  keys.remove("password");
+                  showDialog<Null>(
+                      context: context,
+                      builder: (context) =>
+                          SimpleDialog(
+                              children: keys.map((key) => ListTile(
+                                title: Text(key),
+                                subtitle: Text(Application.sp.get(key).toString()),
+                              )).toList()
+                          )
+                  );
+                },
+              ),
+            ),
             ListTile(
               title: FlatButton(
                 child: Text("删除所有密码记录"),
