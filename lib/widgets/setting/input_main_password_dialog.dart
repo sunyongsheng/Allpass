@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -8,6 +9,9 @@ import 'package:allpass/utils/encrypt_util.dart';
 class InputMainPasswordDialog extends StatelessWidget {
 
   final TextEditingController _passwordController = TextEditingController();
+  final String helperText;
+
+  InputMainPasswordDialog({this.helperText});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +27,10 @@ class InputMainPasswordDialog extends StatelessWidget {
         obscureText: true,
         autofocus: true,
         onSubmitted: (_) => submit(context),
+        decoration: InputDecoration(
+          helperText: helperText,
+          helperMaxLines: 5
+        ),
       ),
       actions: <Widget>[
         FlatButton(
@@ -40,6 +48,7 @@ class InputMainPasswordDialog extends StatelessWidget {
   void submit(BuildContext context) {
     if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
       _passwordController.clear();
+      Application.updateLatestUsePasswordTime();
       Navigator.pop<bool>(context, true);
     } else {
       Fluttertoast.showToast(msg: "密码错误");
