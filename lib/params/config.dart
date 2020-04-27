@@ -20,8 +20,8 @@ class Config {
       await Application.initSp();
     }
     // 初始化当前用户名与密码
-    username = Application.sp.getString("username")??"j213!djoas9120jd";
-    password = Application.sp.getString("password")??"213edsfr3@DE21d";
+    username = Application.sp.getString("username")??"";
+    password = Application.sp.getString("password")??"";
     // 判断是否开启生物识别
     enabledBiometrics = Application.sp.getBool("biometrics")??false;
     // 判断长按功能
