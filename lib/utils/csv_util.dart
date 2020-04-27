@@ -16,11 +16,7 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav\n");
-      for (var item in list) {
-        w.write(await PasswordBean.toCsv(item));
-      }
-      csv.writeAsStringSync(w.toString());
+      csv.writeAsStringSync(await csvList2Str(list));
       return path;
     }
     return null;
@@ -34,11 +30,7 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav\n");
-      for (var item in list) {
-        w.write(CardBean.toCsv(item));
-      }
-      csv.writeAsStringSync(w.toString());
+      csv.writeAsStringSync(await csvList2Str(list));
       return path;
     }
     return null;
