@@ -5,12 +5,12 @@ import 'package:allpass/params/runtime_data.dart';
 class Config {
   Config._();
 
-  static String username; // 当前使用者用户名
-  static String password; // 使用者密码
-  static bool enabledBiometrics = false; // 是否启用生物识别
-  static bool longPressCopy = true;     // 是否开启长按复制，否则为长按多选
-  static bool multiSelected = false;      // 是否点击了多选按钮
-  static String theme;                    // 主题名
+  static String username;         // 当前使用者用户名
+  static String password;         // 使用者密码
+  static bool enabledBiometrics;  // 是否启用生物识别
+  static bool longPressCopy;      // 是否开启长按复制，否则为长按多选
+  static bool multiSelected;      // 是否点击了多选按钮
+  static String theme;            // 主题名
 
 
   /// 参数初始化
@@ -28,6 +28,8 @@ class Config {
     longPressCopy = Application.sp.getBool("longPressCopy")??true;
     // 初始化主题
     theme = Application.sp.getString("theme")??"blue";
+    // 是否点击了多选按钮
+    multiSelected = false;
   }
 
   /// 清空参数
