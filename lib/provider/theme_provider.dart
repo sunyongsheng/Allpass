@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/utils/allpass_ui.dart';
+import 'package:allpass/ui/theme_resource.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData currTheme;
