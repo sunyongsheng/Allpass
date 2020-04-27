@@ -92,31 +92,32 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
   Future<Null> askAuth(BuildContext context) async {
     // 两次时间
-//    DateTime now = DateTime.now();
-//    DateTime latestUsePassword = DateTime.parse(Application.sp.get("latestUsePassword")??now.toIso8601String());
-//    if (now.difference(latestUsePassword).inDays >= 7) {
-//      showDialog<bool>(
-//        context: context,
-//        builder: (context) => InputMainPasswordDialog(),
-//      ).then((value) {
-//        if (value) {
-//          Application.updateLatestUsePasswordTime();
-//          Fluttertoast.showToast(msg: "验证成功");
-//          NavigationUtil.goHomePage(context);
-//        } else {
-//          Fluttertoast.showToast(msg: "您似乎忘记了主密码");
-//          NavigationUtil.goLoginPage(context);
-//        }
-//        return;
-//      });
-//    }
-
-    var authSucceed = await _localAuthService.authenticate();
-    if (authSucceed) {
-      Fluttertoast.showToast(msg: "验证成功");
-      NavigationUtil.goHomePage(context);
+    DateTime now = DateTime.now();
+    DateTime latestUsePassword = DateTime.parse(Application.sp.get("latestUsePassword")??now.toIso8601String());
+    if (now.difference(latestUsePassword).inDays >= 10) {
+      await _localAuthService.stopAuthenticate();
+      showDialog<bool>(
+        context: context,
+        builder: (context) => InputMainPasswordDialog(
+          helperText: "Allpass会定期要求您输入密码以防止您忘记主密码",
+        ),
+      ).then((value) {
+        if (value) {
+          Fluttertoast.showToast(msg: "验证成功");
+          NavigationUtil.goHomePage(context);
+        } else {
+          Fluttertoast.showToast(msg: "您似乎忘记了主密码");
+          NavigationUtil.goLoginPage(context);
+        }
+      });
     } else {
-      Fluttertoast.showToast(msg: "认证失败，请重试");
+      var authSucceed = await _localAuthService.authenticate();
+      if (authSucceed) {
+        Fluttertoast.showToast(msg: "验证成功");
+        NavigationUtil.goHomePage(context);
+      } else {
+        Fluttertoast.showToast(msg: "认证失败，请重试");
+      }
     }
   }
 }
