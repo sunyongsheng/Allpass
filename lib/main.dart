@@ -112,11 +112,16 @@ void registerUser() async {
     } else {
       return;
     }
-    Response response = await Dio().get("$allpassUrl/register?identification=$identification&systemInfo=$systemInfo");
-    if ((response.data["result"]??'0') == "1") {
-      Application.sp.setBool("NEED_REGISTER", false);
-    } else {
-      Application.sp.setBool("NEED_REGISTER", true);
+    try {
+      Response response = await Dio().get(
+          "$allpassUrl/register?identification=$identification&systemInfo=$systemInfo");
+      if ((response.data["result"] ?? '0') == "1") {
+        Application.sp.setBool("NEED_REGISTER", false);
+      } else {
+        Application.sp.setBool("NEED_REGISTER", true);
+      }
+    } catch (e) {
+      print("网络连接失败");
     }
   }
 }
