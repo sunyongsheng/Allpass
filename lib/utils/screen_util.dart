@@ -11,4 +11,8 @@ class AllpassScreenUtil {
   static num setHeight(num height) {
     return _instance.setHeight(height);
   }
+
+  static num getScreenHeightDp() {
+    return ScreenUtil.screenHeightDp;
+  }
 }
