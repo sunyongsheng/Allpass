@@ -59,7 +59,7 @@ class PasswordDao extends BaseDBProvider {
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
       PasswordBean bean = PasswordBean.fromJson(maps.first);
-      bean.color = getRandomColor(bean.uniqueKey);
+      bean.color = getRandomColor(seed: bean.uniqueKey);
       return bean;
     }
     return null;
@@ -73,7 +73,7 @@ class PasswordDao extends BaseDBProvider {
       List<PasswordBean> res = List();
       for (var map in maps) {
         PasswordBean bean = PasswordBean.fromJson(map);
-        bean.color = getRandomColor(bean.uniqueKey);
+        bean.color = getRandomColor(seed: bean.uniqueKey);
         res.add(bean);
       }
       return res;

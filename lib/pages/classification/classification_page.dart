@@ -68,7 +68,7 @@ class ClassificationPage extends StatelessWidget {
     list.addAll(RuntimeData.folderList.map((folder) =>
         InkWell(
           child: Card(
-            color: getRandomColor(folder.hashCode),
+            color: getRandomColor(seed: folder.hashCode),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Center(
               child: Text(folder,

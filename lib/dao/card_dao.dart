@@ -58,7 +58,7 @@ class CardDao extends BaseDBProvider {
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
       CardBean bean = CardBean.fromJson(maps.first);
-      bean.color = getRandomColor(bean.uniqueKey);
+      bean.color = getRandomColor(seed: bean.uniqueKey);
       return bean;
     }
     return null;
@@ -71,7 +71,7 @@ class CardDao extends BaseDBProvider {
     if (maps.length > 0) {
       List<CardBean> res = maps.map((item) {
         CardBean bean = CardBean.fromJson(item);
-        bean.color = getRandomColor(bean.uniqueKey);
+        bean.color = getRandomColor(seed: bean.uniqueKey);
         return bean;
       }).toList();
       return res;
