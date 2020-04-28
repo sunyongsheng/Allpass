@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/utils/string_process.dart';
 
+/// 存储运行时数据
 class RuntimeData {
   RuntimeData._();
 
@@ -14,10 +17,14 @@ class RuntimeData {
 
   static int newPasswordOrCardCount;  // 每次打开软件新增的密码或卡片数量
 
+  /// 取值范围-1到1，0代表中心位置
+  static double tapVerticalPosition;
+
   static void initData() {
     folderList.clear();
     labelList.clear();
     newPasswordOrCardCount = 0;
+    tapVerticalPosition = 0;
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
       folderList = waveLineSegStr2List(folder);
@@ -65,5 +72,11 @@ class RuntimeData {
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
     Application.sp.setString("folder", list2WaveLineSegStr(folderList));
+  }
+
+  /// 更新点击的位置
+  static void updateTapPosition(DragDownDetails details) {
+    double y = AllpassScreenUtil.getScreenHeightDp() / 2;
+    RuntimeData.tapVerticalPosition = (details.globalPosition.dy - y) / y;
   }
 }
