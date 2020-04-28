@@ -163,6 +163,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
+          await Provider.of<PasswordList>(context).refresh();
         } else {
           List<CardBean> cardList = await CsvUtil().cardImportFromCsv(path);
           for (var bean in cardList) {
@@ -171,6 +172,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
+          await Provider.of<CardList>(context).refresh();
         }
       } catch (assertError) {
         Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
