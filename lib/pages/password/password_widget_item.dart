@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,6 +8,7 @@ import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/route/animation_routes.dart';
 import 'package:allpass/pages/password/view_password_page.dart';
 
 class PasswordWidgetItem extends StatelessWidget {
@@ -22,37 +22,41 @@ class PasswordWidgetItem extends StatelessWidget {
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: model.passwordList[index].color,
-              child: Text(
-                model.passwordList[index].name.substring(0, 1),
-                style: TextStyle(color: Colors.white),
+          child: GestureDetector(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: model.passwordList[index].color,
+                child: Text(
+                  model.passwordList[index].name.substring(0, 1),
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-            title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
-            subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(
-                  builder: (context) => ViewPasswordPage(model.passwordList[index])
-              )).then((bean) {
-                if (bean != null) {
-                  if (bean.isChanged) {
-                    model.updatePassword(bean);
-                  } else {
-                    model.deletePassword(model.passwordList[index]);
+              title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
+              subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
+              onTap: () {
+                Navigator.push(context, ExtendRoute(
+                  page: ViewPasswordPage(model.passwordList[index]),
+                  tapPosition: RuntimeData.tapVerticalPosition
+                )).then((bean) {
+                  if (bean != null) {
+                    if (bean.isChanged) {
+                      model.updatePassword(bean);
+                    } else {
+                      model.deletePassword(model.passwordList[index]);
+                    }
                   }
+                });
+              },
+              onLongPress: () {
+                if (Config.longPressCopy) {
+                  Clipboard.setData(ClipboardData(
+                      text: EncryptUtil.decrypt(model.passwordList[index].password)
+                  ));
+                  Fluttertoast.showToast(msg: "已复制密码");
                 }
-              });
-            },
-            onLongPress: () {
-              if (Config.longPressCopy) {
-                Clipboard.setData(ClipboardData(
-                    text: EncryptUtil.decrypt(model.passwordList[index].password)
-                ));
-                Fluttertoast.showToast(msg: "已复制密码");
-              }
-            },
+              },
+            ),
+            onPanDown: (details) => RuntimeData.updateTapPosition(details),
           ),
         );
       },

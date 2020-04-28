@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/pages/card/view_card_page.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/route/animation_routes.dart';
 
 class CardWidgetItem extends StatelessWidget {
   final int index;
@@ -26,9 +26,11 @@ class CardWidgetItem extends StatelessWidget {
             margin: AllpassEdgeInsets.forCardInset,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-            child: InkWell(
-              onTap: () => Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewCardPage(model.cardList[index]),
+            child: GestureDetector(
+              onPanDown: (details) => RuntimeData.updateTapPosition(details),
+              onTap: () => Navigator.push(context, ExtendRoute(
+                page: ViewCardPage(model.cardList[index]),
+                tapPosition: RuntimeData.tapVerticalPosition
               )).then((bean) {
                 if (bean != null) {
                   // 改变了就更新，没改变就删除
@@ -76,6 +78,7 @@ class CardWidgetItem extends StatelessWidget {
 class SimpleCardWidgetItem extends StatelessWidget {
 
   final int index;
+
   SimpleCardWidgetItem(this.index);
 
   @override
@@ -84,34 +87,38 @@ class SimpleCardWidgetItem extends StatelessWidget {
       builder: (context, model, _) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
-          child: ListTile(
-            leading: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: model.cardList[index].color
-              ),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Text(
-                  model.cardList[index].name.substring(0, 1),
-                  style: TextStyle(color: Colors.white),
+          child: GestureDetector(
+            onPanDown: (details) => RuntimeData.updateTapPosition(details),
+            child: ListTile(
+              leading: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    color: model.cardList[index].color
+                ),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Text(
+                    model.cardList[index].name.substring(0, 1),
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
-            ),
-            title: Text(model.cardList[index].name),
-            subtitle: Text(model.cardList[index].ownerName),
-            onTap: () => Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewCardPage(model.cardList[index])
-            )).then((bean) {
-              if (bean != null) {
-                // 改变了就更新，没改变就删除
-                if (bean.isChanged) {
-                  model.updateCard(bean);
-                } else {
-                  model.deleteCard(model.cardList[index]);
+              title: Text(model.cardList[index].name),
+              subtitle: Text(model.cardList[index].ownerName),
+              onTap: () => Navigator.push(context, ExtendRoute(
+                page: ViewCardPage(model.cardList[index]),
+                tapPosition: RuntimeData.tapVerticalPosition,
+              )).then((bean) {
+                if (bean != null) {
+                  // 改变了就更新，没改变就删除
+                  if (bean.isChanged) {
+                    model.updateCard(bean);
+                  } else {
+                    model.deleteCard(model.cardList[index]);
+                  }
                 }
-              }
-            }),
+              }),
+            ),
           ),
         );
       },
