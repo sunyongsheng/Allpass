@@ -17,17 +17,18 @@ class PasswordBean extends BaseModel {
   int fav; // 9 是否标心，0代表否
   bool isChanged;  // 是否被修改
 
-  PasswordBean(
-      {@required String username,
-      @required String password,
-      @required String url,
-      String folder: "默认",
-      String notes: "",
-      int fav: 0,
-      int key,
-      String name,
-      List<String> label,
-      bool isChanged: false}) {
+  PasswordBean({
+    @required String username,
+    @required String password,
+    @required String url,
+    Color color,
+    String folder: "默认",
+    String notes: "",
+    int fav: 0,
+    int key,
+    String name,
+    List<String> label,
+    bool isChanged: false}) {
     this.username = username;
     this.password = password;
     this.url = url;
@@ -36,6 +37,7 @@ class PasswordBean extends BaseModel {
     this.fav = fav;
     this.uniqueKey = key;
     this.isChanged = isChanged;
+    this.color = color;
 
     if (name.trim().length < 1) {
       if (url.contains("weibo")) {

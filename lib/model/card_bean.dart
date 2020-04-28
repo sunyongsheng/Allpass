@@ -18,18 +18,19 @@ class CardBean extends BaseModel {
   int fav; // 10 是否标心
   bool isChanged;
 
-  CardBean(
-      {@required String ownerName,
-      @required String cardId,
-      String folder: "默认",
-      String notes: "",
-      int fav: 0,
-      String telephone: "",
-      int key, //: CARD_MAGIC,
-      String password: "",
-      String name,
-      List<String> label,
-      bool isChanged: false}) {
+  CardBean({
+    @required String ownerName,
+    @required String cardId,
+    Color color,
+    String folder: "默认",
+    String notes: "",
+    int fav: 0,
+    String telephone: "",
+    int key, //: CARD_MAGIC,
+    String password: "",
+    String name,
+    List<String> label,
+    bool isChanged: false}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -39,6 +40,7 @@ class CardBean extends BaseModel {
     this.uniqueKey = key;
     this.password = password;
     this.isChanged = isChanged;
+    this.color = color;
 
     if (name.trim().length < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
