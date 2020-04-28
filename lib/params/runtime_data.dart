@@ -12,9 +12,12 @@ class RuntimeData {
   static List<String> folderList = List();
   static List<String> labelList = List();
 
+  static int newPasswordOrCardCount;  // 每次打开软件新增的密码或卡片数量
+
   static void initData() {
     folderList.clear();
     labelList.clear();
+    newPasswordOrCardCount = 0;
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
       folderList = waveLineSegStr2List(folder);

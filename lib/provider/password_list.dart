@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
-
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
 
@@ -21,6 +21,14 @@ class PasswordList with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Null> refresh() async {
+    _passwordList.clear();
+    _passwordList = await _dao.getAllPasswordBeanList();
+    sortByAlphabeticalOrder();
+    RuntimeData.newPasswordOrCardCount = 0;
+    notifyListeners();
+  }
+
   void sortByAlphabeticalOrder() {
     _passwordList.sort((one, two) {
       return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
@@ -32,6 +40,7 @@ class PasswordList with ChangeNotifier {
     _passwordList?.add(bean);
     await _dao.insert(bean);
     sortByAlphabeticalOrder();
+    RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
   }
 
