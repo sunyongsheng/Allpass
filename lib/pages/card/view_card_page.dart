@@ -36,7 +36,6 @@ class _ViewCardPage extends State<ViewCardPage> {
   String _password = "";
   var _futureHelper;
   Color _mainColor;
-  Color _color;
 
 
   Future<Null> _decryptPassword() async {
@@ -56,14 +55,14 @@ class _ViewCardPage extends State<ViewCardPage> {
         telephone: data.telephone,
         notes: data.notes,
         fav: data.fav,
-        label: data.label
+        label: data.label,
+      color: data.color
     );
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
     });
-    _color = getRandomColor(_bean.uniqueKey);
     super.initState();
   }
 
@@ -117,7 +116,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                                      color: _color,
+                                      color: _bean.color,
                                     ),
                                     child: CircleAvatar(
                                       radius: 25,

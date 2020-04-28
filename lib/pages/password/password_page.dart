@@ -186,9 +186,12 @@ class _PasswordPageState extends State<PasswordPage>
             onPressed: () {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
-                  .then((resData) {
+                  .then((resData) async {
                 if (resData != null) {
                   model.insertPassword(resData);
+                  if (RuntimeData.newPasswordOrCardCount >= 3) {
+                    await Provider.of<PasswordList>(context).refresh();
+                  }
                 }
               });
             },

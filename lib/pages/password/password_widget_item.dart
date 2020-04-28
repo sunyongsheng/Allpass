@@ -24,7 +24,7 @@ class PasswordWidgetItem extends StatelessWidget {
           margin: AllpassEdgeInsets.listInset,
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: getRandomColor(model.passwordList[index].uniqueKey),
+              backgroundColor: model.passwordList[index].color,
               child: Text(
                 model.passwordList[index].name.substring(0, 1),
                 style: TextStyle(color: Colors.white),
@@ -95,7 +95,7 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
               });
             },
             secondary: CircleAvatar(
-              backgroundColor: getRandomColor(model.passwordList[index].uniqueKey),
+              backgroundColor: model.passwordList[index].color,
               child: Text(
                 model.passwordList[index].name.substring(0, 1),
                 style: TextStyle(color: Colors.white),

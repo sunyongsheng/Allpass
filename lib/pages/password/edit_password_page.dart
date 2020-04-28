@@ -123,16 +123,17 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   && _passwordController.text.length >= 1) {
                 String pw = EncryptUtil.encrypt(_passwordController.text);
                 PasswordBean tempData = PasswordBean(
-                    key: _oldData?.uniqueKey,
-                    username: _usernameController.text,
-                    password: pw,
-                    url: _urlController.text,
-                    name: _nameController.text,
-                    folder: _folder,
-                    label: _labels,
-                    notes: _notesController.text,
-                    isChanged: true,
-                    fav: _fav
+                  key: _oldData?.uniqueKey,
+                  username: _usernameController.text,
+                  password: pw,
+                  url: _urlController.text,
+                  name: _nameController.text,
+                  folder: _folder,
+                  label: _labels,
+                  notes: _notesController.text,
+                  isChanged: true,
+                  fav: _fav,
+                  color: _oldData?.color??getRandomColor()
                 );
                 Navigator.pop<PasswordBean>(context, tempData);
               } else {

@@ -37,7 +37,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
   String _password = "";
   Color _mainColor;
-  Color _color;
 
   Future<Null> _decryptPassword() async {
     _password = EncryptUtil.decrypt(_bean.password);
@@ -47,17 +46,17 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   void initState() {
     PasswordBean data = widget.oldData;
     _bean = PasswordBean(
-        username: data.username,
-        password: data.password,
-        url: data.url,
-        key: data.uniqueKey,
-        name: data.name,
-        folder: data.folder,
-        label: data.label,
-        notes: data.notes,
-        fav: data.fav);
+      username: data.username,
+      password: data.password,
+      url: data.url,
+      key: data.uniqueKey,
+      name: data.name,
+      folder: data.folder,
+      label: data.label,
+      notes: data.notes,
+      fav: data.fav,
+      color: data.color);
 
-    _color = getRandomColor(_bean.uniqueKey);
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
@@ -115,7 +114,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     padding: EdgeInsets.symmetric(vertical: 23, horizontal: 0),
                                     child: CircleAvatar(
                                       radius: 25,
-                                      backgroundColor: _color,
+                                      backgroundColor: _bean.color,
                                       child: Text(
                                         _bean.name.substring(0, 1),
                                         style: TextStyle(fontSize: 25, color: Colors.white),

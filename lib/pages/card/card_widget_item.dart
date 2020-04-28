@@ -22,7 +22,7 @@ class CardWidgetItem extends StatelessWidget {
           height: 100,
           child: Card(
             elevation: 2,
-            color: getRandomColor(model.cardList[index].uniqueKey),
+            color: model.cardList[index].color,
             margin: AllpassEdgeInsets.forCardInset,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
@@ -88,7 +88,7 @@ class SimpleCardWidgetItem extends StatelessWidget {
             leading: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: getRandomColor(model.cardList[index].uniqueKey)
+                  color: model.cardList[index].color
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
@@ -155,7 +155,7 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
             secondary: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: getRandomColor(model.cardList[index].uniqueKey)
+                  color: model.cardList[index].color
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,

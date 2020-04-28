@@ -127,17 +127,18 @@ class _EditCardPage extends State<EditCardPage> {
                       ? EncryptUtil.encrypt(_passwordController.text)
                       : EncryptUtil.encrypt("000000");
                   CardBean tempData = CardBean(
-                      ownerName: _ownerNameController.text,
-                      cardId: _cardIdController.text,
-                      key: _oldData?.uniqueKey,
-                      name: _nameController.text,
-                      telephone: _telephoneController.text,
-                      folder: _folder,
-                      label: _labels,
-                      fav: _fav,
-                      notes: _notesController.text,
-                      password: pwd,
-                      isChanged: true
+                    ownerName: _ownerNameController.text,
+                    cardId: _cardIdController.text,
+                    key: _oldData?.uniqueKey,
+                    name: _nameController.text,
+                    telephone: _telephoneController.text,
+                    folder: _folder,
+                    label: _labels,
+                    fav: _fav,
+                    notes: _notesController.text,
+                    password: pwd,
+                    isChanged: true,
+                    color: _oldData?.color??getRandomColor()
                   );
                   if (_passwordController.text.length < 1) {
                     Fluttertoast.showToast(msg: "未输入密码，自动初始化为00000");

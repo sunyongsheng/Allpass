@@ -85,7 +85,7 @@ class _SearchPage extends State<SearchPage> {
         if (containsKeyword(item)) {
           _result.add(ListTile(
             leading: CircleAvatar(
-              backgroundColor: getRandomColor(item.uniqueKey),
+              backgroundColor: item.color,
               child: Text(
                 item.name.substring(0, 1),
                 style: TextStyle(color: Colors.white),
@@ -116,7 +116,7 @@ class _SearchPage extends State<SearchPage> {
             leading: Container(
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: getRandomColor(item.uniqueKey),
+                  color: item.color,
               ),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,

@@ -194,9 +194,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 CupertinoPageRoute(
                     builder: (context) =>
                         EditCardPage(null, "添加卡片")))
-                .then((resData) {
+                .then((resData) async {
               if (resData != null) {
                 model.insertCard(resData);
+                if (RuntimeData.newPasswordOrCardCount >= 3) {
+                  await Provider.of<CardList>(context).refresh();
+                }
               }
             });
           },
