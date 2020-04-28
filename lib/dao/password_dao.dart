@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/db_provider.dart';
 import 'package:allpass/utils/string_process.dart';
 
@@ -57,7 +58,9 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      return PasswordBean.fromJson(maps.first);
+      PasswordBean bean = PasswordBean.fromJson(maps.first);
+      bean.color = getRandomColor(bean.uniqueKey);
+      return bean;
     }
     return null;
   }
@@ -69,7 +72,9 @@ class PasswordDao extends BaseDBProvider {
     if (maps.length > 0) {
       List<PasswordBean> res = List();
       for (var map in maps) {
-        res.add(PasswordBean.fromJson(map));
+        PasswordBean bean = PasswordBean.fromJson(map);
+        bean.color = getRandomColor(bean.uniqueKey);
+        res.add(bean);
       }
       return res;
     }

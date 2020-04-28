@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 
+import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/db_provider.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/utils/string_process.dart';
@@ -56,7 +57,9 @@ class CardDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      return CardBean.fromJson(maps.first);
+      CardBean bean = CardBean.fromJson(maps.first);
+      bean.color = getRandomColor(bean.uniqueKey);
+      return bean;
     }
     return null;
   }
@@ -66,7 +69,11 @@ class CardDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      List<CardBean> res = maps.map((item) => CardBean.fromJson(item)).toList();
+      List<CardBean> res = maps.map((item) {
+        CardBean bean = CardBean.fromJson(item);
+        bean.color = getRandomColor(bean.uniqueKey);
+        return bean;
+      }).toList();
       return res;
     }
     return null;
