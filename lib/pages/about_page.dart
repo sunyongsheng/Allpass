@@ -33,102 +33,104 @@ class AboutPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Card(
-            margin: EdgeInsets.all(AllpassScreenUtil.setWidth(50)),
-            elevation: 5,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(padding: AllpassEdgeInsets.smallTBPadding,),
-                Container(
-                    padding: AllpassEdgeInsets.listInset,
-                    child: ListTile(
-                      title: Container(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          "Allpass",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      subtitle: Text("一款简单的密码管理软件"),
-                      trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
-                      isThreeLine: true,
-                      onTap: () {
-                        pressTimes++;
-                        if (pressTimes == 10) {
-                          Fluttertoast.showToast(msg: "进入开发者模式");
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => DebugPage()
-                          ));
-                        }
-                      },
-                    )),
-                Container(
-                  child: Divider(),
-                  padding: AllpassEdgeInsets.dividerInset,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
-                  child: Text("联系方式", style: TextStyle(fontWeight: FontWeight.bold),),
-                ),
-                Container(
-                  padding: AllpassEdgeInsets.dividerInset,
-                  child: FlatButton(
-                    child: Text("微博：@Aengus_Sun"),
-                    onPressed: () async {
-                      await launch("https://weibo.com/u/5484402663");
-                    },
-                  ),
-                ),
-                Container(
-                  padding: AllpassEdgeInsets.dividerInset,
-                  child: FlatButton(
-                    child: Text("邮箱：sys6511@126.com"),
-                    onPressed: () async {
-                      await launch("mailto:sys6511@126.com");
-                    },
-                  ),
-                ),
-                Container(
-                  padding: AllpassEdgeInsets.dividerInset,
-                  child: FlatButton(
-                    child: Text("开发者网址：https://www.aengus.top"),
-                    onPressed: () async {
-                      await launch("https://www.aengus.top");
-                    },
-                  ),
-                ),
-                Container(
-                  padding: AllpassEdgeInsets.dividerInset,
-                  child: Row(
-                    children: <Widget>[
-                      FlatButton(
-                        child: Text("开源地址：Github"),
+          Column(
+            children: <Widget>[
+              Card(
+                margin: EdgeInsets.all(AllpassScreenUtil.setWidth(50)),
+                elevation: 5,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(padding: AllpassEdgeInsets.smallTBPadding,),
+                    Container(
+                        padding: AllpassEdgeInsets.listInset,
+                        child: ListTile(
+                          title: Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              "Allpass",
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          subtitle: Text("一款简单的密码管理软件"),
+                          trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
+                          isThreeLine: true,
+                          onTap: () {
+                            pressTimes++;
+                            if (pressTimes == 10) {
+                              Fluttertoast.showToast(msg: "进入开发者模式");
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => DebugPage()
+                              ));
+                            }
+                          },
+                        )),
+                    Container(
+                      child: Divider(),
+                      padding: AllpassEdgeInsets.dividerInset,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
+                      child: Text("联系方式", style: TextStyle(fontWeight: FontWeight.bold),),
+                    ),
+                    Container(
+                      padding: AllpassEdgeInsets.dividerInset,
+                      child: FlatButton(
+                        child: Text("微博：@Aengus_Sun"),
                         onPressed: () async {
-                          await launch("https://github.com/sunyongsheng/Allpass");
+                          await launch("https://weibo.com/u/5484402663");
                         },
                       ),
-                      Text("|"),
-                      FlatButton(
-                        child: Text("码云"),
+                    ),
+                    Container(
+                      padding: AllpassEdgeInsets.dividerInset,
+                      child: FlatButton(
+                        child: Text("邮箱：sys6511@126.com"),
                         onPressed: () async {
-                          await launch("https://gitee.com/sunyongsheng/Allpass");
+                          await launch("mailto:sys6511@126.com");
                         },
                       ),
-                    ],
-                  )
+                    ),
+                    Container(
+                      padding: AllpassEdgeInsets.dividerInset,
+                      child: FlatButton(
+                        child: Text("开发者网址：https://www.aengus.top"),
+                        onPressed: () async {
+                          await launch("https://www.aengus.top");
+                        },
+                      ),
+                    ),
+                    Container(
+                        padding: AllpassEdgeInsets.dividerInset,
+                        child: Row(
+                          children: <Widget>[
+                            FlatButton(
+                              child: Text("开源地址：Github"),
+                              onPressed: () async {
+                                await launch("https://github.com/sunyongsheng/Allpass");
+                              },
+                            ),
+                            Text("|"),
+                            FlatButton(
+                              child: Text("码云"),
+                              onPressed: () async {
+                                await launch("https://gitee.com/sunyongsheng/Allpass");
+                              },
+                            ),
+                          ],
+                        )
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 10, bottom: 5),
+                    )
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(top: 10, bottom: 5),
-                )
-              ],
-            ),
-          ),
-          Text("Copyright 2020 Aengus Sun. Apache License 2.0", style: TextStyle(color: Colors.grey),),
-          Padding(
-            padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(300)),
+              ),
+              Text("Copyright 2020 Aengus Sun. Apache License 2.0", style: TextStyle(color: Colors.grey),),
+            ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
