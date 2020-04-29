@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
@@ -64,7 +63,7 @@ class _PasswordPageState extends State<PasswordPage>
           ),
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            Config.multiSelected
+            RuntimeData.multiSelected
                 ? Row(
               children: <Widget>[
                 PopupMenuButton<String>(
@@ -115,11 +114,11 @@ class _PasswordPageState extends State<PasswordPage>
             ),
             InkWell(
               splashColor: Colors.transparent,
-              child: Config.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+              child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
               onTap: () {
                 setState(() {
                   RuntimeData.multiPasswordList.clear();
-                  Config.multiSelected = !Config.multiSelected;
+                  RuntimeData.multiSelected = !RuntimeData.multiSelected;
                 });
               },
             ),
@@ -141,7 +140,7 @@ class _PasswordPageState extends State<PasswordPage>
                   onRefresh: _query,
                   child: Scrollbar(
                     child: Provider.of<PasswordList>(context).passwordList.length >= 1
-                        ? Config.multiSelected
+                        ? RuntimeData.multiSelected
                             ? ListView.builder(
                                 controller: _controller,
                                 itemBuilder: (context, index) => MultiPasswordWidgetItem(index),

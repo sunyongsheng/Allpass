@@ -9,13 +9,11 @@ class Config {
   static String password;         // 使用者密码
   static bool enabledBiometrics;  // 是否启用生物识别
   static bool longPressCopy;      // 是否开启长按复制，否则为长按多选
-  static bool multiSelected;      // 是否点击了多选按钮
   static String theme;            // 主题名
 
 
   /// 参数初始化
   static configInit() async {
-    RuntimeData.initData();
     if (Application.sp == null) {
       await Application.initSp();
     }
@@ -28,8 +26,7 @@ class Config {
     longPressCopy = Application.sp.getBool("longPressCopy")??true;
     // 初始化主题
     theme = Application.sp.getString("theme")??"blue";
-    // 是否点击了多选按钮
-    multiSelected = false;
+    RuntimeData.initData();
   }
 
   /// 清空参数

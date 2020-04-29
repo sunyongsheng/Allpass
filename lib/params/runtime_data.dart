@@ -11,20 +11,20 @@ class RuntimeData {
 
   static List<PasswordBean> multiPasswordList = List(); // 多选的密码
   static List<CardBean> multiCardList = List();         // 多选的卡片
+  static bool multiSelected;                            // 是否点击了多选按钮
 
-  static List<String> folderList = List();
-  static List<String> labelList = List();
+  static List<String> folderList = List();              // 文件夹列表
+  static List<String> labelList = List();               // 标签列表
 
   static int newPasswordOrCardCount;  // 每次打开软件新增的密码或卡片数量
 
-  /// 取值范围-1到1，0代表中心位置
-  static double tapVerticalPosition;
+  static double tapVerticalPosition;  // 取值范围-1到1，0代表中心位置
 
   static void initData() {
-    folderList.clear();
-    labelList.clear();
     newPasswordOrCardCount = 0;
     tapVerticalPosition = 0;
+    multiSelected = false;
+
     if (Application.sp.containsKey("folder")) {
       String folder = Application.sp.getString("folder");
       folderList = waveLineSegStr2List(folder);

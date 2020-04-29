@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
@@ -69,7 +68,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         ),
         automaticallyImplyLeading: false,
         actions: <Widget>[
-          Config.multiSelected
+          RuntimeData.multiSelected
               ? Row(
             children: <Widget>[
               PopupMenuButton<String>(
@@ -120,11 +119,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           ),
           InkWell(
             splashColor: Colors.transparent,
-            child: Config.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+            child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
             onTap: () {
               setState(() {
                 RuntimeData.multiCardList.clear();
-                Config.multiSelected = !Config.multiSelected;
+                RuntimeData.multiSelected = !RuntimeData.multiSelected;
               });
             },
           ),
@@ -146,7 +145,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               onRefresh: _query,
               child: Scrollbar(
                 child: Provider.of<CardList>(context).cardList.length >= 1
-                  ? Config.multiSelected
+                  ? RuntimeData.multiSelected
                     ? ListView.builder(
                         controller: _controller,
                         itemBuilder: (context, index) => MultiCardWidgetItem(index),
