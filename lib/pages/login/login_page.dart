@@ -57,8 +57,7 @@ class _LoginPage extends State<LoginPage> {
                 FlatButton(
                   child: Text("同意并继续"),
                   onPressed: () async {
-                    initAppFirstRun();
-                    await Config.configInit();
+                    await initAppFirstRun();
                     Navigator.pop(context);
                   },
                 ),
