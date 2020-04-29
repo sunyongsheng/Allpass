@@ -34,6 +34,8 @@ class Config {
     username = "";
     password = "";
     enabledBiometrics = false;
+    longPressCopy = true;
+    theme = "blue";
     RuntimeData.clearData();
   }
 
