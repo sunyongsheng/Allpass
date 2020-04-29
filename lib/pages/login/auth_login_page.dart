@@ -105,6 +105,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
       ).then((value) {
         if (value) {
           Fluttertoast.showToast(msg: "验证成功");
+          Application.updateLatestUsePasswordTime();
           NavigationUtil.goHomePage(context);
         } else {
           Fluttertoast.showToast(msg: "您似乎忘记了主密码");
