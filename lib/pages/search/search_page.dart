@@ -154,15 +154,19 @@ class _SearchPage extends State<SearchPage> {
 
   bool containsKeyword(BaseModel baseModel) {
     if (baseModel is PasswordBean) {
-      return baseModel.name.toLowerCase().contains(_searchText) ||
-          baseModel.username.toLowerCase().contains(_searchText) ||
-          baseModel.notes.toLowerCase().contains(_searchText) ||
-          list2PureStr(baseModel.label).toLowerCase().contains(_searchText);
+      StringBuffer stringBuffer = StringBuffer();
+      stringBuffer.write(baseModel.name.toLowerCase());
+      stringBuffer.write(baseModel.username.toLowerCase());
+      stringBuffer.write(baseModel.notes.toLowerCase());
+      stringBuffer.write(list2PureStr(baseModel.label).toLowerCase());
+      return stringBuffer.toString().contains(_searchText);
     } else if (baseModel is CardBean) {
-      return baseModel.name.toLowerCase().contains(_searchText) ||
-          baseModel.ownerName.toLowerCase().contains(_searchText) ||
-          baseModel.notes.toLowerCase().contains(_searchText) ||
-          list2PureStr(baseModel.label).toLowerCase().contains(_searchText);
+      StringBuffer stringBuffer = StringBuffer();
+      stringBuffer.write(baseModel.name.toLowerCase());
+      stringBuffer.write(baseModel.ownerName.toLowerCase());
+      stringBuffer.write(baseModel.notes.toLowerCase());
+      stringBuffer.write(list2PureStr(baseModel.label).toLowerCase());
+      return stringBuffer.toString().contains(_searchText);
     }
     return false;
   }
