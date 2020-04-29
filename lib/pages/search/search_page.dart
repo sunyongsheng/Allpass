@@ -60,6 +60,10 @@ class _SearchPage extends State<SearchPage> {
               return Center(
                 child: CircularProgressIndicator(),
               );
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             case ConnectionState.done:
               return _result.length == 0
                   ? Center(
