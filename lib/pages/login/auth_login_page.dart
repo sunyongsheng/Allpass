@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/screen_util.dart';
@@ -93,7 +94,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
   Future<Null> askAuth(BuildContext context) async {
     // 两次时间
     DateTime now = DateTime.now();
-    DateTime latestUsePassword = DateTime.parse(Application.sp.get("latestUsePassword")??now.toIso8601String());
+    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SharedPreferencesKeys.latestUsePassword)??now.toIso8601String());
     if (now.difference(latestUsePassword).inDays >= 10) {
       await _localAuthService.stopAuthenticate();
       showDialog<bool>(

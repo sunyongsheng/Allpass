@@ -1,4 +1,5 @@
 import 'package:allpass/application.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/params/runtime_data.dart';
 
 /// 存储系统参数
@@ -18,14 +19,14 @@ class Config {
       await Application.initSp();
     }
     // 初始化当前用户名与密码
-    username = Application.sp.getString("username")??"";
-    password = Application.sp.getString("password")??"";
+    username = Application.sp.getString(SharedPreferencesKeys.username)??"";
+    password = Application.sp.getString(SharedPreferencesKeys.password)??"";
     // 判断是否开启生物识别
-    enabledBiometrics = Application.sp.getBool("biometrics")??false;
+    enabledBiometrics = Application.sp.getBool(SharedPreferencesKeys.biometrics)??false;
     // 判断长按功能
-    longPressCopy = Application.sp.getBool("longPressCopy")??true;
+    longPressCopy = Application.sp.getBool(SharedPreferencesKeys.longPressCopy)??true;
     // 初始化主题
-    theme = Application.sp.getString("theme")??"blue";
+    theme = Application.sp.getString(SharedPreferencesKeys.theme)??"blue";
     RuntimeData.initData();
   }
 

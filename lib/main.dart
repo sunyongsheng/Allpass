@@ -97,7 +97,7 @@ class Allpass extends StatelessWidget {
 }
 
 void registerUser() async {
-  if (Application.sp.getBool("NEED_REGISTER")??true) {
+  if (Application.sp.getBool(SharedPreferencesKeys.needRegister)??true) {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     String identification;
     String systemInfo;
@@ -116,9 +116,9 @@ void registerUser() async {
       Response response = await Dio().get(
           "$allpassUrl/register?identification=$identification&systemInfo=$systemInfo");
       if ((response.data["result"] ?? '0') == "1") {
-        Application.sp.setBool("NEED_REGISTER", false);
+        Application.sp.setBool(SharedPreferencesKeys.needRegister, false);
       } else {
-        Application.sp.setBool("NEED_REGISTER", true);
+        Application.sp.setBool(SharedPreferencesKeys.needRegister, true);
       }
     } catch (e) {
       print("网络连接失败");

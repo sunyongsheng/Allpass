@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/utils/screen_util.dart';
@@ -25,12 +26,12 @@ class RuntimeData {
     tapVerticalPosition = 0;
     multiSelected = false;
 
-    if (Application.sp.containsKey("folder")) {
-      String folder = Application.sp.getString("folder");
+    if (Application.sp.containsKey(SharedPreferencesKeys.folder)) {
+      String folder = Application.sp.getString(SharedPreferencesKeys.folder);
       folderList = waveLineSegStr2List(folder);
     }
-    if (Application.sp.containsKey("label")) {
-      String label = Application.sp.getString("label");
+    if (Application.sp.containsKey(SharedPreferencesKeys.label)) {
+      String label = Application.sp.getString(SharedPreferencesKeys.label);
       labelList = waveLineSegStr2List(label);
     }
   }
@@ -66,12 +67,12 @@ class RuntimeData {
 
   /// 标签参数持久化
   static void labelParamsPersistence() {
-    Application.sp.setString("label", list2WaveLineSegStr(labelList));
+    Application.sp.setString(SharedPreferencesKeys.label, list2WaveLineSegStr(labelList));
   }
 
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
-    Application.sp.setString("folder", list2WaveLineSegStr(folderList));
+    Application.sp.setString(SharedPreferencesKeys.folder, list2WaveLineSegStr(folderList));
   }
 
   /// 更新点击的位置

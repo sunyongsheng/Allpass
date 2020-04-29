@@ -1,13 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
@@ -36,7 +35,7 @@ class _LoginPage extends State<LoginPage> {
   void initState() {
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
-    if (Application.sp.getBool("FIRST_RUN")??true) {
+    if (Application.sp.getBool(SharedPreferencesKeys.firstRun)??true) {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         showDialog(
             context: context,

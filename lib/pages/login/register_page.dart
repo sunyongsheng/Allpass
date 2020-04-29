@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/navigation_util.dart';
@@ -98,12 +99,12 @@ class RegisterPage extends StatelessWidget {
       return;
     }
     // 判断是否已有账号存在
-    if (Application.sp.getString("username") == null) {
+    if (Application.sp.getString(SharedPreferencesKeys.username) == "") {
       // 判断用户名和密码长度
       if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
         String _password = EncryptUtil.encrypt(_passwordController.text);
-        Application.sp.setString("username", _usernameController.text);
-        Application.sp.setString("password", _password);
+        Application.sp.setString(SharedPreferencesKeys.username, _usernameController.text);
+        Application.sp.setString(SharedPreferencesKeys.password, _password);
         Config.username = _usernameController.text;
         Config.password = _password;
         Config.enabledBiometrics = false;

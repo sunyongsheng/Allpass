@@ -101,7 +101,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               var auth = await _localAuthService.authenticate();
                               if (auth) {
                                 await _localAuthService.stopAuthenticate();
-                                Application.sp.setBool("biometrics", sw);
+                                Application.sp.setBool(SharedPreferencesKeys.biometrics, sw);
                                 Config.enabledBiometrics = sw;
                                 setState(() {});
                               } else {
@@ -110,7 +110,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                             }
                           });
                         } else {
-                          Application.sp.setBool("biometrics", false);
+                          Application.sp.setBool(SharedPreferencesKeys.biometrics, false);
                           Config.enabledBiometrics = false;
                           Fluttertoast.showToast(msg: "您的设备似乎不支持生物识别");
                         }
@@ -129,7 +129,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                       trailing: Switch(
                         value: Config.longPressCopy,
                         onChanged: (sw) async {
-                          Application.sp.setBool("longPressCopy", sw);
+                          Application.sp.setBool(SharedPreferencesKeys.longPressCopy, sw);
                           setState(() {
                             Config.longPressCopy = sw;
                           });

@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/param.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/dao/password_dao.dart';
@@ -62,19 +63,19 @@ class Application {
   }
   /// 更新上次使用密码的时间
   static void updateLatestUsePasswordTime() {
-    Application.sp.setString("latestUsePassword", DateTime.now().toIso8601String());
+    Application.sp.setString(SharedPreferencesKeys.latestUsePassword, DateTime.now().toIso8601String());
   }
 }
 
 /// 软件第一次运行，用户点击“同意并继续”后，对软件进行初始化，仅会调用一次
 Future<Null> initAppFirstRun() async {
-  Application.sp.setBool("FIRST_RUN", false);
-  Application.sp.setBool("NEED_REGISTER", true);
-  Application.sp.setString("username", "");
-  Application.sp.setString("password", "");
-  Application.sp.setBool("biometrics", false);
-  Application.sp.setBool("longPressCopy", true);
-  Application.sp.setString("theme", "blue");
-  Application.sp.setString("folder", "默认~娱乐~办公~论坛~教育~社交");
+  Application.sp.setBool(SharedPreferencesKeys.firstRun, false);
+  Application.sp.setBool(SharedPreferencesKeys.needRegister, true);
+  Application.sp.setString(SharedPreferencesKeys.username, "");
+  Application.sp.setString(SharedPreferencesKeys.password, "");
+  Application.sp.setBool(SharedPreferencesKeys.biometrics, false);
+  Application.sp.setBool(SharedPreferencesKeys.longPressCopy, true);
+  Application.sp.setString(SharedPreferencesKeys.theme, "blue");
+  Application.sp.setString(SharedPreferencesKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
   await Config.configInit();
 }
