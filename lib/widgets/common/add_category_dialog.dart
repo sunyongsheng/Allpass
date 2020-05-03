@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'package:allpass/params/runtime_data.dart';
-import 'package:allpass/ui/allpass_ui.dart';
 
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
@@ -47,10 +44,6 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("新建$categoryName"),
-      shape: RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
-      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

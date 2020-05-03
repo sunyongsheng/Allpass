@@ -17,11 +17,6 @@ class ModifyPasswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(AllpassUI.smallBorderRadius),
-        ),
-      ),
       title: Text(
         "修改主密码",
         style: AllpassTextUI.firstTitleStyle,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'allpass_ui.dart';
+
 /// 主题
 class AllpassTheme {
   static ThemeData blueTheme() {
@@ -21,7 +23,11 @@ class AllpassTheme {
         cursorColor: Colors.blue,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData redTheme() {
@@ -43,7 +49,11 @@ class AllpassTheme {
         cursorColor: Colors.red,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+      dialogTheme: DialogTheme(
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+      ),)
     );
   }
   static ThemeData tealTheme() {
@@ -65,7 +75,11 @@ class AllpassTheme {
         cursorColor: Colors.teal,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData deepPurpleTheme() {
@@ -87,7 +101,11 @@ class AllpassTheme {
         cursorColor: Colors.deepPurple,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData orangeTheme() {
@@ -109,7 +127,11 @@ class AllpassTheme {
         cursorColor: Colors.orange,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData pinkTheme() {
@@ -131,7 +153,11 @@ class AllpassTheme {
         cursorColor: Colors.pink,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData blueGreyTheme() {
@@ -153,7 +179,11 @@ class AllpassTheme {
         cursorColor: Colors.blueGrey,
         inputDecorationTheme: InputDecorationTheme(
             fillColor: Colors.grey[200]
-        )
+        ),
+        dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),)
     );
   }
   static ThemeData darkTheme() {
@@ -194,6 +224,10 @@ class AllpassTheme {
         bottomAppBarColor: Colors.grey[900],
         dialogTheme: DialogTheme(
           backgroundColor: Colors.grey[900],
+          shape: RoundedRectangleBorder(
+            borderRadius:
+            BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
+          ),
         ),
         bottomSheetTheme: BottomSheetThemeData(
             modalBackgroundColor: Colors.grey[900]
@@ -219,7 +253,7 @@ class AllpassTheme {
           selectedColor: Colors.blue,
           shape: StadiumBorder(),
         ),
-        canvasColor: Colors.black
+        canvasColor: Colors.black,
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/runtime_data.dart';
-import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/card_list.dart';
@@ -62,10 +61,6 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("编辑$categoryName"),
-      shape: RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
-      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -85,10 +85,6 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
             return AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(AllpassUI.smallBorderRadius))
-              ),
               title: Text("检查更新"),
               content: SingleChildScrollView(
                 child: _content,

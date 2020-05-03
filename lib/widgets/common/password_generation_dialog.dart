@@ -1,10 +1,9 @@
 import 'dart:math';
-
-import 'package:allpass/provider/theme_provider.dart';
-import 'package:allpass/ui/allpass_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import 'package:allpass/provider/theme_provider.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
@@ -53,9 +52,6 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("密码生成器"),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-      ),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[

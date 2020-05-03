@@ -3,7 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 
 class InputMainPasswordDialog extends StatelessWidget {
@@ -16,11 +15,6 @@ class InputMainPasswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(AllpassUI.smallBorderRadius),
-        ),
-      ),
       title: Text("请输入主密码"),
       content: TextField(
         controller: _passwordController,

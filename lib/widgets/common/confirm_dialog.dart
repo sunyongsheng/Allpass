@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/ui/allpass_ui.dart';
-
 class ConfirmDialog extends StatelessWidget {
   final String _dialogMessage;
   final String _dialogTitle;
@@ -11,10 +9,6 @@ class ConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius:
-        BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius),),
-      ),
       title: Text(_dialogTitle),
       content: Text(_dialogMessage),
       actions: <Widget>[

@@ -40,9 +40,6 @@ class _LoginPage extends State<LoginPage> {
         showDialog(
             context: context,
             child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-              ),
               title: Text("服务条款"),
               content: SingleChildScrollView(
                 child: Column(

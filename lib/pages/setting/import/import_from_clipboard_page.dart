@@ -38,9 +38,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text("帮助"),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
-                    ),
                     content: SingleChildScrollView(
                       child: ListBody(
                         children: <Widget>[
