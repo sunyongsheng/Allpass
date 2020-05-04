@@ -45,6 +45,9 @@ class _DebugPage extends State<DebugPage> {
                               children: keys.map((key) => ListTile(
                                 title: Text(key),
                                 subtitle: Text(Application.sp.get(key).toString()),
+                                onLongPress: () {
+                                  Application.sp.remove(key);
+                                },
                               )).toList()
                           )
                   );
