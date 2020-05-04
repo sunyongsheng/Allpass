@@ -11,6 +11,11 @@ class Config {
   static bool enabledBiometrics;  // 是否启用生物识别
   static bool longPressCopy;      // 是否开启长按复制，否则为长按多选
   static String theme;            // 主题名
+  static bool webDavAuthSuccess;  // WebDAV是否验证成功
+  static String webDavUrl;        // WebDAV地址
+  static String webDavUsername;   // WebDAV用户名
+  static String webDavPassword;   // WebDAV密码
+  static int webDavPort;          // WebDAV端口号
 
 
   /// 参数初始化
@@ -27,6 +32,12 @@ class Config {
     longPressCopy = Application.sp.getBool(SharedPreferencesKeys.longPressCopy)??true;
     // 初始化主题
     theme = Application.sp.getString(SharedPreferencesKeys.theme)??"blue";
+    // 初始化WebDAV
+    webDavAuthSuccess = Application.sp.getBool(SharedPreferencesKeys.webDavAuthSuccess)??false;
+    webDavUrl = Application.sp.getString(SharedPreferencesKeys.webDavUrl)??"";
+    webDavUsername = Application.sp.getString(SharedPreferencesKeys.webDavUsername)??"";
+    webDavPassword = Application.sp.getString(SharedPreferencesKeys.webDavPassword)??"";
+    webDavPort = Application.sp.getInt(SharedPreferencesKeys.webDavPort)??443;
     RuntimeData.initData();
   }
 
@@ -37,6 +48,11 @@ class Config {
     enabledBiometrics = false;
     longPressCopy = true;
     theme = "blue";
+    webDavAuthSuccess = false;
+    webDavUrl = "";
+    webDavUsername = "";
+    webDavPassword = "";
+    webDavPort = 443;
     RuntimeData.clearData();
   }
 
