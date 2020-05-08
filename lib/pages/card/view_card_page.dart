@@ -92,6 +92,7 @@ class _ViewCardPage extends State<ViewCardPage> {
               Padding(padding: AllpassEdgeInsets.smallLPadding,)
             ],
           ),
+          backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
           body: FutureBuilder(
             future: _futureHelper,
             builder: (context, snapshot) {
@@ -106,7 +107,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                            elevation: 5,
+                            elevation: 0,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,7 +178,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(AllpassUI.smallBorderRadius))),
-                              elevation: 5,
+                              elevation: 0,
                               child: SizedBox(
                                 width: ScreenUtil.screenWidth * 0.8,
                                 child: Column(

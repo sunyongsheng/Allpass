@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -6,6 +7,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/develop/debug_page.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 class AboutPage extends StatelessWidget {
 
@@ -32,6 +34,7 @@ class AboutPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -39,7 +42,7 @@ class AboutPage extends StatelessWidget {
             children: <Widget>[
               Card(
                 margin: EdgeInsets.all(AllpassScreenUtil.setWidth(50)),
-                elevation: 5,
+                elevation: 0,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
