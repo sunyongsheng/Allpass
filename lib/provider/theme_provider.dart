@@ -27,7 +27,7 @@ class ThemeProvider with ChangeNotifier {
       backgroundColor2 = Colors.grey[900];
     } else {
       backgroundColor1 = Colors.white;
-      backgroundColor2 = Colors.grey[100];
+      backgroundColor2 = Color.fromRGBO(245, 246, 250, 1);
     }
     switch (themeName) {
       case "blue":
