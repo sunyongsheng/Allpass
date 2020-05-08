@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:animations/animations.dart';
 
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/pages/classification/favorite_page.dart';
+import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/classification/classification_details_page.dart';
 
 class ClassificationPage extends StatelessWidget {
@@ -45,59 +45,54 @@ class ClassificationPage extends StatelessWidget {
   List<Widget> getClassWidgets(BuildContext context) {
     List<Widget> list  = List();
     list.add(
-        OpenContainer(
-          transitionType: ContainerTransitionType.fadeThrough,
-          openShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          closedShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          closedElevation: 0,
-          openBuilder: (context, _) {
-            return FavoritePage();
+        InkWell(
+          onTap: () {
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => FavoritePage()
+            ));
           },
-          closedBuilder: (context, _) {
-            return Card(
-              elevation: 0,
-              color: Colors.redAccent,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Center(
-                child: Text("收藏",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+          child: Card(
+            elevation: 0,
+            color: Colors.redAccent,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Center(
+              child: Text("收藏",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            );
-          },
+            ),
+          ),
         )
     );
     list.addAll(RuntimeData.folderList.map((folder) =>
-        OpenContainer(
-          closedElevation: 0,
-          openBuilder: (context, _) {
-            return ClassificationDetailsPage(folder);
+        InkWell(
+          onTap: () {
+            Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => ClassificationDetailsPage(folder)
+            ));
           },
-          transitionType: ContainerTransitionType.fadeThrough,
-          openShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          closedShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-          closedBuilder: (context, _) {
-            return Card(
-              elevation: 0,
-              color: getRandomColor(seed: folder.hashCode),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Center(
-                child: Text(folder,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+          onLongPress: () => Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => CategoryManagerPage("文件夹"),
+          )),
+          child: Card(
+            elevation: 0,
+            color: getRandomColor(seed: folder.hashCode),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+            child: Center(
+              child: Text(folder,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            );
-          },
+            ),
+          ),
         )
     ));
     return list;

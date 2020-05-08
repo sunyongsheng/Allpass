@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
 
@@ -27,6 +29,7 @@ class FavoritePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
       body: ListView(
         controller: _controller,
         children: _getFavWidgets(context),
@@ -35,10 +38,12 @@ class FavoritePage extends StatelessWidget {
   }
 
   List<Widget> _getFavWidgets(BuildContext context) {
-    List<Widget> list = List();
+    List<Widget> list1 = List();
+    List<Widget> list2 = List();
+    List<Widget> all = List();
     for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
       try {
-        list.add(Consumer<PasswordList>(
+        list1.add(Consumer<PasswordList>(
           builder: (context, model, _) {
             if (model.passwordList[index].fav == 1) {
               return PasswordWidgetItem(index);
@@ -50,13 +55,9 @@ class FavoritePage extends StatelessWidget {
       } catch (e) {
       }
     }
-    list.add(Container(
-      child: Divider(thickness: 1.5,),
-      padding: AllpassEdgeInsets.dividerInset,
-    ));
     for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
       try {
-        list.add(Consumer<CardList>(
+        list2.add(Consumer<CardList>(
           builder: (context, model, _) {
             if (model.cardList[index].fav == 1) {
               return SimpleCardWidgetItem(index);
@@ -69,7 +70,29 @@ class FavoritePage extends StatelessWidget {
         print(e.toString());
       }
     }
-    return list;
+    all.add(Padding(
+      padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
+    ));
+    all.add(Card(
+      margin: AllpassEdgeInsets.settingCardInset,
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+      child: Column(
+        children: list1,
+      ),
+    ));
+    all.add(Card(
+      margin: AllpassEdgeInsets.settingCardInset,
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+      child: Column(
+        children: list2,
+      ),
+    ));
+    all.add(Padding(
+      padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
+    ));
+    return all;
   }
 
 }
