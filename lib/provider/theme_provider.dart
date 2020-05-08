@@ -6,8 +6,17 @@ import 'package:allpass/ui/theme_resource.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeData currTheme;
+  Color backgroundColor1;
+  Color backgroundColor2;
 
   init() {
+    if (Config.theme == "dark") {
+      backgroundColor1 = Colors.black;
+      backgroundColor2 = Colors.grey[900];
+    } else {
+      backgroundColor1 = Colors.white;
+      backgroundColor2 = Colors.grey[100];
+    }
     currTheme = getTheme(Config.theme);
   }
 
@@ -36,6 +45,8 @@ class ThemeProvider with ChangeNotifier {
       case "blueGrey":
         return AllpassTheme.blueGreyTheme();
       case "dark":
+        backgroundColor1 = Colors.black;
+        backgroundColor2 = Colors.grey[900];
         return AllpassTheme.darkTheme();
       default:
         return AllpassTheme.blueTheme();
