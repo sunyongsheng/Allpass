@@ -43,29 +43,17 @@ class FavoritePage extends StatelessWidget {
     List<Widget> all = List();
     for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
       try {
-        list1.add(Consumer<PasswordList>(
-          builder: (context, model, _) {
-            if (model.passwordList[index].fav == 1) {
-              return PasswordWidgetItem(index);
-            } else {
-              return Container();
-            }
-          },
-        ));
+        if (Provider.of<PasswordList>(context).passwordList[index].fav == 1) {
+          list1.add(PasswordWidgetItem(index));
+        }
       } catch (e) {
       }
     }
     for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
       try {
-        list2.add(Consumer<CardList>(
-          builder: (context, model, _) {
-            if (model.cardList[index].fav == 1) {
-              return SimpleCardWidgetItem(index);
-            } else {
-              return Container();
-            }
-          },
-        ));
+        if (Provider.of<CardList>(context).cardList[index].fav == 1) {
+          list2.add(SimpleCardWidgetItem(index));
+        }
       } catch (e) {
         print(e.toString());
       }

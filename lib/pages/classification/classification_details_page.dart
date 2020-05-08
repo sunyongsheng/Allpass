@@ -46,31 +46,14 @@ class ClassificationDetailsPage extends StatelessWidget {
     List<Widget> list2 = List();
     for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
       try {
-        list1.add(Consumer<PasswordList>(
-          builder: (context, model, _) {
-            if (model.passwordList[index].folder == type) {
-              return PasswordWidgetItem(index);
-            } else {
-              return Container();
-            }
-          },
-        ));
+        list1.add(PasswordWidgetItem(index));
       } catch (e) {
       }
     }
     for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
       try {
-        list2.add(Consumer<CardList>(
-          builder: (context, model, _) {
-            if (model.cardList[index].folder == type) {
-              return SimpleCardWidgetItem(index);
-            } else {
-              return Container();
-            }
-          },
-        ));
+        list2.add(SimpleCardWidgetItem(index));
       } catch (e) {
-        print(e.toString());
       }
     }
     all.add(Padding(
