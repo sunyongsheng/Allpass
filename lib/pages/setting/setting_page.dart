@@ -80,7 +80,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
               controller: _controller,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(10)),
+                  padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(15)),
                 ),
                 Card(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
@@ -390,6 +390,9 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                       ),
                     ],
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(15)),
                 ),
               ],
             ),
