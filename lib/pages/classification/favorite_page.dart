@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
@@ -57,6 +58,21 @@ class FavoritePage extends StatelessWidget {
       } catch (e) {
         print(e.toString());
       }
+    }
+    if (list1.length == 0 && list2.length == 0) {
+      all.add(Center(
+        child: Padding(
+          child: Icon(
+            CustomIcons.noData,
+            size: AllpassScreenUtil.setWidth(100),
+          ),
+          padding: AllpassEdgeInsets.smallTBPadding,
+        )
+      ));
+      all.add(Center(
+        child: Text("什么也没有，赶快添加吧！"),
+      ));
+      return all;
     }
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),

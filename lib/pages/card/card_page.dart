@@ -8,6 +8,7 @@ import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';
@@ -160,6 +161,15 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
+                        ),
+                        Padding(
+                          child: Center(
+                            child: Icon(
+                              CustomIcons.noData,
+                              size: AllpassScreenUtil.setWidth(100),
+                            ),
+                          ),
+                          padding: AllpassEdgeInsets.smallTBPadding,
                         ),
                         Padding(
                           child: Center(

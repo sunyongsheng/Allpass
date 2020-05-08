@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/provider/theme_provider.dart';
@@ -44,17 +47,38 @@ class ClassificationDetailsPage extends StatelessWidget {
     List<Widget> all = List();
     List<Widget> list1 = List();
     List<Widget> list2 = List();
-    for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
+    List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
+    for (int index = 0; index < passwordList.length; index++) {
       try {
-        list1.add(PasswordWidgetItem(index));
+        if (passwordList[index].folder == type) {
+          list1.add(PasswordWidgetItem(index));
+        }
       } catch (e) {
       }
     }
-    for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
+    List<CardBean> cardList = Provider.of<CardList>(context).cardList;
+    for (int index = 0; index < cardList.length; index++) {
       try {
-        list2.add(SimpleCardWidgetItem(index));
+        if (type == cardList[index].folder) {
+          list2.add(SimpleCardWidgetItem(index));
+        }
       } catch (e) {
       }
+    }
+    if (list1.length == 0 && list2.length == 0) {
+      all.add(Center(
+          child: Padding(
+            child: Icon(
+              CustomIcons.noData,
+              size: AllpassScreenUtil.setWidth(100),
+            ),
+            padding: AllpassEdgeInsets.smallTBPadding,
+          )
+      ));
+      all.add(Center(
+        child: Text("什么也没有，赶快添加吧！"),
+      ));
+      return all;
     }
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
