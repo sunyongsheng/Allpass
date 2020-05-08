@@ -63,6 +63,10 @@ class AllpassEdgeInsets {
       top: AllpassScreenUtil.setHeight(15),
       bottom: AllpassScreenUtil.setHeight(25));
 
+  static EdgeInsets settingCardInset = EdgeInsets.symmetric(
+      vertical: AllpassScreenUtil.setHeight(20),
+      horizontal: AllpassScreenUtil.setWidth(50)
+  );
   static EdgeInsets forSearchButtonInset = EdgeInsets.only(
       left: AllpassScreenUtil.setWidth(50),
       right: AllpassScreenUtil.setWidth(50),
