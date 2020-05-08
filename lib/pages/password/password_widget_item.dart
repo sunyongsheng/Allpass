@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
@@ -58,6 +59,36 @@ class PasswordWidgetItem extends StatelessWidget {
             ),
             onPanDown: (details) => RuntimeData.updateTapPosition(details),
           ),
+        );
+      },
+    );
+  }
+}
+
+class PasswordWidgetContainerItem extends StatelessWidget {
+  final int index;
+  PasswordWidgetContainerItem(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PasswordList>(
+      builder: (context, model, _) {
+        return OpenContainer(
+          closedElevation: 0,
+          openBuilder: (context, _) {
+            return ViewPasswordPage(model.passwordList[index]);
+          },
+          closedBuilder: (context, _) {
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: model.passwordList[index].color,
+                child: Text(model.passwordList[index].name.substring(0, 1),
+                  style: TextStyle(color: Colors.white),),
+              ),
+              title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
+              subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
+            );
+          },
         );
       },
     );
