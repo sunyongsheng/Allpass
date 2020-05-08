@@ -22,7 +22,7 @@ class ThemeProvider with ChangeNotifier {
   }
 
   ThemeData getTheme(String themeName) {
-    if (Config.theme == "dark") {
+    if (themeName == "dark") {
       backgroundColor1 = Colors.black;
       backgroundColor2 = Colors.grey[900];
     } else {
