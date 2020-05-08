@@ -58,7 +58,7 @@ class AboutPage extends StatelessWidget {
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          subtitle: Text("一款简单的密码管理软件"),
+                          subtitle: Text("一款简单的私密信息管理工具"),
                           trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () {
