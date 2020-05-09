@@ -8,10 +8,15 @@ void main() {
   });
 
   test("列出文件测试", () async {
-    await utils.listFiles("Notability");
+    print(await utils.listFiles("Allpass"));
   });
 
   test("身份授权测试", () async {
-    print((await utils.authConfirm()).toString());
+    assert(await utils.authConfirm());
+  });
+
+  test("下载文件", () async {
+    String path = await utils.downloadFile(dirName: "Allpass", fileName: "test.txt", savePath: "D:/Files");
+    assert(path != null);
   });
 }
