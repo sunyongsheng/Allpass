@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/params/param.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
@@ -254,23 +253,17 @@ class _WebDavConfigPage extends State<StatefulWidget> {
       }
       bool auth = await _utils.authConfirm();
       if (auth) {
-        Config.webDavUrl = _utils.urlPath;
-        Config.webDavUsername = _utils.username;
-        Config.webDavPassword = _utils.password;
-        Config.webDavPort = _utils.port;
-        Config.webDavAuthSuccess = true;
-        Application.sp.setString(SharedPreferencesKeys.webDavUrl,  _utils.urlPath);
-        Application.sp.setString(SharedPreferencesKeys.webDavUsername, _utils.username);
-        Application.sp.setString(SharedPreferencesKeys.webDavPassword, EncryptUtil.encrypt(_utils.password));
-        Application.sp.setInt(SharedPreferencesKeys.webDavPort, _utils.port);
-        Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, true);
+        Config.setWebDavUrl(_utils.urlPath);
+        Config.setWebDavUsername(_utils.username);
+        Config.setWebDavPassword(EncryptUtil.encrypt(_utils.password));
+        Config.setWebDavPort(_utils.port);
+        Config.setWebDavAuthSuccess(true);
         // 注册单例
         Application.getIt.registerSingleton(WebDavSyncService());
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
       } else {
-        Config.webDavAuthSuccess = false;
-        Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, false);
+        Config.setWebDavAuthSuccess(false);
         Fluttertoast.showToast(msg: "验证失败，请重试");
       }
       setState(() {

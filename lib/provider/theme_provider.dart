@@ -1,6 +1,4 @@
-import 'package:allpass/params/param.dart';
 import 'package:flutter/material.dart';
-import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/theme_resource.dart';
 
@@ -16,8 +14,7 @@ class ThemeProvider with ChangeNotifier {
   void changeTheme(String themeName) {
     if (themeName == Config.theme) return;
     currTheme = getTheme(themeName);
-    Config.theme = themeName;
-    Application.sp.setString(SharedPreferencesKeys.theme, themeName);
+    Config.setTheme(themeName);
     notifyListeners();
   }
 

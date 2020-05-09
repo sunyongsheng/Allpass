@@ -19,10 +19,7 @@ class Config {
 
 
   /// 参数初始化
-  static configInit() async {
-    if (Application.sp == null) {
-      await Application.initSp();
-    }
+  static void initConfig() {
     // 初始化当前用户名与密码
     username = Application.sp.getString(SharedPreferencesKeys.username)??"";
     password = Application.sp.getString(SharedPreferencesKeys.password)??"";
@@ -42,7 +39,7 @@ class Config {
   }
 
   /// 清空参数
-  static configClear() async {
+  static void configClear() async {
     username = "";
     password = "";
     enabledBiometrics = false;
@@ -55,5 +52,47 @@ class Config {
     webDavPort = 443;
     RuntimeData.clearData();
   }
+
+  static void setUsername(String value) {
+    username = value;
+    Application.sp.setString(SharedPreferencesKeys.username, value);
+  }
+  static void setPassword(String encryptedValue) {
+    password = encryptedValue;
+    Application.sp.setString(SharedPreferencesKeys.password, encryptedValue);
+  }
+  static void setEnabledBiometrics(bool value) {
+    enabledBiometrics = value;
+    Application.sp.setBool(SharedPreferencesKeys.biometrics, value);
+  }
+  static void setLongPressCopy(bool value) {
+    longPressCopy = value;
+    Application.sp.setBool(SharedPreferencesKeys.longPressCopy, value);
+  }
+  static void setTheme(String value) {
+    theme = value;
+    Application.sp.setString(SharedPreferencesKeys.theme, value);
+  }
+  static void setWebDavAuthSuccess(bool value) {
+    webDavAuthSuccess = value;
+    Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, value);
+  }
+  static void setWebDavUrl(String value) {
+    webDavUrl = value;
+    Application.sp.setString(SharedPreferencesKeys.webDavUrl, value);
+  }
+  static void setWebDavUsername(String value) {
+    webDavUsername = value;
+    Application.sp.setString(SharedPreferencesKeys.webDavUsername, value);
+  }
+  static void setWebDavPassword(String encryptedValue) {
+    webDavPassword = encryptedValue;
+    Application.sp.setString(SharedPreferencesKeys.webDavPassword, encryptedValue);
+  }
+  static void setWebDavPort(int value) {
+    webDavPort = value;
+    Application.sp.setInt(SharedPreferencesKeys.webDavPort, value);
+  }
+
 
 }

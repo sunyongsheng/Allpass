@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 
@@ -62,8 +60,7 @@ class ModifyPasswordDialog extends StatelessWidget {
               if (_newPasswordController.text.length >= 6
                   && _newPasswordController.text == _secondInputController.text) {
                 String newPassword = EncryptUtil.encrypt(_newPasswordController.text);
-                Application.sp.setString(SharedPreferencesKeys.password, newPassword);
-                Config.password = newPassword;
+                Config.setPassword(newPassword);
                 Fluttertoast.showToast(msg: "修改成功");
                 Navigator.pop(context);
               } else {

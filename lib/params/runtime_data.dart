@@ -26,14 +26,10 @@ class RuntimeData {
     tapVerticalPosition = 0;
     multiSelected = false;
 
-    if (Application.sp.containsKey(SharedPreferencesKeys.folder)) {
-      String folder = Application.sp.getString(SharedPreferencesKeys.folder);
-      folderList = waveLineSegStr2List(folder);
-    }
-    if (Application.sp.containsKey(SharedPreferencesKeys.label)) {
-      String label = Application.sp.getString(SharedPreferencesKeys.label);
-      labelList = waveLineSegStr2List(label);
-    }
+    String folder = Application.sp.getString(SharedPreferencesKeys.folder)??"";
+    String label = Application.sp.getString(SharedPreferencesKeys.label)??"";
+    folderList = waveLineSegStr2List(folder);
+    labelList = waveLineSegStr2List(label);
   }
 
   static void clearData() {

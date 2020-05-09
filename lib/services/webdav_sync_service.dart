@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:allpass/application.dart';
-import 'package:allpass/params/param.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/provider/password_list.dart';
@@ -20,10 +19,10 @@ class WebDavSyncService {
 
   WebDavSyncService() {
     _webDavUtil = WebDavUtil(
-      urlPath: Application.sp.getString(SharedPreferencesKeys.webDavUrl),
-      username: Application.sp.getString(SharedPreferencesKeys.webDavUsername),
-      password: EncryptUtil.decrypt(Application.sp.getString(SharedPreferencesKeys.webDavPassword)),
-      port: Application.sp.getInt(SharedPreferencesKeys.webDavPort),
+      urlPath: Config.webDavUrl,
+      username: Config.webDavUsername,
+      password: EncryptUtil.decrypt(Config.webDavPassword),
+      port: Config.webDavPort,
     );
     _fileUtil = AllpassFileUtil();
   }

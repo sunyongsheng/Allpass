@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/params/param.dart';
 import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 
@@ -112,16 +111,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   builder: (context) => ConfirmDialog("确认退出", "退出账号后需要重新登录，是否继续？")
                 ).then((yes) {
                   if (yes) {
-                    Config.webDavAuthSuccess = false;
-                    Config.webDavUsername = null;
-                    Config.webDavPassword = null;
-                    Config.webDavUrl = null;
-                    Config.webDavPort = null;
-                    Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, false);
-                    Application.sp.remove(SharedPreferencesKeys.webDavUsername);
-                    Application.sp.remove(SharedPreferencesKeys.webDavPassword);
-                    Application.sp.remove(SharedPreferencesKeys.webDavUrl);
-                    Application.sp.remove(SharedPreferencesKeys.webDavPort);
+                    Config.setWebDavAuthSuccess(false);
+                    Config.setWebDavUsername(null);
+                    Config.setWebDavPassword(null);
+                    Config.setWebDavUrl(null);
+                    Config.setWebDavPort(null);
                     Navigator.pop(context);
                   }
                 });

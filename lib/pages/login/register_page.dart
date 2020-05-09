@@ -103,11 +103,9 @@ class RegisterPage extends StatelessWidget {
       // 判断用户名和密码长度
       if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
         String _password = EncryptUtil.encrypt(_passwordController.text);
-        Application.sp.setString(SharedPreferencesKeys.username, _usernameController.text);
-        Application.sp.setString(SharedPreferencesKeys.password, _password);
-        Config.username = _usernameController.text;
-        Config.password = _password;
-        Config.enabledBiometrics = false;
+        Config.setUsername(_usernameController.text);
+        Config.setPassword(_password);
+        Config.setEnabledBiometrics(false);
         Fluttertoast.showToast(msg: "注册成功");
         NavigationUtil.goLoginPage(context);
       } else {

@@ -83,5 +83,5 @@ Future<Null> initAppFirstRun() async {
   Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, false);
   Application.sp.setString(SharedPreferencesKeys.theme, "blue");
   Application.sp.setString(SharedPreferencesKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
-  await Config.configInit();
+  Config.initConfig();
 }
