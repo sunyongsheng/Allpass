@@ -23,7 +23,7 @@ class Application {
   static GetIt getIt = GetIt.instance;
   static const platform = const MethodChannel("allpass.aengus.top/share");
 
-  static String version = "1.1.7";
+  static String version = "1.2.0";
 
   static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
