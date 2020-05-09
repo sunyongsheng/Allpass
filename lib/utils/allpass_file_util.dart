@@ -1,47 +1,53 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 
+import 'package:allpass/model/base_model.dart';
+import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 
 class AllpassFileUtil {
-  static const List<int> magicWord = [0x0, 0x8, 0x0, 0x3, 0xb, 0xa, 0xb, 0xe];
 
-  bool formatCheck(File file) {
-    List<int> _magicWord = file.readAsBytesSync();
-    for (int i = 0, len = magicWord.length; i < len; i++) {
-      if (magicWord[i] != _magicWord[i]) return false;
-    }
-    return true;
-  }
-
-  String read(String filePath) {
+  /// 读取路径为[filePath]的文件内容
+  /// 若文件不存在则抛出异常
+  /// 先进行格式检查，若格式正确则返回文件内容，否则抛出异常
+  String readFile(String filePath) {
     File file = File(filePath);
     if (!file.existsSync()) {
       throw FileSystemException("文件不存在！", filePath);
     }
-    if (formatCheck(file)) {
-      return utf8.decode(file.readAsBytesSync().sublist(8));
-    } else {
-      throw FormatException("文件格式不合法！");
-    }
+    return file.readAsStringSync();
   }
 
-  void writeMagicWord(File file) {
-    file.writeAsBytesSync(magicWord);
-  }
-
-  void write(String filePath, String content) {
+  /// 对路径为[filePath]的文件进行写入，[content]为写入内容
+  /// 若文件不存在则抛出异常
+  void writeFile(String filePath, String content) {
     File file = File(filePath);
     if (!file.existsSync()) {
       throw FileSystemException("文件不存在！", filePath);
     }
-    if (formatCheck(file)) {
-      writeMagicWord(file); // 主要目的为了覆盖文件内容
-      List<int> contents = utf8.encode(content);
-      file.writeAsBytesSync(contents, mode: FileMode.append);
-    } else {
-      throw FormatException("文件格式不合法！");
-    }
+    file.writeAsStringSync(content, mode: FileMode.write);
   }
 
+  /// 对[list]进行json编码
+  String encodeList(List<BaseModel> list) {
+    return json.encode(list);
+  }
+
+  /// 对json字符串[string]进行解码，返回List<PasswordBean>或List<CardBean>
+  List<BaseModel> decodeList(String string) {
+    List<dynamic> decodedRes = json.decode(string);
+    try {
+      List<PasswordBean> results = List();
+      for (var temp in decodedRes) {
+        results.add(PasswordBean.fromJson(temp));
+      }
+      return results;
+    } catch (e) {
+      List<CardBean> results = List();
+      for (var temp in decodedRes) {
+        results.add(CardBean.fromJson(temp));
+      }
+      return results;
+    }
+  }
 }
