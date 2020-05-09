@@ -13,6 +13,7 @@ import 'package:allpass/utils/csv_util.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/services/navigate_service.dart';
+import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/services/authentication_service.dart';
 
 class Application {
@@ -31,6 +32,9 @@ class Application {
   static void setupLocator() {
     getIt.registerSingleton(NavigateService());
     getIt.registerSingleton(AuthenticationService());
+    if (Config.webDavAuthSuccess??false) {
+      getIt.registerSingleton(WebDavSyncService());
+    }
   }
 
   static void initChannelAndHandle() {
