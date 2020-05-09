@@ -267,7 +267,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         // 注册单例
         Application.getIt.registerSingleton(WebDavSyncService());
         Navigator.pushReplacement(context,
-            CupertinoPageRoute(builder: (context) => WebDavSyncPage(true)));
+            CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
       } else {
         Config.webDavAuthSuccess = false;
         Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, false);

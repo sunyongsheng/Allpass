@@ -1,5 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -97,48 +97,76 @@ class WebDavUtil {
   }
 
   /// 列出文件夹[dirName]中的所有文件
-  Future<Null> listFiles(String dirName) async {
+  Future<Map<String, String>> listFiles(String dirName) async {
     try {
       String fullPath = urlPath + dirName;
-      Response response = await _dio.request(
+      Response<String> response = await _dio.request(
         fullPath,
         options: Options(
           method: WebDAVMethods.propFind,
           headers: _baseHeaders,
         )
       );
+      Map<String, String> fileNames = Map();
       if (response.statusCode < 300) {
-        // TODO 解析data(xml)
+        // TODO 解析xml
+        return fileNames;
+      } else {
+        return null;
       }
-      print(response.data.toString());
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 
   /// 向文件夹[dirName]上传文件。若[dirName]为空，则默认为根目录
-  Future<Null> uploadFile({String dirName, @required String fileName}) async {
-    String fullPath = concatPath(dirName, fileName);
+  Future<bool> uploadFile({String dirName, @required String fileName, String filePath}) async {
+    String uploadPath = _concatPath(dirName, fileName);
+    File file = File(filePath);
+    if (!file.existsSync()) throw FileSystemException("上传文件出错！文件不存在！", filePath);
+    Response response = await _dio.put(
+        uploadPath,
+        data: file.readAsStringSync(),
+        options: Options(headers: _baseHeaders));
+    if (response.statusCode < 300) return true;
+    else return false;
     
   }
 
   /// 下载文件夹[dirName]中的文件。若[dirName]为空，则默认为根目录
-  Future<bool> downloadFile({String dirName, @required String fileName}) async {
-    String downloadUrl = concatPath(dirName, fileName);
-    Directory appDir = await getApplicationDocumentsDirectory();
-    String savePath = appDir.uri.toFilePath() + fileName;
-    Response response = await _dio.download(downloadUrl, savePath);
-    // TODO 保存文件
-
-    if (response.statusCode < 300) return true;
-    return false;
+  ///
+  /// 返回保存路径，若下载失败则返回null
+  Future<String> downloadFile({String dirName, @required String fileName, String savePath}) async {
+    String downloadUrl = _concatPath(dirName, fileName);
+    String _savePath;
+    if (savePath == null) {
+      Directory appDir = await getApplicationDocumentsDirectory();
+      _savePath = appDir.uri.toFilePath() + fileName;
+    } else {
+      _savePath = savePath;
+    }
+    try {
+      Response<ResponseBody> response = await _dio.download(
+          downloadUrl,
+          _savePath,
+          options: Options(
+            headers: _baseHeaders
+      ));
+      if (response.statusCode < 300) {
+        return _savePath;
+      }
+    } catch (e) {
+      print("下载文件出错！错误信息：${e.toString()}");
+    }
+    return null;
   }
 
   void cancel() {
     _dio.clear();
   }
 
-  String concatPath(String dirName, String fileName) {
+  String _concatPath(String dirName, String fileName) {
     if (dirName == null) {
       return this.urlPath + fileName;
     } else {
@@ -150,12 +178,13 @@ class WebDavUtil {
 class WebDAVMethods {
   WebDAVMethods._();
 
-  static const String get = "GET";
-  static const String mkCol = "MKCOL";
+  static const String get = "GET";              // 用于下载
+  static const String create = "PUT";           // 用于上传
+  static const String mkCol = "MKCOL";          // 用于创建目录或文件
   static const String acl = "ACL";
   static const String lock = "LOCK";
   static const String unLock = "UNLOCK";
   static const String move = "MOVE";
-  static const String propFind = "PROPFIND";
+  static const String propFind = "PROPFIND";    // 用于搜索
   static const String propPatch = "PROPPATCH";
 }
