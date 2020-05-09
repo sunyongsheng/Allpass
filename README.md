@@ -17,6 +17,7 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 - 备注功能
 - 密码生成器
 - 多选编辑功能
+- WebDAV同步功能
 
 # 注意
 
@@ -38,11 +39,11 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 # 下载体验
 
-[点此下载](https://www.aengus.top/assets/app/Allpass_V1.1.5_signed.apk)
+你可以在酷安搜索“Allpass”进行下载或[点此下载](https://www.aengus.top/assets/app/Allpass_V1.1.7_signed.apk)
 
 # 未来规划
 
-- WebDAV同步功能
+- ~WebDAV同步功能~（已完成）
 - ~多选编辑功能~（已完成）
 - 自动填充
 - 自动获取网站favicon作为密码头像
