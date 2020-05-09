@@ -10,6 +10,7 @@ import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/webdav_util.dart';
+import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/pages/setting/webdav/webdav_sync_page.dart';
 
 
@@ -263,8 +264,10 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Application.sp.setString(SharedPreferencesKeys.webDavPassword, EncryptUtil.encrypt(_utils.password));
         Application.sp.setInt(SharedPreferencesKeys.webDavPort, _utils.port);
         Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, true);
+        // 注册单例
+        Application.getIt.registerSingleton(WebDavSyncService());
         Navigator.pushReplacement(context,
-            CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
+            CupertinoPageRoute(builder: (context) => WebDavSyncPage(true)));
       } else {
         Config.webDavAuthSuccess = false;
         Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, false);
