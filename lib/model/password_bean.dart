@@ -15,19 +15,18 @@ class PasswordBean extends BaseModel {
   String notes; // 7 备注
   List<String> label; // 8 标签
   int fav; // 9 是否标心，0代表否
-  bool isChanged;  // 是否被修改
 
   PasswordBean({
+    int key,
+    String name,
     @required String username,
     @required String password,
     @required String url,
-    Color color,
     String folder: "默认",
     String notes: "",
-    int fav: 0,
-    int key,
-    String name,
     List<String> label,
+    int fav: 0,
+    Color color,
     bool isChanged: false}) {
     this.username = username;
     this.password = password;
@@ -54,12 +53,7 @@ class PasswordBean extends BaseModel {
     } else {
       this.name = name;
     } //name
-
-    if (label == null) {
-      this.label = List();
-    } else {
-      this.label = label;
-    } //label
+    this.label = label??List();
   }
 
   @override

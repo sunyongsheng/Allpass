@@ -16,20 +16,19 @@ class CardBean extends BaseModel {
   String notes; // 8 备注
   List<String> label; // 9 标签
   int fav; // 10 是否标心
-  bool isChanged;
 
   CardBean({
+    int key,
+    String name,
     @required String ownerName,
     @required String cardId,
-    Color color,
+    String password: "",
+    String telephone: "",
     String folder: "默认",
     String notes: "",
-    int fav: 0,
-    String telephone: "",
-    int key, //: CARD_MAGIC,
-    String password: "",
-    String name,
     List<String> label,
+    int fav: 0,
+    Color color,
     bool isChanged: false}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
@@ -47,11 +46,7 @@ class CardBean extends BaseModel {
     } else {
       this.name = name;
     } //name
-    if (label == null) {
-      this.label = List();
-    } else {
-      this.label = label;
-    } //label
+    this.label = label??List();
   }
 
   @override
