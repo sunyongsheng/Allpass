@@ -24,10 +24,10 @@ void main() async {
   Router router = Router();
   Routes.configureRoutes(router);
   Application.router = router;
-  Application.setupLocator();
   await Application.initSp();
-  Application.initChannelAndHandle();
   await Config.configInit();
+  Application.setupLocator();
+  Application.initChannelAndHandle();
 
   if (Platform.isAndroid) {
     //设置Android头部的导航栏透明
