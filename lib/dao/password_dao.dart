@@ -49,7 +49,7 @@ class PasswordDao extends BaseDBProvider {
   /// 插入密码
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    Map<String, dynamic> map = PasswordBean.toJson(bean);
+    Map<String, dynamic> map = bean.toJson();
     return await db.insert(name, map);
   }
 

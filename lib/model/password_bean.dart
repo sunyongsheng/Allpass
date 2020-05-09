@@ -101,17 +101,17 @@ class PasswordBean extends BaseModel {
   }
 
   /// 将PasswordBean转化为Map
-  static Map<String, dynamic> toJson(PasswordBean bean)  {
-    String labels = list2WaveLineSegStr(bean.label);
+  Map<String, dynamic> toJson()  {
+    String labels = list2WaveLineSegStr(this.label);
     Map<String, dynamic> map = {
-      "uniqueKey": bean.uniqueKey,
-      "name": bean.name,
-      "username": bean.username,
-      "password": bean.password,
-      "url": bean.url,
-      "folder": bean.folder,
-      "fav": bean.fav,
-      "notes": bean.notes,
+      "uniqueKey": this.uniqueKey,
+      "name": this.name,
+      "username": this.username,
+      "password": this.password,
+      "url": this.url,
+      "folder": this.folder,
+      "fav": this.fav,
+      "notes": this.notes,
       "label": labels
     };
     return map;
