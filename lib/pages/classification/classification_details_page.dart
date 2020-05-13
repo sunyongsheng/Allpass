@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
@@ -11,6 +10,7 @@ import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
+import 'package:allpass/widgets/common/nodata_widget.dart';
 
 class ClassificationDetailsPage extends StatelessWidget {
 
@@ -36,14 +36,11 @@ class ClassificationDetailsPage extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
-      body: ListView(
-        controller: _controller,
-        children: _getWidgetsList(context),
-      ),
+      body: _getListView(context, _controller),
     );
   }
 
-  List<Widget> _getWidgetsList(BuildContext context) {
+  Widget _getListView(BuildContext context, ScrollController controller) {
     List<Widget> all = List();
     List<Widget> list1 = List();
     List<Widget> list2 = List();
@@ -66,19 +63,7 @@ class ClassificationDetailsPage extends StatelessWidget {
       }
     }
     if (list1.length == 0 && list2.length == 0) {
-      all.add(Center(
-          child: Padding(
-            child: Icon(
-              CustomIcons.noData,
-              size: AllpassScreenUtil.setWidth(100),
-            ),
-            padding: AllpassEdgeInsets.smallTBPadding,
-          )
-      ));
-      all.add(Center(
-        child: Text("什么也没有，赶快添加吧！"),
-      ));
-      return all;
+      return NoDataWidget(null);
     }
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
@@ -102,6 +87,9 @@ class ClassificationDetailsPage extends StatelessWidget {
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
     ));
-    return all;
+    return ListView(
+      children: all,
+      controller: controller,
+    );
   }
 }

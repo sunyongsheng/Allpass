@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
 import 'package:allpass/pages/password/password_widget_item.dart';
 import 'package:allpass/pages/search/search_page.dart';
-import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/ui/icon_resource.dart';
-import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/common/select_item_dialog.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/widgets/common/nodata_widget.dart';
 
 /// 密码页面
 class PasswordPage extends StatefulWidget {
@@ -152,38 +151,7 @@ class _PasswordPageState extends State<PasswordPage>
                                 itemBuilder: (context, index) => PasswordWidgetItem(index),
                                 itemCount: Provider.of<PasswordList>(context).passwordList.length,
                               )
-                        : ListView(
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
-                              ),
-                              Padding(
-                                child: Center(
-                                  child: Icon(
-                                    CustomIcons.noData,
-                                    size: AllpassScreenUtil.setWidth(100),
-                                  ),
-                                ),
-                                padding: AllpassEdgeInsets.smallTBPadding,
-                              ),
-                              Padding(
-                                child: Center(child: Text("什么也没有，赶快添加吧"),),
-                                padding: AllpassEdgeInsets.forCardInset,
-                              ),
-                              Padding(
-                                padding: AllpassEdgeInsets.smallTBPadding,
-                              ),
-                              Padding(
-                                child: Center(
-                                  child: Text(
-                                    "这里存储你的密码信息，例如\n微博账号、知乎账号等",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                padding: AllpassEdgeInsets.forCardInset,
-                              )
-                            ],
-                          ),
+                        : NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等"),
                   )),
             )
           ],
@@ -197,9 +165,9 @@ class _PasswordPageState extends State<PasswordPage>
                   CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
                   .then((resData) async {
                 if (resData != null) {
-                  model.insertPassword(resData);
+                  await model.insertPassword(resData);
                   if (RuntimeData.newPasswordOrCardCount >= 3) {
-                    await Provider.of<PasswordList>(context).refresh();
+                    await model.refresh();
                   }
                 }
               });
@@ -209,7 +177,7 @@ class _PasswordPageState extends State<PasswordPage>
         ));
   }
 
-  _searchPress () {
+  _searchPress() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
@@ -223,10 +191,10 @@ class _PasswordPageState extends State<PasswordPage>
           context: context,
           builder: (context) => ConfirmDialog("确认删除",
               "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？"))
-          .then((confirm) {
+          .then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiPasswordList) {
-            Provider.of<PasswordList>(context).deletePassword(item);
+            await Provider.of<PasswordList>(context).deletePassword(item);
           }
           RuntimeData.multiPasswordList.clear();
         }

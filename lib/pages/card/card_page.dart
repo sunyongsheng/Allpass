@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/params/runtime_data.dart';
+import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/pages/card/card_widget_item.dart';
 import 'package:allpass/pages/card/edit_card_page.dart';
 import 'package:allpass/pages/search/search_page.dart';
-import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/ui/icon_resource.dart';
-import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/widgets/common/search_button_widget.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/common/select_item_dialog.dart';
-import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/widgets/common/nodata_widget.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -147,47 +146,17 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               child: Scrollbar(
                 child: Provider.of<CardList>(context).cardList.length >= 1
                   ? RuntimeData.multiSelected
-                    ? ListView.builder(
-                        controller: _controller,
-                        itemBuilder: (context, index) => MultiCardWidgetItem(index),
-                        itemCount: Provider.of<CardList>(context).cardList.length,
-                    )
-                    : ListView.builder(
-                        controller: _controller,
-                        itemBuilder: (context, index) => CardWidgetItem(index),
-                        itemCount: Provider.of<CardList>(context).cardList.length,
-                    )
-                  : ListView(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),
-                        ),
-                        Padding(
-                          child: Center(
-                            child: Icon(
-                              CustomIcons.noData,
-                              size: AllpassScreenUtil.setWidth(100),
-                            ),
-                          ),
-                          padding: AllpassEdgeInsets.smallTBPadding,
-                        ),
-                        Padding(
-                          child: Center(
-                            child: Text("什么也没有，赶快添加吧"),
-                          ),
-                          padding: AllpassEdgeInsets.forCardInset,
-                        ),
-                        Padding(
-                          padding: AllpassEdgeInsets.smallTBPadding,
-                        ),
-                        Padding(
-                          child: Center(
-                            child: Text("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等",textAlign: TextAlign.center,),
-                          ),
-                          padding: AllpassEdgeInsets.forCardInset,
+                      ? ListView.builder(
+                          controller: _controller,
+                          itemBuilder: (context, index) => MultiCardWidgetItem(index),
+                          itemCount: Provider.of<CardList>(context).cardList.length,
                         )
-                    ],
-                 )
+                      : ListView.builder(
+                          controller: _controller,
+                          itemBuilder: (context, index) => CardWidgetItem(index),
+                          itemCount: Provider.of<CardList>(context).cardList.length,
+                        )
+                  : NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等")
               )
             ),
           )
@@ -205,9 +174,9 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                         EditCardPage(null, "添加卡片")))
                 .then((resData) async {
               if (resData != null) {
-                model.insertCard(resData);
+                await model.insertCard(resData);
                 if (RuntimeData.newPasswordOrCardCount >= 3) {
-                  await Provider.of<CardList>(context).refresh();
+                  await model.refresh();
                 }
               }
             });
@@ -231,10 +200,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog("确认删除", "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？"))
-          .then((confirm) {
+          .then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiCardList) {
-            Provider.of<CardList>(context).deleteCard(item);
+            await Provider.of<CardList>(context).deleteCard(item);
           }
           RuntimeData.multiCardList.clear();
         }
