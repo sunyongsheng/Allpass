@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/provider/password_list.dart';
@@ -85,12 +86,16 @@ class WebDavSyncService {
         await Provider.of<PasswordList>(context).clear();
         for (var bean in list) {
           await Provider.of<PasswordList>(context).insertPassword(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
         }
         return 0;
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<PasswordList>(context).insertPassword(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
         }
         return 1;
       }
@@ -119,12 +124,16 @@ class WebDavSyncService {
         await Provider.of<CardList>(context).clear();
         for (var bean in list) {
           await Provider.of<CardList>(context).insertCard(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
         }
         return 0;
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<CardList>(context).insertCard(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
         }
         return 1;
       }
