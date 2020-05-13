@@ -39,7 +39,8 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 # 下载体验
 
-你可以在酷安搜索“Allpass”进行下载或[点此下载](https://www.aengus.top/assets/app/Allpass_V1.1.7_signed.apk)
+你可以在酷安搜索“Allpass”进行下载，扫描下面的二维码或者[点此下载](https://www.aengus.top/assets/app/Allpass_V1.2.0_signed.apk)
+![AllpassV1.2.0](https://www.aengus.top/assets/app/allpass_v1.2.0.png)
 
 # 未来规划
 
