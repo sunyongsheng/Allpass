@@ -260,6 +260,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavAuthSuccess(true);
         // 注册单例
         Application.getIt.registerSingleton(WebDavSyncService());
+        Fluttertoast.showToast(msg: "账号验证成功");
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
       } else {

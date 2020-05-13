@@ -55,17 +55,23 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 height: 15,
               ) : null,
               onTap: () async {
-                setState(() {
-                  _pressUpload = true;
-                });
-                bool res = await _upload();
-                setState(() {
-                  _pressUpload = false;
-                });
-                if (res) {
-                  Fluttertoast.showToast(msg: "上传云端成功");
-                } else {
-                  Fluttertoast.showToast(msg: "上传云端失败，请检查网络");
+                bool yes = await showDialog(
+                  context: context,
+                  builder: (context) => ConfirmDialog("请确认", "本地数据将覆盖云端数据，是否继续？")
+                );
+                if (yes) {
+                  setState(() {
+                    _pressUpload = true;
+                  });
+                  bool res = await _upload();
+                  setState(() {
+                    _pressUpload = false;
+                  });
+                  if (res) {
+                    Fluttertoast.showToast(msg: "上传云端成功");
+                  } else {
+                    Fluttertoast.showToast(msg: "上传云端失败，请检查网络");
+                  }
                 }
               },
             ),
@@ -83,19 +89,25 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 height: 15,
               ) : null,
               onTap: () async {
-                setState(() {
-                  _pressDownload = true;
-                });
-                int res = await _download();
-                setState(() {
-                  _pressDownload = false;
-                });
-                if (res == 0) {
-                  Fluttertoast.showToast(msg: "恢复到本地成功");
-                } else if (res == 2){
-                  Fluttertoast.showToast(msg: "恢复到本地失败，请检查网络或源文件受损");
-                } else {
-                  Fluttertoast.showToast(msg: "恢复到本地失败，未知错误");
+                bool yes = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => ConfirmDialog("请确认", "恢复数据将覆盖本地所有数据，是否继续？")
+                );
+                if (yes) {
+                  setState(() {
+                    _pressDownload = true;
+                  });
+                  int res = await _download();
+                  setState(() {
+                    _pressDownload = false;
+                  });
+                  if (res == 0) {
+                    Fluttertoast.showToast(msg: "恢复到本地成功");
+                  } else if (res == 2){
+                    Fluttertoast.showToast(msg: "恢复到本地失败，请检查网络或源文件受损");
+                  } else {
+                    Fluttertoast.showToast(msg: "恢复到本地失败，未知错误");
+                  }
                 }
               },
             ),
