@@ -27,15 +27,15 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 # 软件截图
 
-![登录页](http://aengus.top/assets/screenshots/allpass/login.jpg)![注册页](http://aengus.top/assets/screenshots/allpass/register.jpg)![指纹登录页](http://aengus.top/assets/screenshots/allpass/auth_login.jpg)
-
-![密码页](http://aengus.top/assets/screenshots/allpass/password.jpg)![卡片页](http://aengus.top/assets/screenshots/allpass/card.jpg)![设置页](http://aengus.top/assets/screenshots/allpass/setting.jpg)
-
-![查看密码页](http://aengus.top/assets/screenshots/allpass/view_password.jpg)![查看卡片页](http://aengus.top/assets/screenshots/allpass/view_card.jpg)![编辑密码页](http://aengus.top/assets/screenshots/allpass/edit_password.jpg)
-
-![文件夹管理页](http://aengus.top/assets/screenshots/allpass/manager.jpg)![导入导出页](http://aengus.top/assets/screenshots/allpass/import_export.jpg)![从剪贴板导入](http://aengus.top/assets/screenshots/allpass/import_from_clip.jpg)
-
-![分类](http://aengus.top/assets/screenshots/allpass/classification.jpg)![收藏页](http://aengus.top/assets/screenshots/allpass/fav.jpg)![关于页](http://aengus.top/assets/screenshots/allpass/about.jpg)
+![登录页](http://aengus.top/assets/screenshots/allpass/login.png)
+![注册页](http://aengus.top/assets/screenshots/allpass/register.png)
+![密码页](http://aengus.top/assets/screenshots/allpass/password.png)
+![查看密码页](http://aengus.top/assets/screenshots/allpass/view_password.png)
+![卡片页](http://aengus.top/assets/screenshots/allpass/card.png)
+![分类](http://aengus.top/assets/screenshots/allpass/classification.png)
+![分类详情页](http://aengus.top/assets/screenshots/allpass/fav.png)
+![设置页](http://aengus.top/assets/screenshots/allpass/setting.png)
+![关于页](http://aengus.top/assets/screenshots/allpass/about.png)
 
 # 下载体验
 
