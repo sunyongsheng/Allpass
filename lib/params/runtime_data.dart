@@ -73,7 +73,7 @@ class RuntimeData {
 
   /// 更新点击的位置
   static void updateTapPosition(DragDownDetails details) {
-    double y = AllpassScreenUtil.getScreenHeightDp() / 2;
+    double y = AllpassScreenUtil.screenHighDp / 2;
     RuntimeData.tapVerticalPosition = (details.globalPosition.dy - y) / y;
   }
 }
