@@ -36,8 +36,9 @@ class CardList with ChangeNotifier {
   }
 
   Future<Null> insertCard(CardBean bean) async {
+    int key = await _dao.insert(bean);
+    bean.uniqueKey = key;
     _cardList?.add(bean);
-    await _dao.insert(bean);
     _count++;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;

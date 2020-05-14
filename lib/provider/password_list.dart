@@ -21,8 +21,8 @@ class PasswordList with ChangeNotifier {
   }
 
   Future<Null> refresh() async {
-    _passwordList.clear();
-    _passwordList = await _dao.getAllPasswordBeanList();
+    _passwordList?.clear();
+    _passwordList = await _dao.getAllPasswordBeanList()??[];
     _count = _passwordList.length;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
@@ -37,8 +37,9 @@ class PasswordList with ChangeNotifier {
   }
 
   Future<Null> insertPassword(PasswordBean bean) async {
+    int key = await _dao.insert(bean);
+    bean.uniqueKey = key;
     _passwordList?.add(bean);
-    await _dao.insert(bean);
     _count++;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;
