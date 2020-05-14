@@ -39,7 +39,7 @@ class FavoritePage extends StatelessWidget {
     List<Widget> list1 = List();
     List<Widget> list2 = List();
     List<Widget> all = List();
-    for (int index = 0; index < Provider.of<PasswordList>(context).passwordList.length; index++) {
+    for (int index = 0; index < Provider.of<PasswordList>(context).count; index++) {
       try {
         if (Provider.of<PasswordList>(context).passwordList[index].fav == 1) {
           list1.add(PasswordWidgetItem(index));
@@ -47,7 +47,7 @@ class FavoritePage extends StatelessWidget {
       } catch (e) {
       }
     }
-    for (int index = 0; index < Provider.of<CardList>(context).cardList.length; index++) {
+    for (int index = 0; index < Provider.of<CardList>(context).count; index++) {
       try {
         if (Provider.of<CardList>(context).cardList[index].fav == 1) {
           list2.add(SimpleCardWidgetItem(index));

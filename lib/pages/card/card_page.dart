@@ -102,7 +102,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                       splashColor: Colors.transparent,
                       child: Icon(Icons.select_all),
                       onTap: () {
-                        if (RuntimeData.multiCardList.length != model.cardList.length) {
+                        if (RuntimeData.multiCardList.length != model.count) {
                           RuntimeData.multiCardList.clear();
                           setState(() {
                             RuntimeData.multiCardList.addAll(model.cardList);
@@ -146,17 +146,17 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                   child: RefreshIndicator(
                       onRefresh: () => _query(model),
                       child: Scrollbar(
-                          child: model.cardList.length >= 1
+                          child: model.count >= 1
                               ? RuntimeData.multiSelected
                               ? ListView.builder(
                             controller: _controller,
                             itemBuilder: (context, index) => MultiCardWidgetItem(index),
-                            itemCount: model.cardList.length,
+                            itemCount: model.count,
                           )
                               : ListView.builder(
                             controller: _controller,
                             itemBuilder: (context, index) => CardWidgetItem(index),
-                            itemCount: model.cardList.length,
+                            itemCount: model.count,
                           )
                               : NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等")
                       )

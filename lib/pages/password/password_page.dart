@@ -97,7 +97,7 @@ class _PasswordPageState extends State<PasswordPage>
                       splashColor: Colors.transparent,
                       child: Icon(Icons.select_all),
                       onTap: () {
-                        if (RuntimeData.multiPasswordList.length != model.passwordList.length) {
+                        if (RuntimeData.multiPasswordList.length != model.count) {
                           RuntimeData.multiPasswordList.clear();
                           setState(() {
                             RuntimeData.multiPasswordList.addAll(model.passwordList);
@@ -141,17 +141,17 @@ class _PasswordPageState extends State<PasswordPage>
                   child: RefreshIndicator(
                       onRefresh: () => _query(model),
                       child: Scrollbar(
-                        child: model.passwordList.length >= 1
+                        child: model.count >= 1
                             ? RuntimeData.multiSelected
                             ? ListView.builder(
                           controller: _controller,
                           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
-                          itemCount: model.passwordList.length,
+                          itemCount: model.count,
                         )
                             : ListView.builder(
                           controller: _controller,
                           itemBuilder: (context, index) => PasswordWidgetItem(index),
-                          itemCount: model.passwordList.length,
+                          itemCount: model.count,
                         )
                             : NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等"),
                       )),

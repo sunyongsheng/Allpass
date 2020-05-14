@@ -8,15 +8,14 @@ import 'package:allpass/model/password_bean.dart';
 class PasswordList with ChangeNotifier {
   List<PasswordBean> _passwordList = [];
   PasswordDao _dao = PasswordDao();
+  int _count = 0;
 
   List<PasswordBean> get passwordList => _passwordList??[];
-
-  PasswordList() {
-    init();
-  }
+  int get count => _count;
 
   Future<Null> init() async {
     _passwordList = await _dao.getAllPasswordBeanList()??[];
+    _count = _passwordList.length;
     sortByAlphabeticalOrder();
     notifyListeners();
   }
@@ -24,6 +23,7 @@ class PasswordList with ChangeNotifier {
   Future<Null> refresh() async {
     _passwordList.clear();
     _passwordList = await _dao.getAllPasswordBeanList();
+    _count = _passwordList.length;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
@@ -39,6 +39,7 @@ class PasswordList with ChangeNotifier {
   Future<Null> insertPassword(PasswordBean bean) async {
     _passwordList?.add(bean);
     await _dao.insert(bean);
+    _count++;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
@@ -47,6 +48,7 @@ class PasswordList with ChangeNotifier {
   Future<Null> deletePassword(PasswordBean bean) async {
     _passwordList?.remove(bean);
     await _dao.deletePasswordBeanById(bean.uniqueKey);
+    _count--;
     notifyListeners();
   }
 
@@ -70,6 +72,7 @@ class PasswordList with ChangeNotifier {
   Future<Null> clear() async {
     _passwordList?.clear();
     await _dao.deleteContent();
+    _count = 0;
     notifyListeners();
   }
 }
