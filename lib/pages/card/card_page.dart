@@ -44,146 +44,148 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
 
   // 查询
-  Future<Null> _query() async {
-    await Provider.of<CardList>(context).init();
+  Future<Null> _query(CardList model) async {
+    await model.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: AllpassEdgeInsets.smallLPadding,
-          child: InkWell(
-            splashColor: Colors.transparent,
-            child: Text(
-              "卡片",
-              style: AllpassTextUI.titleBarStyle,
-            ),
-            onTap: () {
-              _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
-            },
-          ),
-        ),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          RuntimeData.multiSelected
-              ? Row(
-            children: <Widget>[
-              PopupMenuButton<String>(
-                  onSelected: (value) {
-                    switch (value) {
-                      case "删除":
-                        _deleteCard(context);
-                        break;
-                      case "移动":
-                        _moveCard(context);
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                        value: "移动",
-                        child: Text("移动")
-                    ),
-                    PopupMenuItem(
-                        value: "删除",
-                        child: Text("删除")
-                    ),
-                  ]
-              ),
-              Padding(
+    return Consumer<CardList>(
+      builder: (context, model, _) {
+        return Scaffold(
+            appBar: AppBar(
+              title: Padding(
                 padding: AllpassEdgeInsets.smallLPadding,
+                child: InkWell(
+                  splashColor: Colors.transparent,
+                  child: Text(
+                    "卡片",
+                    style: AllpassTextUI.titleBarStyle,
+                  ),
+                  onTap: () {
+                    _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+                  },
+                ),
               ),
-              InkWell(
-                splashColor: Colors.transparent,
-                child: Icon(Icons.select_all),
-                onTap: () {
-                  if (RuntimeData.multiCardList.length != Provider.of<CardList>(context).cardList.length) {
-                    RuntimeData.multiCardList.clear();
-                    setState(() {
-                      RuntimeData.multiCardList.addAll(Provider.of<CardList>(context).cardList);
-                    });
-                  } else {
+              automaticallyImplyLeading: false,
+              actions: <Widget>[
+                RuntimeData.multiSelected
+                    ? Row(
+                  children: <Widget>[
+                    PopupMenuButton<String>(
+                        onSelected: (value) {
+                          switch (value) {
+                            case "删除":
+                              _deleteCard(context, model);
+                              break;
+                            case "移动":
+                              _moveCard(context, model);
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                              value: "移动",
+                              child: Text("移动")
+                          ),
+                          PopupMenuItem(
+                              value: "删除",
+                              child: Text("删除")
+                          ),
+                        ]
+                    ),
+                    Padding(
+                      padding: AllpassEdgeInsets.smallLPadding,
+                    ),
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      child: Icon(Icons.select_all),
+                      onTap: () {
+                        if (RuntimeData.multiCardList.length != model.cardList.length) {
+                          RuntimeData.multiCardList.clear();
+                          setState(() {
+                            RuntimeData.multiCardList.addAll(model.cardList);
+                          });
+                        } else {
+                          setState(() {
+                            RuntimeData.multiCardList.clear();
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ) : Container(),
+                Padding(
+                  padding: AllpassEdgeInsets.smallLPadding,
+                ),
+                InkWell(
+                  splashColor: Colors.transparent,
+                  child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
+                  onTap: () {
                     setState(() {
                       RuntimeData.multiCardList.clear();
+                      RuntimeData.multiSelected = !RuntimeData.multiSelected;
                     });
-                  }
-                },
-              ),
-            ],
-          ) : Container(),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          ),
-          InkWell(
-            splashColor: Colors.transparent,
-            child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
-            onTap: () {
-              setState(() {
-                RuntimeData.multiCardList.clear();
-                RuntimeData.multiSelected = !RuntimeData.multiSelected;
-              });
-            },
-          ),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          ),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          )
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          // 搜索框 按钮
-          SearchButtonWidget(_searchPress, "卡片"),
-          // 卡片列表
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _query,
-              child: Scrollbar(
-                child: Provider.of<CardList>(context).cardList.length >= 1
-                  ? RuntimeData.multiSelected
-                      ? ListView.builder(
-                          controller: _controller,
-                          itemBuilder: (context, index) => MultiCardWidgetItem(index),
-                          itemCount: Provider.of<CardList>(context).cardList.length,
-                        )
-                      : ListView.builder(
-                          controller: _controller,
-                          itemBuilder: (context, index) => CardWidgetItem(index),
-                          itemCount: Provider.of<CardList>(context).cardList.length,
-                        )
-                  : NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等")
-              )
+                  },
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallLPadding,
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallLPadding,
+                )
+              ],
             ),
-          )
-        ],
-      ),
-      // 添加按钮
-      floatingActionButton: Consumer<CardList>(
-        builder: (context, model, _) => FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) =>
-                        EditCardPage(null, "添加卡片")))
-                .then((resData) async {
-              if (resData != null) {
-                await model.insertCard(resData);
-                if (RuntimeData.newPasswordOrCardCount >= 3) {
-                  await model.refresh();
-                }
-              }
-            });
-          },
-          heroTag: "card",
-        ),
-      )
+            body: Column(
+              children: <Widget>[
+                // 搜索框 按钮
+                SearchButtonWidget(_searchPress, "卡片"),
+                // 卡片列表
+                Expanded(
+                  child: RefreshIndicator(
+                      onRefresh: () => _query(model),
+                      child: Scrollbar(
+                          child: model.cardList.length >= 1
+                              ? RuntimeData.multiSelected
+                              ? ListView.builder(
+                            controller: _controller,
+                            itemBuilder: (context, index) => MultiCardWidgetItem(index),
+                            itemCount: model.cardList.length,
+                          )
+                              : ListView.builder(
+                            controller: _controller,
+                            itemBuilder: (context, index) => CardWidgetItem(index),
+                            itemCount: model.cardList.length,
+                          )
+                              : NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等")
+                      )
+                  ),
+                )
+              ],
+            ),
+            // 添加按钮
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) =>
+                            EditCardPage(null, "添加卡片")))
+                    .then((resData) async {
+                  if (resData != null) {
+                    await model.insertCard(resData);
+                    if (RuntimeData.newPasswordOrCardCount >= 3) {
+                      await model.refresh();
+                    }
+                  }
+                });
+              },
+              heroTag: "card",
+            ),
+        );
+      },
     );
   }
 
@@ -193,7 +195,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       MaterialPageRoute(builder: (context) => SearchPage(AllpassType.CARD)));
   }
 
-  void _deleteCard(BuildContext context) {
+  void _deleteCard(BuildContext context, CardList model) {
     if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {
@@ -203,7 +205,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           .then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiCardList) {
-            await Provider.of<CardList>(context).deleteCard(item);
+            await model.deleteCard(item);
           }
           RuntimeData.multiCardList.clear();
         }
@@ -211,7 +213,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     }
   }
 
-  void _moveCard(BuildContext context) {
+  void _moveCard(BuildContext context, CardList model) {
     if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {
@@ -222,7 +224,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         if (value != null) {
           for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
             RuntimeData.multiCardList[i].folder = value;
-            await Provider.of<CardList>(context).updateCard(RuntimeData.multiCardList[i]);
+            await model.updateCard(RuntimeData.multiCardList[i]);
           }
           Fluttertoast.showToast(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
           setState(() {
