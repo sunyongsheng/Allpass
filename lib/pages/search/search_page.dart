@@ -237,12 +237,12 @@ class _SearchPage extends State<SearchPage> {
             Navigator.push(context,
                 CupertinoPageRoute(
                       builder: (context) => ViewPasswordPage(data)))
-                .then((reData) {
+                .then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
-                  Provider.of<PasswordList>(context).updatePassword(reData);
+                  await Provider.of<PasswordList>(context).updatePassword(reData);
                 } else {
-                  Provider.of<PasswordList>(context).deletePassword(data);
+                  await Provider.of<PasswordList>(context).deletePassword(data);
                 }
               }
               Navigator.pop(context);
@@ -256,12 +256,12 @@ class _SearchPage extends State<SearchPage> {
             Navigator.push(context,
                 CupertinoPageRoute(
                   builder: (context) => EditPasswordPage(data, "编辑密码")))
-                .then((reData) {
+                .then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
-                  Provider.of<PasswordList>(context).updatePassword(reData);
+                  await Provider.of<PasswordList>(context).updatePassword(reData);
                 } else {
-                  Provider.of<PasswordList>(context).deletePassword(data);
+                  await Provider.of<PasswordList>(context).deletePassword(data);
                 }
               }
               Navigator.pop(context);
@@ -290,8 +290,8 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除密码"),
-          onTap: () {
-            Provider.of<PasswordList>(context).deletePassword(data);
+          onTap: () async {
+            await Provider.of<PasswordList>(context).deletePassword(data);
             Navigator.pop(context);
           },
         )
@@ -313,12 +313,12 @@ class _SearchPage extends State<SearchPage> {
                     CupertinoPageRoute(
                         builder: (context) =>
                             ViewCardPage(data)))
-                .then((resData) {
+                .then((resData) async {
               if (resData != null) {
                 if (resData.isChanged) {
-                  Provider.of<CardList>(context).updateCard(resData);
+                  await Provider.of<CardList>(context).updateCard(resData);
                 } else {
-                  Provider.of<CardList>(context).deleteCard(resData);
+                  await Provider.of<CardList>(context).deleteCard(resData);
                 }
               }
               Navigator.pop(context);
@@ -333,12 +333,12 @@ class _SearchPage extends State<SearchPage> {
                     CupertinoPageRoute(
                         builder: (context) =>
                             EditCardPage(data, "编辑卡片")))
-                .then((resData) {
+                .then((resData) async {
               if (resData != null) {
                 if (resData.isChanged) {
-                  Provider.of<CardList>(context).updateCard(resData);
+                  await Provider.of<CardList>(context).updateCard(resData);
                 } else {
-                  Provider.of<CardList>(context).deleteCard(resData);
+                  await Provider.of<CardList>(context).deleteCard(resData);
                 }
               }
               Navigator.pop(context);
@@ -365,8 +365,8 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除卡片"),
-          onTap: () {
-            Provider.of<CardList>(context).deleteCard(data);
+          onTap: () async {
+            await Provider.of<CardList>(context).deleteCard(data);
             Navigator.pop(context);
           }
         )
