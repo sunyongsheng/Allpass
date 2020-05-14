@@ -32,13 +32,13 @@ class CardWidgetItem extends StatelessWidget {
               onTap: () => Navigator.push(context, ExtendRoute(
                 page: ViewCardPage(model.cardList[index]),
                 tapPosition: RuntimeData.tapVerticalPosition
-              )).then((bean) {
+              )).then((bean) async {
                 if (bean != null) {
                   // 改变了就更新，没改变就删除
                   if (bean.isChanged) {
-                    model.updateCard(bean);
+                    await model.updateCard(bean);
                   } else {
-                    model.deleteCard(model.cardList[index]);
+                    await model.deleteCard(model.cardList[index]);
                   }
                 }
               }),
@@ -160,13 +160,13 @@ class SimpleCardWidgetItem extends StatelessWidget {
               onTap: () => Navigator.push(context, ExtendRoute(
                 page: ViewCardPage(model.cardList[index]),
                 tapPosition: RuntimeData.tapVerticalPosition,
-              )).then((bean) {
+              )).then((bean) async {
                 if (bean != null) {
                   // 改变了就更新，没改变就删除
                   if (bean.isChanged) {
-                    model.updateCard(bean);
+                    await model.updateCard(bean);
                   } else {
-                    model.deleteCard(model.cardList[index]);
+                    await model.deleteCard(model.cardList[index]);
                   }
                 }
               }),

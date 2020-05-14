@@ -38,12 +38,12 @@ class PasswordWidgetItem extends StatelessWidget {
                 Navigator.push(context, ExtendRoute(
                   page: ViewPasswordPage(model.passwordList[index]),
                   tapPosition: RuntimeData.tapVerticalPosition
-                )).then((bean) {
+                )).then((bean) async {
                   if (bean != null) {
                     if (bean.isChanged) {
-                      model.updatePassword(bean);
+                      await model.updatePassword(bean);
                     } else {
-                      model.deletePassword(model.passwordList[index]);
+                      await model.deletePassword(model.passwordList[index]);
                     }
                   }
                 });
