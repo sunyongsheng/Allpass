@@ -215,7 +215,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                     try {
                       List<PasswordBean> list = await parseText(_groupValue);
                       for (var bean in list) {
-                        Provider.of<PasswordList>(context).insertPassword(bean);
+                        await Provider.of<PasswordList>(context).insertPassword(bean);
                       }
                       Fluttertoast.showToast(msg: "导入了${list.length}条记录");
                     } catch (e) {
@@ -287,6 +287,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
       } else if (value == 3) {
         if (fields.length < 3) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
+          name: "",
           username: fields[0],
           password: EncryptUtil.encrypt(fields[1]),
           url: fields[2],
@@ -294,6 +295,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
       } else if (value == 4) {
         if (fields.length < 2) throw Exception("某条记录格式不正确！");
         temp.add(PasswordBean(
+          name: "",
           username: fields[0],
           password: EncryptUtil.encrypt(fields[1]),
           url: "",
