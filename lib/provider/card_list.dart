@@ -7,22 +7,18 @@ import 'package:allpass/model/card_bean.dart';
 /// 保存程序中所有的Card
 class CardList with ChangeNotifier {
   List<CardBean> _cardList = [];
-  int _count = 0;
   CardDao _dao = CardDao();
 
   List<CardBean> get cardList =>_cardList??[];
-  int get count => _count;
 
   Future<Null> init() async {
     _cardList = await _dao.getAllCardBeanList()??[];
-    _count = _cardList.length;
     sortByAlphabeticalOrder();
   }
 
   Future<Null> refresh() async {
     _cardList.clear();
     _cardList = await _dao.getAllCardBeanList();
-    _count = _cardList.length;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
@@ -39,7 +35,6 @@ class CardList with ChangeNotifier {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
     _cardList?.add(bean);
-    _count++;
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
@@ -48,7 +43,6 @@ class CardList with ChangeNotifier {
   Future<Null> deleteCard(CardBean bean) async {
     _cardList?.remove(bean);
     await _dao.deleteCardBeanById(bean.uniqueKey);
-    _count--;
     notifyListeners();
   }
 
@@ -72,7 +66,6 @@ class CardList with ChangeNotifier {
   Future<Null> clear() async {
     _cardList?.clear();
     await _dao.deleteContent();
-    _count = 0;
     notifyListeners();
   }
 }

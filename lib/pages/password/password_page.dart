@@ -97,7 +97,7 @@ class _PasswordPageState extends State<PasswordPage>
                       splashColor: Colors.transparent,
                       child: Icon(Icons.select_all),
                       onTap: () {
-                        if (RuntimeData.multiPasswordList.length != model.count) {
+                        if (RuntimeData.multiPasswordList.length != model.passwordList.length) {
                           RuntimeData.multiPasswordList.clear();
                           setState(() {
                             RuntimeData.multiPasswordList.addAll(model.passwordList);
@@ -141,17 +141,17 @@ class _PasswordPageState extends State<PasswordPage>
                   child: RefreshIndicator(
                       onRefresh: () => _query(model),
                       child: Scrollbar(
-                        child: model.count >= 1
+                        child: model.passwordList.length >= 1
                             ? RuntimeData.multiSelected
                             ? ListView.builder(
                           controller: _controller,
                           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
-                          itemCount: model.count,
+                          itemCount: model.passwordList.length,
                         )
                             : ListView.builder(
                           controller: _controller,
                           itemBuilder: (context, index) => PasswordWidgetItem(index),
-                          itemCount: model.count,
+                          itemCount: model.passwordList.length,
                         )
                             : NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等"),
                       )),
@@ -181,8 +181,8 @@ class _PasswordPageState extends State<PasswordPage>
 
   _searchPress() {
     Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
+        context,
+        MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
   }
 
   void _deletePassword(BuildContext context, PasswordList model) {
