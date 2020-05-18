@@ -3,11 +3,14 @@ import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/theme_resource.dart';
 
 class ThemeProvider with ChangeNotifier {
+  AllpassTheme _allpassTheme;
+
   ThemeData currTheme;
   Color backgroundColor1;
   Color backgroundColor2;
 
   init() {
+    _allpassTheme = AllpassTheme();
     currTheme = getTheme(Config.theme);
   }
 
@@ -28,23 +31,23 @@ class ThemeProvider with ChangeNotifier {
     }
     switch (themeName) {
       case "blue":
-        return AllpassTheme.blueTheme();
+        return _allpassTheme.blueTheme();
       case "red":
-        return AllpassTheme.redTheme();
+        return _allpassTheme.redTheme();
       case "teal":
-        return AllpassTheme.tealTheme();
+        return _allpassTheme.tealTheme();
       case "deepPurple":
-        return AllpassTheme.deepPurpleTheme();
+        return _allpassTheme.deepPurpleTheme();
       case "orange":
-        return AllpassTheme.orangeTheme();
+        return _allpassTheme.orangeTheme();
       case "pink":
-        return AllpassTheme.pinkTheme();
+        return _allpassTheme.pinkTheme();
       case "blueGrey":
-        return AllpassTheme.blueGreyTheme();
+        return _allpassTheme.blueGreyTheme();
       case "dark":
-        return AllpassTheme.darkTheme();
+        return _allpassTheme.darkTheme();
       default:
-        return AllpassTheme.blueTheme();
+        return _allpassTheme.blueTheme();
     }
   }
 }
