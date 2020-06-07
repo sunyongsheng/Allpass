@@ -122,12 +122,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
               if (_usernameController.text.length >= 1
                   && _passwordController.text.length >= 1) {
                 String pw = EncryptUtil.encrypt(_passwordController.text);
+                String name = _nameController.text.trimLeft();
                 PasswordBean tempData = PasswordBean(
                   key: _oldData?.uniqueKey,
                   username: _usernameController.text,
                   password: pw,
                   url: _urlController.text,
-                  name: _nameController.text,
+                  name: name,
                   folder: _folder,
                   label: _labels,
                   notes: _notesController.text,
