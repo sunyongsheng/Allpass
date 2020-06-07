@@ -26,6 +26,9 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage>
     with AutomaticKeepAliveClientMixin {
   ScrollController _controller;
+  final List<String> letters = ['#','A','B','C','D','E','F','G',
+    'H','I','J','K','L','M','N', 'O','P','Q','R','S','T',
+    'U','V','W','X','Y','Z'];
 
   @override
   void initState() {
@@ -148,10 +151,40 @@ class _PasswordPageState extends State<PasswordPage>
                           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
                           itemCount: model.passwordList.length,
                         )
-                            : ListView.builder(
-                          controller: _controller,
-                          itemBuilder: (context, index) => PasswordWidgetItem(index),
-                          itemCount: model.passwordList.length,
+                            : Stack(
+                          children: <Widget>[
+                            ListView.builder(
+                              controller: _controller,
+                              itemBuilder: (context, index) => PasswordWidgetItem(index),
+                              itemCount: model.passwordList.length,
+                            ),
+                            Align(
+                              alignment: FractionalOffset(1.0, 0.5),
+                              child: SizedBox(
+                                width: 25,
+                                child: ListView.builder(
+                                  itemCount: 27,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      splashColor: Colors.transparent,
+                                      child: Text(letters[index],
+                                        style: model.letterCountIndex.containsKey(letters[index])
+                                            ? TextStyle(color: Colors.black)
+                                            : TextStyle(color: Colors.grey),
+                                      ),
+                                      onTap: () {
+                                        if (model.letterCountIndex.containsKey(letters[index])) {
+                                          double height = model.letterCountIndex[letters[index]] * 72.0;
+                                          if (height == 0) height = 0.5;
+                                          _controller.jumpTo(height);
+                                        }
+                                      },
+                                    );
+                                  },
+                                )
+                              ),
+                            )
+                          ],
                         )
                             : NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等"),
                       )),
