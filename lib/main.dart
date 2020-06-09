@@ -123,7 +123,7 @@ void registerUser() async {
     }
     try {
       Response response = await Dio().get(
-          "$allpassUrl/register?identification=$identification&systemInfo=$systemInfo");
+          "$allpassUrl/registerV2?identification=$identification&systemInfo=$systemInfo&allpassVersion=${Application.version}");
       if ((response.data["result"] ?? '0') == "1") {
         Application.sp.setBool(SharedPreferencesKeys.needRegister, false);
       } else {
