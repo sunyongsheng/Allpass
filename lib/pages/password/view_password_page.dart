@@ -292,6 +292,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                                     style: AllpassTextUI
                                                         .firstTitleStyle,
                                                   ),
+                                                  onLongPress: () => Fluttertoast.showToast(msg: _bean.url),
                                                 )),
                                             Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                             InkWell(
