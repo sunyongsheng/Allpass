@@ -52,4 +52,24 @@ class AllpassFileUtil {
     }
     return null;
   }
+
+  /// 对[folderList]与[labelList]进行json编码
+  String encodeFolderAndLabel(List<String> folderList, List<String> labelList) {
+    return "{\"folder\": ${json.encode(folderList)}, \"label\": ${json.encode(labelList)}}";
+  }
+
+  /// 对[string]进行json解码，返回map
+  Map<String, List<String>> decodeFolderAndLabel(String string) {
+    var decoded = json.decode(string);
+    Map<String, List<String>> res = Map();
+    res['folder'] = List<String>();
+    for (var item in decoded['folder']) {
+      res['folder'].add(item.toString());
+    }
+    res['label'] = List<String>();
+    for (var item in decoded['label']) {
+      res['label'].add(item.toString());
+    }
+    return res;
+  }
 }

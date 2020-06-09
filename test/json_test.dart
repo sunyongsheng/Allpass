@@ -37,4 +37,12 @@ void main() {
     test1 = util.encodeList(testData1);
     print(util.decodeList(test1, AllpassType.PASSWORD));
   });
+
+  test("文件夹与标签测试", () {
+    List<String> folderList = ["aaa", "bbb", "ccc"];
+    var labelList = ["AAA", "BBB", 'CCC'];
+    test1 = util.encodeFolderAndLabel(folderList, labelList);
+    print(test1);
+    print(util.decodeFolderAndLabel(test1));
+  });
 }

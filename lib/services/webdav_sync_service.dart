@@ -69,6 +69,27 @@ class WebDavSyncService {
         filePath: backupFilePath);
   }
 
+  /// 备份文件夹及标签
+  Future<bool> backupFolderAndLabel(BuildContext context) async {
+    List<String> folder = List.from(RuntimeData.folderList);
+    List<String> label = List.from(RuntimeData.labelList);
+    String contents = _fileUtil.encodeFolderAndLabel(folder, label);
+
+    Directory appDir = await getApplicationDocumentsDirectory();
+    String backupFilePath = appDir.uri.toFilePath() + "folder_label_info.json";
+    File backupFile = File(backupFilePath);
+    if (!backupFile.existsSync()) backupFile.createSync();
+
+    _fileUtil.writeFile(backupFilePath, contents);
+
+    bool res = await _webDavUtil.uploadFile(
+      fileName: "folder_label_info.json",
+      dirName: "Allpass",
+      filePath: backupFilePath
+    );
+    return res;
+  }
+
   /// 恢复密码到本地
   /// ！！！恢复密码时将会清除本地所有数据
   /// 0: 正常执行完毕
@@ -142,6 +163,26 @@ class WebDavSyncService {
       // 解析json出错
       print(e2);
       return 2;
+    }
+  }
+
+  /// 恢复文件夹与密码
+  Future<bool> recoverFolderAndLabel() async {
+    try {
+      String filePath = await _webDavUtil.downloadFile(
+          fileName: "folder_label_info.json",
+          dirName: "Allpass");
+      String contents = _fileUtil.readFile(filePath);
+      Map<String, List<String>> res = _fileUtil.decodeFolderAndLabel(contents);
+      RuntimeData.folderList.clear();
+      RuntimeData.folderList.addAll(res['folder']);
+      RuntimeData.labelList.clear();
+      RuntimeData.labelList.addAll(res['label']);
+      RuntimeData.folderParamsPersistence();
+      RuntimeData.labelParamsPersistence();
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }

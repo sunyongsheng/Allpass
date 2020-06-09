@@ -163,7 +163,8 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   Future<bool> _upload() async {
     try {
       return (await _syncService.backupPassword(context)) &&
-          (await _syncService.backupCard(context));
+          (await _syncService.backupCard(context)) &&
+          (await _syncService.backupFolderAndLabel(context));
     } catch (e) {
       print(e);
       return false;
@@ -171,14 +172,14 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   }
 
   Future<int> _download() async {
-    if ((await _syncService.recoverPassword(context) == 0) &&
-        (await _syncService.recoverCard(context) == 0)) {
+    int p = await _syncService.recoverPassword(context);
+    int c = await _syncService.recoverCard(context);
+    bool f = await _syncService.recoverFolderAndLabel();
+    if ((p == 0) && (c == 0) && f) {
       return 0;
-    } else if ((await _syncService.recoverPassword(context) == 1) ||
-        (await _syncService.recoverCard(context) == 1)) {
+    } else if (p == 1 || c == 1) {
       return 1;
-    } else if ((await _syncService.recoverPassword(context) == 2) ||
-        (await _syncService.recoverCard(context) == 2)) {
+    } else if (p == 2 || c == 2) {
       return 2;
     } else {
       return 3;
