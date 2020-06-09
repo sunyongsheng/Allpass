@@ -63,14 +63,22 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   setState(() {
                     _pressUpload = true;
                   });
-                  bool res = await _upload();
-                  setState(() {
-                    _pressUpload = false;
-                  });
-                  if (res) {
-                    Fluttertoast.showToast(msg: "上传云端成功");
+                  bool auth = await _authCheck();
+                  if (auth) {
+                    bool res = await _upload();
+                    setState(() {
+                      _pressUpload = false;
+                    });
+                    if (res) {
+                      Fluttertoast.showToast(msg: "上传云端成功");
+                    } else {
+                      Fluttertoast.showToast(msg: "上传云端失败，请检查网络");
+                    }
                   } else {
-                    Fluttertoast.showToast(msg: "上传云端失败，请检查网络");
+                    setState(() {
+                      _pressUpload = false;
+                    });
+                    Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },
@@ -97,16 +105,24 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   setState(() {
                     _pressDownload = true;
                   });
-                  int res = await _download();
-                  setState(() {
-                    _pressDownload = false;
-                  });
-                  if (res == 0) {
-                    Fluttertoast.showToast(msg: "恢复到本地成功");
-                  } else if (res == 2){
-                    Fluttertoast.showToast(msg: "恢复到本地失败，请检查网络或源文件受损");
+                  bool auth = await _authCheck();
+                  if (auth) {
+                    int res = await _download();
+                    setState(() {
+                      _pressDownload = false;
+                    });
+                    if (res == 0) {
+                      Fluttertoast.showToast(msg: "恢复到本地成功");
+                    } else if (res == 2){
+                      Fluttertoast.showToast(msg: "恢复到本地失败，请检查网络或源文件受损");
+                    } else {
+                      Fluttertoast.showToast(msg: "恢复到本地失败，未知错误");
+                    }
                   } else {
-                    Fluttertoast.showToast(msg: "恢复到本地失败，未知错误");
+                    setState(() {
+                      _pressUpload = false;
+                    });
+                    Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },
@@ -138,6 +154,10 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
         ],
       ),
     );
+  }
+
+  Future<bool> _authCheck() async {
+    return await _syncService.authCheck();
   }
 
   Future<bool> _upload() async {
