@@ -70,6 +70,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _usernameController = TextEditingController(text: _oldData.username);
       _notesController = TextEditingController(text: _oldData.notes);
       _urlController = TextEditingController(text: _oldData.url);
+      if (_passwordController == null) {
+        _passwordController = TextEditingController();
+      }
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;

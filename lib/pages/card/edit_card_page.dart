@@ -60,6 +60,9 @@ class _EditCardPage extends State<EditCardPage> {
       _cardIdController = TextEditingController(text: _oldData.cardId);
       _telephoneController = TextEditingController(text: _oldData.telephone);
       _notesController = TextEditingController(text: _oldData.notes);
+      if (_passwordController == null) {
+        _passwordController = TextEditingController();
+      }
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;
