@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:allpass/model/base_model.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/params/allpass_type.dart';
 
 class AllpassFileUtil {
 
@@ -34,20 +35,21 @@ class AllpassFileUtil {
   }
 
   /// 对json字符串[string]进行解码，返回List<PasswordBean>或List<CardBean>
-  List<BaseModel> decodeList(String string) {
+  List<BaseModel> decodeList(String string, AllpassType type) {
     List<dynamic> decodedRes = json.decode(string);
-    try {
+    if (type == AllpassType.PASSWORD) {
       List<PasswordBean> results = List();
       for (var temp in decodedRes) {
         results.add(PasswordBean.fromJson(temp));
       }
       return results;
-    } catch (e) {
+    } else if (type == AllpassType.CARD) {
       List<CardBean> results = List();
       for (var temp in decodedRes) {
         results.add(CardBean.fromJson(temp));
       }
       return results;
     }
+    return null;
   }
 }

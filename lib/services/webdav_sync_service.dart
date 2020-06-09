@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:allpass/params/config.dart';
+import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/model/card_bean.dart';
@@ -80,7 +81,7 @@ class WebDavSyncService {
     List<PasswordBean> backup = Provider.of<PasswordList>(context).passwordList;
     try {
       String string = _fileUtil.readFile(filePath);
-      List<PasswordBean> list = _fileUtil.decodeList(string);
+      List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.PASSWORD);
       try {
         // 正常执行
         await Provider.of<PasswordList>(context).clear();
@@ -118,7 +119,7 @@ class WebDavSyncService {
     List<CardBean> backup = Provider.of<CardList>(context).cardList;
     try {
       String string = _fileUtil.readFile(filePath);
-      List<CardBean> list = _fileUtil.decodeList(string);
+      List<CardBean> list = _fileUtil.decodeList(string, AllpassType.CARD);
       try {
         // 正常执行
         await Provider.of<CardList>(context).clear();
