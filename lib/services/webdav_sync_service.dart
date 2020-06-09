@@ -45,10 +45,12 @@ class WebDavSyncService {
 
     _fileUtil.writeFile(backupFilePath, contents);
 
-    return await _webDavUtil.uploadFile(
+    bool res = await _webDavUtil.uploadFile(
         fileName: "allpass_password.appt",
         dirName: "Allpass",
         filePath: backupFilePath);
+    _fileUtil.deleteFile(backupFilePath);
+    return res;
   }
 
   /// 备份卡片到指定的目录中
@@ -63,10 +65,12 @@ class WebDavSyncService {
 
     _fileUtil.writeFile(backupFilePath, contents);
 
-    return await _webDavUtil.uploadFile(
+    bool res = await _webDavUtil.uploadFile(
         fileName: "allpass_card.appt",
         dirName: "Allpass",
         filePath: backupFilePath);
+    _fileUtil.deleteFile(backupFilePath);
+    return res;
   }
 
   /// 备份文件夹及标签
@@ -87,6 +91,7 @@ class WebDavSyncService {
       dirName: "Allpass",
       filePath: backupFilePath
     );
+    _fileUtil.deleteFile(backupFilePath);
     return res;
   }
 

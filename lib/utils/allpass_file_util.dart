@@ -72,4 +72,10 @@ class AllpassFileUtil {
     }
     return res;
   }
+
+  /// 删除文件
+  Future<Null> deleteFile(String filePath) async {
+    File file = File(filePath);
+    await file.delete();
+  }
 }
