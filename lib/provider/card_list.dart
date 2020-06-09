@@ -3,6 +3,7 @@ import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/ui/allpass_ui.dart';
 
 /// 保存程序中所有的Card
 class CardList with ChangeNotifier {
@@ -34,7 +35,8 @@ class CardList with ChangeNotifier {
   Future<Null> insertCard(CardBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
-    _cardList?.add(bean);
+    bean.color = getRandomColor(seed: key);
+    _cardList.add(bean);
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();

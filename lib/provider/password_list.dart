@@ -3,6 +3,8 @@ import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/ui/allpass_ui.dart';
+
 
 /// 保存程序中的所有的Password
 class PasswordList with ChangeNotifier {
@@ -62,6 +64,7 @@ class PasswordList with ChangeNotifier {
   Future<Null> insertPassword(PasswordBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
+    bean.color = getRandomColor(seed: key);
     _passwordList.add(bean);
     sortByAlphabeticalOrder();
     refreshLetterCountIndex();
