@@ -14,6 +14,8 @@ import 'package:allpass/widgets/common/search_button_widget.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/common/select_item_dialog.dart';
 import 'package:allpass/widgets/common/nodata_widget.dart';
+import 'package:allpass/widgets/common/letter_index_bar.dart';
+
 
 /// 密码页面
 class PasswordPage extends StatefulWidget {
@@ -26,9 +28,6 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage>
     with AutomaticKeepAliveClientMixin {
   ScrollController _controller;
-  final List<String> letters = ['#','A','B','C','D','E','F','G',
-    'H','I','J','K','L','M','N', 'O','P','Q','R','S','T',
-    'U','V','W','X','Y','Z'];
 
   @override
   void initState() {
@@ -158,32 +157,7 @@ class _PasswordPageState extends State<PasswordPage>
                               itemBuilder: (context, index) => PasswordWidgetItem(index),
                               itemCount: model.passwordList.length,
                             ),
-                            Align(
-                              alignment: FractionalOffset(1.0, 0.5),
-                              child: SizedBox(
-                                width: 25,
-                                child: ListView.builder(
-                                  itemCount: 27,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      splashColor: Colors.transparent,
-                                      child: Text(letters[index],
-                                        style: model.letterCountIndex.containsKey(letters[index])
-                                            ? TextStyle(color: Colors.black)
-                                            : TextStyle(color: Colors.grey),
-                                      ),
-                                      onTap: () {
-                                        if (model.letterCountIndex.containsKey(letters[index])) {
-                                          double height = model.letterCountIndex[letters[index]] * 72.0;
-                                          if (height == 0) height = 0.5;
-                                          _controller.jumpTo(height);
-                                        }
-                                      },
-                                    );
-                                  },
-                                )
-                              ),
-                            )
+                            LetterIndexBar(_controller),
                           ],
                         )
                             : NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等"),
