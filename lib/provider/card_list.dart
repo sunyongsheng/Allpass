@@ -19,7 +19,7 @@ class CardList with ChangeNotifier {
 
   Future<Null> refresh() async {
     _cardList.clear();
-    _cardList = await _dao.getAllCardBeanList();
+    _cardList = await _dao.getAllCardBeanList()??[];
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
