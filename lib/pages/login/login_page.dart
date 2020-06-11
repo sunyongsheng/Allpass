@@ -101,23 +101,19 @@ class _LoginPage extends State<LoginPage> {
                 padding: AllpassEdgeInsets.smallTBPadding,
               ),
               NoneBorderCircularTextField(
-                _usernameController,
-                "请输入用户名",
-                null,
-                false,
-                null
+                  editingController: _usernameController,
+                  hintText: "请输入用户名"
               ),
               NoneBorderCircularTextField(
-                _passwordController,
-                "请输入密码",
-                null,
-                true,
-                login,
+                  editingController: _passwordController,
+                  hintText: "请输入密码",
+                  obscureText: true,
+                  onEditingComplete: login,
               ),
               Padding(
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.bigBorderRadius)
+                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
                   ),
                   padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),

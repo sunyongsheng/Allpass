@@ -85,9 +85,7 @@ class AllpassEdgeInsets {
 /// 其他样式
 class AllpassUI {
   AllpassUI._();
-
   static const double smallBorderRadius = 8.0;
-  static const double bigBorderRadius = 30.0;
 }
 
 Color getRandomColor({int seed}) {

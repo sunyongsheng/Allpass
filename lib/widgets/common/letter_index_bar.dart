@@ -53,8 +53,10 @@ class _LetterIndexBar extends State<LetterIndexBar> {
             width: 25,
             height: 432,
             child: GestureDetector(
-              child: Column(
-                children: _children,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: _children,
+                ),
               ),
               onTapDown: (detail) {
                 setState(() {

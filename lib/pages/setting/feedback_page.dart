@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 class FeedbackPage extends StatefulWidget {
   @override
@@ -43,6 +46,12 @@ class _FeedbackPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Color _filledColor;
+    if (Config.theme != "dark") {
+      _filledColor = Provider.of<ThemeProvider>(context).backgroundColor2;
+    } else {
+      _filledColor = Colors.black;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("意见反馈", style: AllpassTextUI.titleBarStyle,),
@@ -58,9 +67,12 @@ class _FeedbackPage extends State<StatefulWidget> {
                 decoration: InputDecoration(
                   hintText: "说说你的问题",
                   contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  ),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                        borderSide: BorderSide.none
+                    ),
+                  filled: true,
+                  fillColor: _filledColor
                 ),
                 maxLines: 1000,
                 controller: _feedbackController,
@@ -78,7 +90,10 @@ class _FeedbackPage extends State<StatefulWidget> {
                   contentPadding: EdgeInsets.all(10.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    borderSide: BorderSide.none
                   ),
+                  filled: true,
+                  fillColor: _filledColor
                 ),
                 maxLines: 1,
                 controller: _contactController,

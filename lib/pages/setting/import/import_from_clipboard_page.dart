@@ -1,13 +1,16 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 /// 从剪贴板中导入
 class ImportFromClipboard extends StatefulWidget {
@@ -23,6 +26,12 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
 
   @override
   Widget build(BuildContext context) {
+    Color _filledColor;
+    if (Config.theme != "dark") {
+      _filledColor = Provider.of<ThemeProvider>(context).backgroundColor2;
+    } else {
+      _filledColor = Colors.black;
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -66,7 +75,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                 child: Text(
                   "请选择密码格式（空格为分隔符）",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
                     fontSize: 16
                   ),
                 ),
@@ -187,42 +195,46 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                 ),
               ),
               Container(
-                padding: AllpassEdgeInsets.listInset,
+                padding: AllpassEdgeInsets.forViewCardInset,
                 height: AllpassScreenUtil.setHeight(1000),
                 child: TextField(
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10.0),
+                    hintText: "在此粘贴您的数据",
                     border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                       borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
                     ),
+                    filled: true,
+                    fillColor: _filledColor
                   ),
                   maxLines: 1000,
                   controller: _controller,
                 ),
               ),
+              FlatButton(
+                color: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                ),
+                child: Text(
+                  "导入",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  try {
+                    List<PasswordBean> list = await parseText(_groupValue);
+                    for (var bean in list) {
+                      await Provider.of<PasswordList>(context).insertPassword(bean);
+                    }
+                    Fluttertoast.showToast(msg: "导入了${list.length}条记录");
+                  } catch (e) {
+                    Fluttertoast.showToast(msg: e.toString());
+                  }
+                },
+              ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: FlatButton(
-                  color: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  ),
-                  child: Text(
-                    "导入",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () async {
-                    try {
-                      List<PasswordBean> list = await parseText(_groupValue);
-                      for (var bean in list) {
-                        await Provider.of<PasswordList>(context).insertPassword(bean);
-                      }
-                      Fluttertoast.showToast(msg: "导入了${list.length}条记录");
-                    } catch (e) {
-                      Fluttertoast.showToast(msg: e.toString());
-                    }
-                  },
-                ),
               )
             ],
           ),
@@ -231,6 +243,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
 
   Future<List<PasswordBean>> parseText(int value) async {
     String text = _controller.text;
+    if (text.isEmpty) return List();
     List<String> tempRows = text.split("\n");
     List<String> rows = [];
     for (String tr in tempRows) {

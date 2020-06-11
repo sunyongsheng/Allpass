@@ -40,31 +40,24 @@ class RegisterPage extends StatelessWidget {
                 padding: AllpassEdgeInsets.smallTBPadding,
               ),
               NoneBorderCircularTextField(
-                _usernameController,
-                "请输入用户名",
-                null,
-                false,
-                null
+                  editingController: _usernameController,
+                  hintText: "请输入用户名",
               ),
               NoneBorderCircularTextField(
-                _passwordController,
-                "请输入密码",
-                null,
-                true,
-                null
+                  editingController:_passwordController,
+                  hintText: "请输入密码",
+                  obscureText: true,
               ),
               NoneBorderCircularTextField(
-                _secondController,
-                "请再输入一遍",
-                null,
-                true,
-                null
+                  editingController: _secondController,
+                  hintText: "请再输入一遍",
+                  obscureText: true
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.bigBorderRadius))
+                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
                   ),
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
                   color: Theme.of(context).primaryColor,
