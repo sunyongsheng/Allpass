@@ -20,14 +20,16 @@ class _FeedbackPage extends State<StatefulWidget> {
   TextEditingController _feedbackController;
   TextEditingController _contactController;
   Dio _dio;
+  String _contactCache;
 
   bool _submitSuccess = false;
 
   @override
   void initState() {
     super.initState();
+    _contactCache = Application.sp.getString(SharedPreferencesKeys.contact)??"";
     _feedbackController = TextEditingController();
-    _contactController = TextEditingController();
+    _contactController = TextEditingController(text: _contactCache);
     _dio = Dio(BaseOptions(connectTimeout: 3000));
   }
 
@@ -132,6 +134,9 @@ class _FeedbackPage extends State<StatefulWidget> {
     map['feedbackContent'] = _feedbackController.text;
     map['contact'] = _contactController.text;
     map['allpassVersion'] = Application.version;
+    if (_contactController.text.isNotEmpty) {
+      Application.sp.setString(SharedPreferencesKeys.contact, _contactController.text);
+    }
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;

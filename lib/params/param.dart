@@ -18,4 +18,5 @@ class SharedPreferencesKeys {
   static const String webDavUsername = "webDavUsername";
   static const String webDavPassword = "webDavPassword";
   static const String webDavPort = "webDavPort";
+  static const String contact = "contact";
 }
