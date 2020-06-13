@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/params/runtime_data.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
@@ -48,49 +49,30 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
-              ),
-              controller: _addTextController,
-              onChanged: (text) {
-                if (text.contains(",") || text.contains("~") || text.contains(" ")) {
-                  setState(() {
-                    _inputFormatCorr = false;
-                  });
-                } else {
-                  setState(() {
-                    _inputFormatCorr = true;
-                  });
-                }
+          NoneBorderCircularTextField(
+            autoFocus: true,
+            editingController: _addTextController,
+            errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
+            needPadding: false,
+            hintText: "请输入$categoryName名",
+            onChanged: (text) {
+              if (text.contains(",") || text.contains("~") || text.contains(" ")) {
+                setState(() {
+                  _inputFormatCorr = false;
+                });
+              } else {
+                setState(() {
+                  _inputFormatCorr = true;
+                });
               }
+            },
+            onEditingComplete: () => submit(),
           ),
         ],
       ),
       actions: <Widget>[
         FlatButton(
-          onPressed: () {
-            if (_inputFormatCorr && _addTextController.text != "") {
-              if (categoryName == "标签") {
-                if (RuntimeData.labelListAdd([_addTextController.text])) {
-                  Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
-                } else {
-                  Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
-                }
-              } else {
-                if (RuntimeData.folderListAdd(_addTextController.text)) {
-                  Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
-                } else {
-                  Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
-                }
-              }
-              _addTextController.clear();
-              Navigator.pop(context);
-            } else {
-              Fluttertoast.showToast(msg: "输入内容不合法");
-            }
-          },
+          onPressed: () => submit(),
           child: Text('提交'),
         ),
         FlatButton(
@@ -102,5 +84,27 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
         ),
       ],
     );
+  }
+
+  void submit() {
+    if (_inputFormatCorr && _addTextController.text != "") {
+      if (categoryName == "标签") {
+        if (RuntimeData.labelListAdd([_addTextController.text])) {
+          Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
+        } else {
+          Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
+        }
+      } else {
+        if (RuntimeData.folderListAdd(_addTextController.text)) {
+          Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
+        } else {
+          Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
+        }
+      }
+      _addTextController.clear();
+      Navigator.pop(context);
+    } else {
+      Fluttertoast.showToast(msg: "输入内容不合法");
+    }
   }
 }

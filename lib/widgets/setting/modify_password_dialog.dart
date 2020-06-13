@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 修改密码对话框
 class ModifyPasswordDialog extends StatelessWidget {
@@ -24,31 +24,54 @@ class ModifyPasswordDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: TextField(
-                controller: _oldPasswordController,
-                decoration: InputDecoration(labelText: "请输入旧密码"),
-                obscureText: true,
-                autofocus: true,
-              ),
+            NoneBorderCircularTextField(
+              editingController: _oldPasswordController,
+              labelText: "请输入旧密码",
+              obscureText: true,
+              autoFocus: true,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: TextField(
-                controller: _newPasswordController,
-                decoration: InputDecoration(labelText: "请输入新密码"),
-                obscureText: true,
-              ),
+            NoneBorderCircularTextField(
+              editingController: _newPasswordController,
+              labelText: "请输入新密码",
+              obscureText: true,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: TextField(
-                controller: _secondInputController,
-                decoration: InputDecoration(labelText: "请再输入一遍"),
-                obscureText: true,
-              ),
-            ),
+            NoneBorderCircularTextField(
+              editingController: _secondInputController,
+              labelText: "请再输入一遍",
+              obscureText: true,
+            )
+//            Container(
+//              padding: EdgeInsets.only(left: 10, right: 10),
+//              child: TextField(
+//                controller: _oldPasswordController,
+//                decoration: InputDecoration(
+//                  labelText: "请输入旧密码",
+//                  border: UnderlineInputBorder()
+//                ),
+//                obscureText: true,
+//                autofocus: true,
+//              ),
+//            ),
+//            Container(
+//              padding: EdgeInsets.only(left: 10, right: 10),
+//              child: TextField(
+//                controller: _newPasswordController,
+//                decoration: InputDecoration(
+//                  border: UnderlineInputBorder(),
+//                  labelText: "请输入新密码"),
+//                obscureText: true,
+//              ),
+//            ),
+//            Container(
+//              padding: EdgeInsets.only(left: 10, right: 10),
+//              child: TextField(
+//                controller: _secondInputController,
+//                decoration: InputDecoration(
+//                  border: UnderlineInputBorder(),
+//                  labelText: "请再输入一遍"),
+//                obscureText: true,
+//              ),
+//            ),
           ],
         ),
       ),

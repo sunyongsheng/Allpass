@@ -102,13 +102,15 @@ class _LoginPage extends State<LoginPage> {
               ),
               NoneBorderCircularTextField(
                   editingController: _usernameController,
-                  hintText: "请输入用户名"
+                  hintText: "请输入用户名",
+                  textAlign: TextAlign.center,
               ),
               NoneBorderCircularTextField(
                   editingController: _passwordController,
                   hintText: "请输入密码",
                   obscureText: true,
                   onEditingComplete: login,
+                  textAlign: TextAlign.center,
               ),
               Padding(
                 child: FlatButton(

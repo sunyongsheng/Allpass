@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/theme_provider.dart';
 
 /// 首字母索引列
 class LetterIndexBar extends StatefulWidget {
@@ -40,7 +41,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     letters.forEach((item) {
       _children.add(SizedBox(
         child: Text(item, style: TextStyle(
-            color: keys.contains(item) ? Colors.black : Colors.grey
+            color: keys.contains(item) ? Provider.of<ThemeProvider>(context).containColor : Colors.grey
         ),),
         height: 16,
       ));
@@ -108,7 +109,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                color: Colors.black87,
+                color: Provider.of<ThemeProvider>(context).offsetColor,
               ),
               width: 60,
               height: 60,

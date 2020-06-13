@@ -14,6 +14,7 @@ import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/widgets/common/label_chip.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/common/password_generation_dialog.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 查看或编辑“卡片”页面
 class EditCardPage extends StatefulWidget {
@@ -163,7 +164,7 @@ class _EditCardPage extends State<EditCardPage> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -171,27 +172,23 @@ class _EditCardPage extends State<EditCardPage> {
                               "名称",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _nameController,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -199,27 +196,23 @@ class _EditCardPage extends State<EditCardPage> {
                               "拥有者姓名",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _ownerNameController,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _ownerNameController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _ownerNameController,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _ownerNameController.clear());
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -227,28 +220,24 @@ class _EditCardPage extends State<EditCardPage> {
                               "卡号",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _cardIdController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _cardIdController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _cardIdController,
+                              inputType: TextInputType.number,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _cardIdController.clear());
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -259,21 +248,18 @@ class _EditCardPage extends State<EditCardPage> {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: TextField(
-                                    controller: _passwordController,
+                                  child: NoneBorderCircularTextField(
+                                    editingController: _passwordController,
                                     obscureText: !_passwordVisible,
-                                    decoration: InputDecoration(
-                                        suffix: InkWell(
-                                          child: Icon(
-                                            Icons.cancel,
-                                            size: 20,
-                                            color: Colors.black26,
-                                          ),
-                                          onTap: () {
-                                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                            WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
-                                          },
-                                        )
+                                    trailing: InkWell(
+                                      child: Icon(
+                                        Icons.cancel,
+                                        size: 20,
+                                      ),
+                                      onTap: () {
+                                        // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                        WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                      },
                                     ),
                                   ),
                                 ),
@@ -296,7 +282,7 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -304,29 +290,25 @@ class _EditCardPage extends State<EditCardPage> {
                               "绑定手机号",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _telephoneController,
-                              keyboardType: TextInputType.numberWithOptions(
-                                  signed: true),
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _telephoneController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _telephoneController,
+                              inputType: TextInputType.numberWithOptions(signed: true),
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _telephoneController.clear());
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -358,7 +340,7 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -384,7 +366,7 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -392,8 +374,8 @@ class _EditCardPage extends State<EditCardPage> {
                               "备注",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _notesController,
+                            NoneBorderCircularTextField(
+                              editingController: _notesController,
                               maxLines: null,
                               onTap: () {
                                 Navigator.push(context, CupertinoPageRoute(
@@ -404,7 +386,7 @@ class _EditCardPage extends State<EditCardPage> {
                                   });
                                 });
                               },
-                            ),
+                            )
                           ],
                         ),
                       )

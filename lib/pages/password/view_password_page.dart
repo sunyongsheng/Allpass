@@ -90,7 +90,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 Padding(padding: AllpassEdgeInsets.smallLPadding,)
               ],
             ),
-            backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
+            backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
             body: FutureBuilder(
               future: _futureHelper,
               builder: (context, snapshot) {

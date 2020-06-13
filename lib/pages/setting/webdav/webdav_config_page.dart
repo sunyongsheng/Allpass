@@ -75,7 +75,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               NoneBorderCircularTextField(
-                textAlign: TextAlign.left,
                 editingController: _urlController,
                 hintText: "WebDAV服务器地址",
                 onChanged: (_) => _setPortAuto(),
@@ -90,7 +89,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                 ),
               ),
               NoneBorderCircularTextField(
-                  textAlign: TextAlign.left,
                   editingController: _portController,
                   hintText: "端口号",
                 trailing: InkWell(
@@ -104,7 +102,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                 ),
               ),
               NoneBorderCircularTextField(
-                textAlign: TextAlign.left,
                 editingController: _usernameController,
                 hintText: "用户名",
                 trailing: InkWell(
@@ -117,170 +114,36 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                   },
                 ),
               ),
-              NoneBorderCircularTextField(
-                textAlign: TextAlign.left,
-                editingController: _passwordController,
-                hintText: "密码",
-                obscureText: !_passwordVisible,
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    InkWell(
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: NoneBorderCircularTextField(
+                      editingController: _passwordController,
+                      hintText: "密码",
+                      obscureText: !_passwordVisible,
+                      trailing: InkWell(
+                        child: Icon(
+                          Icons.cancel,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: AllpassEdgeInsets.smallLPadding,
+                    child: InkWell(
                       child: _passwordVisible == true
                           ? Icon(Icons.visibility)
                           : Icon(Icons.visibility_off),
                       onTap: () => showPassword(),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                    ),
-                    InkWell(
-                      child: Icon(
-                        Icons.cancel,
-                        size: 20,
-                      ),
-                      onTap: () {
-                        WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
-                      },
-                    ),
-                  ],
-                )
+                  )
+
+                ],
               ),
-//            Container(
-//              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Text(
-//                    "WebDAV服务器地址",
-//                    style: TextStyle(fontSize: 16, color: _mainColor),
-//                  ),
-//                  TextField(
-//                    controller: _urlController,
-//                    decoration: InputDecoration(
-//                        suffix: InkWell(
-//                          child: Icon(
-//                            Icons.cancel,
-//                            size: 20,
-//                            color: Colors.black26,
-//                          ),
-//                          onTap: () {
-//                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-//                            WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
-//                          },
-//                        )
-//                    ),
-//                    onChanged: (_) => _setPortAuto(),
-//                  ),
-//                ],
-//              ),
-//            ),
-//            Container(
-//              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Text(
-//                    "端口号",
-//                    style: TextStyle(fontSize: 16, color: _mainColor),
-//                  ),
-//                  TextField(
-//                    controller: _portController,
-//                    keyboardType: TextInputType.number,
-//                    decoration: InputDecoration(
-//                        suffix: InkWell(
-//                          child: Icon(
-//                            Icons.cancel,
-//                            size: 20,
-//                            color: Colors.black26,
-//                          ),
-//                          onTap: () {
-//                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-//                            WidgetsBinding.instance.addPostFrameCallback((_) => _portController.clear());
-//                          },
-//                        )
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//            Container(
-//              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Text(
-//                    "用户名",
-//                    style: TextStyle(fontSize: 16, color: _mainColor),
-//                  ),
-//                  TextField(
-//                    controller: _usernameController,
-//                    decoration: InputDecoration(
-//                        suffix: InkWell(
-//                          child: Icon(
-//                            Icons.cancel,
-//                            size: 20,
-//                            color: Colors.black26,
-//                          ),
-//                          onTap: () {
-//                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-//                            WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
-//                          },
-//                        )
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//            Container(
-//              margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
-//              child: Column(
-//                crossAxisAlignment: CrossAxisAlignment.start,
-//                children: <Widget>[
-//                  Text(
-//                    "密码",
-//                    style: TextStyle(fontSize: 16, color: _mainColor),
-//                  ),
-//                  Row(
-//                    children: <Widget>[
-//                      Expanded(
-//                        child: TextField(
-//                          onSubmitted: (_) async => await _nextStep(),
-//                          controller: _passwordController,
-//                          obscureText: !_passwordVisible,
-//                          decoration: InputDecoration(
-//                              suffix: InkWell(
-//                                child: Icon(
-//                                  Icons.cancel,
-//                                  size: 20,
-//                                  color: Colors.black26,),
-//                                onTap: () {
-//                                  // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-//                                  WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
-//                                },
-//                              )
-//                          ),
-//                        ),
-//                      ),
-//                      IconButton(
-//                        icon: _passwordVisible == true
-//                            ? Icon(Icons.visibility)
-//                            : Icon(Icons.visibility_off),
-//                        onPressed: () {
-//                          this.setState(() {
-//                            if (_passwordVisible == false)
-//                              _passwordVisible = true;
-//                            else
-//                              _passwordVisible = false;
-//                          });
-//                        },
-//                      )
-//                    ],
-//                  ),
-//                ],
-//              ),
-//            ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: FlatButton(

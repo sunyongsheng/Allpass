@@ -180,8 +180,8 @@ class _SearchPage extends State<SearchPage> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  color: Config.theme == 'dark' ? Colors.black : Colors.grey[200],
+                  borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+                  color: Theme.of(context).inputDecorationTheme.fillColor,
                 ),
                 height: 35,
                 child: TextField(
@@ -195,10 +195,6 @@ class _SearchPage extends State<SearchPage> {
                       color: Config.theme == 'dark'
                           ? Colors.grey
                           : Colors.grey[900],),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      borderSide: BorderSide.none
-                    ),
                   ),
                   onChanged: (_) async {
                     await getSearchResult();

@@ -32,7 +32,7 @@ class FavoritePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
+      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
       body: _getFavWidgetListView(context, _controller),
     );
   }

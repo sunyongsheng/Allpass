@@ -36,20 +36,22 @@ class AllpassTheme {
     return ThemeData(
       primaryColor: Colors.blueAccent,
       primarySwatch: Colors.blue,
-      floatingActionButtonTheme:
-          FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      accentColor: Colors.grey,
       appBarTheme: AppBarTheme(
         brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white70),
         elevation: 0,
-        color: Colors.grey[900],
+        color: Colors.black,
       ),
-      iconTheme: IconThemeData(color: Colors.grey[200]),
-      scaffoldBackgroundColor: Colors.grey[900],
-      cardColor: Colors.black,
+      bottomAppBarColor: Colors.black,
+      floatingActionButtonTheme:
+        FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      scaffoldBackgroundColor: Colors.black,
+      bottomSheetTheme: BottomSheetThemeData(modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),),
+      iconTheme: IconThemeData(color: Colors.grey[500]),
+      cardColor: Colors.grey[900],
       indicatorColor: Colors.blueAccent,
       cursorColor: Colors.blueAccent,
-      accentColor: Colors.grey,
       textTheme: TextTheme(
         title: TextStyle(color: Colors.white),
         display1: TextStyle(color: Colors.white),
@@ -64,24 +66,30 @@ class AllpassTheme {
         button: TextStyle(color: Colors.white),
         headline: TextStyle(color: Colors.white),
       ),
-      bottomAppBarColor: Colors.grey[900],
       dialogTheme: DialogTheme(
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Color.fromRGBO(25, 25, 25, 1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(AllpassUI.smallBorderRadius),
           ),
         ),
+
       ),
-      bottomSheetTheme:
-          BottomSheetThemeData(modalBackgroundColor: Colors.grey[900]),
       dividerColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(
         labelStyle: TextStyle(color: Colors.white),
-        fillColor: Colors.black,
+        fillColor: Colors.grey[900],
         hintStyle: TextStyle(color: Colors.grey),
+        border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+            borderSide: BorderSide.none
+        )
       ),
-      buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
+      buttonTheme: ButtonThemeData(
+        textTheme: ButtonTextTheme.accent,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+      ),
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey[700],
         brightness: Brightness.dark,
@@ -102,8 +110,8 @@ class AllpassTheme {
     return ThemeData(
       primaryColor: mainColor,
       primarySwatch: mainColor,
-      floatingActionButtonTheme:
-      FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+          foregroundColor: Colors.white),
       appBarTheme: AppBarTheme(
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
@@ -111,9 +119,19 @@ class AllpassTheme {
           color: Colors.white,
           textTheme: TextTheme(title: TextStyle(color: Colors.black))),
       scaffoldBackgroundColor: Colors.white,
+      buttonTheme: ButtonThemeData(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+      ),
       indicatorColor: mainColor,
       cursorColor: mainColor,
-      inputDecorationTheme: InputDecorationTheme(fillColor: Colors.grey[200]),
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: Color.fromRGBO(245, 246, 250, 1),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+          borderSide: BorderSide.none
+        )
+      ),
       dialogTheme: DialogTheme(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

@@ -72,7 +72,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).backgroundColor2,
+      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(

@@ -41,7 +41,6 @@ class DetailTextPage extends StatelessWidget {
                           child: Icon(
                             Icons.cancel,
                             size: 20,
-                            color: Colors.black26,
                           ),
                           onTap: () {
                             // 保证在组件build的第一帧时才去触发取消清空内容，防止报错

@@ -13,6 +13,7 @@ import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/widgets/common/label_chip.dart';
 import 'package:allpass/widgets/common/add_category_dialog.dart';
 import 'package:allpass/widgets/common/password_generation_dialog.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 查看或编辑密码页面
 class EditPasswordPage extends StatefulWidget {
@@ -165,7 +166,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -173,27 +174,24 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               "名称",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _nameController,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
+                                },
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -201,27 +199,23 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               "账号",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _usernameController,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _usernameController,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -232,21 +226,17 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                             Row(
                               children: <Widget>[
                                 Expanded(
-                                  child: TextField(
-                                    controller: _passwordController,
-                                    obscureText: !_passwordVisible,
-                                    decoration: InputDecoration(
-                                        suffix: InkWell(
-                                          child: Icon(
-                                            Icons.cancel,
-                                            size: 20,
-                                            color: Colors.black26,),
-                                          onTap: () {
-                                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                            WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
-                                          },
-                                        )
+                                  child: NoneBorderCircularTextField(
+                                    editingController: _passwordController,
+                                    trailing: InkWell(
+                                      child: Icon(
+                                          Icons.cancel,
+                                          size: 20),
+                                      onTap: () {
+                                        WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                      },
                                     ),
+                                    obscureText: !_passwordVisible,
                                   ),
                                 ),
                                 IconButton(
@@ -268,7 +258,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -276,27 +266,23 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               "链接",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _urlController,
-                              decoration: InputDecoration(
-                                  suffix: InkWell(
-                                    child: Icon(
-                                      Icons.cancel,
-                                      size: 20,
-                                      color: Colors.black26,
-                                    ),
-                                    onTap: () {
-                                      // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                      WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
-                                    },
-                                  )
+                            NoneBorderCircularTextField(
+                              editingController: _urlController,
+                              trailing: InkWell(
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 20,
+                                ),
+                                onTap: () {
+                                  WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
+                                },
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 12),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -330,7 +316,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -356,7 +342,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -364,8 +350,8 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                               "备注",
                               style: TextStyle(fontSize: 16, color: _mainColor),
                             ),
-                            TextField(
-                              controller: _notesController,
+                            NoneBorderCircularTextField(
+                              editingController: _notesController,
                               maxLines: null,
                               onTap: () {
                                 Navigator.push(context, CupertinoPageRoute(

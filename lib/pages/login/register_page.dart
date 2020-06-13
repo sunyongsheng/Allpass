@@ -42,16 +42,19 @@ class RegisterPage extends StatelessWidget {
               NoneBorderCircularTextField(
                   editingController: _usernameController,
                   hintText: "请输入用户名",
+                  textAlign: TextAlign.center,
               ),
               NoneBorderCircularTextField(
                   editingController:_passwordController,
                   hintText: "请输入密码",
                   obscureText: true,
+                  textAlign: TextAlign.center,
               ),
               NoneBorderCircularTextField(
                   editingController: _secondController,
                   hintText: "请再输入一遍",
-                  obscureText: true
+                  obscureText: true,
+                  textAlign: TextAlign.center,
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,

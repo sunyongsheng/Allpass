@@ -7,6 +7,7 @@ import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 编辑属性对话框
 class EditCategoryDialog extends StatefulWidget {
@@ -65,12 +66,12 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            autofocus: true,
-            decoration: InputDecoration(
-              errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
-            ),
-            controller: _editTextController,
+          NoneBorderCircularTextField(
+            editingController: _editTextController,
+            errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
+            hintText: "请输入$categoryName名",
+            needPadding: false,
+            autoFocus: true,
             onChanged: (text) {
               if (text.contains(",") || text.contains("~") || text.contains(" ")) {
                 setState(() {
@@ -82,7 +83,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
                 });
               }
             },
-            onSubmitted: (_) => _submit(),
+            onEditingComplete: () => _submit(),
           ),
         ],
       ),
@@ -134,7 +135,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         if (bean.label.contains(RuntimeData.labelList[_index])) {
           bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
-          Provider.of<PasswordList>(context).updatePassword(bean);
+          await Provider.of<PasswordList>(context).updatePassword(bean);
         }
       }
     }
@@ -144,7 +145,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         if (bean.label.contains(RuntimeData.labelList[_index])) {
           bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
-          Provider.of<CardList>(context).updateCard(bean);
+          await Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }
@@ -158,7 +159,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
       for (var bean in passwordList) {
         if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
-          Provider.of<PasswordList>(context).updatePassword(bean);
+          await Provider.of<PasswordList>(context).updatePassword(bean);
         }
       }
     }
@@ -167,7 +168,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
       for (var bean in cardList) {
         if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
-          Provider.of<CardList>(context).updateCard(bean);
+          await Provider.of<CardList>(context).updateCard(bean);
         }
       }
     }

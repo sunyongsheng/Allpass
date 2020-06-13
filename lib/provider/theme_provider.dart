@@ -6,8 +6,13 @@ class ThemeProvider with ChangeNotifier {
   AllpassTheme _allpassTheme;
 
   ThemeData currTheme;
-  Color backgroundColor1;
-  Color backgroundColor2;
+  Color offsetColor;
+  /// 首字母索引
+  /// 当某条记录包含此首字母时显示的颜色，在深色主题下是白色，在浅色主题下是黑色
+  Color containColor;
+  /// 特殊的背景颜色
+  /// 少部分页面背景颜色为浅白色
+  Color specialBackgroundColor;
 
   init() {
     _allpassTheme = AllpassTheme();
@@ -23,11 +28,13 @@ class ThemeProvider with ChangeNotifier {
 
   ThemeData getTheme(String themeName) {
     if (themeName == "dark") {
-      backgroundColor1 = Colors.black;
-      backgroundColor2 = Colors.grey[900];
+      offsetColor = Colors.grey;
+      containColor = Colors.white;
+      specialBackgroundColor = Colors.black;
     } else {
-      backgroundColor1 = Colors.white;
-      backgroundColor2 = Color.fromRGBO(245, 246, 250, 1);
+      offsetColor = Colors.black87;
+      containColor = Colors.black;
+      specialBackgroundColor = Color.fromRGBO(245, 246, 250, 1);
     }
     switch (themeName) {
       case "blue":

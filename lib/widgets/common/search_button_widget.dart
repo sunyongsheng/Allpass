@@ -21,8 +21,6 @@ class SearchButtonWidget extends StatelessWidget {
           ],
         ),
         color: Theme.of(context).inputDecorationTheme.fillColor,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50)),
         splashColor: Colors.transparent,
       ),
     );

@@ -1,16 +1,13 @@
-
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/params/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 /// 从剪贴板中导入
 class ImportFromClipboard extends StatefulWidget {
@@ -26,12 +23,6 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
 
   @override
   Widget build(BuildContext context) {
-    Color _filledColor;
-    if (Config.theme != "dark") {
-      _filledColor = Provider.of<ThemeProvider>(context).backgroundColor2;
-    } else {
-      _filledColor = Colors.black;
-    }
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -197,20 +188,11 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
               Container(
                 padding: AllpassEdgeInsets.forViewCardInset,
                 height: AllpassScreenUtil.setHeight(1000),
-                child: TextField(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(10.0),
-                    hintText: "在此粘贴您的数据",
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    ),
-                    filled: true,
-                    fillColor: _filledColor
-                  ),
+                child: NoneBorderCircularTextField(
+                  editingController: _controller,
                   maxLines: 1000,
-                  controller: _controller,
-                ),
+                  hintText: "在此粘贴您的数据",
+                )
               ),
               FlatButton(
                 color: Theme.of(context).primaryColor,

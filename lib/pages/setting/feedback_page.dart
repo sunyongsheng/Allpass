@@ -1,15 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 class FeedbackPage extends StatefulWidget {
   @override
@@ -46,12 +44,6 @@ class _FeedbackPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Color _filledColor;
-    if (Config.theme != "dark") {
-      _filledColor = Provider.of<ThemeProvider>(context).backgroundColor2;
-    } else {
-      _filledColor = Colors.black;
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text("意见反馈", style: AllpassTextUI.titleBarStyle,),
@@ -63,41 +55,21 @@ class _FeedbackPage extends State<StatefulWidget> {
             Container(
               padding: AllpassEdgeInsets.dividerInset,
               height: AllpassScreenUtil.setHeight(500),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "说说你的问题",
-                  contentPadding: EdgeInsets.all(10.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                        borderSide: BorderSide.none
-                    ),
-                  filled: true,
-                  fillColor: _filledColor
-                ),
-                maxLines: 1000,
-                controller: _feedbackController,
-              ),
+              child: NoneBorderCircularTextField(
+                editingController: _feedbackController,
+                maxLines: 500,
+                hintText: "说说你的问题",
+              )
             ),
             Padding(
-              padding: AllpassEdgeInsets.smallTBPadding*2,
+              padding: AllpassEdgeInsets.smallTBPadding,
             ),
             Container(
               padding: AllpassEdgeInsets.dividerInset,
-              height: AllpassScreenUtil.setHeight(120),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "请输入联系方式（选填）",
-                  contentPadding: EdgeInsets.all(10.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    borderSide: BorderSide.none
-                  ),
-                  filled: true,
-                  fillColor: _filledColor
-                ),
-                maxLines: 1,
-                controller: _contactController,
-              ),
+              child: NoneBorderCircularTextField(
+                editingController: _contactController,
+                hintText: "请输入联系方式（选填）",
+              )
             ),
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
