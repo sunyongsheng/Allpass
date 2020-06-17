@@ -409,11 +409,11 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
             subject: "软件推荐——Allpass");
       } else {
         Share.share(
-            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/Allpass_V${Application.version}_signed.apk");
+            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}");
       }
     } catch (e) {
       Share.share(
-        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://www.aengus.top/assets/app/Allpass_V${Application.version}_signed.apk");
+        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}");
     }
   }
 }

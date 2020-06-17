@@ -64,7 +64,7 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
       );
     } on DioError catch (e) {
       Navigator.pop(context);
-      _updateContent = "Unknow Error: $e";
+      _updateContent = "Unknown Error: $e";
       Fluttertoast.showToast(msg: "检查更新失败");
       _content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,5 @@
 /// 服务器地址
-const String allpassUrl = "http://47.102.208.175:8081/allpass/api";
+const String allpassUrl = "https://allpass.aengus.top/api";
 
 class SharedPreferencesKeys {
   // 14个key
