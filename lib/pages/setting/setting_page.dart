@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:share/share.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
@@ -8,9 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
-import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/utils/network_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/services/authentication_service.dart';
 import 'package:allpass/pages/about_page.dart';
@@ -401,19 +400,18 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
   Future<Null> _recommend() async {
     try {
-      Response<Map> response = await Dio(BaseOptions(connectTimeout: 10)).get(
-          "$allpassUrl/update?version=1.0.0");
-      if (response.data['have_update'] == "1") {
+      Map data = await NetworkUtil().getLatestVersion();
+      if (data['have_update'] == "1") {
         Share.share(
-            "【Allpass】我发现了一款应用，快来下载吧！下载地址：${response.data['download_url']}",
+            "【Allpass】我发现了一款应用，快来下载吧！下载地址：${data['download_url']}",
             subject: "软件推荐——Allpass");
       } else {
         Share.share(
-            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}");
+            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}/");
       }
     } catch (e) {
       Share.share(
-        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}");
+        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download?version=${Application.version}/");
     }
   }
 }

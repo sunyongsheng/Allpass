@@ -2,7 +2,6 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
@@ -17,6 +16,7 @@ import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
+import 'package:allpass/utils/network_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -108,6 +108,7 @@ class Allpass extends StatelessWidget {
 void registerUser() async {
   if (Application.sp.getBool(SharedPreferencesKeys.needRegister)??true) {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
+    Map<String, String> user = Map();
     String identification;
     String systemInfo;
     if (Platform.isAndroid) {
@@ -122,9 +123,11 @@ void registerUser() async {
       return;
     }
     try {
-      Response response = await Dio().get(
-          "$allpassUrl/registerV2?identification=$identification&systemInfo=$systemInfo&allpassVersion=${Application.version}");
-      if ((response.data["result"] ?? '0') == "1") {
+      user['identification'] = identification;
+      user['systemInfo'] = systemInfo;
+      user['allpassVersion'] = Application.version;
+      Map<String, String> data = await NetworkUtil().registerUser(user);
+      if ((data["result"] ?? '0') == "1") {
         Application.sp.setBool(SharedPreferencesKeys.needRegister, false);
       } else {
         Application.sp.setBool(SharedPreferencesKeys.needRegister, true);

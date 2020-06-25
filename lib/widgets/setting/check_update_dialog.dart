@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'package:allpass/application.dart';
-import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/utils/network_util.dart';
 
 
 class CheckUpdateDialog extends StatefulWidget {
@@ -24,7 +20,6 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
   Widget _content;
   String _updateContent = "";
   String _downloadUrl;
-  Dio _dio;
 
   @override
   void initState() {
@@ -33,22 +28,20 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
   }
 
   Future<Null> checkUpdate() async {
-    _dio = Dio();
     try {
-      Response<Map> response = await _dio.get(
-          "$allpassUrl/update?version=${Application.version}");
-      if (response.data["have_update"] == "0") {
+      Map<String, String> data = await NetworkUtil().checkUpdate();
+      if (data["have_update"] == "0") {
         _update = false;
       } else {
         _update = true;
-        _downloadUrl = response.data["download_url"];
+        _downloadUrl = data["download_url"];
       }
-      _updateContent = response.data["update_content"].replaceAll("~", "\n");
+      _updateContent = data["update_content"].replaceAll("~", "\n");
       _content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _update
-              ? Text("有新版本可以下载！最新版本V${response.data["version"]}")
+              ? Text("有新版本可以下载！最新版本V${data["version"]}")
               : Text("您的版本是最新版！"),
           _update
               ? Padding(
@@ -62,7 +55,7 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
           Text(_updateContent)
         ],
       );
-    } on DioError catch (e) {
+    } catch (e) {
       Navigator.pop(context);
       _updateContent = "Unknown Error: $e";
       Fluttertoast.showToast(msg: "检查更新失败");
@@ -73,7 +66,6 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
           Text(_updateContent)
         ],
       );
-      return;
     }
   }
 

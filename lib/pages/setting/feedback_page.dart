@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/utils/network_util.dart';
 import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -20,7 +20,6 @@ class _FeedbackPage extends State<StatefulWidget> {
 
   TextEditingController _feedbackController;
   TextEditingController _contactController;
-  Dio _dio;
   String _contactCache;
 
   bool _submitSuccess = false;
@@ -31,14 +30,12 @@ class _FeedbackPage extends State<StatefulWidget> {
     _contactCache = Application.sp.getString(SharedPreferencesKeys.contact)??"";
     _feedbackController = TextEditingController();
     _contactController = TextEditingController(text: _contactCache);
-    _dio = Dio(BaseOptions(connectTimeout: 3000));
   }
 
   @override
   void dispose() {
     _feedbackController.dispose();
     _contactController.dispose();
-    _dio.close(force: true);
     super.dispose();
   }
 
@@ -135,12 +132,12 @@ class _FeedbackPage extends State<StatefulWidget> {
       map['identification'] = "unknown";
     }
     try {
-      Response res = await _dio.post("$allpassUrl/feedback", data: map);
-      if ((res.data['result']??'0') == '1') {
+      Map data = await NetworkUtil().sendFeedback(map);
+      if ((data['result']??'0') == '1') {
         Fluttertoast.showToast(msg: "感谢你的反馈！");
         _submitSuccess = true;
       }
-    } on DioError {
+    } catch (e) {
       Fluttertoast.showToast(msg: "提交失败，请检查网络连接或远程服务器错误");
     }
     Navigator.pop(context);
