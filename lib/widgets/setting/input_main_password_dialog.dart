@@ -22,6 +22,7 @@ class InputMainPasswordDialog extends StatelessWidget {
         editingController: _passwordController,
         autoFocus: true,
         helperText: helperText,
+        obscureText: true,
         onEditingComplete: () => submit(context),
       ),
       actions: <Widget>[
