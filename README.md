@@ -80,10 +80,10 @@ Allpass是一款简单的私密数据管理工具，包括支持密码存储与�
 
 # Flutter环境
 ```
-[√] Flutter (Channel stable, v1.12.13+hotfix.5, on Microsoft Windows [Version 10.0.18363.592], locale zh-CN)
+[√] Flutter (Channel stable, v1.17.4, on Microsoft Windows [Version 10.0.18363.900], locale zh-CN)
 
 [√] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
-[√] Android Studio (version 3.5)
+[√] Android Studio (version 4.0)
 ```
 
 # LICENSE

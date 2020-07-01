@@ -37,7 +37,7 @@ dependencies:
   # 路径选择
   directory_picker: ^1.0.0
   # 打开链接
-  url_launcher: ^5.2.7
+  url_launcher: ^5.4.11
   # 状态管理
   provider: ^3.2.0
   # 路由管理
@@ -47,7 +47,7 @@ dependencies:
   # 依赖注入
   get_it: ^3.0.3
   # 生物识别
-  local_auth: ^0.6.1
+  local_auth: ^0.6.2+3
   # 屏幕尺寸管理
   flutter_screenutil: ^0.7.0
   # 汉字转拼音
