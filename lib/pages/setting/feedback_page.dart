@@ -138,6 +138,7 @@ class _FeedbackPage extends State<StatefulWidget> {
         _submitSuccess = true;
       }
     } catch (e) {
+      debugPrint(e.toString());
       Fluttertoast.showToast(msg: "提交失败，请检查网络连接或远程服务器错误");
     }
     Navigator.pop(context);

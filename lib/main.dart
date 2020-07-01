@@ -133,7 +133,7 @@ void registerUser() async {
         Application.sp.setBool(SharedPreferencesKeys.needRegister, true);
       }
     } catch (e) {
-      print("网络连接失败");
+      debugPrint("用户注册失败：${e.toString()}");
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,7 +37,7 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
         _update = true;
         _downloadUrl = data["download_url"];
       }
-      _updateContent = data["update_content"].replaceAll("~", "\n");
+      _updateContent = data["update_content"]?.replaceAll("~", "\n");
       _content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -55,17 +56,27 @@ class _CheckUpdateDialog extends State<StatefulWidget> {
           Text(_updateContent)
         ],
       );
-    } catch (e) {
-      Navigator.pop(context);
-      _updateContent = "Unknown Error: $e";
+    } on DioError catch (e) {
+      _updateContent = "网络错误：$e";
       Fluttertoast.showToast(msg: "检查更新失败");
       _content = Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("检查过程中有错误出现！"),
+          Text("由于网路原因出现错误，若您确保您的网络无问题，请截图发送到sys6511@126.com"),
           Text(_updateContent)
         ],
       );
+    } catch (unknownError) {
+      _updateContent = "Unknown Error: $unknownError";
+      Fluttertoast.showToast(msg: "检查更新失败");
+      _content = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("检查过程中有错误出现！下面是错误信息，请截图发送到sys6511@126.com"),
+          Text(_updateContent)
+        ],
+      );
+      debugPrint(unknownError.toString());
     }
   }
 
