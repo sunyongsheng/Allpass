@@ -61,8 +61,11 @@ class AboutPage extends StatelessWidget {
                           subtitle: Text("一款简单的私密信息管理工具"),
                           trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
-                          onTap: () {
+                          onTap: () async {
                             pressTimes++;
+                            if (pressTimes == 1) {
+                              await launch("https://allpass.aengus.top");
+                            }
                             if (pressTimes == 10) {
                               Fluttertoast.showToast(msg: "进入开发者模式");
                               Navigator.push(context, MaterialPageRoute(
