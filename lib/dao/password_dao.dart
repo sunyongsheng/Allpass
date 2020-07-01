@@ -39,7 +39,7 @@ class PasswordDao extends BaseDBProvider {
       username TEXT NOT NULL,
       password TEXT NOT NULL,
       url TEXT NOT NULL,
-      folder TEXT DEFALUT '默认',
+      folder TEXT DEFAULT '默认',
       notes TEXT,
       label TEXT,
       fav INTEGER DEFAULT 0)

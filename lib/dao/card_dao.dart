@@ -27,7 +27,7 @@ class CardDao extends BaseDBProvider {
       cardId TEXT NOT NULL,
       password TEXT,
       telephone TEXT,
-      folder TEXT DEFALUT '默认',
+      folder TEXT DEFAULT '默认',
       notes TEXT,
       label TEXT,
       fav INTEGER DEFAULT 0)
