@@ -32,7 +32,7 @@ class NetworkUtil {
   /// 检查更新
   Future<Map<String, String>> checkUpdate() async {
     Response response =  await _dio.get(
-        "$allpassUrl/update?version=${Application.version}");
+        "$allpassUrl/update/?version=${Application.version}");
     Map<String, String> res = Map();
     for (String key in response.data.keys) {
       res[key] = response.data[key];
@@ -43,7 +43,7 @@ class NetworkUtil {
   /// 获取最新版本
   Future<Map<String, String>> getLatestVersion() async {
     Response<Map> response = await Dio(BaseOptions(connectTimeout: 10)).get(
-        "$allpassUrl/update?version=1.0.0");
+        "$allpassUrl/update/?version=1.0.0");
     Map<String, String> res = Map();
     for (String key in response.data.keys) {
       res[key] = response.data[key];
