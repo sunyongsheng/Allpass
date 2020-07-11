@@ -149,9 +149,9 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                 child: FlatButton(
                   color: _mainColor,
                   child: _pressNext
-                      ? LimitedBox(
-                    maxHeight: 20,
-                    maxWidth: 20,
+                      ? SizedBox(
+                    height: 20,
+                    width: 20,
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.white,
                       strokeWidth: 2.3,
