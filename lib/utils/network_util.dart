@@ -11,7 +11,7 @@ class NetworkUtil {
 
   /// 发送注册
   Future<Map<String, String>> registerUser(Map<String, String> user) async {
-    Response response = await _dio.post<Map<String, String>>("$allpassUrl/user/", data: user);
+    Response response = await _dio.post("$allpassUrl/user/", data: user);
     Map<String, String> res = Map();
     for (String key in response.data.keys) {
       res[key] = response.data[key];
