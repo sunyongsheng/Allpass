@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class DBManager {
   /// 数据库版本
-  static const int _dbVersion = 1;
+  static const int _dbVersion = 2;
 
   /// 数据库名称
   static const String _dbName = "allpass_db";
@@ -21,7 +22,7 @@ class DBManager {
       path = dbName + "/" + dbName;
     }
     // 打开数据库
-    _database = await openDatabase(path, version: _dbVersion);
+    _database = await openDatabase(path, version: _dbVersion, onUpgrade: onUpdate);
   }
 
   /// 判断表是否存在
@@ -44,6 +45,54 @@ class DBManager {
   static close() {
     _database?.close();
     _database = null;
+  }
+
+  /// 数据库版本升级
+  static void onUpdate(Database database, int oldVersion, int newVersion) {
+    if (oldVersion == 1 && newVersion == 2) {
+      debugPrint("数据库升级： 1 -> 2");
+      String renamePasswordSql = "ALTER TABLE allpass_password RENAME TO allpass_password1";
+      database.execute(renamePasswordSql);
+      String createPasswordSql = '''
+        CREATE TABLE allpass_password(
+        uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
+        url TEXT NOT NULL,
+        folder TEXT DEFAULT '默认',
+        notes TEXT,
+        label TEXT,
+        fav INTEGER DEFAULT 0)
+      ''';
+      database.execute(createPasswordSql);
+      String movePasswordSql = "INSERT INTO allpass_password SELECT uniqueKey,name,username,password,url,folder,notes,label,fav from allpass_password1";
+      database.execute(movePasswordSql);
+      String dropPasswordSql = "DROP TABLE allpass_password1";
+      database.execute(dropPasswordSql);
+
+      String renameCardSql = "ALTER TABLE allpass_card RENAME TO allpass_card1";
+      database.execute(renameCardSql);
+      String createCardSql = '''
+        CREATE TABLE allpass_card(
+        uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        ownerName TEXT,
+        cardId TEXT NOT NULL,
+        password TEXT,
+        telephone TEXT,
+        folder TEXT DEFAULT '默认',
+        notes TEXT,
+        label TEXT,
+        fav INTEGER DEFAULT 0)
+      ''';
+      database.execute(createCardSql);
+      String moveCardSql = "INSERT INTO allpass_card SELECT uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav from allpass_card1";
+      database.execute(moveCardSql);
+      String dropCardSql = "DROP TABLE allpass_card1";
+      database.execute(dropCardSql);
+      debugPrint("数据库升级完成");
+    }
   }
 
 }
