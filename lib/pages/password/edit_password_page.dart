@@ -42,6 +42,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   TextEditingController _urlController;
   List<String> _labels;
   int _fav = 0;
+  String _createTime;
 
   Color _mainColor;
 
@@ -77,6 +78,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;
+      _createTime = _oldData.createTime;
     } else {
       _nameController = TextEditingController();
       _usernameController = TextEditingController();
@@ -138,7 +140,8 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   notes: _notesController.text,
                   isChanged: true,
                   fav: _fav,
-                  color: _oldData?.color??getRandomColor()
+                  color: _oldData?.color??getRandomColor(),
+                  createTime: _createTime
                 );
                 Navigator.pop<PasswordBean>(context, tempData);
               } else {

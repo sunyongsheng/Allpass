@@ -16,6 +16,7 @@ class CardBean extends BaseModel {
   String notes; // 8 备注
   List<String> label; // 9 标签
   int fav; // 10 是否标心
+  String createTime;  // 11 创建时间，为了方便数据库存储使用Iso8601String
 
   CardBean({
     int key,
@@ -28,6 +29,7 @@ class CardBean extends BaseModel {
     String notes: "",
     List<String> label,
     int fav: 0,
+    String createTime,
     Color color,
     bool isChanged: false}) {
     this.ownerName = ownerName;
@@ -40,6 +42,7 @@ class CardBean extends BaseModel {
     this.password = password;
     this.isChanged = isChanged;
     this.color = color;
+    this.createTime = createTime ?? DateTime.now().toIso8601String();
 
     if (name.trim().length < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
@@ -85,7 +88,9 @@ class CardBean extends BaseModel {
         name: map["name"],
         telephone: map["telephone"],
         password: map['password'],
-        label: newLabel);
+        label: newLabel,
+        createTime: map['createTime']
+    );
   }
 
   /// 将CardBean转化为Map
@@ -101,7 +106,8 @@ class CardBean extends BaseModel {
       "folder": this.folder,
       "fav": this.fav,
       "notes": this.notes,
-      "label": labels
+      "label": labels,
+      "createTime": this.createTime
     };
     return map;
   }
@@ -120,7 +126,8 @@ class CardBean extends BaseModel {
         "${bean.folder},"
         "${bean.notes},"
         "$labels,"
-        "${bean.fav}\n";
+        "${bean.fav},"
+        "${bean.createTime}\n";
     return csv;
   }
 }

@@ -13,6 +13,18 @@ class PasswordDao extends BaseDBProvider {
   /// 表主键字段
   final String columnId = "uniqueKey";
 
+  /// 版本1列名
+  final String columnName = "name";
+  final String columnUsername = "username";
+  final String columnPassword = "password";
+  final String columnUrl = "url";
+  final String columnFolder = "folder";
+  final String columnNotes = "notes";
+  final String columnLabel = "label";
+  final String columnFav = "fav";
+  /// 版本2列名
+  final String columnCreateTime = "createTime";
+
   @override
   tableName() {
     return name;
@@ -35,14 +47,15 @@ class PasswordDao extends BaseDBProvider {
   tableSqlString() {
     return tableBaseString(name, columnId) +
       '''
-      name TEXT NOT NULL,
-      username TEXT NOT NULL,
-      password TEXT NOT NULL,
-      url TEXT NOT NULL,
-      folder TEXT DEFAULT '默认',
-      notes TEXT,
-      label TEXT,
-      fav INTEGER DEFAULT 0)
+      $columnName TEXT NOT NULL,
+      $columnUsername TEXT NOT NULL,
+      $columnPassword TEXT NOT NULL,
+      $columnUrl TEXT NOT NULL,
+      $columnFolder TEXT DEFAULT '默认',
+      $columnNotes TEXT,
+      $columnLabel TEXT,
+      $columnFav INTEGER DEFAULT 0,
+      $columnCreateTime TEXT)
       ''';
   }
 
@@ -91,7 +104,15 @@ class PasswordDao extends BaseDBProvider {
   Future<int> updatePasswordBean(PasswordBean bean) async {
     Database db = await getDataBase();
     String labels = list2WaveLineSegStr(bean.label);
-    return await db.rawUpdate("UPDATE $name SET name=?, username=?, password=?, url=?, folder=?, fav=?, notes=?, label=? WHERE $columnId=${bean.uniqueKey}",
+    return await db.rawUpdate("UPDATE $name SET "
+        "$columnName=?,"
+        "$columnUsername=?,"
+        "$columnPassword=?,"
+        "$columnUrl=?,"
+        "$columnFolder=?,"
+        "$columnFav=?,"
+        "$columnNotes=?,"
+        "$columnLabel=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels]);
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));

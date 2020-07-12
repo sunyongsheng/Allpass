@@ -55,7 +55,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       label: data.label,
       notes: data.notes,
       fav: data.fav,
-      color: data.color);
+      color: data.color,
+      createTime: data.createTime
+    );
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {

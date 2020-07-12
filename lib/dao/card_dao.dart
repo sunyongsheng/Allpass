@@ -12,6 +12,18 @@ class CardDao extends BaseDBProvider {
   /// 表主键字段
   final String columnId = "uniqueKey";
 
+  /// 版本1列名
+  final String columnName = "name";
+  final String columnOwnerName = "ownerName";
+  final String columnCardId = "cardId";
+  final String columnPassword = "password";
+  final String columnTelephone = "telephone";
+  final String columnFolder  ="folder";
+  final String columnNotes = "notes";
+  final String columnLabel = "label";
+  final String columnFav = "fav";
+  final String columnCreateTime = "createTime";
+
   @override
   tableName() {
     return name;
@@ -22,15 +34,16 @@ class CardDao extends BaseDBProvider {
   tableSqlString() {
     return tableBaseString(name, columnId) +
         '''
-      name TEXT NOT NULL,
-      ownerName TEXT,
-      cardId TEXT NOT NULL,
-      password TEXT,
-      telephone TEXT,
-      folder TEXT DEFAULT '默认',
-      notes TEXT,
-      label TEXT,
-      fav INTEGER DEFAULT 0)
+      $columnName TEXT NOT NULL,
+      $columnOwnerName TEXT,
+      $columnCardId TEXT NOT NULL,
+      $columnPassword TEXT,
+      $columnTelephone TEXT,
+      $columnFolder TEXT DEFAULT '默认',
+      $columnNotes TEXT,
+      $columnLabel TEXT,
+      $columnFav INTEGER DEFAULT 0,
+      $columnCreateTime TEXT)
       ''';
   }
 
@@ -89,7 +102,16 @@ class CardDao extends BaseDBProvider {
   Future<int> updatePasswordBean(CardBean bean) async {
     Database db = await getDataBase();
     String labels = list2WaveLineSegStr(bean.label);
-    return await db.rawUpdate("UPDATE $name SET name=?, ownerName=?, cardId=?, password=?, telephone=?, folder=?, notes=?, label=?, fav=? WHERE $columnId=${bean.uniqueKey}",
+    return await db.rawUpdate("UPDATE $name SET "
+        "$columnName=?,"
+        "$columnOwnerName=?,"
+        "$columnCardId=?,"
+        "$columnPassword=?,"
+        "$columnTelephone=?,"
+        "$columnFolder=?,"
+        "$columnNotes=?,"
+        "$columnLabel=?,"
+        "$columnFav=? WHERE $columnId=${bean.uniqueKey}",
         [bean.name, bean.ownerName, bean.cardId, bean.password, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
   }
 }

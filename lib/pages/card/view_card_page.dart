@@ -56,7 +56,8 @@ class _ViewCardPage extends State<ViewCardPage> {
         notes: data.notes,
         fav: data.fav,
         label: data.label,
-      color: data.color
+        color: data.color,
+        createTime: data.createTime
     );
 
     _futureHelper = _decryptPassword();

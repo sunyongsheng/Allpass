@@ -15,6 +15,7 @@ class PasswordBean extends BaseModel {
   String notes; // 7 备注
   List<String> label; // 8 标签
   int fav; // 9 是否标心，0代表否
+  String createTime; // 10 创建时间，为了方便存储使用Iso8601String
 
   PasswordBean({
     int key,
@@ -26,6 +27,7 @@ class PasswordBean extends BaseModel {
     String notes: "",
     List<String> label,
     int fav: 0,
+    String createTime,
     Color color,
     bool isChanged: false}) {
     this.username = username;
@@ -37,6 +39,7 @@ class PasswordBean extends BaseModel {
     this.uniqueKey = key;
     this.isChanged = isChanged;
     this.color = color;
+    this.createTime = createTime ?? DateTime.now().toIso8601String();
 
     if (name.trim().length < 1) {
       if (url.contains("weibo")) {
@@ -97,7 +100,9 @@ class PasswordBean extends BaseModel {
         fav: map["fav"],
         key: map["uniqueKey"],
         name: map["name"],
-        label: newLabel);
+        label: newLabel,
+        createTime: map['createTime']
+    );
   }
 
   /// 将PasswordBean转化为Map
@@ -112,7 +117,8 @@ class PasswordBean extends BaseModel {
       "folder": this.folder,
       "fav": this.fav,
       "notes": this.notes,
-      "label": labels
+      "label": labels,
+      "createTime": this.createTime
     };
     return map;
   }
@@ -129,7 +135,8 @@ class PasswordBean extends BaseModel {
         "${bean.folder},"
         "${bean.notes},"
         "$labels,"
-        "${bean.fav}\n";
+        "${bean.fav},"
+        "${bean.createTime}\n";
     return csv;
   }
 }

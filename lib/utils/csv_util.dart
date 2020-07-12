@@ -70,6 +70,7 @@ class CsvUtil {
           label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
         int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
+        String createTime = getValueWithCatch(attribute, indexMap, "createTime");
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -79,6 +80,7 @@ class CsvUtil {
           notes: notes,
           label: label,
           fav: fav,
+          createTime: createTime
         ));
       }
     }
@@ -112,6 +114,7 @@ class CsvUtil {
         if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
           label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
+        String createTime = getValueWithCatch(attribute, indexMap, "createTime");
         res.add(CardBean(
           name: name,
           ownerName: ownerName,
@@ -122,6 +125,7 @@ class CsvUtil {
           notes: notes,
           label: label,
           fav: fav,
+          createTime: createTime
         ));
       }
     }

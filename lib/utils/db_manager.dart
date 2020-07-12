@@ -63,13 +63,17 @@ class DBManager {
         folder TEXT DEFAULT '默认',
         notes TEXT,
         label TEXT,
-        fav INTEGER DEFAULT 0)
+        fav INTEGER DEFAULT 0,
+        createTime TEXT)
       ''';
       database.execute(createPasswordSql);
-      String movePasswordSql = "INSERT INTO allpass_password SELECT uniqueKey,name,username,password,url,folder,notes,label,fav from allpass_password1";
+      String movePasswordSql = "INSERT INTO allpass_password(uniqueKey,name,username,password,url,folder,notes,label,fav) "
+          "SELECT uniqueKey,name,username,password,url,folder,notes,label,fav from allpass_password1";
       database.execute(movePasswordSql);
       String dropPasswordSql = "DROP TABLE allpass_password1";
       database.execute(dropPasswordSql);
+      String updatePasswordSql = "UPDATE allpass_password SET createTime=?";
+      database.execute(updatePasswordSql, [DateTime.now().toIso8601String()]);
 
       String renameCardSql = "ALTER TABLE allpass_card RENAME TO allpass_card1";
       database.execute(renameCardSql);
@@ -84,13 +88,18 @@ class DBManager {
         folder TEXT DEFAULT '默认',
         notes TEXT,
         label TEXT,
-        fav INTEGER DEFAULT 0)
+        fav INTEGER DEFAULT 0,
+        createTime TEXT)
       ''';
       database.execute(createCardSql);
-      String moveCardSql = "INSERT INTO allpass_card SELECT uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav from allpass_card1";
+      String moveCardSql = "INSERT INTO allpass_card(uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav)"
+          " SELECT uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav from allpass_card1";
       database.execute(moveCardSql);
       String dropCardSql = "DROP TABLE allpass_card1";
       database.execute(dropCardSql);
+      String updateCardSql = "UPDATE allpass_card SET createTime=?";
+      database.execute(updateCardSql, [DateTime.now().toIso8601String()]);
+
       debugPrint("数据库升级完成");
     }
   }

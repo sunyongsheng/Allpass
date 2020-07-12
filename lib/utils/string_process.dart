@@ -38,13 +38,13 @@ String list2PureStr(List<String> list) {
 /// 将csv格式的List转化为一个String
 Future<String> csvList2Str(List<BaseModel> list) async {
   if (list[0] is PasswordBean) {
-    StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav\n");
+    StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav,createTime\n");
     for (var item in list) {
       w.write(await PasswordBean.toCsv(item));
     }
     return w.toString();
   } else if (list[0] is CardBean) {
-    StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav\n");
+    StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav,createTime\n");
     for (var item in list) {
       w.write(CardBean.toCsv(item));
     }

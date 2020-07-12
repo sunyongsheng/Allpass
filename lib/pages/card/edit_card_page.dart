@@ -45,6 +45,7 @@ class _EditCardPage extends State<EditCardPage> {
   String _folder = "默认";
   List<String> _labels;
   int _fav = 0;
+  String _createTime;
 
 
   Future<Null> _decryptPassword() async {
@@ -67,6 +68,7 @@ class _EditCardPage extends State<EditCardPage> {
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;
+      _createTime = _oldData.createTime;
     } else {
       _nameController = TextEditingController();
       _ownerNameController = TextEditingController();
@@ -142,7 +144,8 @@ class _EditCardPage extends State<EditCardPage> {
                     notes: _notesController.text,
                     password: pwd,
                     isChanged: true,
-                    color: _oldData?.color??getRandomColor()
+                    color: _oldData?.color??getRandomColor(),
+                    createTime: _createTime
                   );
                   if (_passwordController.text.length < 1) {
                     Fluttertoast.showToast(msg: "未输入密码，自动初始化为00000");
