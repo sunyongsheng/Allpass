@@ -85,7 +85,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         child: ListTile(
           // TODO 增加trailing属性显示有多少个密码账号含有此标签
           title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
-          leading: Icon(Icons.list),
+          leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
             if (categoryName == "文件夹" && currCategoryName == "默认") {
               Fluttertoast.showToast(msg: "此文件夹不允许修改！");

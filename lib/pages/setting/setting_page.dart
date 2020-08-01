@@ -14,6 +14,7 @@ import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/services/authentication_service.dart';
 import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/feedback_page.dart';
+import 'package:allpass/pages/setting/theme_select_page.dart';
 import 'package:allpass/pages/setting/account_manager_page.dart';
 import 'package:allpass/pages/setting/category_manager_page.dart';
 import 'package:allpass/pages/setting/import/import_export_page.dart';
@@ -142,149 +143,8 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                         title: Text("主题颜色"),
                         leading: Icon(Icons.color_lens, color: AllpassColorUI.allColor[5]),
                         onTap: () {
-                          showDialog(context: context, child: AlertDialog(
-                            title: Text("修改主题"),
-                            content: SingleChildScrollView(
-                                child: Column(
-                                  children: <Widget>[
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.blue,
-                                        child: Center(
-                                          child: Text("蓝色", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("blue");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.red,
-                                        child: Center(
-                                          child: Text("红色", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("red");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.teal,
-                                        child: Center(
-                                          child: Text("青色", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("teal");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.deepPurple,
-                                        child: Center(
-                                          child: Text("深紫", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("deepPurple");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.orange,
-                                        child: Center(
-                                          child: Text("橙色", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("orange");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.pink,
-                                        child: Center(
-                                          child: Text("粉色", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("pink");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.blueGrey,
-                                        child: Center(
-                                          child: Text("蓝灰", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("blueGrey");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.black,
-                                        child: Center(
-                                          child: Text("暗黑", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("dark");
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
-                                        color: Colors.grey,
-                                        child: Center(
-                                          child: Text("跟随系统", style: TextStyle(
-                                              color: Colors.white
-                                          ),),
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Provider.of<ThemeProvider>(context).changeTheme("system", context: context);
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                )
-                            ),
+                          Navigator.push(context, CupertinoPageRoute(
+                            builder: (context) => ThemeSelectPage(),
                           ));
                         },
                       ),

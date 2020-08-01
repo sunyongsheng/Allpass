@@ -48,7 +48,6 @@ class AllpassTheme {
         FloatingActionButtonThemeData(foregroundColor: Colors.white),
       scaffoldBackgroundColor: Colors.black,
       bottomSheetTheme: BottomSheetThemeData(modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),),
-      iconTheme: IconThemeData(color: Colors.grey[500]),
       cardColor: Colors.grey[900],
       indicatorColor: Colors.blueAccent,
       cursorColor: Colors.blueAccent,

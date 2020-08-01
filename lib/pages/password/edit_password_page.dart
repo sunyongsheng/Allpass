@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/params/config.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/utils/theme_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/widgets/common/label_chip.dart';
@@ -304,7 +304,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Text(item, style: TextStyle(
-                                      color: Config.lightTheme == 'dark'
+                                      color: ThemeUtil.isInDarkTheme(context)
                                           ? Colors.white
                                           : Colors.black
                                   ),),
