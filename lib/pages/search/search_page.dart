@@ -192,7 +192,7 @@ class _SearchPage extends State<SearchPage> {
                     hintText: "搜索名称、用户名、备注或标签",
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      color: Config.theme == 'dark'
+                      color: Config.lightTheme == 'dark'
                           ? Colors.grey
                           : Colors.grey[900],),
                   ),

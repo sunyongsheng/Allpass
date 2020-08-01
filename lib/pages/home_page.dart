@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
 import 'package:allpass/pages/classification/classification_page.dart';
@@ -28,12 +29,23 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void initState() {
     super.initState();
     _controller = PageController(initialPage: 0);
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<ThemeProvider>(context).setExtraColor(context: context);
+    });
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    Provider.of<ThemeProvider>(context).setExtraColor(context: context, needReverse: true);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override

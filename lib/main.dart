@@ -98,7 +98,9 @@ class Allpass extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Allpass',
-      theme: Provider.of<ThemeProvider>(context).currTheme,
+      theme: Provider.of<ThemeProvider>(context).lightTheme,
+      darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
+      themeMode: Provider.of<ThemeProvider>(context).themeMode,
       home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
     );

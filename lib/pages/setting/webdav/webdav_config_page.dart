@@ -42,7 +42,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _pressNext = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+        _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
       });
     });
     _utils = WebDavUtil();

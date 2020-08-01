@@ -15,7 +15,7 @@ class LabelChip extends StatelessWidget {
       labelStyle: TextStyle(fontSize: 14, color: Colors.white),
       selected: selected,
       onSelected: onSelected,
-      selectedColor: Provider.of<ThemeProvider>(context).currTheme.primaryColor,
+      selectedColor: Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
     );
   }
 

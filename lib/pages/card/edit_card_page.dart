@@ -81,7 +81,7 @@ class _EditCardPage extends State<EditCardPage> {
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+      _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
     });
     super.initState();
   }
@@ -328,7 +328,7 @@ class _EditCardPage extends State<EditCardPage> {
                                 return DropdownMenuItem<String>(
                                   value: item,
                                   child: Text(item, style: TextStyle(
-                                      color: Config.theme == 'dark'
+                                      color: Config.lightTheme == 'dark'
                                           ? Colors.white
                                           : Colors.black
                                   ),),

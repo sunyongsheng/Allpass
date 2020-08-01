@@ -61,7 +61,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mainColor = Provider.of<ThemeProvider>(context).currTheme.primaryColor;
+      _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
     });
     super.initState();
   }

@@ -165,7 +165,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   child: Text("复制",
                     style: TextStyle(
                       fontSize: 14,
-                      color: Provider.of<ThemeProvider>(context).currTheme.primaryColor),),
+                      color: Provider.of<ThemeProvider>(context).lightTheme.primaryColor),),
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: _controller.text));
                   },

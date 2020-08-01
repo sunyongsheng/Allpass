@@ -10,7 +10,8 @@ class Config {
   static String password;         // 使用者密码
   static bool enabledBiometrics;  // 是否启用生物识别
   static bool longPressCopy;      // 是否开启长按复制，否则为长按多选
-  static String theme;            // 主题名
+  static String lightTheme;       // 浅色主题名
+  static String themeMode;        // 主题模式
   static bool webDavAuthSuccess;  // WebDAV是否验证成功
   static String webDavUrl;        // WebDAV地址
   static String webDavUsername;   // WebDAV用户名
@@ -28,7 +29,8 @@ class Config {
     // 判断长按功能
     longPressCopy = Application.sp.getBool(SharedPreferencesKeys.longPressCopy)??true;
     // 初始化主题
-    theme = Application.sp.getString(SharedPreferencesKeys.theme)??"blue";
+    lightTheme = Application.sp.getString(SharedPreferencesKeys.lightTheme)??"blue";
+    themeMode = Application.sp.getString(SharedPreferencesKeys.themeMode)??"system";
     // 初始化WebDAV
     webDavAuthSuccess = Application.sp.getBool(SharedPreferencesKeys.webDavAuthSuccess)??false;
     webDavUrl = Application.sp.getString(SharedPreferencesKeys.webDavUrl)??"";
@@ -44,7 +46,8 @@ class Config {
     password = "";
     enabledBiometrics = false;
     longPressCopy = true;
-    theme = "blue";
+    lightTheme = "blue";
+    themeMode = "system";
     webDavAuthSuccess = false;
     webDavUrl = "";
     webDavUsername = "";
@@ -69,9 +72,13 @@ class Config {
     longPressCopy = value;
     Application.sp.setBool(SharedPreferencesKeys.longPressCopy, value);
   }
-  static void setTheme(String value) {
-    theme = value;
-    Application.sp.setString(SharedPreferencesKeys.theme, value);
+  static void setLightTheme(String value) {
+    lightTheme = value;
+    Application.sp.setString(SharedPreferencesKeys.lightTheme, value);
+  }
+  static void setThemeMode(String value) {
+    themeMode = value;
+    Application.sp.setString(SharedPreferencesKeys.themeMode, value);
   }
   static void setWebDavAuthSuccess(bool value) {
     webDavAuthSuccess = value;

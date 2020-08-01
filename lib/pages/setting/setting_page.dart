@@ -267,6 +267,21 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                                         Navigator.pop(context);
                                       },
                                     ),
+                                    ListTile(
+                                      title: Container(
+                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                        color: Colors.grey,
+                                        child: Center(
+                                          child: Text("跟随系统", style: TextStyle(
+                                              color: Colors.white
+                                          ),),
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Provider.of<ThemeProvider>(context).changeTheme("system", context: context);
+                                        Navigator.pop(context);
+                                      },
+                                    ),
                                   ],
                                 )
                             ),

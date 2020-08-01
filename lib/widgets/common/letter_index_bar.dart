@@ -41,7 +41,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     letters.forEach((item) {
       _children.add(SizedBox(
         child: Text(item, style: TextStyle(
-            color: keys.contains(item) ? Provider.of<ThemeProvider>(context).containColor : Colors.grey
+            color: keys.contains(item) ? null : Colors.grey
         ),),
         height: 16,
       ));
