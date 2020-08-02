@@ -5,6 +5,7 @@ class SharedPreferencesKeys {
   // 15个key
   static const String firstRun = "FIRST_RUN";
   static const String needRegister = "NEED_REGISTER";
+  static const String allpassVersion = "ALLPASS_VERSION";
   static const String username = "username";
   static const String password = "password";
   static const String biometrics = "biometrics";

@@ -108,7 +108,7 @@ class Allpass extends StatelessWidget {
 }
 
 void registerUser() async {
-  if (Application.sp.getBool(SharedPreferencesKeys.needRegister)??true) {
+  Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     Map<String, String> user = Map();
     String identification;
@@ -136,6 +136,14 @@ void registerUser() async {
       }
     } catch (e) {
       debugPrint("用户注册失败：${e.toString()}");
+    }
+  }
+  if (Application.sp.getBool(SharedPreferencesKeys.needRegister)??true) {
+    await registerUserActual();
+  } else {
+    if (!(Application.sp.getString(SharedPreferencesKeys.allpassVersion)??"1.0.0" == Application.version)) {
+      await registerUserActual();
+      Application.sp.setString(SharedPreferencesKeys.allpassVersion, Application.version);
     }
   }
 }
