@@ -27,7 +27,7 @@ class _FeedbackPage extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
-    _contactCache = Application.sp.getString(SharedPreferencesKeys.contact)??"";
+    _contactCache = Application.sp.getString(SPKeys.contact)??"";
     _feedbackController = TextEditingController();
     _contactController = TextEditingController(text: _contactCache);
   }
@@ -119,7 +119,7 @@ class _FeedbackPage extends State<StatefulWidget> {
     map['contact'] = _contactController.text;
     map['allpassVersion'] = Application.version;
     if (_contactController.text.isNotEmpty) {
-      Application.sp.setString(SharedPreferencesKeys.contact, _contactController.text);
+      Application.sp.setString(SPKeys.contact, _contactController.text);
     }
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {

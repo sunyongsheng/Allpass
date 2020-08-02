@@ -35,7 +35,7 @@ class _LoginPage extends State<LoginPage> {
   void initState() {
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
-    if (Application.sp.getBool(SharedPreferencesKeys.firstRun)??true) {
+    if (Application.sp.getBool(SPKeys.firstRun)??true) {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         showDialog(
             context: context,

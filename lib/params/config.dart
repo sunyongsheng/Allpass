@@ -25,25 +25,25 @@ class Config {
   /// 参数初始化
   static void initConfig() {
     // 初始化当前用户名与密码
-    username = Application.sp.getString(SharedPreferencesKeys.username)??"";
-    password = Application.sp.getString(SharedPreferencesKeys.password)??"";
+    username = Application.sp.getString(SPKeys.username)??"";
+    password = Application.sp.getString(SPKeys.password)??"";
     // 判断是否开启生物识别
-    enabledBiometrics = Application.sp.getBool(SharedPreferencesKeys.biometrics)??false;
+    enabledBiometrics = Application.sp.getBool(SPKeys.biometrics)??false;
     // 判断长按功能
-    longPressCopy = Application.sp.getBool(SharedPreferencesKeys.longPressCopy)??true;
+    longPressCopy = Application.sp.getBool(SPKeys.longPressCopy)??true;
     // 初始化主题
-    lightTheme = Application.sp.getString(SharedPreferencesKeys.lightTheme)??"blue";
-    themeMode = Application.sp.getString(SharedPreferencesKeys.themeMode)??"system";
+    lightTheme = Application.sp.getString(SPKeys.lightTheme)??"blue";
+    themeMode = Application.sp.getString(SPKeys.themeMode)??"system";
     // 初始化WebDAV
-    webDavAuthSuccess = Application.sp.getBool(SharedPreferencesKeys.webDavAuthSuccess)??false;
-    webDavUrl = Application.sp.getString(SharedPreferencesKeys.webDavUrl)??"";
-    webDavUsername = Application.sp.getString(SharedPreferencesKeys.webDavUsername)??"";
-    webDavPassword = Application.sp.getString(SharedPreferencesKeys.webDavPassword)??"";
-    webDavPort = Application.sp.getInt(SharedPreferencesKeys.webDavPort)??443;
-    webDavPasswordName = Application.sp.getString(SharedPreferencesKeys.webDavPasswordName)??"allpass_password";
-    webDavCardName = Application.sp.getString(SharedPreferencesKeys.webDavCardName)??"allpass_card";
+    webDavAuthSuccess = Application.sp.getBool(SPKeys.webDavAuthSuccess)??false;
+    webDavUrl = Application.sp.getString(SPKeys.webDavUrl)??"";
+    webDavUsername = Application.sp.getString(SPKeys.webDavUsername)??"";
+    webDavPassword = Application.sp.getString(SPKeys.webDavPassword)??"";
+    webDavPort = Application.sp.getInt(SPKeys.webDavPort)??443;
+    webDavPasswordName = Application.sp.getString(SPKeys.webDavPasswordName)??"allpass_password";
+    webDavCardName = Application.sp.getString(SPKeys.webDavCardName)??"allpass_card";
     // 定期输入主密码天数
-    timingInMainPassword = Application.sp.getInt(SharedPreferencesKeys.timingInputMainPassword)??10;
+    timingInMainPassword = Application.sp.getInt(SPKeys.timingInputMainPassword)??10;
     RuntimeData.initData();
   }
 
@@ -68,59 +68,59 @@ class Config {
 
   static void setUsername(String value) {
     username = value;
-    Application.sp.setString(SharedPreferencesKeys.username, value);
+    Application.sp.setString(SPKeys.username, value);
   }
   static void setPassword(String encryptedValue) {
     password = encryptedValue;
-    Application.sp.setString(SharedPreferencesKeys.password, encryptedValue);
+    Application.sp.setString(SPKeys.password, encryptedValue);
   }
   static void setEnabledBiometrics(bool value) {
     enabledBiometrics = value;
-    Application.sp.setBool(SharedPreferencesKeys.biometrics, value);
+    Application.sp.setBool(SPKeys.biometrics, value);
   }
   static void setLongPressCopy(bool value) {
     longPressCopy = value;
-    Application.sp.setBool(SharedPreferencesKeys.longPressCopy, value);
+    Application.sp.setBool(SPKeys.longPressCopy, value);
   }
   static void setLightTheme(String value) {
     lightTheme = value;
-    Application.sp.setString(SharedPreferencesKeys.lightTheme, value);
+    Application.sp.setString(SPKeys.lightTheme, value);
   }
   static void setThemeMode(String value) {
     themeMode = value;
-    Application.sp.setString(SharedPreferencesKeys.themeMode, value);
+    Application.sp.setString(SPKeys.themeMode, value);
   }
   static void setWebDavAuthSuccess(bool value) {
     webDavAuthSuccess = value;
-    Application.sp.setBool(SharedPreferencesKeys.webDavAuthSuccess, value);
+    Application.sp.setBool(SPKeys.webDavAuthSuccess, value);
   }
   static void setWebDavUrl(String value) {
     webDavUrl = value;
-    Application.sp.setString(SharedPreferencesKeys.webDavUrl, value);
+    Application.sp.setString(SPKeys.webDavUrl, value);
   }
   static void setWebDavUsername(String value) {
     webDavUsername = value;
-    Application.sp.setString(SharedPreferencesKeys.webDavUsername, value);
+    Application.sp.setString(SPKeys.webDavUsername, value);
   }
   static void setWebDavPassword(String encryptedValue) {
     webDavPassword = encryptedValue;
-    Application.sp.setString(SharedPreferencesKeys.webDavPassword, encryptedValue);
+    Application.sp.setString(SPKeys.webDavPassword, encryptedValue);
   }
   static void setWebDavPort(int value) {
     webDavPort = value;
-    Application.sp.setInt(SharedPreferencesKeys.webDavPort, value);
+    Application.sp.setInt(SPKeys.webDavPort, value);
   }
   static void setPasswordFileName(String value) {
     webDavPasswordName = value;
-    Application.sp.setString(SharedPreferencesKeys.webDavPasswordName, value);
+    Application.sp.setString(SPKeys.webDavPasswordName, value);
   }
   static void setCardFileName(String value) {
     webDavCardName = value;
-    Application.sp.setString(SharedPreferencesKeys.webDavCardName, value);
+    Application.sp.setString(SPKeys.webDavCardName, value);
   }
   static void setTimingInMainPassDays(int value) {
     timingInMainPassword = value;
-    Application.sp.setInt(SharedPreferencesKeys.timingInputMainPassword, value);
+    Application.sp.setInt(SPKeys.timingInputMainPassword, value);
   }
 
 }

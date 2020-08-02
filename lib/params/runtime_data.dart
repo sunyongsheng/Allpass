@@ -26,8 +26,8 @@ class RuntimeData {
     tapVerticalPosition = 0;
     multiSelected = false;
 
-    String folder = Application.sp.getString(SharedPreferencesKeys.folder)??"";
-    String label = Application.sp.getString(SharedPreferencesKeys.label)??"";
+    String folder = Application.sp.getString(SPKeys.folder)??"";
+    String label = Application.sp.getString(SPKeys.label)??"";
     folderList = waveLineSegStr2List(folder);
     labelList = waveLineSegStr2List(label);
   }
@@ -63,12 +63,12 @@ class RuntimeData {
 
   /// 标签参数持久化
   static void labelParamsPersistence() {
-    Application.sp.setString(SharedPreferencesKeys.label, list2WaveLineSegStr(labelList));
+    Application.sp.setString(SPKeys.label, list2WaveLineSegStr(labelList));
   }
 
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
-    Application.sp.setString(SharedPreferencesKeys.folder, list2WaveLineSegStr(folderList));
+    Application.sp.setString(SPKeys.folder, list2WaveLineSegStr(folderList));
   }
 
   /// 更新点击的位置

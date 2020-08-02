@@ -95,7 +95,7 @@ class RegisterPage extends StatelessWidget {
       return;
     }
     // 判断是否已有账号存在
-    if (Application.sp.getString(SharedPreferencesKeys.username) == "") {
+    if (Application.sp.getString(SPKeys.username) == "") {
       // 判断用户名和密码长度
       if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
         String _password = EncryptUtil.encrypt(_passwordController.text);

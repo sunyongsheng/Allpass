@@ -130,20 +130,20 @@ void registerUser() async {
       user['allpassVersion'] = Application.version;
       Map<String, String> data = await NetworkUtil().registerUser(user);
       if ((data["result"] ?? '0') == "1") {
-        Application.sp.setBool(SharedPreferencesKeys.needRegister, false);
+        Application.sp.setBool(SPKeys.needRegister, false);
       } else {
-        Application.sp.setBool(SharedPreferencesKeys.needRegister, true);
+        Application.sp.setBool(SPKeys.needRegister, true);
       }
     } catch (e) {
       debugPrint("用户注册失败：${e.toString()}");
     }
   }
-  if (Application.sp.getBool(SharedPreferencesKeys.needRegister)??true) {
+  if (Application.sp.getBool(SPKeys.needRegister)??true) {
     await registerUserActual();
   } else {
-    if (!(Application.sp.getString(SharedPreferencesKeys.allpassVersion)??"1.0.0" == Application.version)) {
+    if (!(Application.sp.getString(SPKeys.allpassVersion)??"1.0.0" == Application.version)) {
       await registerUserActual();
-      Application.sp.setString(SharedPreferencesKeys.allpassVersion, Application.version);
+      Application.sp.setString(SPKeys.allpassVersion, Application.version);
     }
   }
 }

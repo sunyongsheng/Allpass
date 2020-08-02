@@ -1,7 +1,7 @@
 /// 服务器地址
 const String allpassUrl = "https://allpass.aengus.top/api";
 
-class SharedPreferencesKeys {
+class SPKeys {
   // 15个key
   static const String firstRun = "FIRST_RUN";
   static const String needRegister = "NEED_REGISTER";

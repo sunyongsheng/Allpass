@@ -95,7 +95,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
   Future<Null> askAuth(BuildContext context) async {
     // 两次时间
     DateTime now = DateTime.now();
-    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SharedPreferencesKeys.latestUsePassword)??now.toIso8601String());
+    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SPKeys.latestUsePassword)??now.toIso8601String());
     if (now.difference(latestUsePassword).inDays >= Config.timingInMainPassword) {
       await _localAuthService.stopAuthenticate();
       showDialog<bool>(
