@@ -1,9 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/allpass_type.dart';
 import 'package:allpass/params/runtime_data.dart';
@@ -14,6 +13,7 @@ import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/utils/allpass_file_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/webdav_util.dart';
+import 'package:allpass/utils/version_util.dart';
 
 class WebDavSyncService {
   WebDavUtil _webDavUtil;
@@ -119,6 +119,7 @@ class WebDavSyncService {
         await Provider.of<PasswordList>(context).clear();
         for (var bean in list) {
           await Provider.of<PasswordList>(context).insertPassword(bean);
+          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -127,6 +128,7 @@ class WebDavSyncService {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<PasswordList>(context).insertPassword(bean);
+          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -161,6 +163,7 @@ class WebDavSyncService {
         await Provider.of<CardList>(context).clear();
         for (var bean in list) {
           await Provider.of<CardList>(context).insertCard(bean);
+          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -169,6 +172,7 @@ class WebDavSyncService {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<CardList>(context).insertCard(bean);
+          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
