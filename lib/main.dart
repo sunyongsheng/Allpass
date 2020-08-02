@@ -141,7 +141,7 @@ void registerUser() async {
   if (Application.sp.getBool(SPKeys.needRegister)??true) {
     await registerUserActual();
   } else {
-    if (!(Application.sp.getString(SPKeys.allpassVersion)??"1.0.0" == Application.version)) {
+    if (!((Application.sp.getString(SPKeys.allpassVersion)??"1.0.0") == Application.version)) {
       await registerUserActual();
       Application.sp.setString(SPKeys.allpassVersion, Application.version);
     }
