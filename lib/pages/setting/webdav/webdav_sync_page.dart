@@ -6,6 +6,7 @@ import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/widgets/setting/modify_webdav_filename.dart';
 
 class WebDavSyncPage extends StatefulWidget {
   @override
@@ -107,17 +108,12 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   });
                   bool auth = await _authCheck();
                   if (auth) {
-                    int res = await _download();
+                    List<String> res = await _download();
                     setState(() {
                       _pressDownload = false;
                     });
-                    if (res == 0) {
-                      Fluttertoast.showToast(msg: "恢复到本地成功");
-                    } else if (res == 2){
-                      Fluttertoast.showToast(msg: "恢复到本地失败，请检查网络或源文件受损");
-                    } else {
-                      Fluttertoast.showToast(msg: "恢复到本地失败，未知错误");
-                    }
+                    Fluttertoast.showToast(msg: res[0]);
+                    Fluttertoast.showToast(msg: res[1]);
                   } else {
                     setState(() {
                       _pressUpload = false;
@@ -125,6 +121,30 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
+              },
+            ),
+            padding: AllpassEdgeInsets.listInset,
+          ),
+          Container(
+            child: ListTile(
+              title: Text("备份文件名"),
+              leading: Icon(Icons.insert_drive_file, color: AllpassColorUI.allColor[4],),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ModifyWebDavFileName(
+                    oldPasswordName: Config.webDavPasswordName,
+                    oldCardName: Config.webDavCardName,
+                  )
+                ).then((value) {
+                  if (value is Map) {
+                    Config.setPasswordFileName(value['password']);
+                    Config.setCardFileName(value['card']);
+                    Fluttertoast.showToast(msg: "修改成功");
+                  } else if (value is String) {
+                    Fluttertoast.showToast(msg: value);
+                  }
+                });
               },
             ),
             padding: AllpassEdgeInsets.listInset,
@@ -171,19 +191,30 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     }
   }
 
-  Future<int> _download() async {
+  Future<List<String>> _download() async {
     int p = await _syncService.recoverPassword(context);
     int c = await _syncService.recoverCard(context);
     await _syncService.recoverFolderAndLabel();
-    if ((p == 0) && (c == 0)) {
-      return 0;
-    } else if (p == 1 || c == 1) {
-      return 1;
-    } else if (p == 2 || c == 2) {
-      return 2;
+    List<String> msg = new List();
+    if (p == -1) {
+      msg.add("未找到云端密码文件，请确保云端文件名与设置相同并为json文件");
+    } else if (p == 0) {
+      msg.add("密码恢复成功");
+    } else if (p == 2) {
+      msg.add("密码恢复失败，请检查网络或者是云端文件受损");
     } else {
-      return 3;
+      msg.add("密码恢复失败，未知错误");
     }
+    if (c == -1) {
+      msg.add("未找到云端卡片文件，请确保云端文件名与设置相同并为json文件");
+    } else if (c == 0) {
+      msg.add("卡片信息恢复成功");
+    } else if (c == 2) {
+      msg.add("卡片恢复失败，请检查网络或者是云端文件受损");
+    } else {
+      msg.add("卡片恢复失败，未知错误");
+    }
+    return msg;
   }
 
 }

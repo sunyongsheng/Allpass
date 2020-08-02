@@ -39,14 +39,15 @@ class WebDavSyncService {
     String contents = _fileUtil.encodeList(passwords);
 
     Directory appDir = await getApplicationDocumentsDirectory();
-    String backupFilePath = appDir.uri.toFilePath() + "allpass_password.appt";
+    String fileName = "${Config.webDavPasswordName}.json";
+    String backupFilePath = appDir.uri.toFilePath() + fileName;
     File backupFile = File(backupFilePath);
     if (!backupFile.existsSync()) backupFile.createSync();
 
     _fileUtil.writeFile(backupFilePath, contents);
 
     bool res = await _webDavUtil.uploadFile(
-        fileName: "allpass_password.appt",
+        fileName: fileName,
         dirName: "Allpass",
         filePath: backupFilePath);
     _fileUtil.deleteFile(backupFilePath);
@@ -59,14 +60,15 @@ class WebDavSyncService {
     String contents = _fileUtil.encodeList(cards);
 
     Directory appDir = await getApplicationDocumentsDirectory();
-    String backupFilePath = appDir.uri.toFilePath() + "allpass_card.appt";
+    String fileName = "${Config.webDavCardName}.json";
+    String backupFilePath = appDir.uri.toFilePath() + fileName;
     File backupFile = File(backupFilePath);
     if (!backupFile.existsSync()) backupFile.createSync();
 
     _fileUtil.writeFile(backupFilePath, contents);
 
     bool res = await _webDavUtil.uploadFile(
-        fileName: "allpass_card.appt",
+        fileName: fileName,
         dirName: "Allpass",
         filePath: backupFilePath);
     _fileUtil.deleteFile(backupFilePath);
@@ -101,9 +103,13 @@ class WebDavSyncService {
   /// 1: 插入云端数据时出错
   /// 2: 解析json出错，可能是网络原因
   Future<int> recoverPassword(BuildContext context) async {
+    String fileName = "${Config.webDavPasswordName}.json";
     String filePath = await _webDavUtil.downloadFile(
-        fileName: "allpass_password.appt",
+        fileName: fileName,
         dirName: "Allpass");
+    if (filePath == null) {
+      return -1;
+    }
     List<PasswordBean> backup = Provider.of<PasswordList>(context).passwordList;
     try {
       String string = _fileUtil.readFile(filePath);
@@ -139,9 +145,13 @@ class WebDavSyncService {
   /// 1: 插入云端数据时出错
   /// 2: 解析json出错，可能是网络原因
   Future<int> recoverCard(BuildContext context) async {
+    String fileName = "${Config.webDavCardName}.json";
     String filePath = await _webDavUtil.downloadFile(
-        fileName: "allpass_card.appt",
+        fileName: fileName,
         dirName: "Allpass");
+    if (filePath == null) {
+      return -1;
+    }
     List<CardBean> backup = Provider.of<CardList>(context).cardList;
     try {
       String string = _fileUtil.readFile(filePath);

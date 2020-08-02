@@ -17,6 +17,8 @@ class Config {
   static String webDavUsername;   // WebDAV用户名
   static String webDavPassword;   // WebDAV密码
   static int webDavPort;          // WebDAV端口号
+  static String webDavPasswordName;
+  static String webDavCardName;
 
 
   /// 参数初始化
@@ -37,6 +39,8 @@ class Config {
     webDavUsername = Application.sp.getString(SharedPreferencesKeys.webDavUsername)??"";
     webDavPassword = Application.sp.getString(SharedPreferencesKeys.webDavPassword)??"";
     webDavPort = Application.sp.getInt(SharedPreferencesKeys.webDavPort)??443;
+    webDavPasswordName = Application.sp.getString(SharedPreferencesKeys.webDavPasswordName)??"allpass_password";
+    webDavCardName = Application.sp.getString(SharedPreferencesKeys.webDavCardName)??"allpass_card";
     RuntimeData.initData();
   }
 
@@ -53,6 +57,8 @@ class Config {
     webDavUsername = "";
     webDavPassword = "";
     webDavPort = 443;
+    webDavPasswordName = "allpass_password";
+    webDavCardName = "allpass_card";
     RuntimeData.clearData();
   }
 
@@ -100,6 +106,13 @@ class Config {
     webDavPort = value;
     Application.sp.setInt(SharedPreferencesKeys.webDavPort, value);
   }
-
+  static void setPasswordFileName(String value) {
+    webDavPasswordName = value;
+    Application.sp.setString(SharedPreferencesKeys.webDavPasswordName, value);
+  }
+  static void setCardFileName(String value) {
+    webDavCardName = value;
+    Application.sp.setString(SharedPreferencesKeys.webDavCardName, value);
+  }
 
 }
