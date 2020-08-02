@@ -22,4 +22,5 @@ class SharedPreferencesKeys {
   static const String webDavPasswordName = "webDavPasswordName";
   static const String webDavCardName = "webDavCardName";
   static const String contact = "contact";
+  static const String timingInputMainPassword = "timingInputMainPass";
 }

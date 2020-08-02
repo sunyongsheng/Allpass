@@ -12,6 +12,7 @@ import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/setting/modify_password_dialog.dart';
 import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
+import 'package:allpass/widgets/common/select_item_dialog.dart';
 
 /// 主账号管理页
 class AccountManagerPage extends StatefulWidget {
@@ -46,6 +47,47 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                 showDialog(
                     context: context,
                     builder: (context) => ModifyPasswordDialog());
+              },
+            ),
+          ),
+          Container(
+            padding: AllpassEdgeInsets.listInset,
+            child: ListTile(
+              title: Text("定期输入主密码"),
+              leading: Icon(Icons.timer, color: AllpassColorUI.allColor[3]),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      String initial = "${Config.timingInMainPassword}天";
+                      if (Config.timingInMainPassword == 36500) {
+                        initial = "永不";
+                      }
+                      return SelectItemDialog(
+                        ["7天", "10天", "15天", "30天", "永不"],
+                        initialSelected: initial,
+                      );
+                    }
+                ).then((days) {
+                  if (days == "永不") {
+                    showDialog<bool>(
+                        context: context,
+                      builder: (context) => ConfirmDialog("确认选择", "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码")
+                    ).then((yes) {
+                      if (yes) {
+                        Config.setTimingInMainPassDays(36500);
+                      }
+                    });
+                  } else if (days == "7天") {
+                    Config.setTimingInMainPassDays(7);
+                  } else if (days == "10天") {
+                    Config.setTimingInMainPassDays(10);
+                  } else if (days == "15天") {
+                    Config.setTimingInMainPassDays(15);
+                  } else if (days == "30天") {
+                    Config.setTimingInMainPassDays(30);
+                  }
+                });
               },
             ),
           ),

@@ -6,19 +6,20 @@ import 'package:allpass/params/runtime_data.dart';
 class Config {
   Config._();
 
-  static String username;         // 当前使用者用户名
-  static String password;         // 使用者密码
-  static bool enabledBiometrics;  // 是否启用生物识别
-  static bool longPressCopy;      // 是否开启长按复制，否则为长按多选
-  static String lightTheme;       // 浅色主题名
-  static String themeMode;        // 主题模式
-  static bool webDavAuthSuccess;  // WebDAV是否验证成功
-  static String webDavUrl;        // WebDAV地址
-  static String webDavUsername;   // WebDAV用户名
-  static String webDavPassword;   // WebDAV密码
-  static int webDavPort;          // WebDAV端口号
-  static String webDavPasswordName;
-  static String webDavCardName;
+  static String username;            // 当前使用者用户名
+  static String password;            // 使用者密码
+  static bool enabledBiometrics;     // 是否启用生物识别
+  static bool longPressCopy;         // 是否开启长按复制，否则为长按多选
+  static String lightTheme;          // 浅色主题名
+  static String themeMode;           // 主题模式
+  static bool webDavAuthSuccess;     // WebDAV是否验证成功
+  static String webDavUrl;           // WebDAV地址
+  static String webDavUsername;      // WebDAV用户名
+  static String webDavPassword;      // WebDAV密码
+  static int webDavPort;             // WebDAV端口号
+  static String webDavPasswordName;  // WebDAV备份密码文件名
+  static String webDavCardName;      // WebDAV备份卡片文件名
+  static int timingInMainPassword;   // 定期输入主密码天数
 
 
   /// 参数初始化
@@ -41,6 +42,8 @@ class Config {
     webDavPort = Application.sp.getInt(SharedPreferencesKeys.webDavPort)??443;
     webDavPasswordName = Application.sp.getString(SharedPreferencesKeys.webDavPasswordName)??"allpass_password";
     webDavCardName = Application.sp.getString(SharedPreferencesKeys.webDavCardName)??"allpass_card";
+    // 定期输入主密码天数
+    timingInMainPassword = Application.sp.getInt(SharedPreferencesKeys.timingInputMainPassword)??10;
     RuntimeData.initData();
   }
 
@@ -59,6 +62,7 @@ class Config {
     webDavPort = 443;
     webDavPasswordName = "allpass_password";
     webDavCardName = "allpass_card";
+    timingInMainPassword = 10;
     RuntimeData.clearData();
   }
 
@@ -113,6 +117,10 @@ class Config {
   static void setCardFileName(String value) {
     webDavCardName = value;
     Application.sp.setString(SharedPreferencesKeys.webDavCardName, value);
+  }
+  static void setTimingInMainPassDays(int value) {
+    timingInMainPassword = value;
+    Application.sp.setInt(SharedPreferencesKeys.timingInputMainPassword, value);
   }
 
 }
