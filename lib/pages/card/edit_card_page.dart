@@ -81,7 +81,11 @@ class _EditCardPage extends State<EditCardPage> {
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+      if (ThemeUtil.isInDarkTheme(context)) {
+        _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
+      } else {
+        _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+      }
     });
     super.initState();
   }

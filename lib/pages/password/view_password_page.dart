@@ -11,6 +11,7 @@ import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/utils/theme_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/common/detail_text_page.dart';
 import 'package:allpass/pages/password/edit_password_page.dart';
@@ -61,7 +62,11 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
     _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+      if (ThemeUtil.isInDarkTheme(context)) {
+        _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
+      } else {
+        _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+      }
     });
     super.initState();
   }
