@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+    <style name="LaunchTheme" parent="@style/Theme.AppCompat.DayNight">
         <!-- Show a splash screen on the activity. Automatically removed when
              Flutter draws its first frame -->
-        <item name="android:windowBackground">@drawable/launch_background</item>
-    </style>
-    <style name="Theme.AppCompat.Light.NoActionBar" parent="@style/Theme.AppCompat.Light">
-        <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
 </resources>

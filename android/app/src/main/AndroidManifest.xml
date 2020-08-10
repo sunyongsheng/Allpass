@@ -15,11 +15,12 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Allpass"
-        android:icon="@mipmap/allpass_launcher">
+        android:icon="@mipmap/allpass_launcher"
+        android:roundIcon="@mipmap/allpass_launcher_round">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
