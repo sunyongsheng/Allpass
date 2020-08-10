@@ -101,7 +101,7 @@ class PasswordDao extends BaseDBProvider {
   }
 
   /// 更新
-  Future<int> updatePasswordBean(PasswordBean bean) async {
+  Future<int> updatePasswordBeanById(PasswordBean bean) async {
     Database db = await getDataBase();
     String labels = list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET "

@@ -61,7 +61,7 @@ class CardList with ChangeNotifier {
     if (oldName[0] != bean.name[0]) {
       sortByAlphabeticalOrder();
     }
-    await _dao.updatePasswordBean(bean);
+    await _dao.updateCardBeanById(bean);
     notifyListeners();
   }
 

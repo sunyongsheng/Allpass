@@ -99,7 +99,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 更新
-  Future<int> updatePasswordBean(CardBean bean) async {
+  Future<int> updateCardBeanById(CardBean bean) async {
     Database db = await getDataBase();
     String labels = list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET "

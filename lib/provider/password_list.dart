@@ -93,7 +93,7 @@ class PasswordList with ChangeNotifier {
       sortByAlphabeticalOrder();
       refreshLetterCountIndex();
     }
-    await _dao.updatePasswordBean(bean);
+    await _dao.updatePasswordBeanById(bean);
     notifyListeners();
   }
 
