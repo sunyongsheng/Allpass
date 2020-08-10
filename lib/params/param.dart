@@ -25,3 +25,7 @@ class SPKeys {
   static const String contact = "contact";
   static const String timingInputMainPassword = "timingInputMainPass";
 }
+
+class ExtraKeys {
+  static const String storeKey = "ALLPASS_SECURE_STORE_KEY";
+}
