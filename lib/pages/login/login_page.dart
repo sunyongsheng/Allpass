@@ -156,19 +156,19 @@ class _LoginPage extends State<LoginPage> {
     if (inputErrorTimes >= 5) {
       await Application.clearAll(context);
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) => RegisterPage()
-      ));
+      NavigationUtil.goLoginPage(context);
     } else {
+      if (_passwordController.text.length == 0 || _usernameController.text.length == 0) {
+        Fluttertoast.showToast(msg: "请先输入用户名或密码");
+        return;
+      }
       if (Config.username != "" && Config.password != "") {
         if (Config.username == _usernameController.text
-            && _passwordController.text == EncryptUtil.decrypt(Config.password)) {
+            && Config.password == EncryptUtil.encrypt(_passwordController.text)) {
           NavigationUtil.goHomePage(context);
           Fluttertoast.showToast(msg: "登录成功");
           Application.updateLatestUsePasswordTime();
-        } else if (_usernameController.text == "" || _passwordController.text == "") {
-          Fluttertoast.showToast(msg: "请输入用户名或密码");
-        } else {
+        }  else {
           inputErrorTimes++;
           Fluttertoast.showToast(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
         }

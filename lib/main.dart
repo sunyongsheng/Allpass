@@ -18,6 +18,9 @@ import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/utils/network_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/utils/version_util.dart';
+
+bool needUpdateSecret = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,6 +77,8 @@ void main() async {
     );
   };
 
+  needUpdateSecret = !Application.sp.getBool(SPKeys.firstRun)
+      && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "2.0.0");
   registerUser();
 
   final PasswordList passwords = PasswordList()..init();

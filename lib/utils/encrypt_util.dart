@@ -23,6 +23,8 @@ class EncryptUtil {
       if (keyStored == null) {
         keyStored = initialKey;
         await storage.write(key: ExtraKeys.storeKey, value: keyStored);
+      } else {
+        initialKey = keyStored;
       }
     }
     _key = Key.fromUtf8(keyStored);
@@ -31,6 +33,21 @@ class EncryptUtil {
     _haveInit = true;
     if (needFresh) return keyStored;
     return null;
+  }
+
+  static Future<Null> initEncryptByKey(String key) async {
+    assert(key.length == 32);
+    final storage = FlutterSecureStorage();
+    await storage.write(key: ExtraKeys.storeKey, value: key);
+    _key = Key.fromUtf8(key);
+    _iv = IV.fromLength(16);
+    _encrypt = Encrypter(AES(_key));
+    _haveInit = true;
+  }
+
+  static Future<String> getStoreKey() async {
+    final storage = FlutterSecureStorage();
+    return await storage.read(key: ExtraKeys.storeKey);
   }
 
   static Future<Null> clearEncrypt() async {

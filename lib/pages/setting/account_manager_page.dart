@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -9,6 +10,7 @@ import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/setting/modify_password_dialog.dart';
 import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 import 'package:allpass/widgets/common/select_item_dialog.dart';
+import 'package:allpass/pages/setting/secret_key_upgrade_page.dart';
 
 /// 主账号管理页
 class AccountManagerPage extends StatefulWidget {
@@ -111,6 +113,18 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                     });
                   }
                 });
+              },
+            ),
+          ),
+          Container(
+            padding: AllpassEdgeInsets.listInset,
+            child: ListTile(
+              title: Text("加密密钥更新"),
+              leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(
+                  builder: (context) => SecretKeyUpgradePage()
+                ));
               },
             ),
           ),

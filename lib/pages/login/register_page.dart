@@ -12,7 +12,15 @@ import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 import 'package:allpass/pages/login/login_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
+
+  @override
+  State createState() {
+    return _RegisterPage();
+  }
+}
+
+class _RegisterPage extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
@@ -64,7 +72,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
                   color: Theme.of(context).primaryColor,
-                  onPressed: () => register(context),
+                  onPressed: () async => await register(context),
                 ),
               ),
               Padding(
@@ -89,26 +97,29 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  void register(BuildContext context) {
+  Future<Null> register(BuildContext context) async {
     if (_passwordController.text != _secondController.text) {
       Fluttertoast.showToast(msg: "两次密码输入不一致！");
       return;
     }
+    if (_usernameController.text.length < 6 && _passwordController.text.length < 6) {
+      Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
+      return;
+    }
     // 判断是否已有账号存在
     if (Application.sp.getString(SPKeys.username) == "") {
-      // 判断用户名和密码长度
-      if (_usernameController.text.length >= 6 && _passwordController.text.length >= 6) {
-        String _password = EncryptUtil.encrypt(_passwordController.text);
-        Config.setUsername(_usernameController.text);
-        Config.setPassword(_password);
-        Config.setEnabledBiometrics(false);
-        Fluttertoast.showToast(msg: "注册成功");
-        NavigationUtil.goLoginPage(context);
-      } else {
-        Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
-      }
+      _registerActual();
     } else {
       Fluttertoast.showToast(msg: "已有账号注册过，只允许单账号");
     }
+  }
+
+  void _registerActual() {
+    String _password = EncryptUtil.encrypt(_passwordController.text);
+    Config.setUsername(_usernameController.text);
+    Config.setPassword(_password);
+    Config.setEnabledBiometrics(false);
+    Fluttertoast.showToast(msg: "注册成功");
+    NavigationUtil.goInitEncryptPage(context);
   }
 }
