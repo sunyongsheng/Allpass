@@ -80,6 +80,7 @@ class Application {
     await EncryptUtil.clearEncrypt();
     await Application.sp.clear();
     Config.configClear();
+    await EncryptUtil.initEncrypt();
   }
 }
 

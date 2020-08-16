@@ -17,6 +17,7 @@ import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/utils/network_util.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,7 @@ void main() async {
   Routes.configureRoutes(router);
   Application.router = router;
   await Application.initSp();
+  await EncryptUtil.initEncrypt();
   Config.initConfig();
   Application.setupLocator();
   Application.initChannelAndHandle();

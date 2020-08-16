@@ -5,22 +5,32 @@ import 'package:allpass/params/param.dart';
 
 /// 加密解密辅助类
 class EncryptUtil {
+
+  static String initialKey = "6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG";
+
   static bool _haveInit = false;
   static Key _key;
   static IV _iv;
   static Encrypter _encrypt;
 
-  static Future<Null> initEncrypt() async {
+  static Future<String> initEncrypt({bool needFresh = false}) async {
     final storage = FlutterSecureStorage();
     String keyStored = await storage.read(key: ExtraKeys.storeKey);
-    if (keyStored == null) {
+    if (needFresh) {
       keyStored = generateRandomKey(32);
       await storage.write(key: ExtraKeys.storeKey, value: keyStored);
+    } else {
+      if (keyStored == null) {
+        keyStored = initialKey;
+        await storage.write(key: ExtraKeys.storeKey, value: keyStored);
+      }
     }
     _key = Key.fromUtf8(keyStored);
     _iv = IV.fromLength(16);
     _encrypt = Encrypter(AES(_key));
     _haveInit = true;
+    if (needFresh) return keyStored;
+    return null;
   }
 
   static Future<Null> clearEncrypt() async {
