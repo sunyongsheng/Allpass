@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-
 import 'package:allpass/application.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/pages/login/init_encrypt_page.dart';
+import 'package:allpass/pages/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/widgets/common/select_item_dialog.dart';
 
 /// 调试页
 class DebugPage extends StatefulWidget {
@@ -32,6 +34,32 @@ class _DebugPage extends State<DebugPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            ListTile(
+              title: FlatButton(
+                child: Text("页面测试"),
+                onPressed: () async {
+                  showDialog<String>(
+                      context: context,
+                      builder: (context) =>
+                          SelectItemDialog(
+                            ["init_encrypt", "webdav_sync"]
+                          )
+                  ).then((value) {
+                    if (value != null) {
+                      if (value == "init_encrypt") {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => InitEncryptPage()
+                        ));
+                      } else if (value == "webdav_sync") {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => WebDavSyncPage()
+                        ));
+                      }
+                    }
+                  });
+                },
+              ),
+            ),
             ListTile(
               title: FlatButton(
                 child: Text("查看sp"),
