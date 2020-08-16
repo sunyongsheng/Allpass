@@ -66,6 +66,11 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
+                  child: Text("如果您之前使用过Allpass进行WebDAV同步过，并且此次使用需要找回之前备份的数据，"
+                      "那么请直接重新启动Allpass，使用WebDAV找回密码后再进行密钥升级（设置-主账号管理-加密密钥更新），一旦更新，需要清除Allpass数据后再按此步骤操作！"),
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text("请点击下面的按钮生成密钥", textAlign: TextAlign.center,),
                 ),
                 Padding(padding: AllpassEdgeInsets.smallTBPadding,),

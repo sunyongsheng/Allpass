@@ -85,6 +85,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
+                  child: Text("如果您使用过Allpass进行WebDAV备份，那么密钥更新后旧的备份文件无法再使用！（本机数据不受影响）", textAlign: TextAlign.center,),
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallTBPadding,
+                  child: Text("为了安全保证，仍建议在升级前通过“导出为csv”的方式进行备份！", textAlign: TextAlign.center,),
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text("请点击下面的按钮开始更新", textAlign: TextAlign.center,),
                 ),
                 Padding(padding: AllpassEdgeInsets.smallTBPadding,),
