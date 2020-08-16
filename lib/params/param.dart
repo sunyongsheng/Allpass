@@ -2,7 +2,6 @@
 const String allpassUrl = "https://allpass.aengus.top/api";
 
 class SPKeys {
-  // 15个key
   static const String firstRun = "FIRST_RUN";
   static const String needRegister = "NEED_REGISTER";
   static const String allpassVersion = "ALLPASS_VERSION";
@@ -22,6 +21,7 @@ class SPKeys {
   static const String webDavPort = "webDavPort";
   static const String webDavPasswordName = "webDavPasswordName";
   static const String webDavCardName = "webDavCardName";
+  static const String webDavEncryptLevel = "webDavEncryptLevel";
   static const String contact = "contact";
   static const String timingInputMainPassword = "timingInputMainPass";
 }

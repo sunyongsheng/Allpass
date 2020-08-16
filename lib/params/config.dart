@@ -19,6 +19,7 @@ class Config {
   static int webDavPort;             // WebDAV端口号
   static String webDavPasswordName;  // WebDAV备份密码文件名
   static String webDavCardName;      // WebDAV备份卡片文件名
+  static int webDavEncryptLevel;     // WebDAV备份加密等级 0：不加密；1：密码字段；2：全加密
   static int timingInMainPassword;   // 定期输入主密码天数
 
 
@@ -42,6 +43,7 @@ class Config {
     webDavPort = Application.sp.getInt(SPKeys.webDavPort)??443;
     webDavPasswordName = Application.sp.getString(SPKeys.webDavPasswordName)??"allpass_password";
     webDavCardName = Application.sp.getString(SPKeys.webDavCardName)??"allpass_card";
+    webDavEncryptLevel = Application.sp.getInt(SPKeys.webDavEncryptLevel)??1;
     // 定期输入主密码天数
     timingInMainPassword = Application.sp.getInt(SPKeys.timingInputMainPassword)??10;
     RuntimeData.initData();
@@ -62,6 +64,7 @@ class Config {
     webDavPort = 443;
     webDavPasswordName = "allpass_password";
     webDavCardName = "allpass_card";
+    webDavEncryptLevel = 1;
     timingInMainPassword = 10;
     RuntimeData.clearData();
   }
@@ -117,6 +120,10 @@ class Config {
   static void setCardFileName(String value) {
     webDavCardName = value;
     Application.sp.setString(SPKeys.webDavCardName, value);
+  }
+  static void setWevDavEncryptLevel(int value) {
+    webDavEncryptLevel = value;
+    Application.sp.setInt(SPKeys.webDavEncryptLevel, value);
   }
   static void setTimingInMainPassDays(int value) {
     timingInMainPassword = value;
