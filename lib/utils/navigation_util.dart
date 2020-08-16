@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:fluro/fluro.dart';
-
 import 'package:allpass/application.dart';
 import 'package:allpass/route/routes.dart';
-import 'package:allpass/model/password_bean.dart';
 
 class NavigationUtil {
   static _navigateTo(BuildContext context, String path,
@@ -32,20 +29,7 @@ class NavigationUtil {
     _navigateTo(context, Routes.home, clearStack: true);
   }
 
-  static void goPasswordPage(BuildContext context) {
-    _navigateTo(context, Routes.password);
-  }
-
-  static void goCardPage(BuildContext context) {
-    _navigateTo(context, Routes.card);
-  }
-
-  static void goSettingPage(BuildContext context) {
-    _navigateTo(context, Routes.setting);
-  }
-
-  static void goViewPasswordPage(BuildContext context,
-    {@required PasswordBean data}) {
-    _navigateTo(context, Routes.viewPassword);
+  static void goInitEncryptPage(BuildContext context) {
+    _navigateTo(context, Routes.initEncrypt, clearStack: true);
   }
 }

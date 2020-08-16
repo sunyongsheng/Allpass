@@ -10,16 +10,7 @@ class Routes {
   static String home = "/home";
   static String login = "/login";
   static String authLogin = "/authlogin";
-  static String password = "/password";
-  static String card = "/card";
-  static String setting = "/setting";
-  static String viewPassword = "/viewPassword";
-  static String editPassword = "/editPassword";
-  static String newPassword = "/newPassword";
-  static String viewCard = "/viewCard";
-  static String editCard = "/editCard";
-  static String newCard = "/newCard";
-  static String categoryManager = "/categoryManager";
+  static String initEncrypt = "/initEncrypt";
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = Handler(
@@ -30,16 +21,7 @@ class Routes {
     );
     router.define(login, handler: loginHandler);
     router.define(home, handler: homeHandler);
-    router.define(password, handler: passwordHandler);
-    router.define(card, handler: cardHandler);
-    router.define(setting, handler: settingHandler);
     router.define(authLogin, handler: authLoginHandler);
-    router.define(viewPassword, handler: viewPasswordHandler);
-    router.define(editPassword, handler: editPasswordHandler);
-    router.define(newPassword, handler: newPasswordHandler);
-    router.define(viewCard, handler: viewCardHandler);
-    router.define(editCard, handler: editCardHandler);
-    router.define(newCard, handler: newCardHandler);
-    router.define(categoryManager, handler: categoryManagerHandler);
+    router.define(initEncrypt, handler: initEncryptHandler);
   }
 }
