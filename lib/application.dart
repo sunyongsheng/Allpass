@@ -4,14 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/params/runtime_data.dart';
 import 'package:allpass/utils/csv_util.dart';
+import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/services/navigate_service.dart';
 import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/services/authentication_service.dart';
@@ -68,6 +72,14 @@ class Application {
   /// 更新上次使用密码的时间
   static void updateLatestUsePasswordTime() {
     Application.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());
+  }
+
+  static Future<Null> clearAll(BuildContext context) async {
+    await Provider.of<PasswordList>(context).clear();
+    await Provider.of<CardList>(context).clear();
+    await EncryptUtil.clearEncrypt();
+    await Application.sp.clear();
+    Config.configClear();
   }
 }
 

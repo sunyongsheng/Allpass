@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
@@ -11,8 +10,6 @@ import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/pages/login/register_page.dart';
 import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
@@ -157,10 +154,7 @@ class _LoginPage extends State<LoginPage> {
 
   void login() async {
     if (inputErrorTimes >= 5) {
-      await Provider.of<PasswordList>(context).clear();
-      await Provider.of<CardList>(context).clear();
-      await Application.sp.clear();
-      Config.configClear();
+      await Application.clearAll(context);
       Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => RegisterPage()
