@@ -3,7 +3,7 @@ import 'package:fluro/fluro.dart';
 import 'package:allpass/pages/home_page.dart';
 import 'package:allpass/pages/login/login_page.dart';
 import 'package:allpass/pages/login/auth_login_page.dart';
-import 'file:///D:/Projects/Android/Allpass/lib/pages/login/init_encrypt_page.dart';
+import 'package:allpass/pages/login/init_encrypt_page.dart';
 
 /// 登录页
 var loginHandler = Handler(
