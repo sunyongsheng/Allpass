@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:allpass/model/base_model.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/params/config.dart';
 import 'package:allpass/params/allpass_type.dart';
 
 class AllpassFileUtil {
@@ -31,6 +32,19 @@ class AllpassFileUtil {
 
   /// 对[list]进行json编码
   String encodeList(List<BaseModel> list) {
+    if (list[0] is PasswordBean) {
+      List<PasswordBean> passwords = List();
+      for (PasswordBean bean in list) {
+        passwords.add(PasswordBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
+      }
+      return json.encode(passwords);
+    } else if (list[0] is CardBean){
+      List<CardBean> cards = List();
+      for (CardBean bean in list) {
+        cards.add(CardBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
+      }
+      return json.encode(cards);
+    }
     return json.encode(list);
   }
 
@@ -40,13 +54,13 @@ class AllpassFileUtil {
     if (type == AllpassType.PASSWORD) {
       List<PasswordBean> results = List();
       for (var temp in decodedRes) {
-        results.add(PasswordBean.fromJson(temp));
+        results.add(PasswordBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));
       }
       return results;
     } else if (type == AllpassType.CARD) {
       List<CardBean> results = List();
       for (var temp in decodedRes) {
-        results.add(CardBean.fromJson(temp));
+        results.add(CardBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));
       }
       return results;
     }

@@ -7,6 +7,8 @@ import 'package:allpass/params/config.dart';
 import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/widgets/common/confirm_dialog.dart';
 import 'package:allpass/widgets/setting/modify_webdav_filename.dart';
+import 'package:allpass/widgets/common/information_help_dialog.dart';
+import 'package:allpass/widgets/common/select_item_dialog.dart';
 
 class WebDavSyncPage extends StatefulWidget {
   @override
@@ -21,8 +23,10 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   bool _pressDownload;
   WebDavSyncService _syncService;
 
+  List<String> levels = ["不加密", "仅加密密码字段", "全部加密"];
+
   _WebDavSyncPage() {
-    _syncService = Application.getIt<WebDavSyncService>();
+     _syncService = Application.getIt<WebDavSyncService>();
   }
 
   @override
@@ -151,6 +155,43 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           ),
           Container(
             child: ListTile(
+              title: Text("加密等级"),
+              leading: Icon(Icons.enhanced_encryption, color: AllpassColorUI.allColor[5],),
+              trailing: IconButton(
+                icon: Icon(Icons.help_outline, color: Colors.grey,),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => InformationHelpDialog(
+                      content: <Widget>[
+                        Text("加密等级是指备份到WebDAV的文件的加密方式，请确保上传与恢复的加密等级相同\n"),
+                        Text("不加密：数据直接以明文的方式备份，密码字段可见；最不安全但是可以在任意设备上查找密码\n"),
+                        Text("仅加密密码字段：仅将密码与卡片记录中的“密码”字段进行加密，而名称、标签之类的字段不加密\n"),
+                        Text("全部加密：所有字段全部进行加密，加密后的数据完全不可读，最安全但是如果丢失了密钥则有可能无法找回文件\n"),
+                        Text("后两种加密方式严格依赖本机Allpass使用的密钥，在丢失密钥的情况下，一旦进行卸载或者数据清除操作则数据将无法恢复！！！"),
+                      ],
+                    )
+                  );
+                },
+              ),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => SelectItemDialog(
+                      levels,
+                      initialSelected: getEncryptLevelString(),
+                    )
+                ).then((value) {
+                  if (value != null) {
+                    Config.setWevDavEncryptLevel(getEncryptLevelInt(value));
+                  }
+                });
+              },
+            ),
+            padding: AllpassEdgeInsets.listInset,
+          ),
+          Container(
+            child: ListTile(
               title: Text("退出账号"),
               leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[3],),
               onTap: () {
@@ -196,12 +237,15 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     int c = await _syncService.recoverCard(context);
     await _syncService.recoverFolderAndLabel();
     List<String> msg = new List();
+    bool pb = false;
+    bool cb = false;
     if (p == -1) {
       msg.add("未找到云端密码文件，请确保云端文件名与设置相同并为json文件");
     } else if (p == 0) {
       msg.add("密码恢复成功");
     } else if (p == 2) {
       msg.add("密码恢复失败，请检查网络或者是云端文件受损");
+      pb = true;
     } else {
       msg.add("密码恢复失败，未知错误");
     }
@@ -211,10 +255,21 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       msg.add("卡片信息恢复成功");
     } else if (c == 2) {
       msg.add("卡片恢复失败，请检查网络或者是云端文件受损");
+      cb = true;
     } else {
       msg.add("卡片恢复失败，未知错误");
+    }
+    if (pb && cb) {
+      msg.add("请确保本机加密等级及密钥与备份云端时一致！");
     }
     return msg;
   }
 
+  String getEncryptLevelString() {
+    return levels[Config.webDavEncryptLevel];
+  }
+
+  int getEncryptLevelInt(String level) {
+    return levels.indexOf(level);
+  }
 }
