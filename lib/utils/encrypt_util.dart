@@ -9,20 +9,20 @@ class EncryptUtil {
   static String initialKey = "6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG";
 
   static bool _haveInit = false;
+  static FlutterSecureStorage _storage;
   static Key _key;
   static IV _iv;
   static Encrypter _encrypt;
 
   static Future<String> initEncrypt({bool needFresh = false}) async {
-    final storage = FlutterSecureStorage();
-    String keyStored = await storage.read(key: ExtraKeys.storeKey);
+    String keyStored = await _getStoreKey();
     if (needFresh) {
       keyStored = generateRandomKey(32);
-      await storage.write(key: ExtraKeys.storeKey, value: keyStored);
+      await _setStoreKey(keyStored);
     } else {
       if (keyStored == null) {
         keyStored = initialKey;
-        await storage.write(key: ExtraKeys.storeKey, value: keyStored);
+        await _setStoreKey(keyStored);
       } else {
         initialKey = keyStored;
       }
@@ -37,8 +37,7 @@ class EncryptUtil {
 
   static Future<Null> initEncryptByKey(String key) async {
     assert(key.length == 32);
-    final storage = FlutterSecureStorage();
-    await storage.write(key: ExtraKeys.storeKey, value: key);
+    await _setStoreKey(key);
     _key = Key.fromUtf8(key);
     _iv = IV.fromLength(16);
     _encrypt = Encrypter(AES(_key));
@@ -46,12 +45,11 @@ class EncryptUtil {
   }
 
   static Future<String> getStoreKey() async {
-    final storage = FlutterSecureStorage();
-    return await storage.read(key: ExtraKeys.storeKey);
+    return await _getStoreKey();
   }
 
   static Future<Null> clearEncrypt() async {
-    final storage = FlutterSecureStorage();
+    final storage = _getSecureStorage();
     await storage.deleteAll();
     _key = null;
     _iv = null;
@@ -81,44 +79,44 @@ class EncryptUtil {
     List<String> _symbolList = List()..addAll(['!', '@', '*', '?', '#', '%', '~', '=']);
     List<String> list = List();
     if (cap && low && number && sym) {
-      list..addAll(_lowCaseList);
-      list..addAll(_capitalList);
-      list..addAll(_symbolList);
-      list..addAll(_numberList);
+      list.addAll(_lowCaseList);
+      list.addAll(_capitalList);
+      list.addAll(_symbolList);
+      list.addAll(_numberList);
     } else if (cap && low && number && !sym) {
-      list..addAll(_numberList);
-      list..addAll(_capitalList);
-      list..addAll(_lowCaseList);
+      list.addAll(_numberList);
+      list.addAll(_capitalList);
+      list.addAll(_lowCaseList);
     } else if (cap && low && !number && sym) {
-      list..addAll(_capitalList);
-      list..addAll(_symbolList);
-      list..addAll(_lowCaseList);
+      list.addAll(_capitalList);
+      list.addAll(_symbolList);
+      list.addAll(_lowCaseList);
     } else if (cap && !low && number && sym) {
-      list..addAll(_numberList);
-      list..addAll(_capitalList);
-      list..addAll(_symbolList);
+      list.addAll(_numberList);
+      list.addAll(_capitalList);
+      list.addAll(_symbolList);
     } else if (!cap && low && number && sym) {
-      list..addAll(_symbolList);
-      list..addAll(_lowCaseList);
-      list..addAll(_numberList);
+      list.addAll(_symbolList);
+      list.addAll(_lowCaseList);
+      list.addAll(_numberList);
     } else if (cap && low && !number && !sym) {
-      list..addAll(_capitalList);
-      list..addAll(_lowCaseList);
+      list.addAll(_capitalList);
+      list.addAll(_lowCaseList);
     } else if (cap && !low && number && !sym) {
-      list..addAll(_numberList);
-      list..addAll(_capitalList);
+      list.addAll(_numberList);
+      list.addAll(_capitalList);
     } else if (cap && !low && !number && sym) {
-      list..addAll(_symbolList);
-      list..addAll(_capitalList);
+      list.addAll(_symbolList);
+      list.addAll(_capitalList);
     } else if (!cap && low && number && !sym) {
-      list..addAll(_lowCaseList);
-      list..addAll(_numberList);
+      list.addAll(_lowCaseList);
+      list.addAll(_numberList);
     } else if (!cap && low && !number && sym) {
-      list..addAll(_lowCaseList);
-      list..addAll(_symbolList);
+      list.addAll(_lowCaseList);
+      list.addAll(_symbolList);
     } else if (!cap && !low && number && sym) {
-      list..addAll(_numberList);
-      list..addAll(_symbolList);
+      list.addAll(_numberList);
+      list.addAll(_symbolList);
     } else if (cap && !low && !number && !sym) {
       list = _capitalList;
     } else if (!cap && low && !number && !sym) {
@@ -135,6 +133,23 @@ class EncryptUtil {
       stringBuffer.write(list[index]);
     }
     return stringBuffer.toString();
+  }
+
+  static FlutterSecureStorage _getSecureStorage() {
+    if (_storage == null) {
+      _storage = FlutterSecureStorage();
+    }
+    return _storage;
+  }
+
+  static Future<String> _getStoreKey() async {
+    final storage = _getSecureStorage();
+    return await storage.read(key: ExtraKeys.storeKey);
+  }
+
+  static Future<Null> _setStoreKey(String keyValue) async {
+    final storage = _getSecureStorage();
+    await storage.write(key: ExtraKeys.storeKey, value: keyValue);
   }
 
 }
