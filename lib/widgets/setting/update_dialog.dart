@@ -28,7 +28,9 @@ class UpdateDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         FlatButton(
-          child: Text("取消"),
+          child: updateBean.checkResult == CheckUpdateResult.HaveUpdate
+            ? Text("下次再说")
+            : Text("取消"),
           onPressed: () => Navigator.pop(context),
         )
       ],
