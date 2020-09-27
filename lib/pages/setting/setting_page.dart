@@ -21,7 +21,7 @@ import 'package:allpass/pages/setting/import/import_export_page.dart';
 import 'package:allpass/pages/setting/webdav/webdav_config_page.dart';
 import 'package:allpass/pages/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
-import 'package:allpass/widgets/setting/check_update_dialog.dart';
+import 'package:allpass/widgets/setting/update_dialog.dart';
 
 
 /// 设置页面
@@ -241,12 +241,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                       ListTile(
                           title: Text("检查更新"),
                           leading: Icon(Icons.update, color: AllpassColorUI.allColor[6]),
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                child: CheckUpdateDialog()
-                            );
-                          }
+                          onTap: () => _checkUpdate()
                       ),
                       ListTile(
                         title: Text("关于"),
@@ -270,6 +265,26 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           )
         ],
       ),
+    );
+  }
+
+  void _checkUpdate() {
+    var bean = NetworkUtil().checkUpdate();
+    showDialog(
+        context: context,
+        child: FutureBuilder(
+          future: bean,
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                return UpdateDialog(snapshot.data);
+              default:
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+            }
+          },
+        )
     );
   }
 
