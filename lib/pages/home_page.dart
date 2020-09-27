@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/main.dart';
-import 'package:allpass/pages/setting/secret_key_upgrade_page.dart';
-import 'package:allpass/widgets/common/confirm_dialog.dart';
+import 'package:allpass/model/UpdateBean.dart';
 import 'package:allpass/provider/theme_provider.dart';
+import 'package:allpass/pages/setting/secret_key_upgrade_page.dart';
 import 'package:allpass/pages/password/password_page.dart';
 import 'package:allpass/pages/card/card_page.dart';
 import 'package:allpass/pages/classification/classification_page.dart';
 import 'package:allpass/pages/setting/setting_page.dart';
+import 'package:allpass/utils/network_util.dart';
+import 'package:allpass/widgets/setting/update_dialog.dart';
+import 'package:allpass/widgets/common/confirm_dialog.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -52,6 +55,15 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
             ));
           }
         });
+      }
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      UpdateBean updateBean = await NetworkUtil().checkUpdate();
+      if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
+        showDialog(
+          context: context,
+          child: UpdateDialog(updateBean)
+        );
       }
     });
   }
