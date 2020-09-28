@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/util/db_provider.dart';
+import 'package:allpass/dao/base/db_provider.dart';
 import 'package:allpass/model/card_bean.dart';
 import 'package:allpass/util/string_process.dart';
 

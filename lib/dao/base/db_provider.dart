@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:sqflite/sqflite.dart';
-
-import 'package:allpass/util/db_manager.dart';
+import 'package:allpass/dao/base/db_manager.dart';
 
 
 /// 这个类定义创建数据库表的基础方法；
