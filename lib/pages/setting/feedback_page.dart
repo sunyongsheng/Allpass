@@ -4,6 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/param.dart';
+import 'package:allpass/model/response_bean.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/network_util.dart';
@@ -131,16 +132,11 @@ class _FeedbackPage extends State<StatefulWidget> {
     } else {
       map['identification'] = "unknown";
     }
-    try {
-      Map data = await NetworkUtil().sendFeedback(map);
-      if ((data['result']??'0') == '1') {
-        Fluttertoast.showToast(msg: "感谢你的反馈！");
-        _submitSuccess = true;
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-      Fluttertoast.showToast(msg: "提交失败，请检查网络连接或远程服务器错误");
+    ResponseBean data = await NetworkUtil.sendFeedback(map);
+    if (data.done) {
+      _submitSuccess = true;
     }
+    Fluttertoast.showToast(msg: data.msg);
     Navigator.pop(context);
   }
 

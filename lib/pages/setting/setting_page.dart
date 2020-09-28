@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/params/config.dart';
+import 'package:allpass/model/update_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/utils/network_util.dart';
@@ -269,7 +270,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   void _checkUpdate() {
-    var bean = NetworkUtil().checkUpdate();
+    var bean = NetworkUtil.checkUpdate();
     showDialog(
         context: context,
         child: FutureBuilder(
@@ -289,19 +290,9 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   Future<Null> _recommend() async {
-    try {
-      Map data = await NetworkUtil().getLatestVersion();
-      if (data['have_update'] == "1") {
-        Share.share(
-            "【Allpass】我发现了一款应用，快来下载吧！下载地址：${data['download_url']}",
-            subject: "软件推荐——Allpass");
-      } else {
-        Share.share(
-            "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download/?version=${Application.version}");
-      }
-    } catch (e) {
-      Share.share(
-        "【Allpass】我发现了一款应用，快来下载吧！下载地址：https://allpass.aengus.top/api/download/?version=${Application.version}");
-    }
+    UpdateBean data = await NetworkUtil.getLatestVersion();
+    Share.share(
+        "【Allpass】我发现了一款应用，快来下载吧！下载地址：${data.downloadUrl}",
+        subject: "软件推荐——Allpass");
   }
 }

@@ -58,7 +58,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      UpdateBean updateBean = await NetworkUtil().checkUpdate();
+      UpdateBean updateBean = await NetworkUtil.checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
           context: context,

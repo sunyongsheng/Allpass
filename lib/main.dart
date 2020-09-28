@@ -19,6 +19,8 @@ import 'package:allpass/pages/login/auth_login_page.dart';
 import 'package:allpass/utils/network_util.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/utils/version_util.dart';
+import 'package:allpass/model/response_bean.dart';
+
 
 bool needUpdateSecret = false;
 
@@ -135,8 +137,8 @@ void registerUser() async {
       user['identification'] = identification;
       user['systemInfo'] = systemInfo;
       user['allpassVersion'] = Application.version;
-      Map<String, String> data = await NetworkUtil().registerUser(user);
-      if ((data["result"] ?? '0') == "1") {
+      ResponseBean data = await NetworkUtil.registerUser(user);
+      if (data.done) {
         Application.sp.setBool(SPKeys.needRegister, false);
       } else {
         Application.sp.setBool(SPKeys.needRegister, true);
