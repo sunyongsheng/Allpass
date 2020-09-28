@@ -2,14 +2,12 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/route/routes.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
@@ -27,61 +25,26 @@ bool needUpdateSecret = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Router router = Router();
-  Routes.configureRoutes(router);
-  Application.router = router;
   await Application.initSp();
   await EncryptUtil.initEncrypt();
   Config.initConfig();
-  Application.setupLocator();
+  Application.initRouter();
+  Application.initLocator();
   Application.initChannelAndHandle();
 
   if (Platform.isAndroid) {
     //设置Android头部的导航栏透明
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
   // 自定义报错页面
-  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "出错了",
-          style: AllpassTextUI.titleBarStyle,
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              child: Text("App出现错误，快去反馈给作者!"),
-              padding: AllpassEdgeInsets.smallTBPadding,
-            ),
-            Padding(
-              padding: AllpassEdgeInsets.smallTBPadding,
-            ),
-            Padding(
-              child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
-              padding: AllpassEdgeInsets.smallTBPadding,
-            ),
-            Padding(
-              child: Text(flutterErrorDetails.toString(), style: TextStyle(color: Colors.red),),
-              padding: AllpassEdgeInsets.smallTBPadding,
-            ),
-          ],
-        ),
-      ),
-    );
-  };
+  _initErrorPage();
 
   needUpdateSecret = !Application.sp.getBool(SPKeys.firstRun)
       && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "2.0.0");
-  registerUser();
+
+  _registerUser();
 
   final PasswordList passwords = PasswordList()..init();
   final CardList cards = CardList()..init();
@@ -116,7 +79,7 @@ class Allpass extends StatelessWidget {
   }
 }
 
-void registerUser() async {
+void _registerUser() async {
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     Map<String, String> user = Map();
@@ -155,4 +118,41 @@ void registerUser() async {
       Application.sp.setString(SPKeys.allpassVersion, Application.version);
     }
   }
+}
+
+void _initErrorPage() {
+  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "出错了",
+          style: AllpassTextUI.titleBarStyle,
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              child: Text("App出现错误，快去反馈给作者!"),
+              padding: AllpassEdgeInsets.smallTBPadding,
+            ),
+            Padding(
+              padding: AllpassEdgeInsets.smallTBPadding,
+            ),
+            Padding(
+              child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
+              padding: AllpassEdgeInsets.smallTBPadding,
+            ),
+            Padding(
+              child: Text(flutterErrorDetails.toString(), style: TextStyle(color: Colors.red),),
+              padding: AllpassEdgeInsets.smallTBPadding,
+            ),
+          ],
+        ),
+      ),
+    );
+  };
 }

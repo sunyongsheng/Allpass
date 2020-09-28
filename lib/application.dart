@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:allpass/route/routes.dart';
 import 'package:allpass/params/config.dart';
 import 'package:allpass/params/param.dart';
 import 'package:allpass/params/runtime_data.dart';
@@ -21,11 +22,12 @@ import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/services/authentication_service.dart';
 
 class Application {
-  static Router router;
   static GlobalKey<NavigatorState> key = GlobalKey();
+
+  static GetIt getIt;
+  static Router router;
   static SharedPreferences sp;
-  static GetIt getIt = GetIt.instance;
-  static const platform = const MethodChannel("allpass.aengus.top/share");
+  static MethodChannel shareMethodChannel;
 
   static String version = "1.2.2";
 
@@ -33,16 +35,24 @@ class Application {
     sp = await SharedPreferences.getInstance();
   }
 
-  static void setupLocator() {
+  static void initLocator() {
+    getIt = GetIt.instance;
     getIt.registerSingleton(NavigateService());
     getIt.registerSingleton(AuthenticationService());
-    if (Config.webDavAuthSuccess??false) {
+    if (Config.webDavAuthSuccess ?? false) {
       getIt.registerSingleton(WebDavSyncService());
     }
   }
 
+  static void initRouter() {
+    Router router = Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
+
   static void initChannelAndHandle() {
-    platform.setMethodCallHandler((call) {
+    shareMethodChannel = const MethodChannel("allpass.aengus.top/share");
+    shareMethodChannel.setMethodCallHandler((call) {
       if (call.method == "getChromeData") {
         Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
