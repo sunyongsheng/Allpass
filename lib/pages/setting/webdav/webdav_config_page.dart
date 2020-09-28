@@ -1,4 +1,3 @@
-import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +9,9 @@ import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/utils/encrypt_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/webdav_util.dart';
-import 'package:allpass/services/webdav_sync_service.dart';
 import 'package:allpass/pages/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/widgets/common/none_border_circular_textfield.dart';
+import 'package:allpass/services/impl/webdav_sync_service_impl.dart';
 
 
 class WebDavConfigPage extends StatefulWidget {
@@ -198,7 +198,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavPort(_utils.port);
         Config.setWebDavAuthSuccess(true);
         // 注册单例
-        Application.getIt.registerSingleton(WebDavSyncService());
+        Application.getIt.registerSingleton(WebDavSyncServiceImpl());
         Fluttertoast.showToast(msg: "账号验证成功");
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (context) => WebDavSyncPage()));

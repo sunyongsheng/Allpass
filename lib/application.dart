@@ -17,9 +17,10 @@ import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/services/navigate_service.dart';
+import 'package:allpass/services/auth_service.dart';
 import 'package:allpass/services/webdav_sync_service.dart';
-import 'package:allpass/services/authentication_service.dart';
+import 'package:allpass/services/impl/auth_service_impl.dart';
+import 'package:allpass/services/impl/webdav_sync_service_impl.dart';
 
 class Application {
   static GlobalKey<NavigatorState> key = GlobalKey();
@@ -37,10 +38,9 @@ class Application {
 
   static void initLocator() {
     getIt = GetIt.instance;
-    getIt.registerSingleton(NavigateService());
-    getIt.registerSingleton(AuthenticationService());
+    getIt.registerSingleton<AuthService>(AuthServiceImpl());
     if (Config.webDavAuthSuccess ?? false) {
-      getIt.registerSingleton(WebDavSyncService());
+      getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
     }
   }
 

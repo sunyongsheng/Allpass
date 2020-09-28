@@ -3,8 +3,9 @@ import 'package:flutter/services.dart';
 
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:allpass/services/auth_service.dart';
 
-class AuthenticationService {
+class AuthServiceImpl implements AuthService {
   final _auth = LocalAuthentication();
 
   bool isAuthenticated = false;
@@ -24,7 +25,7 @@ class AuthenticationService {
       lockOut: "指纹识别失败，请重新验证"
   );
 
-  /// 授权，返回[true]代表授权成功
+  @override
   Future<bool> authenticate() async {
     try {
       List<BiometricType> availableBiometrics =
@@ -51,7 +52,7 @@ class AuthenticationService {
     return false;
   }
 
-  /// 取消授权，返回[true]代表成功
+  @override
   Future<bool> stopAuthenticate() async {
     return await _auth.stopAuthentication();
   }

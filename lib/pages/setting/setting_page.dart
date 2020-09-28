@@ -12,7 +12,7 @@ import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/screen_util.dart';
 import 'package:allpass/utils/network_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
-import 'package:allpass/services/authentication_service.dart';
+import 'package:allpass/services/auth_service.dart';
 import 'package:allpass/pages/about_page.dart';
 import 'package:allpass/pages/setting/feedback_page.dart';
 import 'package:allpass/pages/setting/theme_select_page.dart';
@@ -33,7 +33,7 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin {
 
-  AuthenticationService _localAuthService;
+  AuthService _localAuthService;
 
   ScrollController _controller;
 
@@ -44,7 +44,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
   @override
   void initState() {
-    _localAuthService = Application.getIt<AuthenticationService>();
+    _localAuthService = Application.getIt<AuthService>();
     _controller = ScrollController();
     super.initState();
   }

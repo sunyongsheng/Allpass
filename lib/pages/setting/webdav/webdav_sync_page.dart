@@ -25,15 +25,12 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   List<String> levels = ["不加密", "仅加密密码字段", "全部加密"];
 
-  _WebDavSyncPage() {
-     _syncService = Application.getIt<WebDavSyncService>();
-  }
-
   @override
   void initState() {
     super.initState();
     _pressUpload = false;
     _pressDownload = false;
+    _syncService = Application.getIt<WebDavSyncService>();
   }
 
   @override
@@ -120,7 +117,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     Fluttertoast.showToast(msg: res[1]);
                   } else {
                     setState(() {
-                      _pressUpload = false;
+                      _pressDownload = false;
                     });
                     Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }

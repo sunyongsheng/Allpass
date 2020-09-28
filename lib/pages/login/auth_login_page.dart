@@ -8,7 +8,7 @@ import 'package:allpass/params/param.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/utils/navigation_util.dart';
 import 'package:allpass/utils/screen_util.dart';
-import 'package:allpass/services/authentication_service.dart';
+import 'package:allpass/services/auth_service.dart';
 import 'package:allpass/widgets/setting/input_main_password_dialog.dart';
 
 
@@ -23,7 +23,7 @@ class AuthLoginPage extends StatefulWidget {
 
 class _AuthLoginPage extends State<StatefulWidget> {
 
-  final AuthenticationService _localAuthService = Application.getIt<AuthenticationService>();
+  final AuthService _localAuthService = Application.getIt<AuthService>();
   WidgetsBinding widgetsBinding = WidgetsBinding.instance;
 
   @override
