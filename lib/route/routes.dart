@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:allpass/route/route_handles.dart';
-import 'package:allpass/pages/login/login_page.dart';
+import 'package:allpass/page/login/login_page.dart';
 
 class Routes {
   static String root = "/";

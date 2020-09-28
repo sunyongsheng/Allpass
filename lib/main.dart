@@ -5,18 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 
-import 'package:allpass/params/config.dart';
-import 'package:allpass/params/param.dart';
+import 'package:allpass/param/config.dart';
+import 'package:allpass/param/param.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/provider/card_list.dart';
 import 'package:allpass/provider/password_list.dart';
 import 'package:allpass/provider/theme_provider.dart';
-import 'package:allpass/pages/login/login_page.dart';
-import 'package:allpass/pages/login/auth_login_page.dart';
-import 'package:allpass/utils/network_util.dart';
-import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/utils/version_util.dart';
+import 'package:allpass/page/login/login_page.dart';
+import 'package:allpass/page/login/auth_login_page.dart';
+import 'package:allpass/util/network_util.dart';
+import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/version_util.dart';
 import 'package:allpass/model/response_bean.dart';
 
 

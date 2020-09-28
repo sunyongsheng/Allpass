@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
-import 'package:allpass/params/runtime_data.dart';
+import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/model/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';

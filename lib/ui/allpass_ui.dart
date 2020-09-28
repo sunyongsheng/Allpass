@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:allpass/utils/screen_util.dart';
+import 'package:allpass/util/screen_util.dart';
 
 /// 保存所有Allpass用到的文本样式
 class AllpassTextUI {

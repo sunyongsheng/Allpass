@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:allpass/pages/home_page.dart';
-import 'package:allpass/pages/login/login_page.dart';
-import 'package:allpass/pages/login/auth_login_page.dart';
-import 'package:allpass/pages/login/init_encrypt_page.dart';
+import 'package:allpass/page/home_page.dart';
+import 'package:allpass/page/login/login_page.dart';
+import 'package:allpass/page/login/auth_login_page.dart';
+import 'package:allpass/page/login/init_encrypt_page.dart';
 
 /// 登录页
 var loginHandler = Handler(

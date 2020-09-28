@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/model/base_model.dart';
-import 'package:allpass/utils/encrypt_util.dart';
-import 'package:allpass/utils/string_process.dart';
+import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/string_process.dart';
 
 /// 存储新建的“密码”
 class PasswordBean extends BaseModel {

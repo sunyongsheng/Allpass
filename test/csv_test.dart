@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:allpass/utils/csv_util.dart';
+import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/model/password_bean.dart';
 
 void main() {

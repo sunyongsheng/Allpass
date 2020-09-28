@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/model/base_model.dart';
-import 'package:allpass/utils/string_process.dart';
-import 'package:allpass/utils/encrypt_util.dart';
+import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/encrypt_util.dart';
 
 /// 保存“卡片”数据
 class CardBean extends BaseModel {

@@ -1,7 +1,7 @@
 import 'package:allpass/model/base_model.dart';
 import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/params/allpass_type.dart';
-import 'package:allpass/utils/allpass_file_util.dart';
+import 'package:allpass/param/allpass_type.dart';
+import 'package:allpass/util/allpass_file_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
