@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:allpass/model/UpdateBean.dart';
+import 'package:allpass/model/update_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 
 class UpdateDialog extends StatelessWidget {
@@ -15,25 +15,8 @@ class UpdateDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("检查更新"),
-      content: SingleChildScrollView(
-        child: _createUpdateContent(),
-      ),
-      actions: <Widget>[
-        updateBean.checkResult == CheckUpdateResult.HaveUpdate
-            ? FlatButton(
-          child: Text("下载更新"),
-          onPressed: () async => await launch(updateBean.downloadUrl))
-            : FlatButton(
-          child: Text("确认"),
-          onPressed: () => Navigator.pop(context),
-        ),
-        FlatButton(
-          child: updateBean.checkResult == CheckUpdateResult.HaveUpdate
-            ? Text("下次再说")
-            : Text("取消"),
-          onPressed: () => Navigator.pop(context),
-        )
-      ],
+      content: SingleChildScrollView(child: _createUpdateContent()),
+      actions: _createUpdateAction(context)
     );
   }
 
@@ -82,6 +65,26 @@ class UpdateDialog extends StatelessWidget {
             Text(_updateContent)
           ],
         );
+    }
+  }
+
+  List<Widget> _createUpdateAction(BuildContext context) {
+    if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
+      return [
+        FlatButton(
+            child: Text("下载更新"),
+            onPressed: () async => await launch(updateBean.downloadUrl)),
+        FlatButton(
+            child: Text("下次再说"),
+            onPressed: () => Navigator.pop(context))];
+    } else {
+      return [
+        FlatButton(
+            child: Text("确定"),
+            onPressed: () => Navigator.pop(context)),
+        FlatButton(
+          child: Text("取消"),
+          onPressed: () => Navigator.pop(context),)];
     }
   }
 }

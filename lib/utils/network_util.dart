@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/params/param.dart';
-import 'package:allpass/model/UpdateBean.dart';
+import 'package:allpass/model/update_bean.dart';
 
 class NetworkUtil {
   Dio _dio;
