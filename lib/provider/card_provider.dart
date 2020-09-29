@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 
 /// 保存程序中所有的Card
-class CardList with ChangeNotifier {
+class CardProvider with ChangeNotifier {
   List<CardBean> _cardList = [];
   CardDao _dao = CardDao();
 

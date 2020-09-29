@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';

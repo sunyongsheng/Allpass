@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/param/config.dart';
-import 'package:allpass/model/update_bean.dart';
+import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/network_util.dart';

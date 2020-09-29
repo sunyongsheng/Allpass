@@ -4,7 +4,7 @@ import 'package:device_info/device_info.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/param/param.dart';
-import 'package:allpass/model/response_bean.dart';
+import 'package:allpass/model/api/allpass_response.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/network_util.dart';
@@ -132,11 +132,11 @@ class _FeedbackPage extends State<StatefulWidget> {
     } else {
       map['identification'] = "unknown";
     }
-    ResponseBean data = await NetworkUtil.sendFeedback(map);
-    if (data.done) {
+    AllpassResponse response = await NetworkUtil.sendFeedback(map);
+    if (response.success) {
       _submitSuccess = true;
     }
-    Fluttertoast.showToast(msg: data.msg);
+    Fluttertoast.showToast(msg: response.msg);
     Navigator.pop(context);
   }
 

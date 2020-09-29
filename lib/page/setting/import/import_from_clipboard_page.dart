@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/widget/common/information_help_dialog.dart';
 import 'package:allpass/widget/common/none_border_circular_textfield.dart';
 
@@ -203,7 +203,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   try {
                     List<PasswordBean> list = await parseText(_groupValue);
                     for (var bean in list) {
-                      await Provider.of<PasswordList>(context).insertPassword(bean);
+                      await Provider.of<PasswordProvider>(context).insertPassword(bean);
                     }
                     Fluttertoast.showToast(msg: "导入了${list.length}条记录");
                   } catch (e) {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/main.dart';
-import 'package:allpass/model/update_bean.dart';
+import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/page/setting/secret_key_upgrade_page.dart';
 import 'package:allpass/page/password/password_page.dart';

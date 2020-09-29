@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';

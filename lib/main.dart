@@ -9,15 +9,15 @@ import 'package:allpass/param/config.dart';
 import 'package:allpass/param/param.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/page/login/login_page.dart';
 import 'package:allpass/page/login/auth_login_page.dart';
 import 'package:allpass/util/network_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
-import 'package:allpass/model/response_bean.dart';
+import 'package:allpass/model/api/allpass_response.dart';
 
 
 bool needUpdateSecret = false;
@@ -46,15 +46,15 @@ void main() async {
 
   _registerUser();
 
-  final PasswordList passwords = PasswordList()..init();
-  final CardList cards = CardList()..init();
+  final PasswordProvider passwords = PasswordProvider()..init();
+  final CardProvider cards = CardProvider()..init();
   final ThemeProvider theme = ThemeProvider()..init();
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<PasswordList>.value(
+      ChangeNotifierProvider<PasswordProvider>.value(
         value: passwords,
       ),
-      ChangeNotifierProvider<CardList>.value(
+      ChangeNotifierProvider<CardProvider>.value(
         value: cards,
       ),
       ChangeNotifierProvider<ThemeProvider>.value(
@@ -100,8 +100,8 @@ void _registerUser() async {
       user['identification'] = identification;
       user['systemInfo'] = systemInfo;
       user['allpassVersion'] = Application.version;
-      ResponseBean data = await NetworkUtil.registerUser(user);
-      if (data.done) {
+      AllpassResponse response = await NetworkUtil.registerUser(user);
+      if (response.success) {
         Application.sp.setBool(SPKeys.needRegister, false);
       } else {
         Application.sp.setBool(SPKeys.needRegister, true);

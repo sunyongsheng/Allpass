@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/card_provider.dart';
 import 'package:allpass/page/card/card_widget_item.dart';
 import 'package:allpass/page/card/edit_card_page.dart';
 import 'package:allpass/page/search/search_page.dart';
@@ -44,14 +44,14 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
 
   // 查询
-  Future<Null> _query(CardList model) async {
+  Future<Null> _query(CardProvider model) async {
     await model.refresh();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    CardList model = Provider.of<CardList>(context);
+    CardProvider model = Provider.of<CardProvider>(context);
     Widget listView;
     if (model.cardList.length >= 1) {
       if (RuntimeData.multiSelected) {
@@ -196,7 +196,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       MaterialPageRoute(builder: (context) => SearchPage(AllpassType.CARD)));
   }
 
-  void _deleteCard(BuildContext context, CardList model) {
+  void _deleteCard(BuildContext context, CardProvider model) {
     if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {
@@ -214,7 +214,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     }
   }
 
-  void _moveCard(BuildContext context, CardList model) {
+  void _moveCard(BuildContext context, CardProvider model) {
     if (RuntimeData.multiCardList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项卡片");
     } else {

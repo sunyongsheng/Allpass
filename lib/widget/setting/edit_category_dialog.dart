@@ -3,10 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/widget/common/none_border_circular_textfield.dart';
 
 /// 编辑属性对话框
@@ -129,23 +129,23 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   editLabelAndUpdate() async {
-    List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
+    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
         if (bean.label.contains(RuntimeData.labelList[_index])) {
           bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
-          await Provider.of<PasswordList>(context).updatePassword(bean);
+          await Provider.of<PasswordProvider>(context).updatePassword(bean);
         }
       }
     }
-    List<CardBean> cardList = Provider.of<CardList>(context).cardList;
+    List<CardBean> cardList = Provider.of<CardProvider>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
         if (bean.label.contains(RuntimeData.labelList[_index])) {
           bean.label.remove(RuntimeData.labelList[_index]);
           bean.label.add(_editTextController.text);
-          await Provider.of<CardList>(context).updateCard(bean);
+          await Provider.of<CardProvider>(context).updateCard(bean);
         }
       }
     }
@@ -154,21 +154,21 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   editFolderAndUpdate() async {
-    List<PasswordBean> passwordList = Provider.of<PasswordList>(context).passwordList;
+    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
     if (passwordList != null) {
       for (var bean in passwordList) {
         if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
-          await Provider.of<PasswordList>(context).updatePassword(bean);
+          await Provider.of<PasswordProvider>(context).updatePassword(bean);
         }
       }
     }
-    List<CardBean> cardList = Provider.of<CardList>(context).cardList;
+    List<CardBean> cardList = Provider.of<CardProvider>(context).cardList;
     if (cardList != null) {
       for (var bean in cardList) {
         if (bean.folder == RuntimeData.folderList[_index]) {
           bean.folder = _editTextController.text;
-          await Provider.of<CardList>(context).updateCard(bean);
+          await Provider.of<CardProvider>(context).updateCard(bean);
         }
       }
     }

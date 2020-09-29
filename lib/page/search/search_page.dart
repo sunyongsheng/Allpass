@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/model/base_model.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/data/base_model.dart';
+import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
 import 'package:allpass/param/config.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_process.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/page/card/view_card_page.dart';
 import 'package:allpass/page/card/edit_card_page.dart';
 import 'package:allpass/page/password/edit_password_page.dart';
@@ -85,7 +85,7 @@ class _SearchPage extends State<SearchPage> {
     _result.clear();
     _searchText = _searchController.text.toLowerCase();
     if (_type == AllpassType.PASSWORD) {
-      for (var item in Provider.of<PasswordList>(context).passwordList) {
+      for (var item in Provider.of<PasswordProvider>(context).passwordList) {
         if (containsKeyword(item)) {
           _result.add(ListTile(
             leading: CircleAvatar(
@@ -114,7 +114,7 @@ class _SearchPage extends State<SearchPage> {
         }
       }
     } else {
-      for (var item in Provider.of<CardList>(context).cardList) {
+      for (var item in Provider.of<CardProvider>(context).cardList) {
         if (containsKeyword(item)) {
           _result.add(ListTile(
             leading: Container(
@@ -201,8 +201,8 @@ class _SearchPage extends State<SearchPage> {
                     setState(() {});
                   },
                   onEditingComplete: () async {
-                    await Provider.of<PasswordList>(context).init();
-                    await Provider.of<CardList>(context).init();
+                    await Provider.of<PasswordProvider>(context).init();
+                    await Provider.of<CardProvider>(context).init();
                     await getSearchResult();
                     setState(() {});
                   },
@@ -236,9 +236,9 @@ class _SearchPage extends State<SearchPage> {
                 .then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
-                  await Provider.of<PasswordList>(context).updatePassword(reData);
+                  await Provider.of<PasswordProvider>(context).updatePassword(reData);
                 } else {
-                  await Provider.of<PasswordList>(context).deletePassword(data);
+                  await Provider.of<PasswordProvider>(context).deletePassword(data);
                 }
               }
               Navigator.pop(context);
@@ -255,9 +255,9 @@ class _SearchPage extends State<SearchPage> {
                 .then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
-                  await Provider.of<PasswordList>(context).updatePassword(reData);
+                  await Provider.of<PasswordProvider>(context).updatePassword(reData);
                 } else {
-                  await Provider.of<PasswordList>(context).deletePassword(data);
+                  await Provider.of<PasswordProvider>(context).deletePassword(data);
                 }
               }
               Navigator.pop(context);
@@ -287,7 +287,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除密码"),
           onTap: () async {
-            await Provider.of<PasswordList>(context).deletePassword(data);
+            await Provider.of<PasswordProvider>(context).deletePassword(data);
             Navigator.pop(context);
           },
         )
@@ -312,9 +312,9 @@ class _SearchPage extends State<SearchPage> {
                 .then((resData) async {
               if (resData != null) {
                 if (resData.isChanged) {
-                  await Provider.of<CardList>(context).updateCard(resData);
+                  await Provider.of<CardProvider>(context).updateCard(resData);
                 } else {
-                  await Provider.of<CardList>(context).deleteCard(resData);
+                  await Provider.of<CardProvider>(context).deleteCard(resData);
                 }
               }
               Navigator.pop(context);
@@ -332,9 +332,9 @@ class _SearchPage extends State<SearchPage> {
                 .then((resData) async {
               if (resData != null) {
                 if (resData.isChanged) {
-                  await Provider.of<CardList>(context).updateCard(resData);
+                  await Provider.of<CardProvider>(context).updateCard(resData);
                 } else {
-                  await Provider.of<CardList>(context).deleteCard(resData);
+                  await Provider.of<CardProvider>(context).deleteCard(resData);
                 }
               }
               Navigator.pop(context);
@@ -362,7 +362,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除卡片"),
           onTap: () async {
-            await Provider.of<CardList>(context).deleteCard(data);
+            await Provider.of<CardProvider>(context).deleteCard(data);
             Navigator.pop(context);
           }
         )

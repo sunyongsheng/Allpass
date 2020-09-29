@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';

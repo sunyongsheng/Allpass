@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/page/password/edit_password_page.dart';
@@ -41,7 +41,7 @@ class _PasswordPageState extends State<PasswordPage>
     _controller.dispose();
   }
 
-  Future<Null> _query(PasswordList model) async {
+  Future<Null> _query(PasswordProvider model) async {
     await model.refresh();
   }
 
@@ -51,7 +51,7 @@ class _PasswordPageState extends State<PasswordPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    PasswordList model = Provider.of<PasswordList>(context);
+    PasswordProvider model = Provider.of<PasswordProvider>(context);
     Widget listView;
     if (model.passwordList.length >= 1) {
       if (RuntimeData.multiSelected) {
@@ -195,7 +195,7 @@ class _PasswordPageState extends State<PasswordPage>
         MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
   }
 
-  void _deletePassword(BuildContext context, PasswordList model) {
+  void _deletePassword(BuildContext context, PasswordProvider model) {
     if (RuntimeData.multiPasswordList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项密码");
     } else {
@@ -214,7 +214,7 @@ class _PasswordPageState extends State<PasswordPage>
     }
   }
 
-  void _movePassword(BuildContext context, PasswordList model) {
+  void _movePassword(BuildContext context, PasswordProvider model) {
     if (RuntimeData.multiPasswordList.length == 0) {
       Fluttertoast.showToast(msg: "请选择至少一项密码");
     } else {

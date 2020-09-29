@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/dao/password_dao.dart';
 import 'package:allpass/dao/card_dao.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/page/login/init_encrypt_page.dart';
 import 'package:allpass/page/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/widget/common/select_item_dialog.dart';
@@ -86,7 +86,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除所有密码记录"),
                 onPressed: () async {
-                  await Provider.of<PasswordList>(context).clear();
+                  await Provider.of<PasswordProvider>(context).clear();
                   Fluttertoast.showToast(msg: "已删除所有密码");
                 },
               ),
@@ -95,7 +95,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除所有卡片记录"),
                 onPressed: () async {
-                  await Provider.of<CardList>(context).clear();
+                  await Provider.of<CardProvider>(context).clear();
                   Fluttertoast.showToast(msg: "已删除所有卡片");
                 },
               ),
@@ -104,7 +104,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除密码数据库"),
                 onPressed: () async {
-                  await Provider.of<PasswordList>(context).clear();
+                  await Provider.of<PasswordProvider>(context).clear();
                   await _passwordDao.deleteTable();
                   Fluttertoast.showToast(msg: "已删除密码数据库");
                 },
@@ -114,7 +114,7 @@ class _DebugPage extends State<DebugPage> {
               title: FlatButton(
                 child: Text("删除卡片数据库"),
                 onPressed: () async {
-                  await Provider.of<PasswordList>(context).clear();
+                  await Provider.of<PasswordProvider>(context).clear();
                   await _cardDao.deleteTable();
                   Fluttertoast.showToast(msg: "已删除卡片数据库");
                 },

@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:allpass/model/card_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
 import 'package:allpass/page/card/edit_card_page.dart';
 import 'package:allpass/page/common/detail_text_page.dart';
 import 'package:allpass/ui/allpass_ui.dart';

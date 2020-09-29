@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:io' show Platform, File, Directory;
 
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_process.dart';
 

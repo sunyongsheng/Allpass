@@ -14,15 +14,15 @@ import 'package:provider/provider.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/ui/icon_resource.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/page/setting/import/chrome_import_help.dart';
 import 'package:allpass/page/setting/import/import_from_clipboard_page.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/widget/common/confirm_dialog.dart';
 import 'package:allpass/widget/setting/input_main_password_dialog.dart';
 
@@ -158,21 +158,21 @@ class ImportTypeSelectPage extends StatelessWidget {
         if (type == AllpassType.PASSWORD) {
           List<PasswordBean> passwordList = await CsvUtil().passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
-            await Provider.of<PasswordList>(context).insertPassword(bean);
+            await Provider.of<PasswordProvider>(context).insertPassword(bean);
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
-          await Provider.of<PasswordList>(context).refresh();
+          await Provider.of<PasswordProvider>(context).refresh();
         } else {
           List<CardBean> cardList = await CsvUtil().cardImportFromCsv(path);
           for (var bean in cardList) {
-            await Provider.of<CardList>(context).insertCard(bean);
+            await Provider.of<CardProvider>(context).insertCard(bean);
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
           Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
-          await Provider.of<CardList>(context).refresh();
+          await Provider.of<CardProvider>(context).refresh();
         }
       } catch (assertError) {
         Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/param/param.dart';
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/string_process.dart';
 

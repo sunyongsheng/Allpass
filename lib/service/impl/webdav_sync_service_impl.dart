@@ -6,10 +6,10 @@ import 'package:allpass/application.dart';
 import 'package:allpass/param/config.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/provider/password_list.dart';
-import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/provider/password_provider.dart';
+import 'package:allpass/provider/card_provider.dart';
 import 'package:allpass/util/allpass_file_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/webdav_util.dart';
@@ -39,7 +39,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
 
   @override
   Future<bool> backupPassword(BuildContext context) async {
-    List<PasswordBean> passwords = Provider.of<PasswordList>(context).passwordList;
+    List<PasswordBean> passwords = Provider.of<PasswordProvider>(context).passwordList;
     String contents = _fileUtil.encodeList(passwords);
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -60,7 +60,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
 
   @override
   Future<bool> backupCard(BuildContext context) async {
-    List<CardBean> cards = Provider.of<CardList>(context).cardList;
+    List<CardBean> cards = Provider.of<CardProvider>(context).cardList;
     String contents = _fileUtil.encodeList(cards);
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -110,15 +110,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<PasswordBean> backup = Provider.of<PasswordList>(context).passwordList;
+    List<PasswordBean> backup = Provider.of<PasswordProvider>(context).passwordList;
     try {
       String string = _fileUtil.readFile(filePath);
       List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.PASSWORD);
       try {
         // 正常执行
-        await Provider.of<PasswordList>(context).clear();
+        await Provider.of<PasswordProvider>(context).clear();
         for (var bean in list) {
-          await Provider.of<PasswordList>(context).insertPassword(bean);
+          await Provider.of<PasswordProvider>(context).insertPassword(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -127,7 +127,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
-          await Provider.of<PasswordList>(context).insertPassword(bean);
+          await Provider.of<PasswordProvider>(context).insertPassword(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -150,15 +150,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<CardBean> backup = Provider.of<CardList>(context).cardList;
+    List<CardBean> backup = Provider.of<CardProvider>(context).cardList;
     try {
       String string = _fileUtil.readFile(filePath);
       List<CardBean> list = _fileUtil.decodeList(string, AllpassType.CARD);
       try {
         // 正常执行
-        await Provider.of<CardList>(context).clear();
+        await Provider.of<CardProvider>(context).clear();
         for (var bean in list) {
-          await Provider.of<CardList>(context).insertCard(bean);
+          await Provider.of<CardProvider>(context).insertCard(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -167,7 +167,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
-          await Provider.of<CardList>(context).insertCard(bean);
+          await Provider.of<CardProvider>(context).insertCard(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);

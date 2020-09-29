@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/provider/theme_provider.dart';
 
 /// 首字母索引列
@@ -36,7 +36,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = List();
-    Map<String, int> map = Provider.of<PasswordList>(context).letterCountIndex;
+    Map<String, int> map = Provider.of<PasswordProvider>(context).letterCountIndex;
     var keys = map.keys;
     letters.forEach((item) {
       _children.add(SizedBox(

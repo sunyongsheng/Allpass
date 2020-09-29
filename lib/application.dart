@@ -14,9 +14,9 @@ import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/model/password_bean.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/service/auth_service.dart';
 import 'package:allpass/service/webdav_sync_service.dart';
 import 'package:allpass/service/impl/auth_service_impl.dart';
@@ -85,8 +85,8 @@ class Application {
   }
 
   static Future<Null> clearAll(BuildContext context) async {
-    await Provider.of<PasswordList>(context).clear();
-    await Provider.of<CardList>(context).clear();
+    await Provider.of<PasswordProvider>(context).clear();
+    await Provider.of<CardProvider>(context).clear();
     await EncryptUtil.clearEncrypt();
     await Application.sp.clear();
     Config.configClear();

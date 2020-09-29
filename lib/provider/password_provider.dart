@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 
 
 /// 保存程序中的所有的Password
-class PasswordList with ChangeNotifier {
+class PasswordProvider with ChangeNotifier {
   List<PasswordBean> _passwordList = [];
   PasswordDao _dao = PasswordDao();
   /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0

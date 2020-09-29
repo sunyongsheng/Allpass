@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/config.dart';
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/route/animation_routes.dart';
@@ -19,7 +19,7 @@ class PasswordWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PasswordList>(
+    return Consumer<PasswordProvider>(
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
@@ -71,7 +71,7 @@ class PasswordWidgetContainerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PasswordList>(
+    return Consumer<PasswordProvider>(
       builder: (context, model, _) {
         return OpenContainer(
           closedElevation: 0,
@@ -114,7 +114,7 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<PasswordList>(
+    return Consumer<PasswordProvider>(
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,

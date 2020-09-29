@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/runtime_data.dart';
-import 'package:allpass/provider/card_list.dart';
+import 'package:allpass/provider/card_provider.dart';
 import 'package:allpass/page/card/view_card_page.dart';
 import 'package:allpass/param/config.dart';
 import 'package:allpass/ui/allpass_ui.dart';
@@ -17,7 +17,7 @@ class CardWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardList>(
+    return Consumer<CardProvider>(
       builder: (context, model, _) {
         return SizedBox(
           height: 100,
@@ -82,7 +82,7 @@ class CardWidgetContainerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardList>(
+    return Consumer<CardProvider>(
       builder: (context, model, _) {
         return OpenContainer(
           closedElevation: 0,
@@ -135,7 +135,7 @@ class SimpleCardWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardList>(
+    return Consumer<CardProvider>(
       builder: (context, model, _) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
@@ -196,7 +196,7 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardList>(
+    return Consumer<CardProvider>(
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,

@@ -8,8 +8,8 @@ import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/widget/common/add_category_dialog.dart';
 import 'package:allpass/widget/setting/edit_category_dialog.dart';
 import 'package:allpass/widget/common/confirm_dialog.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 
 /// 属性管理页
 /// 通过指定[name]来指定属性页的名称，属性页中是[ListView]
@@ -165,16 +165,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   deleteLabelAndUpdate(String label) async {
-    for (var bean in Provider.of<PasswordList>(context).passwordList) {
+    for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
       if (bean.label.contains(label)) {
         bean.label.remove(label);
-        Provider.of<PasswordList>(context).updatePassword(bean);
+        Provider.of<PasswordProvider>(context).updatePassword(bean);
       }
     }
-    for (var bean in Provider.of<CardList>(context).cardList) {
+    for (var bean in Provider.of<CardProvider>(context).cardList) {
       if (bean.label.contains(label)) {
         bean.label.remove(label);
-        Provider.of<CardList>(context).updateCard(bean);
+        Provider.of<CardProvider>(context).updateCard(bean);
       }
     }
     setState(() {
@@ -185,16 +185,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   deleteFolderAndUpdate(String folder) async {
-    for (var bean in Provider.of<PasswordList>(context).passwordList) {
+    for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
       if (folder == bean.folder) {
         bean.folder = "默认";
-        Provider.of<PasswordList>(context).updatePassword(bean);
+        Provider.of<PasswordProvider>(context).updatePassword(bean);
       }
     }
-    for (var bean in Provider.of<CardList>(context).cardList) {
+    for (var bean in Provider.of<CardProvider>(context).cardList) {
       if (folder == bean.folder) {
         bean.folder = "默认";
-        Provider.of<CardList>(context).updateCard(bean);
+        Provider.of<CardProvider>(context).updateCard(bean);
       }
     }
     setState(() {

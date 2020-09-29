@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/model/card_bean.dart';
-import 'package:allpass/model/password_bean.dart';
+import 'package:allpass/model/data/card_bean.dart';
+import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/param/config.dart';
-import 'package:allpass/provider/card_list.dart';
-import 'package:allpass/provider/password_list.dart';
+import 'package:allpass/provider/card_provider.dart';
+import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 
@@ -182,8 +182,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateCardBeanById(bean);
       }
-      await Provider.of<PasswordList>(context).refresh();
-      await Provider.of<CardList>(context).refresh();
+      await Provider.of<PasswordProvider>(context).refresh();
+      await Provider.of<CardProvider>(context).refresh();
       Fluttertoast.showToast(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
       return true;
     } catch (e) {
@@ -199,8 +199,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateCardBeanById(bean);
       }
-      await Provider.of<PasswordList>(context).refresh();
-      await Provider.of<CardList>(context).refresh();
+      await Provider.of<PasswordProvider>(context).refresh();
+      await Provider.of<CardProvider>(context).refresh();
       Fluttertoast.showToast(msg: "升级失败：$e");
       return false;
     }
