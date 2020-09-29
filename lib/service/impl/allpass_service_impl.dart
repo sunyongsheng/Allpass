@@ -1,24 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/param/param.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/model/api/allpass_response.dart';
 
-class NetworkUtil {
+class AllpassServiceImpl implements AllpassService {
 
-  NetworkUtil._();
-
-  static Dio get dio {
+  Dio get dio {
     if (_dio == null) {
       _dio = Dio();
     }
     return _dio;
   }
 
-  static Dio _dio;
+  Dio _dio;
 
-  /// 发送注册
-  static Future<AllpassResponse> registerUser(Map<String, String> user) async {
+  @override
+  Future<AllpassResponse> registerUser(Map<String, String> user) async {
     try {
       Response response = await dio.post("$allpassUrl/user/", data: user);
       Map<String, String> res = Map();
@@ -34,8 +33,8 @@ class NetworkUtil {
     }
   }
 
-  /// 发送反馈
-  static Future<AllpassResponse> sendFeedback(Map<String, String> content) async {
+  @override
+  Future<AllpassResponse> sendFeedback(Map<String, String> content) async {
     try {
       Response response = await dio.post("$allpassUrl/feedback/", data: content);
       Map<String, String> res = Map();
@@ -70,8 +69,8 @@ class NetworkUtil {
     }
   }
 
-  /// 检查更新
-  static Future<UpdateBean> checkUpdate() async {
+  @override
+  Future<UpdateBean> checkUpdate() async {
     try {
       Response response = await dio.get("$allpassUrl/update/?version=${Application.version}");
 
@@ -111,8 +110,8 @@ class NetworkUtil {
     }
   }
 
-  /// 获取最新版本
-  static Future<UpdateBean> getLatestVersion() async {
+  @override
+  Future<UpdateBean> getLatestVersion() async {
     try {
       Response<Map> response = await Dio(BaseOptions(connectTimeout: 10))
           .get("$allpassUrl/update/?version=1.0.0");

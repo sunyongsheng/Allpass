@@ -7,7 +7,7 @@ import 'package:allpass/param/param.dart';
 import 'package:allpass/model/api/allpass_response.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/util/network_util.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/widget/common/none_border_circular_textfield.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -132,7 +132,7 @@ class _FeedbackPage extends State<StatefulWidget> {
     } else {
       map['identification'] = "unknown";
     }
-    AllpassResponse response = await NetworkUtil.sendFeedback(map);
+    AllpassResponse response = await Application.getIt<AllpassService>().sendFeedback(map);
     if (response.success) {
       _submitSuccess = true;
     }

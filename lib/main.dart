@@ -14,7 +14,7 @@ import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/page/login/login_page.dart';
 import 'package:allpass/page/login/auth_login_page.dart';
-import 'package:allpass/util/network_util.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
 import 'package:allpass/model/api/allpass_response.dart';
@@ -100,7 +100,7 @@ void _registerUser() async {
       user['identification'] = identification;
       user['systemInfo'] = systemInfo;
       user['allpassVersion'] = Application.version;
-      AllpassResponse response = await NetworkUtil.registerUser(user);
+      AllpassResponse response = await Application.getIt<AllpassService>().registerUser(user);
       if (response.success) {
         Application.sp.setBool(SPKeys.needRegister, false);
       } else {

@@ -18,8 +18,10 @@ import 'package:allpass/model/data/password_bean.dart';
 import 'package:allpass/provider/card_provider.dart';
 import 'package:allpass/provider/password_provider.dart';
 import 'package:allpass/service/auth_service.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/service/webdav_sync_service.dart';
 import 'package:allpass/service/impl/auth_service_impl.dart';
+import 'package:allpass/service/impl/allpass_service_impl.dart';
 import 'package:allpass/service/impl/webdav_sync_service_impl.dart';
 
 class Application {
@@ -39,6 +41,7 @@ class Application {
   static void initLocator() {
     getIt = GetIt.instance;
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
+    getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
     if (Config.webDavAuthSuccess ?? false) {
       getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
     }

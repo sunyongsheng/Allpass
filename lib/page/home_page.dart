@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/main.dart';
+import 'package:allpass/application.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/page/setting/secret_key_upgrade_page.dart';
@@ -10,7 +12,6 @@ import 'package:allpass/page/password/password_page.dart';
 import 'package:allpass/page/card/card_page.dart';
 import 'package:allpass/page/classification/classification_page.dart';
 import 'package:allpass/page/setting/setting_page.dart';
-import 'package:allpass/util/network_util.dart';
 import 'package:allpass/widget/setting/update_dialog.dart';
 import 'package:allpass/widget/common/confirm_dialog.dart';
 
@@ -58,7 +59,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      UpdateBean updateBean = await NetworkUtil.checkUpdate();
+      UpdateBean updateBean = await Application.getIt<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
           context: context,

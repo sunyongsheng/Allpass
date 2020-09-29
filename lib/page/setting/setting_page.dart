@@ -10,9 +10,9 @@ import 'package:allpass/param/config.dart';
 import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/util/network_util.dart';
 import 'package:allpass/provider/theme_provider.dart';
 import 'package:allpass/service/auth_service.dart';
+import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/page/about_page.dart';
 import 'package:allpass/page/setting/feedback_page.dart';
 import 'package:allpass/page/setting/theme_select_page.dart';
@@ -270,7 +270,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   void _checkUpdate() {
-    var bean = NetworkUtil.checkUpdate();
+    var bean = Application.getIt<AllpassService>().checkUpdate();
     showDialog(
         context: context,
         child: FutureBuilder(
@@ -290,7 +290,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   Future<Null> _recommend() async {
-    UpdateBean data = await NetworkUtil.getLatestVersion();
+    UpdateBean data = await Application.getIt<AllpassService>().getLatestVersion();
     Share.share(
         "【Allpass】我发现了一款应用，快来下载吧！下载地址：${data.downloadUrl}",
         subject: "软件推荐——Allpass");
