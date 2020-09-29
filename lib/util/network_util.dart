@@ -25,15 +25,7 @@ class NetworkUtil {
       for (String key in response.data.keys) {
         res[key] = response.data[key];
       }
-      if (res["result"] == "1") {
-        return AllpassResponse(
-          success: true
-        );
-      } else {
-        return AllpassResponse(
-          success: false
-        );
-      }
+      return AllpassResponse.create(res);
     } catch (e) {
       return AllpassResponse(
         success: false,
@@ -50,17 +42,11 @@ class NetworkUtil {
       for (String key in response.data.keys) {
         res[key] = response.data[key];
       }
-      if (res["result"] == "1") {
-        return AllpassResponse(
-            msg: res["msg"] ?? "感谢你的反馈！",
-            success: true
-        );
-      } else {
-        return AllpassResponse(
-            msg: res["msg"] ?? "提交失败，请反馈给作者！",
-            success: false
-        );
-      }
+      return AllpassResponse.create(res,
+        defaultConfig: ResponseConfig(
+          defaultSuccessMsg: "感谢你的反馈！",
+          defaultFailedMsg: "提交失败，请反馈给作者！"
+        ));
     } on DioError catch (dioError) {
       if (dioError.type == DioErrorType.RESPONSE) {
         return AllpassResponse(
