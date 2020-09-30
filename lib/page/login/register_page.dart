@@ -106,6 +106,10 @@ class _RegisterPage extends State<RegisterPage> {
       Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
       return;
     }
+    if (_usernameController.text.length > 15) {
+      Fluttertoast.showToast(msg: "用户名长度最长为15个字符！");
+      return;
+    }
     // 判断是否已有账号存在
     if (Application.sp.getString(SPKeys.username) == "") {
       _registerActual();
