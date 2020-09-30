@@ -54,7 +54,6 @@ class ClassificationPage extends StatelessWidget {
           child: Card(
             elevation: 0,
             color: Colors.redAccent,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Center(
               child: Text("收藏",
                 overflow: TextOverflow.ellipsis,
@@ -81,7 +80,6 @@ class ClassificationPage extends StatelessWidget {
           child: Card(
             elevation: 0,
             color: getRandomColor(seed: folder.hashCode),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Center(
               child: Text(folder,
                 overflow: TextOverflow.ellipsis,

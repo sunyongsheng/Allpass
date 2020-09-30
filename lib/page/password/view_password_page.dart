@@ -110,9 +110,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           Padding(
                             padding: AllpassEdgeInsets.forViewCardInset,
                             child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
-                              ),
                               elevation: 0,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +171,6 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           Padding(
                             padding: AllpassEdgeInsets.forViewCardInset,
                             child: Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
                                 elevation: 0,
                                 child: SizedBox(
                                   width: ScreenUtil.screenWidth * 0.8,

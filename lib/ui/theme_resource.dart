@@ -49,7 +49,10 @@ class AllpassTheme {
       scaffoldBackgroundColor: Colors.black,
       bottomSheetTheme: BottomSheetThemeData(modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),),
       iconTheme: IconThemeData(color: Colors.grey[400]),
-      cardColor: Colors.grey[900],
+      cardTheme: CardTheme(
+        color: Colors.grey[900],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius))
+      ),
       indicatorColor: Colors.blueAccent,
       cursorColor: Colors.blueAccent,
       textTheme: TextTheme(
@@ -125,6 +128,11 @@ class AllpassTheme {
       ),
       indicatorColor: mainColor,
       cursorColor: mainColor,
+      cardTheme: CardTheme(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
+        elevation: 1.5
+      ),
       inputDecorationTheme: InputDecorationTheme(
         fillColor: Color.fromRGBO(245, 246, 250, 1),
         border: OutlineInputBorder(

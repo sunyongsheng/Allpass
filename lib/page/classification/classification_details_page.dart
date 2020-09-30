@@ -71,7 +71,6 @@ class ClassificationDetailsPage extends StatelessWidget {
     all.add(Card(
       margin: AllpassEdgeInsets.settingCardInset,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
       child: Column(
         children: list1,
       ),
@@ -79,7 +78,6 @@ class ClassificationDetailsPage extends StatelessWidget {
     all.add(Card(
       margin: AllpassEdgeInsets.settingCardInset,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
       child: Column(
         children: list2,
       ),

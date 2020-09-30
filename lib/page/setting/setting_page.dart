@@ -84,7 +84,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(15)),
                 ),
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
@@ -153,7 +152,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   ),
                 ),
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
@@ -183,7 +181,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   ),
                 ),
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
@@ -222,7 +219,6 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   ),
                 ),
                 Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
