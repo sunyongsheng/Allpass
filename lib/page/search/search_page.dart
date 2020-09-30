@@ -100,12 +100,6 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(AllpassUI.smallBorderRadius),
-                        topRight: Radius.circular(AllpassUI.smallBorderRadius)
-                    )
-                ),
                 context: context,
                 builder: (BuildContext context) {
                   return createPassBottomSheet(context, item);
@@ -135,12 +129,6 @@ class _SearchPage extends State<SearchPage> {
             onTap: () {
               // 显示模态BottomSheet
               showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(AllpassUI.smallBorderRadius),
-                        topRight: Radius.circular(AllpassUI.smallBorderRadius)
-                    )
-                ),
                 context: context,
                 builder: (BuildContext context) {
                   return createCardBottomSheet(context, item);

@@ -47,7 +47,15 @@ class AllpassTheme {
       floatingActionButtonTheme:
         FloatingActionButtonThemeData(foregroundColor: Colors.white),
       scaffoldBackgroundColor: Colors.black,
-      bottomSheetTheme: BottomSheetThemeData(modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),),
+      bottomSheetTheme: BottomSheetThemeData(
+        modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(AllpassUI.smallBorderRadius),
+                topRight: Radius.circular(AllpassUI.smallBorderRadius)
+            )
+        ),
+      ),
       iconTheme: IconThemeData(color: Colors.grey[400]),
       cardTheme: CardTheme(
         color: Colors.grey[900],
@@ -106,6 +114,7 @@ class AllpassTheme {
         shape: StadiumBorder(),
       ),
       canvasColor: Colors.black,
+
     );
   }
 
@@ -147,6 +156,14 @@ class AllpassTheme {
           ),
         ),
       ),
+      bottomSheetTheme: BottomSheetThemeData(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(AllpassUI.smallBorderRadius),
+                topRight: Radius.circular(AllpassUI.smallBorderRadius)
+            )
+        ),
+      )
     );
   }
 }

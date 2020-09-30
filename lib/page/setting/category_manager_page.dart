@@ -92,12 +92,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               return;
             }
             showModalBottomSheet(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(AllpassUI.smallBorderRadius),
-                      topRight: Radius.circular(AllpassUI.smallBorderRadius)
-                  )
-              ),
               context: context,
               builder: (context) {
                 return Column(
