@@ -51,13 +51,13 @@ class AllpassFileUtil {
   /// 对json字符串[string]进行解码，返回List<PasswordBean>或List<CardBean>
   List<BaseModel> decodeList(String string, AllpassType type) {
     List<dynamic> decodedRes = json.decode(string);
-    if (type == AllpassType.PASSWORD) {
+    if (type == AllpassType.Password) {
       List<PasswordBean> results = List();
       for (var temp in decodedRes) {
         results.add(PasswordBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));
       }
       return results;
-    } else if (type == AllpassType.CARD) {
+    } else if (type == AllpassType.Card) {
       List<CardBean> results = List();
       for (var temp in decodedRes) {
         results.add(CardBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));

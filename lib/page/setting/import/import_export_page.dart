@@ -129,7 +129,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                     allowedFileExtensions: ["csv"]
                 );
                 String path = await FlutterDocumentPicker.openDocument(params: param);
-                _process(context, importFuture(context, AllpassType.PASSWORD, path));
+                _process(context, importFuture(context, AllpassType.Password, path));
               }
             ),
           ),
@@ -143,7 +143,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                     allowedFileExtensions: ["csv"]
                 );
                 String path = await FlutterDocumentPicker.openDocument(params: param);
-                _process(context, importFuture(context, AllpassType.CARD, path));
+                _process(context, importFuture(context, AllpassType.Card, path));
               }
             ),
           ),
@@ -155,7 +155,7 @@ class ImportTypeSelectPage extends StatelessWidget {
   Future<Null> importFuture(BuildContext context, AllpassType type, String path) async {
     if (path != null) {
       try {
-        if (type == AllpassType.PASSWORD) {
+        if (type == AllpassType.Password) {
           List<PasswordBean> passwordList = await CsvUtil().passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
             await Provider.of<PasswordProvider>(context).insertPassword(bean);
@@ -217,7 +217,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                             context: context,
                             rootDirectory: dir,
                           );
-                          _process(context, exportFuture(context, newDir, type: AllpassType.PASSWORD));
+                          _process(context, exportFuture(context, newDir, type: AllpassType.Password));
                         }
                       });
                     }
@@ -245,7 +245,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                           context: context,
                           rootDirectory: dir,
                         );
-                        _process(context, exportFuture(context, newDir, type: AllpassType.CARD));
+                        _process(context, exportFuture(context, newDir, type: AllpassType.Card));
                       }
                     });
                   }
@@ -288,12 +288,12 @@ class ExportTypeSelectPage extends StatelessWidget {
 
   Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType type}) async {
     switch (type) {
-      case AllpassType.PASSWORD:
+      case AllpassType.Password:
         List<PasswordBean> list = await PasswordDao().getAllPasswordBeanList();
         String path = await CsvUtil().passwordExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
-      case AllpassType.CARD:
+      case AllpassType.Card:
         List<CardBean> list = await CardDao().getAllCardBeanList();
         String path = await CsvUtil().cardExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));

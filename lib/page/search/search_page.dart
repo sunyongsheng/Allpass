@@ -84,7 +84,7 @@ class _SearchPage extends State<SearchPage> {
   Future<Null> getSearchResult() async {
     _result.clear();
     _searchText = _searchController.text.toLowerCase();
-    if (_type == AllpassType.PASSWORD) {
+    if (_type == AllpassType.Password) {
       for (var item in Provider.of<PasswordProvider>(context).passwordList) {
         if (containsKeyword(item)) {
           _result.add(ListTile(

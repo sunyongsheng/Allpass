@@ -192,7 +192,7 @@ class _PasswordPageState extends State<PasswordPage>
   _searchPress() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SearchPage(AllpassType.PASSWORD)));
+        MaterialPageRoute(builder: (context) => SearchPage(AllpassType.Password)));
   }
 
   void _deletePassword(BuildContext context, PasswordProvider model) {

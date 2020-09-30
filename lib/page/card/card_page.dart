@@ -193,7 +193,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   _searchPress() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SearchPage(AllpassType.CARD)));
+      MaterialPageRoute(builder: (context) => SearchPage(AllpassType.Card)));
   }
 
   void _deleteCard(BuildContext context, CardProvider model) {
