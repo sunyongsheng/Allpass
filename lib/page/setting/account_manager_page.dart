@@ -44,7 +44,8 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Align(
                     child: Text(Config.username,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
@@ -70,7 +71,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("定期输入主密码"),
-              leading: Icon(Icons.timer, color: AllpassColorUI.allColor[3]),
+              leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
               onTap: () {
                 showDialog(
                     context: context,
@@ -110,12 +111,24 @@ class _AccountManagerPage extends State<AccountManagerPage> {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
+              title: Text("加密密钥更新"),
+              leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(
+                  builder: (context) => SecretKeyUpgradePage()
+                ));
+              },
+            ),
+          ),
+          Container(
+            padding: AllpassEdgeInsets.listInset,
+            child: ListTile(
               title: Text("清除所有数据"),
-              leading: Icon(Icons.clear, color: AllpassColorUI.allColor[1]),
+              leading: Icon(Icons.clear, color: Colors.red),
               onTap: () {
                 showDialog(
-                  context: context,
-                  builder: (context) => ConfirmDialog("确认删除", "此操作将删除所有数据，继续吗？")
+                    context: context,
+                    builder: (context) => ConfirmDialog("确认删除", "此操作将删除所有数据，继续吗？")
                 ).then((confirm) {
                   if (confirm) {
                     // 二次确认
@@ -131,18 +144,6 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                     });
                   }
                 });
-              },
-            ),
-          ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
-            child: ListTile(
-              title: Text("加密密钥更新"),
-              leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                  builder: (context) => SecretKeyUpgradePage()
-                ));
               },
             ),
           ),
