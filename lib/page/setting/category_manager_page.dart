@@ -29,10 +29,13 @@ class CategoryManagerPage extends StatefulWidget {
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   String categoryName;
+  List<String> data;
 
   @override
   void initState() {
     categoryName = widget.name;
+    if (categoryName == "标签") data = RuntimeData.labelList;
+    else data = RuntimeData.folderList;
     super.initState();
   }
 
@@ -52,7 +55,23 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView(children: _getAllWidget(),),
+            child: ReorderableListView(
+              children: _getAllWidget(),
+              onReorder: (int oldIndex, int newIndex) {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                setState(() {
+                  var child = data.removeAt(oldIndex);
+                  data.insert(newIndex, child);
+                });
+                if (categoryName == "标签") {
+                  RuntimeData.labelParamsPersistence();
+                } else {
+                  RuntimeData.folderParamsPersistence();
+                }
+              },
+            ),
           )
         ],
       ),
@@ -76,12 +95,10 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   List<Widget> _getAllWidget() {
     List<Widget> widgets = List();
-    List<String> list = List();
-    if (categoryName == "标签") list = RuntimeData.labelList;
-    else list = RuntimeData.folderList;
-    for (int currIndex = 0; currIndex < list.length; currIndex++) {
-      String currCategoryName = list[currIndex];
+    for (int currIndex = 0; currIndex < data.length; currIndex++) {
+      String currCategoryName = data[currIndex];
       widgets.add(Container(
+        key: ValueKey(data[currIndex]),
         child: ListTile(
           // TODO 增加trailing属性显示有多少个密码账号含有此标签
           title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
