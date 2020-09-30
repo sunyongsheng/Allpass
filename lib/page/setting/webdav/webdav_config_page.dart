@@ -11,6 +11,7 @@ import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/webdav_util.dart';
 import 'package:allpass/page/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/widget/common/none_border_circular_textfield.dart';
+import 'package:allpass/service/webdav_sync_service.dart';
 import 'package:allpass/service/impl/webdav_sync_service_impl.dart';
 
 
@@ -198,7 +199,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavPort(_utils.port);
         Config.setWebDavAuthSuccess(true);
         // 注册单例
-        Application.getIt.registerSingleton(WebDavSyncServiceImpl());
+        Application.getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
         Fluttertoast.showToast(msg: "账号验证成功");
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
