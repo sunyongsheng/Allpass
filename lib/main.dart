@@ -41,7 +41,7 @@ void main() async {
   // 自定义报错页面
   _initErrorPage();
 
-  needUpdateSecret = !Application.sp.getBool(SPKeys.firstRun)
+  needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
       && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "2.0.0");
 
   _registerUser();

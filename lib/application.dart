@@ -99,8 +99,9 @@ class Application {
 
 /// 软件第一次运行，用户点击“同意并继续”后，对软件进行初始化，仅会调用一次
 Future<Null> initAppFirstRun() async {
-  // 对8个key进行设置，label、latestUsePassword、WebDav配置相关不在其中
+  // 对10个key进行设置，label、latestUsePassword、WebDav配置相关不在其中
   Application.sp.setBool(SPKeys.firstRun, false);
+  Application.sp.setString(SPKeys.allpassVersion, Application.version);
   Application.sp.setBool(SPKeys.needRegister, true);
   Application.sp.setString(SPKeys.username, "");
   Application.sp.setString(SPKeys.password, "");
