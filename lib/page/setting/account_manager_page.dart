@@ -38,6 +38,24 @@ class _AccountManagerPage extends State<AccountManagerPage> {
         children: <Widget>[
           Container(
             padding: AllpassEdgeInsets.listInset,
+            child: InkWell(
+              child: Card(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Align(
+                    child: Text(Config.username,
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ),
+              ),
+              onTap: () {
+                Fluttertoast.showToast(msg: "暂不支持主账号修改");
+              },
+            )
+          ),
+          Container(
+            padding: AllpassEdgeInsets.listInset,
             child: ListTile(
               title: Text("修改主密码"),
               leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
