@@ -120,7 +120,9 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                     )
                   ],
                 ),
-                TextField(controller: controller, textAlign: TextAlign.center,)
+                TextField(controller: controller, textAlign: TextAlign.center, onChanged: (_) {
+                  Fluttertoast.showToast(msg: "此页面编辑密钥无效");
+                },)
               ],
             ),
           ),

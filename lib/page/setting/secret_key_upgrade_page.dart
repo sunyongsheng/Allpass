@@ -85,6 +85,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
+                  child: Text("***************** 注意 *****************"),
+                ),
+                Padding(
+                  padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text("如果您使用过Allpass进行WebDAV备份，那么密钥更新后旧的备份文件无法再使用！（本机数据不受影响）", textAlign: TextAlign.center,),
                 ),
                 Padding(
@@ -148,7 +152,11 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     )
                   ],
                 ),
-                TextField(controller: controller, textAlign: TextAlign.center,)
+                TextField(
+                  controller: controller,
+                  textAlign: TextAlign.center,
+                  onChanged: (s) => _latestKey = s,
+                )
               ],
             ),
           ),
