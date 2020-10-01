@@ -36,11 +36,13 @@ class AllpassResponse {
     switch (code) {
       case 2000:
         return ResponseStatus.OK;
-      case 3000:
-        return ResponseStatus.UnknownError;
       case 3100:
       case 3200:
         return ResponseStatus.ParamError;
+      case 4100:
+        return ResponseStatus.ServerError;
+      case 4900:
+        return ResponseStatus.UnknownError;
       default:
         return defaultConfig?.defaultStatus ?? ResponseStatus.OK;
     }
