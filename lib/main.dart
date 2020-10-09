@@ -19,50 +19,56 @@ import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
 import 'package:allpass/model/api/allpass_response.dart';
 
-
 bool needUpdateSecret = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Application.initSp();
-  await EncryptUtil.initEncrypt();
-  Config.initConfig();
-  Application.initRouter();
-  Application.initLocator();
-  Application.initChannelAndHandle();
-
-  if (Platform.isAndroid) {
-    //设置Android头部的导航栏透明
-    var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
-
   // 自定义报错页面
   _initErrorPage();
 
-  needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
-      && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "2.0.0");
+  try {
+    await Application.initSp();
+    await EncryptUtil.initEncrypt();
+    Config.initConfig();
+    Application.initRouter();
+    Application.initLocator();
+    Application.initChannelAndHandle();
 
-  _registerUser();
+    if (Platform.isAndroid) {
+      //设置Android头部的导航栏透明
+      var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+      SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+    }
 
-  final PasswordProvider passwords = PasswordProvider()..init();
-  final CardProvider cards = CardProvider()..init();
-  final ThemeProvider theme = ThemeProvider()..init();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider<PasswordProvider>.value(
-        value: passwords,
-      ),
-      ChangeNotifierProvider<CardProvider>.value(
-        value: cards,
-      ),
-      ChangeNotifierProvider<ThemeProvider>.value(
-        value: theme
-      )
-    ],
-    child: Allpass(),
-  ));
+    needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
+        && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "2.0.0");
+
+    _registerUser();
+
+    final PasswordProvider passwords = PasswordProvider()
+      ..init();
+    final CardProvider cards = CardProvider()
+      ..init();
+    final ThemeProvider theme = ThemeProvider()
+      ..init();
+    runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PasswordProvider>.value(
+          value: passwords,
+        ),
+        ChangeNotifierProvider<CardProvider>.value(
+          value: cards,
+        ),
+        ChangeNotifierProvider<ThemeProvider>.value(
+            value: theme
+        )
+      ],
+      child: Allpass(),
+    ));
+  } catch (e) {
+    runApp(InitialErrorPage(errorMsg: e.toString(),));
+  }
 }
 
 class Allpass extends StatelessWidget {
@@ -75,6 +81,44 @@ class Allpass extends StatelessWidget {
       themeMode: Provider.of<ThemeProvider>(context).themeMode,
       home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
+    );
+  }
+}
+
+class InitialErrorPage extends StatelessWidget {
+  final String errorMsg;
+
+  const InitialErrorPage({Key key, this.errorMsg}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Allpass",
+      home: _InitialErrorPage(msg: errorMsg),
+    );
+  }
+}
+
+class _InitialErrorPage extends StatelessWidget {
+
+  final String msg;
+
+  const _InitialErrorPage({Key key, this.msg}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("软件初始化时出现了错误(灬ꈍ ꈍ灬)\n", style: TextStyle(color: Colors.red, fontSize: 20),),
+            Text("错误信息：\n"),
+            Text(msg)
+          ],
+        )
+      ),
     );
   }
 }
