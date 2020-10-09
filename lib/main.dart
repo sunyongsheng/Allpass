@@ -66,8 +66,8 @@ void main() async {
       ],
       child: Allpass(),
     ));
-  } catch (e) {
-    runApp(InitialErrorPage(errorMsg: e.toString(),));
+  } on Error catch (e) {
+    runApp(InitialErrorPage(errorMsg: " ${e.runtimeType.toString()} \n ${e.toString()}\n ${e.stackTrace.toString()}"));
   }
 }
 
