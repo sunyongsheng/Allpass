@@ -61,7 +61,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
-                  child: Text("Allpass 2.0.0及以后使用了新的密钥存储方式", textAlign: TextAlign.center,),
+                  child: Text("Allpass 1.5.0及以后使用了新的密钥存储方式", textAlign: TextAlign.center,),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
