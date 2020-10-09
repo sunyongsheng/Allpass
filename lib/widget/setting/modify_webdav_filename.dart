@@ -44,6 +44,10 @@ class ModifyWebDavFileName extends StatelessWidget {
           onPressed: () async {
             String password = _passwordFileNameController.text;
             String card = _cardFileNameController.text;
+            if (password.trim() == card.trim()) {
+              Navigator.pop(context, "密码与卡片备份文件名称不能相同");
+              return;
+            }
             Map<String, String> res = Map();
             if (password.trim().length == 0) {
               password = oldPasswordName;
