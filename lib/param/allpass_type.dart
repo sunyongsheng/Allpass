@@ -9,3 +9,10 @@ enum CategoryType {
   Folder,
   Label
 }
+
+/// 加密等級
+enum EncryptLevel {
+  All,
+  OnlyPassword,
+  None
+}
