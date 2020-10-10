@@ -93,6 +93,8 @@ class Application {
     await EncryptUtil.clearEncrypt();
     await Application.sp.clear();
     Config.configClear();
+    Application.getIt.reset();
+
     await EncryptUtil.initEncrypt();
   }
 }
