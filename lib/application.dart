@@ -42,9 +42,7 @@ class Application {
     getIt = GetIt.instance;
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
-    if (Config.webDavAuthSuccess ?? false) {
-      getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
-    }
+    getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
   }
 
   static void initRouter() {
@@ -93,7 +91,6 @@ class Application {
     await EncryptUtil.clearEncrypt();
     await Application.sp.clear();
     Config.configClear();
-    Application.getIt.reset();
 
     await EncryptUtil.initEncrypt();
   }
