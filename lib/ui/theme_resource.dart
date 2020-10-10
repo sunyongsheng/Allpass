@@ -114,7 +114,14 @@ class AllpassTheme {
         shape: StadiumBorder(),
       ),
       canvasColor: Colors.black,
-
+      popupMenuTheme: PopupMenuThemeData(
+        color: Colors.grey[900],
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(AllpassUI.smallBorderRadius),
+          ),
+        ),
+      )
     );
   }
 
@@ -162,6 +169,13 @@ class AllpassTheme {
                 topLeft: Radius.circular(AllpassUI.smallBorderRadius),
                 topRight: Radius.circular(AllpassUI.smallBorderRadius)
             )
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(AllpassUI.smallBorderRadius),
+          ),
         ),
       )
     );
