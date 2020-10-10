@@ -57,6 +57,8 @@ class CardDao extends BaseDBProvider {
   deleteContent() async {
     Database db = await getDataBase();
     db.delete(name);
+    // 清除表的Key自增值
+    db.delete("sqlite_sequence", where: "name=?", whereArgs: [name]);
   }
 
   /// 插入卡片
