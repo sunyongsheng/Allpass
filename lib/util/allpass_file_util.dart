@@ -32,6 +32,7 @@ class AllpassFileUtil {
 
   /// 对[list]进行json编码
   String encodeList(List<BaseModel> list) {
+    if (list == null || list.isEmpty) return null;
     if (list[0] is PasswordBean) {
       List<PasswordBean> passwords = List();
       for (PasswordBean bean in list) {

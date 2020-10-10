@@ -31,6 +31,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   Future<bool> backupPassword(BuildContext context) async {
     List<PasswordBean> passwords = Provider.of<PasswordProvider>(context).passwordList;
     String contents = _fileUtil().encodeList(passwords);
+    if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
     String fileName = "${Config.webDavPasswordName}.json";
@@ -52,6 +53,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   Future<bool> backupCard(BuildContext context) async {
     List<CardBean> cards = Provider.of<CardProvider>(context).cardList;
     String contents = _fileUtil().encodeList(cards);
+    if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
     String fileName = "${Config.webDavCardName}.json";
