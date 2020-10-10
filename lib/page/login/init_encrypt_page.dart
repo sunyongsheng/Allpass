@@ -66,8 +66,9 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
-                  child: Text("如果您之前使用过Allpass进行WebDAV同步过，并且此次使用需要找回之前备份的数据，"
-                      "那么请直接重新启动Allpass，使用WebDAV找回密码后再进行密钥升级（设置-主账号管理-加密密钥更新），一旦点击了“生成”按钮，需要清除Allpass数据后再按此步骤操作！"),
+                  child: Text("如果您之前使用过Allpass（即V1.5.0之前版本）进行WebDAV同步过，并且此次使用需要找回之前备份的数据，"
+                      "那么请直接点击下面的“默认密钥”按钮，使用WebDAV找回密码后再进行密钥升级（设置-主账号管理-加密密钥更新）。"
+                      "一旦点击了“生成”按钮，需要清除Allpass数据后再按此步骤操作！"),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
@@ -116,6 +117,21 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                           Config.setPassword(EncryptUtil.encrypt(holder.decrypt(Config.password)));
                           NavigationUtil.goLoginPage(context);
                         }
+                      },
+                    ),
+                    Padding(padding: EdgeInsets.symmetric(horizontal: 10),),
+                    FlatButton(
+                      color: haveGen
+                          ? Colors.grey
+                          : Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
+                      child: Text("默认密钥", style: TextStyle(color: Colors.white),),
+                      onPressed: () {
+                        if (haveGen) {
+                          Fluttertoast.showToast(msg: "您已点击了生成按钮，若要使用默认密钥，请清除Allpass数据后再进行此操作");
+                          return;
+                        }
+                        Fluttertoast.showToast(msg: "使用默认密钥");
+                        NavigationUtil.goLoginPage(context);
                       },
                     )
                   ],
