@@ -223,8 +223,9 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       await _syncService.backupFolderAndLabel(context);
       return (await _syncService.backupPassword(context)) &&
           (await _syncService.backupCard(context));
-    } catch (e) {
-      print(e);
+    } on Error catch (e) {
+      print(e.toString());
+      print(e.stackTrace.toString());
       return false;
     }
   }
