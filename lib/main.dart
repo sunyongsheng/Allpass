@@ -16,10 +16,7 @@ import 'package:allpass/page/login/login_page.dart';
 import 'package:allpass/page/login/auth_login_page.dart';
 import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/version_util.dart';
 import 'package:allpass/model/api/allpass_response.dart';
-
-bool needUpdateSecret = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,9 +37,6 @@ void main() async {
       var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
-
-    needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
-        && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "1.5.0");
 
     _registerUser();
 
@@ -124,6 +118,7 @@ class _InitialErrorPage extends StatelessWidget {
 }
 
 void _registerUser() async {
+
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     Map<String, String> user = Map();
@@ -154,6 +149,7 @@ void _registerUser() async {
       debugPrint("用户注册失败：${e.toString()}");
     }
   }
+
   if (Application.sp.getBool(SPKeys.needRegister)??true) {
     await registerUserActual();
   } else {
