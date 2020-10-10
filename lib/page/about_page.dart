@@ -25,7 +25,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int pressTimes = 0;
+    int longPressTimes = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -62,11 +62,11 @@ class AboutPage extends StatelessWidget {
                           trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () async {
-                            pressTimes++;
-                            if (pressTimes == 1) {
-                              await launch("https://allpass.aengus.top");
-                            }
-                            if (pressTimes == 10) {
+                            await launch("https://allpass.aengus.top");
+                          },
+                          onLongPress: () {
+                            longPressTimes++;
+                            if (longPressTimes == 3) {
                               Fluttertoast.showToast(msg: "进入开发者模式");
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => DebugPage()
