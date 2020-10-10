@@ -135,7 +135,7 @@ class AboutPage extends StatelessWidget {
                   ],
                 ),
               ),
-              Text("Copyright 2020 Aengus Sun. Apache License 2.0", style: TextStyle(color: Colors.grey),),
+              Text("Copyright ${DateTime.now().year} Aengus Sun. Apache License 2.0", style: TextStyle(color: Colors.grey),),
             ],
           ),
           Row(
