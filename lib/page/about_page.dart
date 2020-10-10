@@ -161,6 +161,7 @@ class AboutPage extends StatelessWidget {
 }
 
 class DetailsPage extends StatelessWidget {
+
   final String title;
   final Widget content;
 

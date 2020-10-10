@@ -50,7 +50,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         showDialog(
             context: context,
             builder: (context) => ConfirmDialog(
-                "密钥升级建议", "检测到您升级到Allpass 1.5.0，建议您进行密钥升级，可以极大的增加密码的安全性，是否继续（之后可在“设置-主账号管理-加密密钥更新”中操作）？"
+                "密钥升级建议",
+                "检测到您升级到Allpass 1.5.0，建议您进行密钥升级，可以极大的增加密码的安全性，是否前往升级页（之后可在“设置-主账号管理-加密密钥更新”中操作）？"
             )
         ).then((value) {
           if (value != null && value) {

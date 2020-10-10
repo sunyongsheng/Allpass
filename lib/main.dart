@@ -19,6 +19,7 @@ import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/model/api/allpass_response.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // 自定义报错页面
@@ -48,20 +49,16 @@ void main() async {
       ..init();
     runApp(MultiProvider(
       providers: [
-        ChangeNotifierProvider<PasswordProvider>.value(
-          value: passwords,
-        ),
-        ChangeNotifierProvider<CardProvider>.value(
-          value: cards,
-        ),
-        ChangeNotifierProvider<ThemeProvider>.value(
-            value: theme
-        )
+        ChangeNotifierProvider<PasswordProvider>.value(value: passwords),
+        ChangeNotifierProvider<CardProvider>.value(value: cards),
+        ChangeNotifierProvider<ThemeProvider>.value(value: theme)
       ],
       child: Allpass(),
     ));
   } on Error catch (e) {
-    runApp(InitialErrorPage(errorMsg: " ${e.runtimeType.toString()} \n ${e.toString()}\n ${e.stackTrace.toString()}"));
+    runApp(InitialErrorPage(
+        errorMsg: " ${e.runtimeType.toString()} \n ${e.toString()}\n ${e.stackTrace.toString()}"
+    ));
   }
 }
 
@@ -80,6 +77,7 @@ class Allpass extends StatelessWidget {
 }
 
 class InitialErrorPage extends StatelessWidget {
+
   final String errorMsg;
 
   const InitialErrorPage({Key key, this.errorMsg}) : super(key: key);
