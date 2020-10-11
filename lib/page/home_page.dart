@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/main.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/param/param.dart';
 import 'package:allpass/service/allpass_service.dart';
 import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/provider/theme_provider.dart';
-import 'package:allpass/util/version_util.dart';
 import 'package:allpass/page/setting/secret_key_upgrade_page.dart';
 import 'package:allpass/page/password/password_page.dart';
 import 'package:allpass/page/card/card_page.dart';
@@ -44,8 +43,6 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
       Provider.of<ThemeProvider>(context).setExtraColor(context: context);
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      bool needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
-          && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "1.5.0");
       if (needUpdateSecret) {
         showDialog(
             context: context,
