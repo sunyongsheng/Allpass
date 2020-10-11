@@ -65,7 +65,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
-                  child: Text("Allpass会对每一个用户生成独一无二的密钥并将其存储到系统特定的区域中", textAlign: TextAlign.center,),
+                  child: Text(
+                    "Allpass会对每一个用户生成独一无二的密钥并将其存储到系统特定的区域中，"
+                      "这意味着即使反编译了Allpass并通过某些方法获取到了数据库中的数据，也无法轻易破解",
+                    textAlign: TextAlign.center,),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
@@ -73,7 +76,9 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
-                  child: Text("如果您进行了WebDAV同步，即使卸载了Allpass并且备份文件中密码已加密，仍然可以通过密钥找回数据", textAlign: TextAlign.center,),
+                  child: Text(
+                    "如果您进行了WebDAV同步，即使卸载了Allpass并且备份文件中密码已加密，仍然可以通过密钥找回数据",
+                    textAlign: TextAlign.center,),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,

@@ -50,7 +50,8 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
-                  child: Text("Allpass会对每一个用户生成独一无二的密钥并将其存储到系统特定的区域中", textAlign: TextAlign.center,),
+                  child: Text("Allpass会对每一个用户生成独一无二的密钥并将其存储到系统特定的区域中，"
+                      "这意味着即使反编译了Allpass并通过某些方法获取到了数据库中的数据，也无法轻易破解", textAlign: TextAlign.center,),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
