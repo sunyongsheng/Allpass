@@ -25,12 +25,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (rootProject.file("key.properties").exists()) {
+    keystoreProperties.load(new FileInputStream(rootProject.file("key.properties")))
+} else {
+    keystoreProperties.load(new FileInputStream(rootProject.file("defaultKey.properties")))
+}
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -43,7 +46,7 @@ android {
     defaultConfig {
         applicationId "top.aengus.allpass"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -65,19 +68,15 @@ android {
                 abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
         }
+
+        debug {
+
+        }
     }
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
-    // splits {
-    //     abi {
-    //         enable true
-    //         reset()
-    //         include "arm64v8a", "armeabi-v7a"
-    //         universalApk false
-    //     }
-    // }
 }
 
 flutter {
