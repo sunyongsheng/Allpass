@@ -28,7 +28,7 @@ class Application {
   static GlobalKey<NavigatorState> key = GlobalKey();
 
   static GetIt getIt;
-  static Router router;
+  static FluroRouter router;
   static SharedPreferences sp;
   static MethodChannel shareMethodChannel;
 
@@ -46,7 +46,7 @@ class Application {
   }
 
   static void initRouter() {
-    Router router = Router();
+    FluroRouter router = FlruoRouter();
     Routes.configureRoutes(router);
     Application.router = router;
   }

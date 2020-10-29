@@ -12,7 +12,7 @@ class Routes {
   static String authLogin = "/authlogin";
   static String initEncrypt = "/initEncrypt";
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
           print("ROUTE NOT FOUND");
