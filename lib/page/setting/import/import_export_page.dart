@@ -209,6 +209,10 @@ class ExportTypeSelectPage extends StatelessWidget {
                   context: context,
                   builder: (context) => ConfirmDialog("导出确认", "导出后的密码将被所有人可见，确认吗？")).then((confirm) {
                     if (confirm) {
+                      if (!Platform.isAndroid) {
+                        Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                        return;
+                      }
                       showDialog<bool>(
                         context: context,
                         builder: (context) => InputMainPasswordDialog()
@@ -237,6 +241,10 @@ class ExportTypeSelectPage extends StatelessWidget {
                     context: context,
                     builder: (context) => ConfirmDialog("导出确认", "导出后的卡片将被所有人可见，确认吗？")).then((confirm) {
                   if (confirm) {
+                    if (!Platform.isAndroid) {
+                      Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                      return;
+                    }
                     showDialog<bool>(
                         context: context,
                         builder: (context) => InputMainPasswordDialog()
@@ -265,6 +273,10 @@ class ExportTypeSelectPage extends StatelessWidget {
                     context: context,
                     builder: (context) => ConfirmDialog("导出确认", "导出后的数据将被所有人可见，确认吗？")).then((confirm) {
                   if (confirm) {
+                    if (!Platform.isAndroid) {
+                      Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                      return;
+                    }
                     showDialog<bool>(
                         context: context,
                         builder: (context) => InputMainPasswordDialog()
