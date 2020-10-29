@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  animations: ^1.0.0+5
+  animations: ^1.1.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -31,9 +31,9 @@ dependencies:
   # 应用路径
   path_provider: ^1.5.1
   # 密码加密
-  encrypt: ^4.0.0
+  encrypt: ^4.1.0
   # 文件管理
-  flutter_file_picker: ^0.0.3
+  file_picker: ^2.0.11
   # 路径选择
   directory_picker: ^1.0.0
   # 打开链接
@@ -55,7 +55,7 @@ dependencies:
   # 网络请求
   dio: ^3.0.8
   # 设备信息
-  device_info: ^0.4.1+4
+  device_info: ^0.4.2+9
   # 分享功能
   share: ^0.6.3+6
   # 密钥存储
