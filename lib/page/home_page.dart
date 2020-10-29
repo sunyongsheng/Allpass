@@ -103,19 +103,19 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle,),
-            title: Text("密码", style: TextStyle(fontSize: 12),),
+            label: "密码",
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card,),
-              title: Text("卡片", style: TextStyle(fontSize: 12))
+            icon: Icon(Icons.credit_card,),
+            label: "卡片"
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.class_,),
-              title: Text("分类", style: TextStyle(fontSize: 12))
+            icon: Icon(Icons.class_,),
+            label: "分类"
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings,),
-              title: Text("设置", style: TextStyle(fontSize: 12))
+            icon: Icon(Icons.settings,),
+            label: "设置"
           ),
         ],
         type: BottomNavigationBarType.fixed,
