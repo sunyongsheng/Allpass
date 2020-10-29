@@ -11,28 +11,31 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 
-import io.flutter.app.FlutterActivity
-import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugins.GeneratedPluginRegistrant
+import io.flutter.plugins.GeneratedPluginRegistrant;
+import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.embedding.android.FlutterActivity;
 
 class ReceiveShareActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        GeneratedPluginRegistrant.registerWith(this)
         setContentView(R.layout.loading)
+    }
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        GeneratedPluginRegistrant.registerWith(flutterEngine);
+
         val intent: Intent = intent
         val action: String? = intent.action
         val type: String = if (intent.type != null) intent.type!! else "unknown"
         if (Intent.ACTION_SEND == (action)) {
             if (type.startsWith("text/")) {
                 val res = processIntent(intent)
-                MethodChannel(flutterView, "allpass.aengus.top/share").invokeMethod("getChromeData", res)
+                MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), "allpass.aengus.top/share").invokeMethod("getChromeData", res)
                 Log.v("ShareActivity", "调用Dart方法完成")
             }
         }
     }
-
 
 
     private fun processIntent(intent: Intent): String {
