@@ -46,7 +46,7 @@ class Application {
   }
 
   static void initRouter() {
-    FluroRouter router = FlruoRouter();
+    FluroRouter router = FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
   }
