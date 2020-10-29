@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:allpass/param/runtime_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_file_picker/flutter_document_picker.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:directory_picker/directory_picker.dart';
 import 'package:provider/provider.dart';
 
+import 'package:allpass/param/runtime_data.dart';
 import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/dao/card_dao.dart';
 import 'package:allpass/dao/password_dao.dart';
@@ -125,11 +125,12 @@ class ImportTypeSelectPage extends StatelessWidget {
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () async {
-                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
-                    allowedFileExtensions: ["csv"]
+                FilePickerResult result = await FilePicker.platform.pickFiles(
+                  type: FileType.custom,
+                  allowedExtensions: ['csv']
                 );
-                String path = await FlutterDocumentPicker.openDocument(params: param);
-                _process(context, importFuture(context, AllpassType.Password, path));
+                _process(context, importFuture(context, AllpassType.Password,
+                    result.files.single.path));
               }
             ),
           ),
@@ -139,11 +140,12 @@ class ImportTypeSelectPage extends StatelessWidget {
               title: Text("卡片"),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () async {
-                FlutterDocumentPickerParams param = FlutterDocumentPickerParams(
-                    allowedFileExtensions: ["csv"]
+                FilePickerResult result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['csv']
                 );
-                String path = await FlutterDocumentPicker.openDocument(params: param);
-                _process(context, importFuture(context, AllpassType.Card, path));
+                _process(context, importFuture(context, AllpassType.Card,
+                    result.files.single.path));
               }
             ),
           ),
