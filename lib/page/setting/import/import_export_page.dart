@@ -130,7 +130,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                   allowedExtensions: ['csv']
                 );
                 _process(context, importFuture(context, AllpassType.Password,
-                    result.files.single.path));
+                    result?.files?.single?.path));
               }
             ),
           ),
@@ -145,7 +145,7 @@ class ImportTypeSelectPage extends StatelessWidget {
                     allowedExtensions: ['csv']
                 );
                 _process(context, importFuture(context, AllpassType.Card,
-                    result.files.single.path));
+                    result?.files?.single?.path));
               }
             ),
           ),
