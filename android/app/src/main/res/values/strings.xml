@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Allpass</string>
+    <string name="import_hint_text">正在导入中，请等待…</string>
+</resources>
