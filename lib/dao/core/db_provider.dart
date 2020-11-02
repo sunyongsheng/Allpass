@@ -9,11 +9,11 @@ import 'package:allpass/dao/core/db_manager.dart';
 abstract class BaseDBProvider {
   bool isTableExits = false;
 
-  tableSqlString();
+  String tableSqlString();
 
-  tableName();
+  String tableName();
 
-  tableBaseString(String name, String columnId) {
+  String tableBaseString(String name, String columnId) {
     return '''
       CREATE TABLE $name (
       $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,7 +25,7 @@ abstract class BaseDBProvider {
   }
 
   @mustCallSuper
-  prepare(name, String createSql) async {
+  void prepare(name, String createSql) async {
     isTableExits = await DBManager.isTableExists(name);
     if (!isTableExits) {
       Database db = await DBManager.getCurrentDatabase();
@@ -34,9 +34,9 @@ abstract class BaseDBProvider {
   }
 
   @mustCallSuper
-  open() async {
+  Future<Database> open() async {
     if (!isTableExits) {
-      await prepare(tableName(), tableSqlString());
+      prepare(tableName(), tableSqlString());
     }
     return await DBManager.getCurrentDatabase();
   }

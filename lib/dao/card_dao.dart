@@ -25,13 +25,13 @@ class CardDao extends BaseDBProvider {
   final String columnCreateTime = "createTime";
 
   @override
-  tableName() {
+  String tableName() {
     return name;
   }
 
   /// 创建表的sql
   @override
-  tableSqlString() {
+  String tableSqlString() {
     return tableBaseString(name, columnId) +
         '''
       $columnName TEXT NOT NULL,
@@ -48,13 +48,13 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 删除表
-  deleteTable() async {
+  void deleteTable() async {
     Database db = await getDataBase();
     db.rawDelete("DROP TABLE $name");
   }
 
   /// 删除表中所有数据
-  deleteContent() async {
+  void deleteContent() async {
     Database db = await getDataBase();
     db.delete(name);
     // 清除表的Key自增值

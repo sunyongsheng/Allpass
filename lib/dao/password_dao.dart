@@ -26,18 +26,18 @@ class PasswordDao extends BaseDBProvider {
   final String columnCreateTime = "createTime";
 
   @override
-  tableName() {
+  String tableName() {
     return name;
   }
 
   /// 删除表
-  deleteTable() async {
+  void deleteTable() async {
     Database db = await getDataBase();
     db.rawDelete("DROP TABLE $name");
   }
 
   /// 删除表中所有内容
-  deleteContent() async {
+  void deleteContent() async {
     Database db = await getDataBase();
     db.delete(name);
     // 清除表的Key自增值
@@ -46,7 +46,7 @@ class PasswordDao extends BaseDBProvider {
 
   /// 创建表的sql
   @override
-  tableSqlString() {
+  String tableSqlString() {
     return tableBaseString(name, columnId) +
       '''
       $columnName TEXT NOT NULL,
