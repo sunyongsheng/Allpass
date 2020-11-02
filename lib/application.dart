@@ -52,9 +52,9 @@ class Application {
   }
 
   static void initChannelAndHandle() {
-    shareMethodChannel = const MethodChannel("allpass.aengus.top/share");
+    shareMethodChannel = const MethodChannel(ChannelConstants.channel);
     shareMethodChannel.setMethodCallHandler((call) {
-      if (call.method == "getChromeData") {
+      if (call.method == ChannelConstants.methodImportChromeData) {
         Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
         return res;
@@ -73,7 +73,7 @@ class Application {
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }
-      Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
+      Fluttertoast.showToast(msg: "导入 ${passwordList.length} 条记录");
       SystemNavigator.pop();
     } else {
       Fluttertoast.showToast(msg: "导入了0条记录，可能是文件格式不正确");

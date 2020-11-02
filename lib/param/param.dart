@@ -29,3 +29,9 @@ class SPKeys {
 class ExtraKeys {
   static const String storeKey = "ALLPASS_SECURE_STORE_KEY";
 }
+
+class ChannelConstants {
+  static const String channel = "allpass.aengus.top";
+
+  static const String methodImportChromeData = "importChromeData";
+}
