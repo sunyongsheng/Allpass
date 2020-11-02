@@ -19,7 +19,7 @@ import io.flutter.embedding.android.FlutterActivity;
 class ReceiveShareActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.loading)
+        setContentView(R.layout.activity_import)
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
