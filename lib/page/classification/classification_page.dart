@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/param/runtime_data.dart';
+import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/page/classification/favorite_page.dart';
@@ -75,7 +76,7 @@ class ClassificationPage extends StatelessWidget {
             ));
           },
           onLongPress: () => Navigator.push(context, CupertinoPageRoute(
-            builder: (context) => CategoryManagerPage("文件夹"),
+            builder: (context) => CategoryManagerPage(CategoryType.Folder),
           )),
           child: Card(
             elevation: 0,

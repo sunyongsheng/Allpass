@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/param/runtime_data.dart';
+import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/widget/common/add_category_dialog.dart';
 import 'package:allpass/widget/setting/edit_category_dialog.dart';
@@ -11,14 +12,16 @@ import 'package:allpass/widget/common/confirm_dialog.dart';
 import 'package:allpass/provider/card_provider.dart';
 import 'package:allpass/provider/password_provider.dart';
 
+const String defaultFolderName = "默认";
+
 /// 属性管理页
-/// 通过指定[name]来指定属性页的名称，属性页中是[ListView]
+/// 通过指定[type]来指定属性页的名称，属性页中是[ListView]
 /// 点击每一个[ListTile]弹出模态菜单，菜单中有编辑与删除选项
 class CategoryManagerPage extends StatefulWidget {
 
-  final String name;
+  final CategoryType type;
 
-  CategoryManagerPage(this.name);
+  CategoryManagerPage(this.type);
 
   @override
   State<StatefulWidget> createState() {
@@ -33,16 +36,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   @override
   void initState() {
-    categoryName = widget.name;
-    if (categoryName == "标签") data = RuntimeData.labelList;
-    else data = RuntimeData.folderList;
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(CategoryManagerPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    categoryName = widget.name;
+    categoryName = _getCategoryName(widget.type);
+    data = _getCategoryData(widget.type);
   }
 
   @override
@@ -65,7 +61,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                   var child = data.removeAt(oldIndex);
                   data.insert(newIndex, child);
                 });
-                if (categoryName == "标签") {
+                if (widget.type == CategoryType.Label) {
                   RuntimeData.labelParamsPersistence();
                 } else {
                   RuntimeData.folderParamsPersistence();
@@ -104,7 +100,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
           leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
-            if (categoryName == "文件夹" && currCategoryName == "默认") {
+            if (widget.type == CategoryType.Folder && currCategoryName == defaultFolderName) {
               Fluttertoast.showToast(msg: "此文件夹不允许修改！");
               return;
             }
@@ -139,7 +135,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         title: Text("删除$categoryName"),
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
-                          if (categoryName == '标签') {
+                          if (widget.type == CategoryType.Label) {
                             showDialog(
                                 context: context,
                                 builder: (context) =>
@@ -198,13 +194,13 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   deleteFolderAndUpdate(String folder) async {
     for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
       if (folder == bean.folder) {
-        bean.folder = "默认";
+        bean.folder = defaultFolderName;
         Provider.of<PasswordProvider>(context).updatePassword(bean);
       }
     }
     for (var bean in Provider.of<CardProvider>(context).cardList) {
       if (folder == bean.folder) {
-        bean.folder = "默认";
+        bean.folder = defaultFolderName;
         Provider.of<CardProvider>(context).updateCard(bean);
       }
     }
@@ -213,6 +209,26 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     });
     RuntimeData.folderParamsPersistence();
     Navigator.pop(context);
+  }
+
+  String _getCategoryName(CategoryType type) {
+    if (type == CategoryType.Folder) {
+      return "文件夹";
+    } else if (type == CategoryType.Label) {
+      return "标签";
+    } else {
+      return "未知";
+    }
+  }
+
+  List<String> _getCategoryData(CategoryType type) {
+    if (type == CategoryType.Folder) {
+      return RuntimeData.folderList;
+    } else if (type == CategoryType.Label) {
+      return RuntimeData.labelList;
+    } else {
+      return List();
+    }
   }
 
 }

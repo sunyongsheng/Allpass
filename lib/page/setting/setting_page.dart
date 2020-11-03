@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/param/config.dart';
+import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/model/api/update_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -163,7 +164,8 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => CategoryManagerPage("标签")));
+                                  builder: (context) =>
+                                      CategoryManagerPage(CategoryType.Label)));
                         },
                       ),
                       ListTile(
@@ -174,7 +176,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               context,
                               CupertinoPageRoute(
                                   builder: (context) =>
-                                      CategoryManagerPage("文件夹")));
+                                      CategoryManagerPage(CategoryType.Folder)));
                         },
                       ),
                     ],
