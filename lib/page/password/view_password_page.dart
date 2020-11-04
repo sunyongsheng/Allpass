@@ -403,6 +403,21 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                 padding: AllpassEdgeInsets.smallLPadding,
                               ),
                               FloatingActionButton(
+                                heroTag: "oneKeyCopy",
+                                elevation: 0,
+                                backgroundColor: Colors.green,
+                                onPressed: () {
+                                  Clipboard.setData(ClipboardData(text:
+                                    "账号：${_bean.username}\n密码：$_password"
+                                  ));
+                                  Fluttertoast.showToast(msg: "已复制账号及密码");
+                                },
+                                child: Icon(Icons.content_copy),
+                              ),
+                              Padding(
+                                padding: AllpassEdgeInsets.smallLPadding,
+                              ),
+                              FloatingActionButton(
                                 heroTag: "delete",
                                 elevation: 0,
                                 backgroundColor: Colors.redAccent,
