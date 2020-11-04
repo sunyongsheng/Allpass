@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:allpass/param/runtime_data.dart';
+import 'package:allpass/param/allpass_type.dart';
 import 'package:allpass/widget/common/none_border_circular_textfield.dart';
 
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
 
-  final String categoryName;
+  final CategoryType type;
 
-  AddCategoryDialog(this.categoryName);
+  AddCategoryDialog({this.type = CategoryType.Label});
 
   @override
   _AddLabelDialog createState() {
@@ -22,23 +22,19 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   var _addTextController = TextEditingController();
   bool _inputFormatCorr = true;
   String categoryName;
+  CategoryType type;
 
   @override
   void initState() {
-    categoryName = widget.categoryName;
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(AddCategoryDialog oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    categoryName = widget.categoryName;
+    this.type = widget.type;
+    this.categoryName = Category.getCategoryName(type);
   }
 
   @override
   void dispose() {
-    _addTextController.dispose();
     super.dispose();
+    _addTextController.dispose();
   }
 
   @override
@@ -52,7 +48,9 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
           NoneBorderCircularTextField(
             autoFocus: true,
             editingController: _addTextController,
-            errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
+            errorText: _inputFormatCorr
+                ? null
+                : "$categoryName名不允许包含“,”或“~”或空格",
             needPadding: false,
             hintText: "请输入$categoryName名",
             onChanged: (text) {
@@ -76,10 +74,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
           child: Text('提交'),
         ),
         FlatButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            _addTextController.clear();
-          },
+          onPressed: () => Navigator.pop(context),
           child: Text('取消'),
         ),
       ],
@@ -87,22 +82,8 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   }
 
   void submit() {
-    if (_inputFormatCorr && _addTextController.text != "") {
-      if (categoryName == "标签") {
-        if (RuntimeData.labelListAdd([_addTextController.text])) {
-          Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
-        } else {
-          Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
-        }
-      } else {
-        if (RuntimeData.folderListAdd(_addTextController.text)) {
-          Fluttertoast.showToast(msg: "添加$categoryName ${_addTextController.text}");
-        } else {
-          Fluttertoast.showToast(msg: "$categoryName ${_addTextController.text} 已存在");
-        }
-      }
-      _addTextController.clear();
-      Navigator.pop(context);
+    if (_inputFormatCorr && ((_addTextController.text?.trim()?.length) ?? 0) > 0) {
+      Navigator.pop<String>(context, _addTextController.text);
     } else {
       Fluttertoast.showToast(msg: "输入内容不合法");
     }

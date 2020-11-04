@@ -430,10 +430,15 @@ class _EditCardPage extends State<EditCardPage> {
               showDialog(
                 context: context,
                 barrierDismissible: false,
-                builder: (context) {
-                  return AddCategoryDialog("标签");
-                },
-              ).then((_) => setState((){})),
+                builder: (context) => AddCategoryDialog()
+              ).then((label) {
+                if (label != null && RuntimeData.labelListAdd([label])) {
+                  setState(() {});
+                  Fluttertoast.showToast(msg: "添加标签 $label 成功");
+                } else if (label != null) {
+                  Fluttertoast.showToast(msg: "标签 $label 已存在");
+                }
+              }),
       ),
     );
     return labelChoices;

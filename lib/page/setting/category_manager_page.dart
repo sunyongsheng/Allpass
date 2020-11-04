@@ -31,14 +31,16 @@ class CategoryManagerPage extends StatefulWidget {
 
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
+  CategoryType type;
   String categoryName;
   List<String> data;
 
   @override
   void initState() {
     super.initState();
-    categoryName = _getCategoryName(widget.type);
-    data = _getCategoryData(widget.type);
+    this.type = widget.type;
+    categoryName = Category.getCategoryName(type);
+    data = _getCategoryData(type);
   }
 
   @override
@@ -61,7 +63,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                   var child = data.removeAt(oldIndex);
                   data.insert(newIndex, child);
                 });
-                if (widget.type == CategoryType.Label) {
+                if (this.type == CategoryType.Label) {
                   RuntimeData.labelParamsPersistence();
                 } else {
                   RuntimeData.folderParamsPersistence();
@@ -78,11 +80,17 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (context) {
-              return AddCategoryDialog(categoryName);
-            },
-          ).then((_) {
-            setState(() {});
+            builder: (context) => AddCategoryDialog(type: this.type)
+          ).then((value) {
+            if (value != null) {
+              if (this.type == CategoryType.Folder && RuntimeData.folderListAdd(value)) {
+                Fluttertoast.showToast(msg: "添加$categoryName $value 成功");
+              } else if (this.type == CategoryType.Label && RuntimeData.labelListAdd([value])) {
+                Fluttertoast.showToast(msg: "添加$categoryName $value 成功");
+              } else {
+                Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+              }
+            }
           });
         },
       ),
@@ -100,7 +108,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
           leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
-            if (widget.type == CategoryType.Folder && currCategoryName == defaultFolderName) {
+            if (this.type == CategoryType.Folder && currCategoryName == defaultFolderName) {
               Fluttertoast.showToast(msg: "此文件夹不允许修改！");
               return;
             }
@@ -135,7 +143,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         title: Text("删除$categoryName"),
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
-                          if (widget.type == CategoryType.Label) {
+                          if (this.type == CategoryType.Label) {
                             showDialog(
                                 context: context,
                                 builder: (context) =>
@@ -209,16 +217,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     });
     RuntimeData.folderParamsPersistence();
     Navigator.pop(context);
-  }
-
-  String _getCategoryName(CategoryType type) {
-    if (type == CategoryType.Folder) {
-      return "文件夹";
-    } else if (type == CategoryType.Label) {
-      return "标签";
-    } else {
-      return "未知";
-    }
   }
 
   List<String> _getCategoryData(CategoryType type) {
