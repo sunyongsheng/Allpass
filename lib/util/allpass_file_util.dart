@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:allpass/model/data/base_model.dart';
-import 'package:allpass/model/data/card_bean.dart';
-import 'package:allpass/model/data/password_bean.dart';
-import 'package:allpass/param/config.dart';
-import 'package:allpass/param/allpass_type.dart';
+import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/core/param/config.dart';
+import 'package:allpass/core/param/allpass_type.dart';
 
 class AllpassFileUtil {
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:allpass/param/param.dart';
+import 'package:allpass/core/param/constants.dart';
 
 /// 加密解密辅助类
 class EncryptUtil {

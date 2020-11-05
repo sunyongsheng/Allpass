@@ -7,22 +7,19 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:allpass/route/routes.dart';
-import 'package:allpass/param/config.dart';
-import 'package:allpass/param/param.dart';
-import 'package:allpass/param/runtime_data.dart';
+import 'package:allpass/core/route/routes.dart';
+import 'package:allpass/core/param/config.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/dao/password_dao.dart';
-import 'package:allpass/model/data/password_bean.dart';
-import 'package:allpass/provider/card_provider.dart';
-import 'package:allpass/provider/password_provider.dart';
-import 'package:allpass/service/auth_service.dart';
-import 'package:allpass/service/allpass_service.dart';
-import 'package:allpass/service/webdav_sync_service.dart';
-import 'package:allpass/service/impl/auth_service_impl.dart';
-import 'package:allpass/service/impl/allpass_service_impl.dart';
-import 'package:allpass/service/impl/webdav_sync_service_impl.dart';
+import 'package:allpass/password/data/password_dao.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/core/service/auth_service.dart';
+import 'package:allpass/core/service/allpass_service.dart';
+import 'package:allpass/core/service/webdav_sync_service.dart';
 
 class Application {
   static GlobalKey<NavigatorState> key = GlobalKey();

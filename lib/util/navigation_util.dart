@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/route/routes.dart';
+import 'package:allpass/core/route/routes.dart';
 
 class NavigationUtil {
   static _navigateTo(BuildContext context, String path,

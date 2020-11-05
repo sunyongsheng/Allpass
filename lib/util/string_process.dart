@@ -1,6 +1,6 @@
-import 'package:allpass/model/data/base_model.dart';
-import 'package:allpass/model/data/card_bean.dart';
-import 'package:allpass/model/data/password_bean.dart';
+import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/password/model/password_bean.dart';
 
 /// 字符串处理
 
