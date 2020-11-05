@@ -521,7 +521,6 @@ class _ViewCardPage extends State<ViewCardPage> {
       labelChoices.add(LabelChip(
           text: item,
           selected: true,
-          onSelected: (_) {}
       ));
     });
     if (labelChoices.length == 0) {
