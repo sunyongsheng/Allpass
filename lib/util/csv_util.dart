@@ -4,7 +4,7 @@ import 'dart:io' show Platform, File, Directory;
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 
 class CsvUtil {
 
@@ -16,7 +16,7 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      csv.writeAsStringSync(await csvList2Str(list));
+      csv.writeAsStringSync(await StringUtil.csvList2Str(list));
       return path;
     }
     return null;
@@ -30,7 +30,7 @@ class CsvUtil {
       if (!csv.existsSync()) {
         csv.createSync();
       }
-      csv.writeAsStringSync(await csvList2Str(list));
+      csv.writeAsStringSync(await StringUtil.csvList2Str(list));
       return path;
     }
     return null;
@@ -67,7 +67,7 @@ class CsvUtil {
         String folder = getValueWithCatch(attribute, indexMap, 'folder');
         String notes = getValueWithCatch(attribute, indexMap, 'notes');
         if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
-          label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
+          label = StringUtil.waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
         int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
         String createTime = getValueWithCatch(attribute, indexMap, "createTime");
@@ -112,7 +112,7 @@ class CsvUtil {
         String notes = getValueWithCatch(attribute, indexMap, 'notes');
         int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
         if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
-          label = waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
+          label = StringUtil.waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
         }
         String createTime = getValueWithCatch(attribute, indexMap, "createTime");
         res.add(CardBean(

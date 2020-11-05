@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/model/data/base_model.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 
 /// 保存“卡片”数据
@@ -80,7 +80,7 @@ class CardBean extends BaseModel {
       case 0:
         List<String> newLabel = List();
         if (map['label'] != null) {
-          newLabel = waveLineSegStr2List(map['label']);
+          newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
         return CardBean(
             ownerName: map['ownerName'],
@@ -97,7 +97,7 @@ class CardBean extends BaseModel {
       case 2:
         List<String> newLabel = List();
         if (map['label'] != null) {
-          for (String str in waveLineSegStr2List(map['label'])) {
+          for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
             newLabel.add(EncryptUtil.decrypt(str));
           }
         }
@@ -116,7 +116,7 @@ class CardBean extends BaseModel {
     }
     List<String> newLabel = List();
     if (map['label'] != null) {
-      newLabel = waveLineSegStr2List(map['label']);
+      newLabel = StringUtil.waveLineSegStr2List(map['label']);
     }
     return CardBean(
         ownerName: map['ownerName'],
@@ -134,7 +134,7 @@ class CardBean extends BaseModel {
 
   /// 将CardBean转化为Map
   Map<String, dynamic> toJson() {
-    String labels = list2WaveLineSegStr(this.label);
+    String labels = StringUtil.list2WaveLineSegStr(this.label);
     Map<String, dynamic> map = {
       "uniqueKey": this.uniqueKey,
       "name": this.name,
@@ -154,7 +154,7 @@ class CardBean extends BaseModel {
   /// 将CardBean转化为csv格式的字符
   static String toCsv(CardBean bean) {
     // 包含除[uniqueKey]的所有属性
-    String labels = list2WaveLineSegStr(bean.label);
+    String labels = StringUtil.list2WaveLineSegStr(bean.label);
     String pwd = EncryptUtil.decrypt(bean.password);
     String csv = "${bean.name},"
         "${bean.ownerName},"

@@ -11,7 +11,7 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
@@ -146,14 +146,14 @@ class _SearchPage extends State<SearchPage> {
       stringBuffer.write(baseModel.name.toLowerCase());
       stringBuffer.write(baseModel.username.toLowerCase());
       stringBuffer.write(baseModel.notes.toLowerCase());
-      stringBuffer.write(list2PureStr(baseModel.label).toLowerCase());
+      stringBuffer.write(StringUtil.list2PureStr(baseModel.label).toLowerCase());
       return stringBuffer.toString().contains(_searchText);
     } else if (baseModel is CardBean) {
       StringBuffer stringBuffer = StringBuffer();
       stringBuffer.write(baseModel.name.toLowerCase());
       stringBuffer.write(baseModel.ownerName.toLowerCase());
       stringBuffer.write(baseModel.notes.toLowerCase());
-      stringBuffer.write(list2PureStr(baseModel.label).toLowerCase());
+      stringBuffer.write(StringUtil.list2PureStr(baseModel.label).toLowerCase());
       return stringBuffer.toString().contains(_searchText);
     }
     return false;

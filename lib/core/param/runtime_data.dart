@@ -4,7 +4,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 
 /// 存储运行时数据
 class RuntimeData {
@@ -28,8 +28,8 @@ class RuntimeData {
 
     String folder = Application.sp.getString(SPKeys.folder)??"";
     String label = Application.sp.getString(SPKeys.label)??"";
-    folderList = waveLineSegStr2List(folder);
-    labelList = waveLineSegStr2List(label);
+    folderList = StringUtil.waveLineSegStr2List(folder);
+    labelList = StringUtil.waveLineSegStr2List(label);
   }
 
   static void clearData() {
@@ -63,12 +63,12 @@ class RuntimeData {
 
   /// 标签参数持久化
   static void labelParamsPersistence() {
-    Application.sp.setString(SPKeys.label, list2WaveLineSegStr(labelList));
+    Application.sp.setString(SPKeys.label, StringUtil.list2WaveLineSegStr(labelList));
   }
 
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
-    Application.sp.setString(SPKeys.folder, list2WaveLineSegStr(folderList));
+    Application.sp.setString(SPKeys.folder, StringUtil.list2WaveLineSegStr(folderList));
   }
 
   /// 更新点击的位置

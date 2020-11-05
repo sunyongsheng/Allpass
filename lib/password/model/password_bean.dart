@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 
 /// 存储新建的“密码”
 class PasswordBean extends BaseModel {
@@ -93,7 +93,7 @@ class PasswordBean extends BaseModel {
       case 0:
         List<String> newLabel = List();
         if (map['label'] != null) {
-          newLabel = waveLineSegStr2List(map['label']);
+          newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
         return PasswordBean(
             username: map['username'],
@@ -109,7 +109,7 @@ class PasswordBean extends BaseModel {
       case 2:
         List<String> newLabel = List();
         if (map['label'] != null) {
-          for (String str in waveLineSegStr2List(map['label'])) {
+          for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
             newLabel.add(EncryptUtil.decrypt(str));
           }
         }
@@ -127,7 +127,7 @@ class PasswordBean extends BaseModel {
       default:
         List<String> newLabel = List();
         if (map['label'] != null) {
-          newLabel = waveLineSegStr2List(map['label']);
+          newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
         return PasswordBean(
             username: map['username'],
@@ -146,7 +146,7 @@ class PasswordBean extends BaseModel {
 
   /// 将PasswordBean转化为Map
   Map<String, dynamic> toJson() {
-    String labels = list2WaveLineSegStr(this.label);
+    String labels = StringUtil.list2WaveLineSegStr(this.label);
     Map<String, dynamic> map = {
       "uniqueKey": this.uniqueKey,
       "name": this.name,
@@ -165,7 +165,7 @@ class PasswordBean extends BaseModel {
   /// 将PasswordBean转化为csv格式的字符
   static Future<String> toCsv(PasswordBean bean) async {
     // 包含除[uniqueKey]的所有属性
-    String labels = list2WaveLineSegStr(bean.label);
+    String labels = StringUtil.list2WaveLineSegStr(bean.label);
     String csv = "${bean.name},"
         "${bean.username},"
         "${EncryptUtil.decrypt(bean.password)},"

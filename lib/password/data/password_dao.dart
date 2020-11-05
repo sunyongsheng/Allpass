@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/ui/allpass_ui.dart';
 import 'package:allpass/core/dao/db_provider.dart';
-import 'package:allpass/util/string_process.dart';
+import 'package:allpass/util/string_util.dart';
 
 class PasswordDao extends BaseDBProvider {
 
@@ -105,7 +105,7 @@ class PasswordDao extends BaseDBProvider {
   /// 更新
   Future<int> updatePasswordBeanById(PasswordBean bean) async {
     Database db = await getDataBase();
-    String labels = list2WaveLineSegStr(bean.label);
+    String labels = StringUtil.list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET "
         "$columnName=?,"
         "$columnUsername=?,"
