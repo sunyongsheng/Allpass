@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/ui/allpass_ui.dart';
-import 'package:allpass/ui/icon_resource.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/icon_resource.dart';
 import 'package:allpass/util/screen_util.dart';
 
 class NoDataWidget extends StatelessWidget {

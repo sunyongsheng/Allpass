@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:allpass/core/model/api/update_bean.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 
 class UpdateDialog extends StatelessWidget {
 

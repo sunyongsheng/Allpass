@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/develop/debug_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';

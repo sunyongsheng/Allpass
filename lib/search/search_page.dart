@@ -9,7 +9,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:allpass/card/data/card_provider.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';

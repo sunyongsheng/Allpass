@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/core/service/auth_service.dart';

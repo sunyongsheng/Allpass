@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/webdav_util.dart';
 import 'package:allpass/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';

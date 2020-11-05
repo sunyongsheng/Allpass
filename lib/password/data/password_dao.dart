@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/dao/db_provider.dart';
 import 'package:allpass/util/string_util.dart';
 

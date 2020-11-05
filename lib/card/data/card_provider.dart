@@ -3,7 +3,7 @@ import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 
 /// 保存程序中所有的Card
 class CardProvider with ChangeNotifier {

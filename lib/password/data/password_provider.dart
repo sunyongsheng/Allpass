@@ -3,7 +3,7 @@ import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 
 
 /// 保存程序中的所有的Password

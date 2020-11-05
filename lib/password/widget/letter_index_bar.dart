@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';

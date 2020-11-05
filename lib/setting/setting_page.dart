@@ -9,7 +9,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/core/service/auth_service.dart';

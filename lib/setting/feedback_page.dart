@@ -6,7 +6,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 

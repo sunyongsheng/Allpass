@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 
 class SearchButtonWidget extends StatelessWidget {
 

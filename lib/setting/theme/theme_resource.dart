@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../ui/allpass_ui.dart';
+import '../../common/ui/allpass_ui.dart';
 
 /// 主题
 class AllpassTheme {

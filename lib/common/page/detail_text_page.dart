@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 
 /// 详细文字展示页，用于展示比较长而不能在上一页面进行全部显示的文字
 /// 可以设置[canChange]属性来决定其中文字是否可以修改，返回修改后的文字

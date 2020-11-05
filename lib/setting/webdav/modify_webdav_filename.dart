@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class ModifyWebDavFileName extends StatelessWidget {

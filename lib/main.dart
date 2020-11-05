@@ -8,7 +8,7 @@ import 'package:device_info/device_info.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/ui/allpass_ui.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
