@@ -13,13 +13,16 @@ import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 
 class PasswordWidgetItem extends StatelessWidget {
+
+  final Key key;
   final int index;
 
-  PasswordWidgetItem(this.index);
+  PasswordWidgetItem(this.index, {this.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
+      key: key,
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
@@ -97,8 +100,9 @@ class PasswordWidgetContainerItem extends StatelessWidget {
 
 class MultiPasswordWidgetItem extends StatefulWidget {
 
+  final Key key;
   final int index;
-  MultiPasswordWidgetItem(this.index);
+  MultiPasswordWidgetItem(this.index, {this.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -108,6 +112,7 @@ class MultiPasswordWidgetItem extends StatefulWidget {
 }
 
 class _MultiPasswordWidgetItem extends State<StatefulWidget> {
+
   final int index;
 
   _MultiPasswordWidgetItem(this.index);
@@ -115,6 +120,7 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
+      key: widget.key,
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,

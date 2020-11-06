@@ -6,9 +6,10 @@ import 'package:allpass/util/screen_util.dart';
 
 class NoDataWidget extends StatelessWidget {
 
+  final Key key;
   final String additionalInfo;
 
-  NoDataWidget(this.additionalInfo);
+  NoDataWidget(this.additionalInfo, {this.key});
 
   @override
   Widget build(BuildContext context) {

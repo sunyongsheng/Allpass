@@ -6,9 +6,10 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
 
+  final Key key;
   final CategoryType type;
 
-  AddCategoryDialog({this.type = CategoryType.Label});
+  AddCategoryDialog({this.key, this.type = CategoryType.Label});
 
   @override
   _AddLabelDialog createState() {
@@ -40,6 +41,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: widget.key,
       title: Text("新建$categoryName"),
       content: Column(
         mainAxisSize: MainAxisSize.min,

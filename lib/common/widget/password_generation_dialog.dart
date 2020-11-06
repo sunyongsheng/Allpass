@@ -6,6 +6,10 @@ import 'package:allpass/setting/theme/theme_provider.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
+  final Key key;
+
+  PasswordGenerationDialog({this.key});
+
   @override
   State<StatefulWidget> createState() {
     return _PasswordGenerationDialog();
@@ -42,6 +46,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: widget.key,
       title: Text("密码生成器"),
       content: SingleChildScrollView(
         child: Column(

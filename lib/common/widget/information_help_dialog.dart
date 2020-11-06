@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class InformationHelpDialog extends StatefulWidget {
 
+  final Key key;
   final Widget title;
   final List<Widget> content;
   final List<Widget> actions;
 
-  InformationHelpDialog({
+  InformationHelpDialog({this.key,
     this.title = const Text("帮助"),
     this.content,
     this.actions
@@ -23,6 +24,7 @@ class _InformationHelpDialog extends State<InformationHelpDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: widget.key,
       title: widget.title,
       content: SingleChildScrollView(
           child: ListBody(

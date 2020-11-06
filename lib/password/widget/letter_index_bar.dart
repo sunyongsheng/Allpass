@@ -8,9 +8,10 @@ import 'package:allpass/setting/theme/theme_provider.dart';
 /// 首字母索引列
 class LetterIndexBar extends StatefulWidget {
 
+  final Key key;
   final ScrollController scrollController;
 
-  LetterIndexBar(this.scrollController);
+  LetterIndexBar(this.scrollController, {this.key});
 
   @override
   State createState() {
@@ -47,6 +48,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
       ));
     });
     return Stack(
+      key: widget.key,
       children: <Widget>[
         Align(
           alignment: FractionalOffset(1.0, 0),

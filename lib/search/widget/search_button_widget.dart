@@ -3,10 +3,11 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 class SearchButtonWidget extends StatelessWidget {
 
+  final Key key;
   final String searchType;
-  final void Function() press;
+  final VoidCallback press;
 
-  SearchButtonWidget(this.press, this.searchType);
+  SearchButtonWidget(this.press, this.searchType, {this.key});
 
   @override
   Widget build(BuildContext context) {

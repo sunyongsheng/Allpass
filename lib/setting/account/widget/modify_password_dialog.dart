@@ -8,13 +8,19 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 修改密码对话框
 class ModifyPasswordDialog extends StatelessWidget {
+
+  final Key key;
+
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _secondInputController = TextEditingController();
 
+  ModifyPasswordDialog({this.key});
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: key,
       title: Text(
         "修改主密码",
         style: AllpassTextUI.firstTitleStyle,

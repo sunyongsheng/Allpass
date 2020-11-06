@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
 class NoneBorderCircularTextField extends StatelessWidget {
+  final Key key;
   final TextEditingController editingController;
   final String hintText;
   final String helperText;
@@ -21,6 +22,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
   final bool needPadding;
 
   NoneBorderCircularTextField({
+    this.key,
     @required this.editingController,
     this.hintText,
     this.helperText,

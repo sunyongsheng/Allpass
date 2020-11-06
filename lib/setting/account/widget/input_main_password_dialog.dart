@@ -8,14 +8,17 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class InputMainPasswordDialog extends StatelessWidget {
 
-  final TextEditingController _passwordController = TextEditingController();
+  final Key key;
   final String helperText;
 
-  InputMainPasswordDialog({this.helperText});
+  final TextEditingController _passwordController = TextEditingController();
+
+  InputMainPasswordDialog({this.helperText, this.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: key,
       title: Text("请输入主密码"),
       content: NoneBorderCircularTextField(
         needPadding: false,

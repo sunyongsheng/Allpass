@@ -6,7 +6,7 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/setting/webdav/modify_webdav_filename.dart';
+import 'package:allpass/setting/webdav/modify_webdav_filename_dialog.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 
@@ -133,7 +133,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) => ModifyWebDavFileName(
+                  builder: (context) => ModifyWebDavFileNameDialog(
                     oldPasswordName: Config.webDavPasswordName,
                     oldCardName: Config.webDavCardName,
                   )

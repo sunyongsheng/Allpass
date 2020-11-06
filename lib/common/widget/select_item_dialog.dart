@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class SelectItemDialog extends StatelessWidget {
+
+  final Key key;
   final List<String> _list;
   final String initialSelected;
 
-  SelectItemDialog(this._list, {this.initialSelected});
+  SelectItemDialog(this._list, {this.key, this.initialSelected});
 
   @override
   Widget build(BuildContext context) {

@@ -17,6 +17,7 @@ class ClassificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: key,
       onTap: onPress,
       onLongPress: onLongPress,
       child: Card(

@@ -12,10 +12,11 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 编辑属性对话框
 class EditCategoryDialog extends StatefulWidget {
 
+  final Key key;
   final String categoryName;
   final int index;
 
-  EditCategoryDialog(this.categoryName, this.index);
+  EditCategoryDialog(this.categoryName, this.index, {this.key});
 
   @override
   _EditCategoryDialog createState() {
@@ -46,21 +47,15 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   @override
-  void didUpdateWidget(EditCategoryDialog oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    this._index = widget.index;
-    this.categoryName = widget.categoryName;
-  }
-
-  @override
   void dispose() {
-    _editTextController?.dispose();
     super.dispose();
+    _editTextController?.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: widget.key,
       title: Text("编辑$categoryName"),
       content: Column(
         mainAxisSize: MainAxisSize.min,

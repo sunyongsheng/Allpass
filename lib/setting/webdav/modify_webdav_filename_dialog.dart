@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
-class ModifyWebDavFileName extends StatelessWidget {
+class ModifyWebDavFileNameDialog extends StatelessWidget {
+
+  final Key key;
+  final String oldPasswordName;
+  final String oldCardName;
 
   final _passwordFileNameController = TextEditingController();
   final _cardFileNameController = TextEditingController();
 
-  final String oldPasswordName;
-  final String oldCardName;
-
-  ModifyWebDavFileName({this.oldCardName, this.oldPasswordName});
+  ModifyWebDavFileNameDialog({this.key, this.oldCardName, this.oldPasswordName});
 
   @override
   Widget build(BuildContext context) {

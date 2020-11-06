@@ -3,10 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 
 class LabelChip extends StatelessWidget {
+  final Key key;
   final String text;
   final bool selected;
   final void Function(bool) onSelected;
-  const LabelChip({this.text, this.selected, this.onSelected});
+  const LabelChip({this.key, this.text, this.selected, this.onSelected});
 
   @override
   Widget build(BuildContext context) {

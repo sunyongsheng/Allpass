@@ -6,14 +6,15 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 class UpdateDialog extends StatelessWidget {
 
+  final Key key;
   final UpdateBean updateBean;
 
-
-  UpdateDialog(this.updateBean);
+  UpdateDialog(this.updateBean, {this.key});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: key,
       title: Text("检查更新"),
       content: SingleChildScrollView(child: _createUpdateContent()),
       actions: _createUpdateAction(context)
