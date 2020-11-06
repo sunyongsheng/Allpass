@@ -127,10 +127,23 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                           showDialog(
                             context: context,
                             barrierDismissible: false,
-                            builder: (context) => EditCategoryDialog(categoryName, currIndex))
-                              .then((changed) {
-                            if (changed) {
-                              setState(() {});
+                            builder: (context) => EditCategoryDialog(widget.type, data[currIndex])
+                          ).then((value) async {
+                            if (value != null) {
+                              if (this.type == CategoryType.Label) {
+                                if (RuntimeData.labelList.contains(value)) {
+                                  Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+                                  return;
+                                }
+                                await editLabelAndUpdate(currIndex, value);
+                              } else if (this.type == CategoryType.Folder){
+                                if (RuntimeData.folderList.contains(value)) {
+                                  Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+                                  return;
+                                }
+                                await editFolderAndUpdate(currIndex, value);
+                              }
+                              Fluttertoast.showToast(msg: "保存$categoryName $value");
                             }
                             Navigator.pop(context);
                           });
@@ -143,27 +156,28 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         title: Text("删除$categoryName"),
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
+                          String hintText = "";
+                          Future<Null> Function() deleteCallback;
                           if (this.type == CategoryType.Label) {
-                            showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    ConfirmDialog("确认删除", "拥有此标签的密码或卡片将删除此标签，确认吗？"))
-                                .then((delete) async {
-                                  if (delete) {
-                                    await deleteLabelAndUpdate(currCategoryName);
-                                  }
-                                });
-                          } else {
-                            showDialog(
-                                context: context,
-                                builder: (context) =>
-                                    ConfirmDialog("确认删除", "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？"))
-                                .then((delete) async {
-                                  if (delete) {
-                                    await deleteFolderAndUpdate(currCategoryName);
-                                  }
-                                });
+                            hintText = "拥有此标签的密码或卡片将删除此标签，确认吗？";
+                            deleteCallback = () async {
+                              await deleteLabelAndUpdate(currCategoryName);
+                            };
+                          } else if (this.type == CategoryType.Folder) {
+                            hintText = "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？";
+                            deleteCallback = () async {
+                              await deleteFolderAndUpdate(currCategoryName);
+                            };
                           }
+                          showDialog(
+                              context: context,
+                              builder: (context) => ConfirmDialog("确认删除", hintText)
+                          ).then((delete) async {
+                            if (delete) {
+                              await deleteCallback();
+                            }
+                          });
+                          Navigator.pop(context);
                         },
                       ),
                     )
@@ -179,27 +193,74 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     return widgets;
   }
 
-  deleteLabelAndUpdate(String label) async {
+  Future<Null> editLabelAndUpdate(int index, String newLabel) async {
+    String oldLabel = RuntimeData.labelList[index];
+    setState(() {
+      RuntimeData.labelList[index] = newLabel;
+    });
+    RuntimeData.labelParamsPersistence();
+    
     for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
-      if (bean.label.contains(label)) {
-        bean.label.remove(label);
-        Provider.of<PasswordProvider>(context).updatePassword(bean);
+      if (bean.label.contains(oldLabel)) {
+        bean.label[bean.label.indexOf(oldLabel)] = newLabel;
+        await Provider.of<PasswordProvider>(context).updatePassword(bean);
       }
     }
     for (var bean in Provider.of<CardProvider>(context).cardList) {
-      if (bean.label.contains(label)) {
-        bean.label.remove(label);
-        Provider.of<CardProvider>(context).updateCard(bean);
+      if (bean.label.contains(oldLabel)) {
+        bean.label[bean.label.indexOf(oldLabel)] = newLabel;
+        await Provider.of<CardProvider>(context).updateCard(bean);
       }
     }
+  }
+
+  Future<Null> editFolderAndUpdate(int index, String newFolder) async {
+    String oldFolder = RuntimeData.folderList[index];
+    setState(() {
+      RuntimeData.folderList[index] = newFolder;
+    });
+    RuntimeData.folderParamsPersistence();
+    
+    for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
+      if (bean.folder == oldFolder) {
+        bean.folder = newFolder;
+        await Provider.of<PasswordProvider>(context).updatePassword(bean);
+      }
+    }
+    for (var bean in Provider.of<CardProvider>(context).cardList) {
+      if (bean.folder == oldFolder) {
+        bean.folder = newFolder;
+        await Provider.of<CardProvider>(context).updateCard(bean);
+      }
+    }
+  }
+
+  Future<Null> deleteLabelAndUpdate(String label) async {
     setState(() {
       RuntimeData.labelList.remove(label);
     });
     RuntimeData.labelParamsPersistence();
-    Navigator.pop(context);
+
+    for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
+      if (bean.label.contains(label)) {
+        bean.label.remove(label);
+        Provider.of<PasswordProvider>(context).updatePassword(bean);
+      }
+    }
+    for (var bean in Provider.of<CardProvider>(context).cardList) {
+      if (bean.label.contains(label)) {
+        bean.label.remove(label);
+        Provider.of<CardProvider>(context).updateCard(bean);
+      }
+    }
   }
 
-  deleteFolderAndUpdate(String folder) async {
+  Future<Null> deleteFolderAndUpdate(String folder) async {
+    setState(() {
+      RuntimeData.folderList.remove(folder);
+    });
+    RuntimeData.folderParamsPersistence();
+
     for (var bean in Provider.of<PasswordProvider>(context).passwordList) {
       if (folder == bean.folder) {
         bean.folder = defaultFolderName;
@@ -212,11 +273,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         Provider.of<CardProvider>(context).updateCard(bean);
       }
     }
-    setState(() {
-      RuntimeData.folderList.remove(folder);
-    });
-    RuntimeData.folderParamsPersistence();
-    Navigator.pop(context);
   }
 
   List<String> _getCategoryData(CategoryType type) {

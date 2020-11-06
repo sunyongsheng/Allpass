@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 编辑属性对话框
+/// 返回[null]代表未编辑；否则返回修改后的数据
 class EditCategoryDialog extends StatefulWidget {
 
   final Key key;
-  final String categoryName;
-  final int index;
+  final CategoryType type;
+  final String initialValue;
 
-  EditCategoryDialog(this.categoryName, this.index, {this.key}) : super(key: key);
+  EditCategoryDialog(this.type, this.initialValue, {this.key}) : super(key: key);
 
   @override
   _EditCategoryDialog createState() {
@@ -28,22 +23,17 @@ class EditCategoryDialog extends StatefulWidget {
 class _EditCategoryDialog extends State<EditCategoryDialog> {
 
   String categoryName;
-
-  var _editTextController;
+  String initialValue;
 
   bool _inputFormatCorr = true;
-  int _index;
+  TextEditingController _editTextController;
 
   @override
   void initState() {
     super.initState();
-    this.categoryName = widget.categoryName;
-    this._index = widget.index;
-
-    if (categoryName == "标签")
-      _editTextController = TextEditingController(text: RuntimeData.labelList[_index]);
-    else
-      _editTextController = TextEditingController(text: RuntimeData.folderList[_index]);
+    this.initialValue = widget.initialValue;
+    this.categoryName = Category.getCategoryName(widget.type);
+    _editTextController = TextEditingController(text: initialValue);
   }
 
   @override
@@ -62,7 +52,9 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         children: <Widget>[
           NoneBorderCircularTextField(
             editingController: _editTextController,
-            errorText: _inputFormatCorr?"":"$categoryName名不允许包含“,”或“~”或空格",
+            errorText: _inputFormatCorr
+                ? null
+                : "$categoryName名不允许包含“,”或“~”或空格",
             hintText: "请输入$categoryName名",
             needPadding: false,
             autoFocus: true,
@@ -96,77 +88,17 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
     );
   }
 
-  _submit() async {
-    if (_inputFormatCorr && _editTextController.text != "") {
-      if (categoryName == "标签") {
-        if (!RuntimeData.labelList.contains(_editTextController.text)) {
-          await editLabelAndUpdate();
-          Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
-          Navigator.pop<bool>(context, true);
-        } else {
-          Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
-          Navigator.pop<bool>(context, false);
-        }
+  void _submit() {
+    if (_inputFormatCorr && (_editTextController.text?.trim()?.length ?? 0) > 0) {
+      if (_editTextController.text != initialValue) {
+        Navigator.pop<String>(context, _editTextController.text);
       } else {
-        if (!RuntimeData.folderList.contains(_editTextController.text)) {
-          await editFolderAndUpdate();
-          Fluttertoast.showToast(msg: "保存$categoryName ${_editTextController.text}");
-          Navigator.pop<bool>(context, true);
-        } else {
-          Fluttertoast.showToast(msg: "$categoryName ${_editTextController.text} 已存在");
-          Navigator.pop<bool>(context, false);
-        }
+        Navigator.pop(context);
       }
-    } else {
+    } else if (!_inputFormatCorr) {
       Fluttertoast.showToast(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
+    } else {
+      Navigator.pop(context);
     }
-  }
-
-  editLabelAndUpdate() async {
-    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
-    if (passwordList != null) {
-      for (var bean in passwordList) {
-        if (bean.label.contains(RuntimeData.labelList[_index])) {
-          bean.label.remove(RuntimeData.labelList[_index]);
-          bean.label.add(_editTextController.text);
-          await Provider.of<PasswordProvider>(context).updatePassword(bean);
-        }
-      }
-    }
-    List<CardBean> cardList = Provider.of<CardProvider>(context).cardList;
-    if (cardList != null) {
-      for (var bean in cardList) {
-        if (bean.label.contains(RuntimeData.labelList[_index])) {
-          bean.label.remove(RuntimeData.labelList[_index]);
-          bean.label.add(_editTextController.text);
-          await Provider.of<CardProvider>(context).updateCard(bean);
-        }
-      }
-    }
-    RuntimeData.labelList[_index] = _editTextController.text;
-    RuntimeData.labelParamsPersistence();
-  }
-
-  editFolderAndUpdate() async {
-    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
-    if (passwordList != null) {
-      for (var bean in passwordList) {
-        if (bean.folder == RuntimeData.folderList[_index]) {
-          bean.folder = _editTextController.text;
-          await Provider.of<PasswordProvider>(context).updatePassword(bean);
-        }
-      }
-    }
-    List<CardBean> cardList = Provider.of<CardProvider>(context).cardList;
-    if (cardList != null) {
-      for (var bean in cardList) {
-        if (bean.folder == RuntimeData.folderList[_index]) {
-          bean.folder = _editTextController.text;
-          await Provider.of<CardProvider>(context).updateCard(bean);
-        }
-      }
-    }
-    RuntimeData.folderList[_index] = _editTextController.text;
-    RuntimeData.folderParamsPersistence();
   }
 }
