@@ -22,21 +22,24 @@ class _FeedbackPage extends State<StatefulWidget> {
   TextEditingController _feedbackController;
   TextEditingController _contactController;
   String _contactCache;
+  FocusNode _blankFocus;
 
   bool _submitSuccess = false;
 
   @override
   void initState() {
     super.initState();
-    _contactCache = Application.sp.getString(SPKeys.contact)??"";
+    _contactCache = Application.sp.getString(SPKeys.contact) ?? "";
     _feedbackController = TextEditingController();
     _contactController = TextEditingController(text: _contactCache);
+    _blankFocus = FocusNode();
   }
 
   @override
   void dispose() {
     _feedbackController.dispose();
     _contactController.dispose();
+    _blankFocus.dispose();
     super.dispose();
   }
 
@@ -87,6 +90,7 @@ class _FeedbackPage extends State<StatefulWidget> {
                   Fluttertoast.showToast(msg: "反馈内容必须小于1000字！");
                   return;
                 }
+                FocusScope.of(context).requestFocus(_blankFocus);
                 showDialog(
                     context: context,
                     child: FutureBuilder(
