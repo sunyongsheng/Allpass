@@ -1,3 +1,4 @@
+import 'package:allpass/classification/widget/classification_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -46,31 +47,18 @@ class ClassificationPage extends StatelessWidget {
   List<Widget> getClassWidgets(BuildContext context) {
     List<Widget> list  = List();
     list.add(
-        InkWell(
-          onTap: () {
+        ClassificationItem(
+          onPress: () {
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => FavoritePage()
             ));
           },
-          child: Card(
-            elevation: 0,
-            color: Colors.redAccent,
-            child: Center(
-              child: Text("收藏",
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          title: "收藏",
         )
     );
     list.addAll(RuntimeData.folderList.map((folder) =>
-        InkWell(
-          onTap: () {
+        ClassificationItem(
+          onPress: () {
             Navigator.push(context, CupertinoPageRoute(
               builder: (context) => ClassificationDetailsPage(folder)
             ));
@@ -78,20 +66,8 @@ class ClassificationPage extends StatelessWidget {
           onLongPress: () => Navigator.push(context, CupertinoPageRoute(
             builder: (context) => CategoryManagerPage(CategoryType.Folder),
           )),
-          child: Card(
-            elevation: 0,
-            color: getRandomColor(seed: folder.hashCode),
-            child: Center(
-              child: Text(folder,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          title: folder,
+          color: getRandomColor(seed: folder.hashCode),
         )
     ));
     return list;
