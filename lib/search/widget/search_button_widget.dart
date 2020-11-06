@@ -7,7 +7,7 @@ class SearchButtonWidget extends StatelessWidget {
   final String searchType;
   final VoidCallback press;
 
-  SearchButtonWidget(this.press, this.searchType, {this.key});
+  SearchButtonWidget(this.press, this.searchType, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

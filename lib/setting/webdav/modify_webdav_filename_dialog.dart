@@ -11,7 +11,9 @@ class ModifyWebDavFileNameDialog extends StatelessWidget {
   final _passwordFileNameController = TextEditingController();
   final _cardFileNameController = TextEditingController();
 
-  ModifyWebDavFileNameDialog({this.key, this.oldCardName, this.oldPasswordName});
+  ModifyWebDavFileNameDialog({this.key,
+    this.oldCardName,
+    this.oldPasswordName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

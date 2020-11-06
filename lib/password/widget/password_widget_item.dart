@@ -17,12 +17,11 @@ class PasswordWidgetItem extends StatelessWidget {
   final Key key;
   final int index;
 
-  PasswordWidgetItem(this.index, {this.key});
+  PasswordWidgetItem(this.index, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
-      key: key,
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,
@@ -69,8 +68,10 @@ class PasswordWidgetItem extends StatelessWidget {
 }
 
 class PasswordWidgetContainerItem extends StatelessWidget {
+
+  final Key key;
   final int index;
-  PasswordWidgetContainerItem(this.index);
+  PasswordWidgetContainerItem(this.index, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,7 @@ class MultiPasswordWidgetItem extends StatefulWidget {
 
   final Key key;
   final int index;
-  MultiPasswordWidgetItem(this.index, {this.key});
+  MultiPasswordWidgetItem(this.index, {this.key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -120,7 +121,6 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
-      key: widget.key,
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,

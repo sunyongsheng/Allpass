@@ -7,7 +7,7 @@ class LabelChip extends StatelessWidget {
   final String text;
   final bool selected;
   final void Function(bool) onSelected;
-  const LabelChip({this.key, this.text, this.selected, this.onSelected});
+  const LabelChip({this.key, this.text, this.selected, this.onSelected}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

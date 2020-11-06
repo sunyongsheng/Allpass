@@ -38,7 +38,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
     this.inputType,
     this.onChanged,
     this.onTap,
-    this.needPadding: true});
+    this.needPadding: true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

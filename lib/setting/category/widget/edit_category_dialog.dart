@@ -16,7 +16,7 @@ class EditCategoryDialog extends StatefulWidget {
   final String categoryName;
   final int index;
 
-  EditCategoryDialog(this.categoryName, this.index, {this.key});
+  EditCategoryDialog(this.categoryName, this.index, {this.key}) : super(key: key);
 
   @override
   _EditCategoryDialog createState() {
@@ -55,7 +55,6 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      key: widget.key,
       title: Text("编辑$categoryName"),
       content: Column(
         mainAxisSize: MainAxisSize.min,

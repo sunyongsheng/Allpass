@@ -9,9 +9,9 @@ class InformationHelpDialog extends StatefulWidget {
 
   InformationHelpDialog({this.key,
     this.title = const Text("帮助"),
-    this.content,
+    @required this.content,
     this.actions
-  }) : assert (content != null);
+  }) : super(key: key);
 
   @override
   State createState() {

@@ -9,7 +9,7 @@ class NoDataWidget extends StatelessWidget {
   final Key key;
   final String additionalInfo;
 
-  NoDataWidget(this.additionalInfo, {this.key});
+  NoDataWidget(this.additionalInfo, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

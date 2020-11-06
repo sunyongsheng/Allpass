@@ -14,12 +14,11 @@ import 'package:allpass/common/anim/animation_routes.dart';
 class CardWidgetItem extends StatelessWidget {
   final Key key;
   final int index;
-  CardWidgetItem(this.index, {this.key});
+  CardWidgetItem(this.index, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<CardProvider>(
-      key: key,
       builder: (context, model, _) {
         return SizedBox(
           height: 100,
@@ -81,7 +80,7 @@ class CardWidgetItem extends StatelessWidget {
 class CardWidgetContainerItem extends StatelessWidget {
   final Key key;
   final int index;
-  CardWidgetContainerItem(this.index, {this.key});
+  CardWidgetContainerItem(this.index, {this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +131,10 @@ class CardWidgetContainerItem extends StatelessWidget {
 
 class SimpleCardWidgetItem extends StatelessWidget {
 
+  final Key key;
   final int index;
 
-  SimpleCardWidgetItem(this.index);
+  SimpleCardWidgetItem(this.index, {this.key}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +185,7 @@ class MultiCardWidgetItem extends StatefulWidget {
   final Key key;
   final int index;
 
-  MultiCardWidgetItem(this.index, {this.key});
+  MultiCardWidgetItem(this.index, {this.key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -201,7 +201,6 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CardProvider>(
-      key: widget.key,
       builder: (context, model, child) {
         return Container(
           margin: AllpassEdgeInsets.listInset,

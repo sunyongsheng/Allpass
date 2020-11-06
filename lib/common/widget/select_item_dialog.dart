@@ -6,7 +6,7 @@ class SelectItemDialog extends StatelessWidget {
   final List<String> _list;
   final String initialSelected;
 
-  SelectItemDialog(this._list, {this.key, this.initialSelected});
+  SelectItemDialog(this._list, {this.key, this.initialSelected}): super(key: key);
 
   @override
   Widget build(BuildContext context) {

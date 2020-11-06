@@ -12,12 +12,11 @@ class ClassificationItem extends StatelessWidget {
     this.title,
     this.color = Colors.redAccent,
     this.onPress,
-    this.onLongPress});
+    this.onLongPress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      key: key,
       onTap: onPress,
       onLongPress: onLongPress,
       child: Card(

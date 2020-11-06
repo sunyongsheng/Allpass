@@ -15,12 +15,11 @@ class ModifyPasswordDialog extends StatelessWidget {
   final _newPasswordController = TextEditingController();
   final _secondInputController = TextEditingController();
 
-  ModifyPasswordDialog({this.key});
+  ModifyPasswordDialog({this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      key: key,
       title: Text(
         "修改主密码",
         style: AllpassTextUI.firstTitleStyle,

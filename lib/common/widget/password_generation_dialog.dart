@@ -8,7 +8,7 @@ class PasswordGenerationDialog extends StatefulWidget {
 
   final Key key;
 
-  PasswordGenerationDialog({this.key});
+  PasswordGenerationDialog({this.key}): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +46,6 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      key: widget.key,
       title: Text("密码生成器"),
       content: SingleChildScrollView(
         child: Column(
