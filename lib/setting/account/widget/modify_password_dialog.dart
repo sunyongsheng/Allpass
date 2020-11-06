@@ -46,38 +46,6 @@ class ModifyPasswordDialog extends StatelessWidget {
               labelText: "请再输入一遍",
               obscureText: true,
             )
-//            Container(
-//              padding: EdgeInsets.only(left: 10, right: 10),
-//              child: TextField(
-//                controller: _oldPasswordController,
-//                decoration: InputDecoration(
-//                  labelText: "请输入旧密码",
-//                  border: UnderlineInputBorder()
-//                ),
-//                obscureText: true,
-//                autofocus: true,
-//              ),
-//            ),
-//            Container(
-//              padding: EdgeInsets.only(left: 10, right: 10),
-//              child: TextField(
-//                controller: _newPasswordController,
-//                decoration: InputDecoration(
-//                  border: UnderlineInputBorder(),
-//                  labelText: "请输入新密码"),
-//                obscureText: true,
-//              ),
-//            ),
-//            Container(
-//              padding: EdgeInsets.only(left: 10, right: 10),
-//              child: TextField(
-//                controller: _secondInputController,
-//                decoration: InputDecoration(
-//                  border: UnderlineInputBorder(),
-//                  labelText: "请再输入一遍"),
-//                obscureText: true,
-//              ),
-//            ),
           ],
         ),
       ),

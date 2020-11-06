@@ -12,7 +12,7 @@ import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/widget/label_chip.dart';
-import 'package:allpass/setting/category/add_category_dialog.dart';
+import 'package:allpass/setting/category/widget/add_category_dialog.dart';
 import 'package:allpass/common/widget/password_generation_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
