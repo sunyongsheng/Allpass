@@ -7,19 +7,19 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 /// 保存程序中所有的Card
 class CardProvider with ChangeNotifier {
-  List<CardBean> _cardList = [];
+  List<CardBean> _cardList;
   CardDao _dao = CardDao();
 
-  List<CardBean> get cardList =>_cardList??[];
+  List<CardBean> get cardList =>_cardList ?? List();
 
   Future<Null> init() async {
-    _cardList = await _dao.getAllCardBeanList()??[];
+    _cardList = await _dao.getAllCardBeanList() ?? List();
     sortByAlphabeticalOrder();
   }
 
   Future<Null> refresh() async {
-    _cardList.clear();
-    _cardList = await _dao.getAllCardBeanList()??[];
+    _cardList?.clear();
+    _cardList = await _dao.getAllCardBeanList() ?? List();
     sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();

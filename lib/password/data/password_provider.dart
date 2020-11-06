@@ -8,7 +8,7 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier {
-  List<PasswordBean> _passwordList = [];
+  List<PasswordBean> _passwordList;
   PasswordDao _dao = PasswordDao();
   /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0
   /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
@@ -18,11 +18,11 @@ class PasswordProvider with ChangeNotifier {
   final List<String> letters = ['A','B','C','D','E','F','G','H','I','J','K','L',
     'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
-  List<PasswordBean> get passwordList => _passwordList??[];
+  List<PasswordBean> get passwordList => _passwordList ?? List();
   Map<String, int> get letterCountIndex => _letterCountIndex;
 
   Future<Null> init() async {
-    _passwordList = await _dao.getAllPasswordBeanList()??[];
+    _passwordList = await _dao.getAllPasswordBeanList() ?? List();
     sortByAlphabeticalOrder();
     refreshLetterCountIndex();
     notifyListeners();
@@ -30,7 +30,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> refresh() async {
     _passwordList?.clear();
-    _passwordList = await _dao.getAllPasswordBeanList()??[];
+    _passwordList = await _dao.getAllPasswordBeanList() ?? List();
     sortByAlphabeticalOrder();
     refreshLetterCountIndex();
     RuntimeData.newPasswordOrCardCount = 0;
