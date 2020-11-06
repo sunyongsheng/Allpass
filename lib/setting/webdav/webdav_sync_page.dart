@@ -6,9 +6,9 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/setting/webdav/modify_webdav_filename_dialog.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
+import 'package:allpass/setting/webdav/widget/modify_webdav_filename_dialog.dart';
 
 class WebDavSyncPage extends StatefulWidget {
   @override
