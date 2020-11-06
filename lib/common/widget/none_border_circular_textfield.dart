@@ -18,6 +18,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
   final TextInputType inputType;
   final int maxLines;
   final bool autoFocus;
+  final FocusNode focusNode;
 
   final bool needPadding;
 
@@ -35,6 +36,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
     this.onEditingComplete,
     this.trailing,
     this.autoFocus: false,
+    this.focusNode,
     this.inputType,
     this.onChanged,
     this.onTap,
@@ -68,6 +70,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
       onEditingComplete: onEditingComplete,
       onChanged: onChanged,
       onTap: onTap,
+      focusNode: focusNode,
     );
     if (needPadding) {
       return Padding(
