@@ -80,7 +80,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         ),
         FlatButton(
           onPressed: () {
-            Navigator.pop<bool>(context, false);
+            Navigator.pop(context);
           },
           child: Text('取消'),
         ),

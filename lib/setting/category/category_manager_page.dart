@@ -124,6 +124,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         title: Text("编辑$categoryName"),
                         leading: Icon(Icons.edit_attributes, color: Colors.blue,),
                         onTap: () {
+                          Navigator.pop(context);
                           showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -145,7 +146,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                               }
                               Fluttertoast.showToast(msg: "保存$categoryName $value");
                             }
-                            Navigator.pop(context);
                           });
                         },
                       ),
@@ -169,15 +169,14 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                               await deleteFolderAndUpdate(currCategoryName);
                             };
                           }
-                          showDialog(
+                          Navigator.pop(context);
+                          bool res = await showDialog(
                               context: context,
                               builder: (context) => ConfirmDialog("确认删除", hintText)
-                          ).then((delete) async {
-                            if (delete) {
-                              await deleteCallback();
-                            }
-                          });
-                          Navigator.pop(context);
+                          );
+                          if (res != null && res) {
+                            await deleteCallback();
+                          }
                         },
                       ),
                     )
