@@ -37,6 +37,8 @@ class _FeedbackPage extends State<StatefulWidget> {
 
   @override
   void dispose() {
+    FocusScope.of(context).unfocus();
+    _blankFocus.unfocus();
     _feedbackController.dispose();
     _contactController.dispose();
     _blankFocus.dispose();
