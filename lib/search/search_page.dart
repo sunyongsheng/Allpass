@@ -189,8 +189,11 @@ class _SearchPage extends State<SearchPage> {
                     setState(() {});
                   },
                   onEditingComplete: () async {
-                    await Provider.of<PasswordProvider>(context).init();
-                    await Provider.of<CardProvider>(context).init();
+                    if (_type == AllpassType.Password) {
+                      await Provider.of<PasswordProvider>(context).refresh();
+                    } else if (_type == AllpassType.Card) {
+                      await Provider.of<CardProvider>(context).refresh();
+                    }
                     await getSearchResult();
                     setState(() {});
                   },
