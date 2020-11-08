@@ -5,27 +5,43 @@ import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
+final List<CardBean> emptyList = List();
+
 /// 保存程序中所有的Card
 class CardProvider with ChangeNotifier {
-  List<CardBean> _cardList;
+
+  List<CardBean> _cardList = emptyList;
   CardDao _dao = CardDao();
 
-  List<CardBean> get cardList =>_cardList ?? List();
+  bool _haveInit = false;
+
+  List<CardBean> get cardList => _cardList;
 
   Future<Null> init() async {
-    _cardList = await _dao.getAllCardBeanList() ?? List();
-    sortByAlphabeticalOrder();
+    if (_haveInit) return;
+    _cardList = List();
+    var res = await _dao.getAllCardBeanList();
+    if (res != null) {
+      _cardList.addAll(res);
+    }
+    _sortByAlphabeticalOrder();
+    notifyListeners();
+    _haveInit = true;
   }
 
   Future<Null> refresh() async {
+    if (!_haveInit) return;
     _cardList?.clear();
-    _cardList = await _dao.getAllCardBeanList() ?? List();
-    sortByAlphabeticalOrder();
+    var res = await _dao.getAllCardBeanList();
+    if (res != null) {
+      _cardList.addAll(res);
+    }
+    _sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
   }
 
-  void sortByAlphabeticalOrder() {
+  void _sortByAlphabeticalOrder() {
     _cardList.sort((one, two) {
       return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
           .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
@@ -37,7 +53,7 @@ class CardProvider with ChangeNotifier {
     bean.uniqueKey = key;
     bean.color = getRandomColor(seed: key);
     _cardList.add(bean);
-    sortByAlphabeticalOrder();
+    _sortByAlphabeticalOrder();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
   }
@@ -59,7 +75,7 @@ class CardProvider with ChangeNotifier {
     String oldName = _cardList[index].name;
     _cardList[index] = bean;
     if (oldName[0] != bean.name[0]) {
-      sortByAlphabeticalOrder();
+      _sortByAlphabeticalOrder();
     }
     await _dao.updateCardBeanById(bean);
     notifyListeners();

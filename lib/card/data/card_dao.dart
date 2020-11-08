@@ -48,13 +48,13 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 删除表
-  void deleteTable() async {
+  Future<Null> deleteTable() async {
     Database db = await getDataBase();
     db.rawDelete("DROP TABLE $name");
   }
 
   /// 删除表中所有数据
-  void deleteContent() async {
+  Future<Null> deleteContent() async {
     Database db = await getDataBase();
     db.delete(name);
     // 清除表的Key自增值

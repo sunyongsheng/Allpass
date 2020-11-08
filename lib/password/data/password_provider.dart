@@ -5,40 +5,53 @@ import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
+final List<PasswordBean> emptyList = List();
 
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier {
-  List<PasswordBean> _passwordList;
+  List<PasswordBean> _passwordList = emptyList;
   PasswordDao _dao = PasswordDao();
   /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0
   /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
   Map<String, int> _letterCountIndex = Map();
 
+  bool _haveInit = false;
+
   final List<String> letters = ['A','B','C','D','E','F','G','H','I','J','K','L',
     'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
-  List<PasswordBean> get passwordList => _passwordList ?? List();
+  List<PasswordBean> get passwordList => _passwordList;
   Map<String, int> get letterCountIndex => _letterCountIndex;
 
   Future<Null> init() async {
-    _passwordList = await _dao.getAllPasswordBeanList() ?? List();
-    sortByAlphabeticalOrder();
-    refreshLetterCountIndex();
+    if (_haveInit) return;
+    _passwordList = List();
+    var res = await _dao.getAllPasswordBeanList();
+    if (res != null) {
+      _passwordList.addAll(res);
+    }
+    _sortByAlphabeticalOrder();
+    _refreshLetterCountIndex();
     notifyListeners();
+    _haveInit = true;
   }
 
   Future<Null> refresh() async {
+    if (!_haveInit) return;
     _passwordList?.clear();
-    _passwordList = await _dao.getAllPasswordBeanList() ?? List();
-    sortByAlphabeticalOrder();
-    refreshLetterCountIndex();
+    var res = await _dao.getAllPasswordBeanList();
+    if (res != null) {
+      _passwordList.addAll(res);
+    }
+    _sortByAlphabeticalOrder();
+    _refreshLetterCountIndex();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
   }
 
   /// 刷新首字母索引，基于[_passwordList]已按首字母排好序的情况下
-  void refreshLetterCountIndex() {
+  void _refreshLetterCountIndex() {
     int amount = 0;
     _letterCountIndex.clear();
     for (PasswordBean bean in _passwordList) {
@@ -54,7 +67,7 @@ class PasswordProvider with ChangeNotifier {
     }
   }
 
-  void sortByAlphabeticalOrder() {
+  void _sortByAlphabeticalOrder() {
     _passwordList.sort((one, two) {
       return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
           .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
@@ -66,8 +79,8 @@ class PasswordProvider with ChangeNotifier {
     bean.uniqueKey = key;
     bean.color = getRandomColor(seed: key);
     _passwordList.add(bean);
-    sortByAlphabeticalOrder();
-    refreshLetterCountIndex();
+    _sortByAlphabeticalOrder();
+    _refreshLetterCountIndex();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
   }
@@ -75,7 +88,7 @@ class PasswordProvider with ChangeNotifier {
   Future<Null> deletePassword(PasswordBean bean) async {
     _passwordList.remove(bean);
     await _dao.deletePasswordBeanById(bean.uniqueKey);
-    refreshLetterCountIndex();
+    _refreshLetterCountIndex();
     notifyListeners();
   }
 
@@ -90,8 +103,8 @@ class PasswordProvider with ChangeNotifier {
     String oldName = _passwordList[index].name;
     _passwordList[index] = bean;
     if (oldName[0] != bean.name[0]) {
-      sortByAlphabeticalOrder();
-      refreshLetterCountIndex();
+      _sortByAlphabeticalOrder();
+      _refreshLetterCountIndex();
     }
     await _dao.updatePasswordBeanById(bean);
     notifyListeners();
