@@ -173,10 +173,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         onPressed: () {
           Navigator.push(
               context,
-              CupertinoPageRoute(
-                  builder: (context) =>
-                      EditCardPage(null, "添加卡片")))
-              .then((resData) async {
+              CupertinoPageRoute(builder: (context) => EditCardPage(null, "添加卡片"))
+          ).then((resData) async {
             if (resData != null) {
               await model.insertCard(resData);
               if (RuntimeData.newPasswordOrCardCount >= 3) {
@@ -202,8 +200,9 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     } else {
       showDialog<bool>(
           context: context,
-          builder: (context) => ConfirmDialog("确认删除", "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？"))
-          .then((confirm) async {
+          builder: (context) => ConfirmDialog("确认删除",
+              "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？")
+      ).then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiCardList) {
             await model.deleteCard(item);
@@ -220,8 +219,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     } else {
       showDialog(
           context: context,
-          builder: (context) => SelectItemDialog(RuntimeData.folderList))
-          .then((value) async {
+          builder: (context) => SelectItemDialog(RuntimeData.folderList)
+      ).then((value) async {
         if (value != null) {
           for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
             RuntimeData.multiCardList[i].folder = value;

@@ -175,8 +175,8 @@ class _PasswordPageState extends State<PasswordPage>
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码")))
-                .then((resData) async {
+                CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码"))
+            ).then((resData) async {
               if (resData != null) {
                 await model.insertPassword(resData);
                 if (RuntimeData.newPasswordOrCardCount >= 3) {
@@ -202,8 +202,8 @@ class _PasswordPageState extends State<PasswordPage>
       showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？"))
-          .then((confirm) async {
+              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？")
+      ).then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiPasswordList) {
             await model.deletePassword(item);
@@ -220,8 +220,8 @@ class _PasswordPageState extends State<PasswordPage>
     } else {
       showDialog(
           context: context,
-          builder: (context) => SelectItemDialog(RuntimeData.folderList))
-          .then((value) async {
+          builder: (context) => SelectItemDialog(RuntimeData.folderList)
+      ).then((value) async {
         if (value != null) {
           for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
             RuntimeData.multiPasswordList[i].folder = value;

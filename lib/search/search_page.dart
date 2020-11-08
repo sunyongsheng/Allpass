@@ -222,9 +222,8 @@ class _SearchPage extends State<SearchPage> {
           title: Text("查看"),
           onTap: () {
             Navigator.push(context,
-                CupertinoPageRoute(
-                      builder: (context) => ViewPasswordPage(data)))
-                .then((reData) async {
+                CupertinoPageRoute(builder: (context) => ViewPasswordPage(data))
+            ).then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
                   await Provider.of<PasswordProvider>(context).updatePassword(reData);
@@ -241,9 +240,8 @@ class _SearchPage extends State<SearchPage> {
           title: Text("编辑"),
           onTap: () {
             Navigator.push(context,
-                CupertinoPageRoute(
-                  builder: (context) => EditPasswordPage(data, "编辑密码")))
-                .then((reData) async {
+                CupertinoPageRoute(builder: (context) => EditPasswordPage(data, "编辑密码"))
+            ).then((reData) async {
               if (reData != null) {
                 if (reData.isChanged) {
                   await Provider.of<PasswordProvider>(context).updatePassword(reData);
