@@ -18,6 +18,7 @@ import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
+import 'package:allpass/core/model/api/user_bean.dart';
 
 bool needUpdateSecret = false;
 
@@ -126,24 +127,21 @@ void _registerUser() async {
 
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-    Map<String, String> user = Map();
-    String identification;
-    String systemInfo;
+    String _identification;
+    String _systemInfo;
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      identification = info.androidId;
-      systemInfo = "${info.model} android${info.version.release}";
+      _identification = info.androidId;
+      _systemInfo = "${info.model} android${info.version.release}";
     } else if (Platform.isIOS) {
       IosDeviceInfo info = await infoPlugin.iosInfo;
-      identification = info.identifierForVendor;
-      systemInfo = "${info.model} IOS${info.systemVersion}";
+      _identification = info.identifierForVendor;
+      _systemInfo = "${info.model} IOS${info.systemVersion}";
     } else {
       return;
     }
     try {
-      user['identification'] = identification;
-      user['systemInfo'] = systemInfo;
-      user['allpassVersion'] = Application.version;
+      UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: Application.version);
       AllpassResponse response = await Application.getIt<AllpassService>().registerUser(user);
       if (response.success) {
         Application.sp.setBool(SPKeys.needRegister, false);

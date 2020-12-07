@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
+import 'package:allpass/core/model/api/feedback_bean.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/service/allpass_service.dart';
@@ -121,24 +122,23 @@ class _FeedbackPage extends State<StatefulWidget> {
   }
 
   Future<Null> submitFeedback() async {
-    Map<String, String> map = Map();
-    map['feedbackContent'] = _feedbackController.text;
-    map['contact'] = _contactController.text;
-    map['allpassVersion'] = Application.version;
+    String _content = _feedbackController.text;
+    String _contact = _contactController.text;
+    String _version = Application.version;
+    String _id = "unknown";
     if (_contactController.text.isNotEmpty) {
       Application.sp.setString(SPKeys.contact, _contactController.text);
     }
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      map['identification'] = info.androidId;
+      _id = info.androidId;
     } else if (Platform.isIOS) {
       IosDeviceInfo info = await infoPlugin.iosInfo;
-      map['identification'] = info.identifierForVendor;
-    } else {
-      map['identification'] = "unknown";
+      _id = info.identifierForVendor;
     }
-    AllpassResponse response = await Application.getIt<AllpassService>().sendFeedback(map);
+    FeedbackBean feedback = FeedbackBean(content: _content, contact: _contact, version: _version, identification: _id);
+    AllpassResponse response = await Application.getIt<AllpassService>().sendFeedback(feedback);
     if (response.success) {
       _submitSuccess = true;
     }

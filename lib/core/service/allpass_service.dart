@@ -2,16 +2,18 @@ import 'package:dio/dio.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/model/api/allpass_response.dart';
+import 'package:allpass/core/model/api/user_bean.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
+import 'package:allpass/core/model/api/feedback_bean.dart';
+import 'package:allpass/core/model/api/allpass_response.dart';
 
 abstract class AllpassService {
 
   /// 注册用户
-  Future<AllpassResponse> registerUser(Map<String, String> user);
+  Future<AllpassResponse> registerUser(UserBean user);
 
   /// 发送反馈
-  Future<AllpassResponse> sendFeedback(Map<String, String> content);
+  Future<AllpassResponse> sendFeedback(FeedbackBean content);
 
   /// 检查更新
   Future<UpdateBean> checkUpdate();
@@ -32,9 +34,9 @@ class AllpassServiceImpl implements AllpassService {
   Dio _dio;
 
   @override
-  Future<AllpassResponse> registerUser(Map<String, String> user) async {
+  Future<AllpassResponse> registerUser(UserBean user) async {
     try {
-      Response response = await dio.post("$allpassUrl/user/", data: user);
+      Response response = await dio.post("$allpassUrl/user/", data: user.toJson());
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
         res[key] = response.data[key];
@@ -49,9 +51,9 @@ class AllpassServiceImpl implements AllpassService {
   }
 
   @override
-  Future<AllpassResponse> sendFeedback(Map<String, String> content) async {
+  Future<AllpassResponse> sendFeedback(FeedbackBean content) async {
     try {
-      Response response = await dio.post("$allpassUrl/feedback/", data: content);
+      Response response = await dio.post("$allpassUrl/feedback/", data: content.toJson());
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
         res[key] = response.data[key];
