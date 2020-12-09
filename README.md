@@ -20,9 +20,17 @@
 - 加密密钥更新
 - 自动切换主题
 
-# 注意
+# 构建Allpass
 
-**若要构建Allpass，请修改**`lib/utils/encrypt_util.dart`**中的**`_key`**（32位字符串）**；
+## Android
+
+1. 修改**`lib/utils/encrypt_util.dart`**中的**`_key`**（32位字符串）**，此字符串将作为初始密钥；
+2. 运行`keytool -genkey -alias keyAlias -keyalg RSA -validity 20000 -keystore release.jks`生成密钥，其中`keyAlias`与`release.jks`可以自定义，生成的文件在命令行运行所在目录；
+3. 依次将`keyAlias`, `storePassword`, `keyPassword`填写到android/config/default.properties中，并将`release.jks`替换到config文件夹中；
+
+## iOS
+
+TODO
 
 **作者发布的Allpass已签名。所以如果在已安装作者发布的Allpass的情况下，安装自己构建的程序，请先卸载，否则可能导致安装失败或者密码数据丢失。**
 
@@ -81,10 +89,10 @@
 
 # Flutter环境
 ```
-[√] Flutter (Channel stable, v1.17.4, on Microsoft Windows [Version 10.0.18363.900], locale zh-CN)
+[✓] Flutter (Channel stable, 1.22.4, on Mac OS X 10.15.7 19H2 darwin-x64, locale zh-Hans-CN)
 
-[√] Android toolchain - develop for Android devices (Android SDK version 29.0.2)
-[√] Android Studio (version 4.0)
+[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.2)
+[✓] Android Studio (version 4.0)
 ```
 
 # LICENSE
