@@ -1,7 +1,7 @@
 # Allpass
 
 ## 介绍
-![Allpass](https://www.aengus.top/assets/common/allpass-icon.png)
+![Allpass](./screenshots/allpass-icon.png)
 
 [Allpass](https://allpass.aengus.top)是一款简单的私密数据管理工具，包括支持密码存储与卡片信息存储。采用Flutter构建，目前完成了针对安卓的适配。
 
@@ -36,16 +36,16 @@ TODO
 
 # 软件截图
 
-| ![登录页](https://www.aengus.top/assets/screenshots/allpass/login.png) | ![注册页](https://www.aengus.top/assets/screenshots/allpass/register.png) | ![密码页](https://www.aengus.top/assets/screenshots/allpass/password.png) |
+| ![登录页](./screenshots/login.png) | ![注册页](./screenshots/register.png) | ![密码页](./screenshots/password.png) |
 | :----------------------------------------------------------: | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![卡片页](https://www.aengus.top/assets/screenshots/allpass/card.png) | ![分类](https://www.aengus.top/assets/screenshots/allpass/classification.png) | ![分类详情页](https://www.aengus.top/assets/screenshots/allpass/fav.png) |
-| ![设置页](https://www.aengus.top/assets/screenshots/allpass/setting.png) | ![关于页](https://www.aengus.top/assets/screenshots/allpass/about.png) |                                                              |
+| ![卡片页](./screenshots/card.png) | ![分类](./screenshots/classification.png) | ![分类详情页](./screenshots/fav.png) |
+| ![设置页](./screenshots/setting.png) | ![关于页](./screenshots/about.png) |                                                              |
 
 # 下载体验
 
 你可以在酷安搜索“Allpass”进行下载，扫描下面的二维码或者[点此下载](https://allpass.aengus.top/api/download/?version=1.5.0)
 
-![AllpassV1.2.0](https://www.aengus.top/assets/app/allpass_v1.2.0.png)
+![AllpassV1.2.0](./screenshots/allpass_v1.5.0.png)
 
 # 未来规划
 
