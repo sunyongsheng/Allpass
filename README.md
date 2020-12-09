@@ -24,7 +24,7 @@
 
 ## Android
 
-1. 修改**`lib/utils/encrypt_util.dart`**中的**`_key`**（32位字符串）**，此字符串将作为初始密钥；
+1. 修改`lib/utils/encrypt_util.dart`中的`_key`（32位字符串），此字符串将作为初始密钥；
 2. 运行`keytool -genkey -alias keyAlias -keyalg RSA -validity 20000 -keystore release.jks`生成密钥，其中`keyAlias`与`release.jks`可以自定义，生成的文件在命令行运行所在目录；
 3. 依次将`keyAlias`, `storePassword`, `keyPassword`填写到android/config/default.properties中，并将`release.jks`替换到config文件夹中；
 
