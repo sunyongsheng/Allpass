@@ -1,8 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="top.aengus.allpass">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -11,7 +12,7 @@
         android:roundIcon="@mipmap/allpass_launcher_round">
 
         <activity
-            android:name="io.flutter.embedding.android.FlutterActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -36,14 +37,14 @@
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-        <service
-            android:name=".AutofillService"
-            android:label="Allpass"
-            android:permission="android.permission.BIND_AUTOFILL_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.autofill.AutofillService" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".AutofillService"-->
+<!--            android:label="Allpass"-->
+<!--            android:permission="android.permission.BIND_AUTOFILL_SERVICE">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.service.autofill.AutofillService" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
         <meta-data
             android:name="flutterEmbedding"

@@ -218,7 +218,7 @@ packages:
       name: local_auth
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.6.2+3"
+    version: "0.6.3+4"
   lpinyin:
     dependency: "direct main"
     description:
