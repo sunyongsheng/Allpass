@@ -61,6 +61,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
 
   @override
   Future<bool> backupPassword(BuildContext context) async {
+    await preCheckAllpassDir();
+
     List<PasswordBean> passwords = Provider.of<PasswordProvider>(context).passwordList;
     String contents = _fileUtil().encodeList(passwords);
     if (contents == null) return true;
@@ -83,6 +85,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
 
   @override
   Future<bool> backupCard(BuildContext context) async {
+    await preCheckAllpassDir();
+
     List<CardBean> cards = Provider.of<CardProvider>(context).cardList;
     String contents = _fileUtil().encodeList(cards);
     if (contents == null) return true;
@@ -105,6 +109,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
 
   @override
   Future<bool> backupFolderAndLabel(BuildContext context) async {
+    await preCheckAllpassDir();
+    
     List<String> folder = List.from(RuntimeData.folderList);
     List<String> label = List.from(RuntimeData.labelList);
     String contents = _fileUtil().encodeFolderAndLabel(folder, label);
@@ -222,6 +228,12 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
       return true;
     } catch (e) {
       return false;
+    }
+  }
+  
+  Future<Null> preCheckAllpassDir() async {
+    if (await _webDavUtil().listFiles("Allpass") == null) {
+      await _webDavUtil().createDir("Allpass");
     }
   }
 
