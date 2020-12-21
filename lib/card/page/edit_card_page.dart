@@ -30,23 +30,26 @@ class EditCardPage extends StatefulWidget {
 }
 
 class _EditCardPage extends State<EditCardPage> {
-  CardBean _oldData;
-  bool _passwordVisible = false;
-  var _futureHelper;
-  Color _mainColor;
 
+  CardBean _oldData;
+  var _futureHelper;
+
+  Color _mainColor;
   TextEditingController _nameController;
   TextEditingController _ownerNameController;
   TextEditingController _cardIdController;
   TextEditingController _telephoneController;
   TextEditingController _notesController;
   TextEditingController _passwordController;
+
   String _password;
   String _folder = "默认";
   List<String> _labels;
   int _fav = 0;
   String _createTime;
 
+  bool _passwordVisible = false;
+  bool _frameDone = false;
 
   Future<Null> _decryptPassword() async {
     _password =  EncryptUtil.decrypt(_oldData.password);
@@ -55,6 +58,7 @@ class _EditCardPage extends State<EditCardPage> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.data != null) {
       this._oldData = widget.data;
       _nameController = TextEditingController(text: _oldData.name);
@@ -86,19 +90,20 @@ class _EditCardPage extends State<EditCardPage> {
       } else {
         _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
       }
+      _frameDone = true;
     });
-    super.initState();
   }
 
   @override
   void dispose() {
+    super.dispose();
     _nameController?.dispose();
     _ownerNameController?.dispose();
     _cardIdController?.dispose();
     _telephoneController?.dispose();
     _notesController?.dispose();
     _passwordController?.dispose();
-    super.dispose();
+    _frameDone = false;
   }
 
   @override
@@ -187,7 +192,7 @@ class _EditCardPage extends State<EditCardPage> {
                                   size: 20,
                                 ),
                                 onTap: () {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
+                                  if (_frameDone) _nameController.clear();
                                 },
                               ),
                             ),
@@ -211,7 +216,7 @@ class _EditCardPage extends State<EditCardPage> {
                                   size: 20,
                                 ),
                                 onTap: () {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _ownerNameController.clear());
+                                  if (_frameDone) _ownerNameController.clear();
                                 },
                               ),
                             ),
@@ -236,7 +241,7 @@ class _EditCardPage extends State<EditCardPage> {
                                   size: 20,
                                 ),
                                 onTap: () {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _cardIdController.clear());
+                                  if (_frameDone) _cardIdController.clear();
                                 },
                               ),
                             ),
@@ -265,7 +270,7 @@ class _EditCardPage extends State<EditCardPage> {
                                       ),
                                       onTap: () {
                                         // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                        WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                        if (_frameDone) _passwordController.clear();
                                       },
                                     ),
                                   ),
@@ -307,7 +312,7 @@ class _EditCardPage extends State<EditCardPage> {
                                 ),
                                 onTap: () {
                                   // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _telephoneController.clear());
+                                  if (_frameDone) _telephoneController.clear();
                                 },
                               ),
                             ),

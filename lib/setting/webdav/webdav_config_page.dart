@@ -24,10 +24,11 @@ class _WebDavConfigPage extends State<StatefulWidget> {
   TextEditingController _passwordController;
   TextEditingController _portController;
   WebDavUtil _utils;
-
   Color _mainColor;
-  bool _pressNext;
-  bool _passwordVisible;
+
+  bool _pressNext = false;
+  bool _passwordVisible = false;
+  bool _frameDone = false;
 
   @override
   void initState() {
@@ -35,12 +36,11 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _portController = TextEditingController();
-    _passwordVisible = false;
-    _pressNext = false;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
       });
+      _frameDone = true;
     });
     _utils = WebDavUtil();
     super.initState();
@@ -53,6 +53,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController?.dispose();
     _passwordController?.dispose();
     _portController?.dispose();
+    _frameDone = false;
   }
 
   @override
@@ -81,7 +82,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     size: 20,
                   ),
                   onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
+                    if (_frameDone) _urlController.clear();
                   },
                 ),
               ),
@@ -94,7 +95,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     size: 20,
                   ),
                   onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _portController.clear());
+                    if (_frameDone) _portController.clear();
                   },
                 ),
               ),
@@ -107,7 +108,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     size: 20,
                   ),
                   onTap: () {
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
+                    if (_frameDone) _usernameController.clear();
                   },
                 ),
               ),
@@ -124,7 +125,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                           size: 20,
                         ),
                         onTap: () {
-                          WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                          if (_frameDone)_passwordController.clear();
                         },
                       ),
                     ),

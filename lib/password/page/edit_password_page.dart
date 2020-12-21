@@ -47,16 +47,18 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   Color _mainColor;
 
   bool _passwordVisible = false;
+  bool _frameDone = false;
 
 
   @override
   void dispose() {
+    super.dispose();
     _nameController?.dispose();
     _usernameController?.dispose();
     _passwordController?.dispose();
     _notesController?.dispose();
     _urlController?.dispose();
-    super.dispose();
+    _frameDone = false;
   }
 
   Future<Null> _decryptPassword() async {
@@ -66,6 +68,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.data != null) {
       this._oldData = widget.data;
       _nameController = TextEditingController(text: _oldData.name);
@@ -94,8 +97,8 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       } else {
         _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
       }
+      _frameDone = true;
     });
-    super.initState();
   }
 
   @override
@@ -190,7 +193,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                 ),
                                 onTap: () {
                                   // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _nameController.clear());
+                                  if (_frameDone) _nameController.clear();
                                 },
                               ),
                             )
@@ -214,7 +217,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   size: 20,
                                 ),
                                 onTap: () {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _usernameController.clear());
+                                  if (_frameDone) _usernameController.clear();
                                 },
                               ),
                             ),
@@ -240,7 +243,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                           Icons.cancel,
                                           size: 20),
                                       onTap: () {
-                                        WidgetsBinding.instance.addPostFrameCallback((_) => _passwordController.clear());
+                                        if (_frameDone) _passwordController.clear();
                                       },
                                     ),
                                     obscureText: !_passwordVisible,
@@ -281,7 +284,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                                   size: 20,
                                 ),
                                 onTap: () {
-                                  WidgetsBinding.instance.addPostFrameCallback((_) => _urlController.clear());
+                                  if (_frameDone) _urlController.clear();
                                 },
                               ),
                             )
