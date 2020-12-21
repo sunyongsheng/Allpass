@@ -86,8 +86,8 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                 ),
               ),
               NoneBorderCircularTextField(
-                  editingController: _portController,
-                  hintText: "端口号",
+                editingController: _portController,
+                hintText: "端口号",
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -195,8 +195,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavPort(_utils.port);
         Config.setWebDavAuthSuccess(true);
         Fluttertoast.showToast(msg: "账号验证成功");
-        Navigator.pushReplacement(context,
-            CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
+        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
       } else {
         Config.setWebDavAuthSuccess(false);
         Fluttertoast.showToast(msg: "验证失败，请重试");
