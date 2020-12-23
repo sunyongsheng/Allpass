@@ -28,8 +28,7 @@ class PasswordBean extends BaseModel {
       List<String> label,
       int fav: 0,
       String createTime,
-      Color color,
-      bool isChanged: false}) {
+      Color color}) {
     this.username = username;
     this.password = password;
     this.url = url;
@@ -37,7 +36,6 @@ class PasswordBean extends BaseModel {
     this.notes = notes;
     this.fav = fav;
     this.uniqueKey = key;
-    this.isChanged = isChanged;
     this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
 
@@ -194,8 +192,7 @@ class PasswordBean extends BaseModel {
             label: List()..addAll(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
       case 2:
         String name = EncryptUtil.encrypt(pureBean.name);
         String username = EncryptUtil.encrypt(pureBean.username);
@@ -218,8 +215,7 @@ class PasswordBean extends BaseModel {
             label: label,
             fav: pureBean.fav,
             createTime: createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
       default:
         return PasswordBean(
             key: pureBean.uniqueKey,
@@ -232,8 +228,7 @@ class PasswordBean extends BaseModel {
             label: List<String>()..addAll(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
     }
   }
 }

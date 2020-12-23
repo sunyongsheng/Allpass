@@ -30,8 +30,7 @@ class CardBean extends BaseModel {
       List<String> label,
       int fav: 0,
       String createTime,
-      Color color,
-      bool isChanged: false}) {
+      Color color}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -40,7 +39,6 @@ class CardBean extends BaseModel {
     this.telephone = telephone;
     this.uniqueKey = key;
     this.password = password;
-    this.isChanged = isChanged;
     this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
 
@@ -186,8 +184,7 @@ class CardBean extends BaseModel {
             label: List()..addAll(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
       case 2:
         String name = EncryptUtil.encrypt(pureBean.name);
         String ownerName = EncryptUtil.encrypt(pureBean.ownerName);
@@ -212,8 +209,7 @@ class CardBean extends BaseModel {
             label: label,
             fav: pureBean.fav,
             createTime: createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
       default:
         return CardBean(
             key: pureBean.uniqueKey,
@@ -227,8 +223,7 @@ class CardBean extends BaseModel {
             label: List()..addAll(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
-            color: pureBean.color,
-            isChanged: pureBean.isChanged);
+            color: pureBean.color);
 
     }
   }
