@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
@@ -17,10 +19,12 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 查看或编辑密码页面
 class EditPasswordPage extends StatefulWidget {
-  final PasswordBean data;
-  final String pageTitle;
 
-  EditPasswordPage(this.data, this.pageTitle);
+  final PasswordBean data;
+
+  final int operation;
+
+  EditPasswordPage(this.data, this.operation);
 
   @override
   _EditPasswordPage createState() {
@@ -29,11 +33,13 @@ class EditPasswordPage extends StatefulWidget {
 }
 
 class _EditPasswordPage extends State<EditPasswordPage> {
+
+  String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
+
   PasswordBean _oldData;
 
-  var _futureHelper;
+  int operation;
 
-  String _password;
   String _folder = "默认";
   TextEditingController _nameController;
   TextEditingController _usernameController;
@@ -61,27 +67,23 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     _frameDone = false;
   }
 
-  Future<Null> _decryptPassword() async {
-    _password =  EncryptUtil.decrypt(_oldData.password);
-    _passwordController = TextEditingController(text: _password);
-  }
 
   @override
   void initState() {
     super.initState();
-    if (widget.data != null) {
+    this.operation = widget.operation;
+    if (operation == DataOperation.update) {
       this._oldData = widget.data;
-      _nameController = TextEditingController(text: _oldData.name);
-      _usernameController = TextEditingController(text: _oldData.username);
-      _notesController = TextEditingController(text: _oldData.notes);
-      _urlController = TextEditingController(text: _oldData.url);
-      if (_passwordController == null) {
-        _passwordController = TextEditingController();
-      }
       _folder = _oldData.folder;
       _labels = List()..addAll(_oldData.label);
       _fav = _oldData.fav;
       _createTime = _oldData.createTime;
+
+      _nameController = TextEditingController(text: _oldData.name);
+      _usernameController = TextEditingController(text: _oldData.username);
+      _notesController = TextEditingController(text: _oldData.notes);
+      _urlController = TextEditingController(text: _oldData.url);
+      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData.password));
     } else {
       _nameController = TextEditingController();
       _usernameController = TextEditingController();
@@ -90,23 +92,25 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _passwordController = TextEditingController();
       _labels = List();
     }
-    _futureHelper = _decryptPassword();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ThemeUtil.isInDarkTheme(context)) {
-        _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
-      } else {
-        _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
-      }
+      setState(() {
+        if (ThemeUtil.isInDarkTheme(context)) {
+          _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
+        } else {
+          _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+        }
+      });
       _frameDone = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    PasswordProvider provider = Provider.of<PasswordProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.pageTitle,
+          pageTitle,
           style: AllpassTextUI.titleBarStyle,
         ),
         actions: <Widget>[
@@ -145,12 +149,17 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   folder: _folder,
                   label: _labels,
                   notes: _notesController.text,
-                  isChanged: true,
                   fav: _fav,
                   color: _oldData?.color??getRandomColor(),
                   createTime: _createTime
                 );
-                Navigator.pop<PasswordBean>(context, tempData);
+                if (operation == DataOperation.add) {
+                  provider.insertPassword(tempData);
+                  RuntimeData.newPasswordOrCardCount++;
+                } else {
+                  provider.updatePassword(tempData);
+                }
+                Navigator.pop(context);
               } else {
                 Fluttertoast.showToast(msg: "账号和密码不允许为空！");
               }
@@ -158,233 +167,212 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           )
         ],
       ),
-      body: FutureBuilder(
-        future: _futureHelper,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.active:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.done:
-              return SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "名称",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            NoneBorderCircularTextField(
-                              editingController: _nameController,
-                              trailing: InkWell(
-                                child: Icon(
+      body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "名称",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    NoneBorderCircularTextField(
+                      editingController: _nameController,
+                      trailing: InkWell(
+                        child: Icon(
+                          Icons.cancel,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                          if (_frameDone) _nameController.clear();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "账号",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    NoneBorderCircularTextField(
+                      editingController: _usernameController,
+                      trailing: InkWell(
+                        child: Icon(
+                          Icons.cancel,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          if (_frameDone) _usernameController.clear();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "密码",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: NoneBorderCircularTextField(
+                            editingController: _passwordController,
+                            trailing: InkWell(
+                              child: Icon(
                                   Icons.cancel,
-                                  size: 20,
-                                ),
-                                onTap: () {
-                                  // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                  if (_frameDone) _nameController.clear();
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "账号",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            NoneBorderCircularTextField(
-                              editingController: _usernameController,
-                              trailing: InkWell(
-                                child: Icon(
-                                  Icons.cancel,
-                                  size: 20,
-                                ),
-                                onTap: () {
-                                  if (_frameDone) _usernameController.clear();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "密码",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: NoneBorderCircularTextField(
-                                    editingController: _passwordController,
-                                    trailing: InkWell(
-                                      child: Icon(
-                                          Icons.cancel,
-                                          size: 20),
-                                      onTap: () {
-                                        if (_frameDone) _passwordController.clear();
-                                      },
-                                    ),
-                                    obscureText: !_passwordVisible,
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: _passwordVisible == true
-                                      ? Icon(Icons.visibility)
-                                      : Icon(Icons.visibility_off),
-                                  onPressed: () {
-                                    this.setState(() {
-                                      if (_passwordVisible == false)
-                                        _passwordVisible = true;
-                                      else
-                                        _passwordVisible = false;
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "链接",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            NoneBorderCircularTextField(
-                              editingController: _urlController,
-                              trailing: InkWell(
-                                child: Icon(
-                                  Icons.cancel,
-                                  size: 20,
-                                ),
-                                onTap: () {
-                                  if (_frameDone) _urlController.clear();
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "文件夹",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            DropdownButton(
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _folder = newValue;
-                                });
-                              },
-                              items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(item, style: TextStyle(
-                                      color: ThemeUtil.isInDarkTheme(context)
-                                          ? Colors.white
-                                          : Colors.black
-                                  ),),
-                                );
-                              }).toList(),
-                              style: AllpassTextUI.firstTitleStyle,
-                              elevation: 8,
-                              iconSize: 30,
-                              value: _folder,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(bottom: 10),
-                              child: Text(
-                                "标签",
-                                style: TextStyle(fontSize: 16, color: _mainColor),
-                              ),
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Wrap(
-                                      crossAxisAlignment: WrapCrossAlignment.start,
-                                      spacing: 8.0,
-                                      runSpacing: 10.0,
-                                      children: _getTag()),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "备注",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                            NoneBorderCircularTextField(
-                              editingController: _notesController,
-                              maxLines: null,
+                                  size: 20),
                               onTap: () {
-                                Navigator.push(context, CupertinoPageRoute(
-                                  builder: (context) => DetailTextPage("备注", _notesController.text, true),
-                                )).then((newValue) {
-                                  setState(() {
-                                    _notesController.text = newValue;
-                                  });
-                                });
+                                if (_frameDone) _passwordController.clear();
                               },
                             ),
-                          ],
+                            obscureText: !_passwordVisible,
+                          ),
                         ),
-                      )
-                    ],
-                  ));
-            default:
-              return Center(
-                child: Text("未知状态，请与开发者联系：sys6511@126.com"),
-              );
-          }
-        },
-      ),
+                        IconButton(
+                          icon: _passwordVisible == true
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                          onPressed: () {
+                            this.setState(() {
+                              if (_passwordVisible == false)
+                                _passwordVisible = true;
+                              else
+                                _passwordVisible = false;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "链接",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    NoneBorderCircularTextField(
+                      editingController: _urlController,
+                      trailing: InkWell(
+                        child: Icon(
+                          Icons.cancel,
+                          size: 20,
+                        ),
+                        onTap: () {
+                          if (_frameDone) _urlController.clear();
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "文件夹",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    DropdownButton(
+                      onChanged: (newValue) {
+                        setState(() {
+                          _folder = newValue;
+                        });
+                      },
+                      items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item, style: TextStyle(
+                              color: ThemeUtil.isInDarkTheme(context)
+                                  ? Colors.white
+                                  : Colors.black
+                          ),),
+                        );
+                      }).toList(),
+                      style: AllpassTextUI.firstTitleStyle,
+                      elevation: 8,
+                      iconSize: 30,
+                      value: _folder,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "标签",
+                        style: TextStyle(fontSize: 16, color: _mainColor),
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              spacing: 8.0,
+                              runSpacing: 10.0,
+                              children: _getTag()),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "备注",
+                      style: TextStyle(fontSize: 16, color: _mainColor),
+                    ),
+                    NoneBorderCircularTextField(
+                      editingController: _notesController,
+                      maxLines: null,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(
+                          builder: (context) => DetailTextPage("备注", _notesController.text, true),
+                        )).then((newValue) {
+                          setState(() {
+                            _notesController.text = newValue;
+                          });
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ))
     );
   }
 

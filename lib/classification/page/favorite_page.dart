@@ -6,6 +6,9 @@ import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/common/anim/animation_routes.dart';
+import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
@@ -45,7 +48,12 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < passwordList.length; index++) {
       try {
         if (passwordList[index].fav == 1) {
-          list1.add(PasswordWidgetItem(index));
+          list1.add(PasswordWidgetItem(data: passwordList[index], onPasswordClicked: () {
+            Navigator.push(context, ExtendRoute(
+                page: ViewPasswordPage(index),
+                tapPosition: RuntimeData.tapVerticalPosition
+            ));
+          }));
         }
       } catch (e) {
       }

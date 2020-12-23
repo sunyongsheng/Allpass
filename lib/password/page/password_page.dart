@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/anim/animation_routes.dart';
+import 'package:allpass/password/page/view_password_page.dart';
+import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/search/search_page.dart';
@@ -65,7 +68,14 @@ class _PasswordPageState extends State<PasswordPage>
           children: <Widget>[
             ListView.builder(
               controller: _controller,
-              itemBuilder: (context, index) => PasswordWidgetItem(index),
+              itemBuilder: (context, index) {
+                return PasswordWidgetItem(data: model.passwordList[index], onPasswordClicked: () {
+                  Navigator.push(context, ExtendRoute(
+                      page: ViewPasswordPage(index),
+                      tapPosition: RuntimeData.tapVerticalPosition
+                  ));
+                });
+              },
               itemCount: model.passwordList.length,
             ),
             LetterIndexBar(_controller),
@@ -175,7 +185,7 @@ class _PasswordPageState extends State<PasswordPage>
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => EditPasswordPage(null, "添加密码"))
+                CupertinoPageRoute(builder: (context) => EditPasswordPage(null, DataOperation.add))
             ).then((resData) async {
               if (resData != null) {
                 await model.insertPassword(resData);
