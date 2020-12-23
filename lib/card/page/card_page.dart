@@ -4,13 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
+import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
+import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/common/widget/nodata_widget.dart';
@@ -57,13 +60,22 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       if (RuntimeData.multiSelected) {
         listView = ListView.builder(
           controller: _controller,
-          itemBuilder: (context, index) => MultiCardWidgetItem(index),
+          itemBuilder: (context, index) {
+            return MultiCardWidgetItem(data: model.cardList[index]);
+          },
           itemCount: model.cardList.length,
         );
       } else {
         listView = ListView.builder(
           controller: _controller,
-          itemBuilder: (context, index) => CardWidgetItem(index),
+          itemBuilder: (context, index) {
+            return CardWidgetItem(data: model.cardList[index], onCardClicked: () {
+              Navigator.push(context, ExtendRoute(
+                  page: ViewCardPage(index),
+                  tapPosition: RuntimeData.tapVerticalPosition
+              ));
+            });
+          },
           itemCount: model.cardList.length,
         );
       }
@@ -173,13 +185,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         onPressed: () {
           Navigator.push(
               context,
-              CupertinoPageRoute(builder: (context) => EditCardPage(null, "添加卡片"))
-          ).then((resData) async {
-            if (resData != null) {
-              await model.insertCard(resData);
-              if (RuntimeData.newPasswordOrCardCount >= 3) {
-                await model.refresh();
-              }
+              CupertinoPageRoute(builder: (context) => EditCardPage(null, DataOperation.add))
+          ).then((_) async {
+            if (RuntimeData.newPasswordOrCardCount >= 3) {
+              await model.refresh();
             }
           });
         },
