@@ -54,17 +54,34 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   WebDavUtil _webDavUtilHolder;
   AllpassFileUtil _fileUtilHolder;
 
-  @override
-  Future<bool> authCheck() async {
-    return await _webDavUtil().authConfirm();
+  WebDavUtil get _webDavUtil {
+    if (_webDavUtilHolder == null) {
+      _webDavUtilHolder = WebDavUtil(
+        urlPath: Config.webDavUrl,
+        username: Config.webDavUsername,
+        password: EncryptUtil.decrypt(Config.webDavPassword),
+        port: Config.webDavPort,
+      );
+    }
+    return _webDavUtilHolder;
   }
+
+  AllpassFileUtil get _fileUtil {
+    if (_fileUtilHolder == null) {
+      _fileUtilHolder = AllpassFileUtil();
+    }
+    return _fileUtilHolder;
+  }
+
+  @override
+  Future<bool> authCheck() async => await _webDavUtil.authConfirm();
 
   @override
   Future<bool> backupPassword(BuildContext context) async {
     await preCheckAllpassDir();
 
     List<PasswordBean> passwords = Provider.of<PasswordProvider>(context).passwordList;
-    String contents = _fileUtil().encodeList(passwords);
+    String contents = _fileUtil.encodeList(passwords);
     if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -73,13 +90,13 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     File backupFile = File(backupFilePath);
     if (!backupFile.existsSync()) backupFile.createSync();
 
-    _fileUtil().writeFile(backupFilePath, contents);
+    _fileUtil.writeFile(backupFilePath, contents);
 
-    bool res = await _webDavUtil().uploadFile(
+    bool res = await _webDavUtil.uploadFile(
         fileName: fileName,
         dirName: "Allpass",
         filePath: backupFilePath);
-    _fileUtil().deleteFile(backupFilePath);
+    _fileUtil.deleteFile(backupFilePath);
     return res;
   }
 
@@ -88,7 +105,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     await preCheckAllpassDir();
 
     List<CardBean> cards = Provider.of<CardProvider>(context).cardList;
-    String contents = _fileUtil().encodeList(cards);
+    String contents = _fileUtil.encodeList(cards);
     if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -97,13 +114,13 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     File backupFile = File(backupFilePath);
     if (!backupFile.existsSync()) backupFile.createSync();
 
-    _fileUtil().writeFile(backupFilePath, contents);
+    _fileUtil.writeFile(backupFilePath, contents);
 
-    bool res = await _webDavUtil().uploadFile(
+    bool res = await _webDavUtil.uploadFile(
         fileName: fileName,
         dirName: "Allpass",
         filePath: backupFilePath);
-    _fileUtil().deleteFile(backupFilePath);
+    _fileUtil.deleteFile(backupFilePath);
     return res;
   }
 
@@ -113,28 +130,28 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     
     List<String> folder = List.from(RuntimeData.folderList);
     List<String> label = List.from(RuntimeData.labelList);
-    String contents = _fileUtil().encodeFolderAndLabel(folder, label);
+    String contents = _fileUtil.encodeFolderAndLabel(folder, label);
 
     Directory appDir = await getApplicationDocumentsDirectory();
     String backupFilePath = appDir.uri.toFilePath() + "folder_label_info.json";
     File backupFile = File(backupFilePath);
     if (!backupFile.existsSync()) backupFile.createSync();
 
-    _fileUtil().writeFile(backupFilePath, contents);
+    _fileUtil.writeFile(backupFilePath, contents);
 
-    bool res = await _webDavUtil().uploadFile(
+    bool res = await _webDavUtil.uploadFile(
         fileName: "folder_label_info.json",
         dirName: "Allpass",
         filePath: backupFilePath
     );
-    _fileUtil().deleteFile(backupFilePath);
+    _fileUtil.deleteFile(backupFilePath);
     return res;
   }
 
   @override
   Future<int> recoverPassword(BuildContext context) async {
     String fileName = "${Config.webDavPasswordName}.json";
-    String filePath = await _webDavUtil().downloadFile(
+    String filePath = await _webDavUtil.downloadFile(
         fileName: fileName,
         dirName: "Allpass");
     if (filePath == null) {
@@ -142,8 +159,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     }
     List<PasswordBean> backup = List()..addAll(Provider.of<PasswordProvider>(context).passwordList);
     try {
-      String string = _fileUtil().readFile(filePath);
-      List<PasswordBean> list = _fileUtil().decodeList(string, AllpassType.Password);
+      String string = _fileUtil.readFile(filePath);
+      List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.Password);
       try {
         // 正常执行
         await Provider.of<PasswordProvider>(context).clear();
@@ -174,7 +191,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   @override
   Future<int> recoverCard(BuildContext context) async {
     String fileName = "${Config.webDavCardName}.json";
-    String filePath = await _webDavUtil().downloadFile(
+    String filePath = await _webDavUtil.downloadFile(
         fileName: fileName,
         dirName: "Allpass");
     if (filePath == null) {
@@ -182,8 +199,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     }
     List<CardBean> backup = List()..addAll(Provider.of<CardProvider>(context).cardList);
     try {
-      String string = _fileUtil().readFile(filePath);
-      List<CardBean> list = _fileUtil().decodeList(string, AllpassType.Card);
+      String string = _fileUtil.readFile(filePath);
+      List<CardBean> list = _fileUtil.decodeList(string, AllpassType.Card);
       try {
         // 正常执行
         await Provider.of<CardProvider>(context).clear();
@@ -214,11 +231,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   @override
   Future<bool> recoverFolderAndLabel() async {
     try {
-      String filePath = await _webDavUtil().downloadFile(
+      String filePath = await _webDavUtil.downloadFile(
           fileName: "folder_label_info.json",
           dirName: "Allpass");
-      String contents = _fileUtil().readFile(filePath);
-      Map<String, List<String>> res = _fileUtil().decodeFolderAndLabel(contents);
+      String contents = _fileUtil.readFile(filePath);
+      Map<String, List<String>> res = _fileUtil.decodeFolderAndLabel(contents);
       RuntimeData.folderList.clear();
       RuntimeData.folderList.addAll(res['folder']);
       RuntimeData.labelList.clear();
@@ -232,27 +249,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   }
   
   Future<Null> preCheckAllpassDir() async {
-    if (await _webDavUtil().listFiles("Allpass") == null) {
-      await _webDavUtil().createDir("Allpass");
+    if (await _webDavUtil.listFiles("Allpass") == null) {
+      await _webDavUtil.createDir("Allpass");
     }
-  }
-
-  WebDavUtil _webDavUtil() {
-    if (_webDavUtilHolder == null) {
-      _webDavUtilHolder = WebDavUtil(
-        urlPath: Config.webDavUrl,
-        username: Config.webDavUsername,
-        password: EncryptUtil.decrypt(Config.webDavPassword),
-        port: Config.webDavPort,
-      );
-    }
-    return _webDavUtilHolder;
-  }
-
-  AllpassFileUtil _fileUtil() {
-    if (_fileUtilHolder == null) {
-      _fileUtilHolder = AllpassFileUtil();
-    }
-    return _fileUtilHolder;
   }
 }
