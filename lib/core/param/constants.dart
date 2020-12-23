@@ -35,3 +35,10 @@ class ChannelConstants {
 
   static const String methodImportChromeData = "importChromeData";
 }
+
+class DataOperation {
+  static const int add = 1;
+  static const int delete = -1;
+  static const int update = 0;
+  static const int query = 2;
+}
