@@ -60,6 +60,8 @@ dependencies:
   share: ^0.6.3+6
   # 密钥存储
   flutter_secure_storage: ^3.3.3
+  # XML解析
+  xml: ^4.5.1
 
 dev_dependencies:
   flutter_test:

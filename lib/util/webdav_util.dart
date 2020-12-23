@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:xml/xml.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,6 +15,8 @@ class WebDavUtil {
   String username;
   String password;
   int port;
+
+  Map<String, List<String>> _cache = Map();
 
   WebDavUtil({String urlPath, int port, String username, String password}) {
     _dio = Dio(BaseOptions(receiveTimeout: 5000));
@@ -96,8 +99,8 @@ class WebDavUtil {
     return false;
   }
 
-  /// 列出文件夹[dirName]中的所有文件
-  Future<Map<String, String>> listFiles(String dirName) async {
+  /// 列出文件夹[dirName]中的所有文件名，若目录为空返回[null]
+  Future<List<String>> listFilenames(String dirName) async {
     try {
       String fullPath = urlPath + dirName;
       Response<String> response = await _dio.request(
@@ -107,9 +110,17 @@ class WebDavUtil {
           headers: _baseHeaders,
         )
       );
-      Map<String, String> fileNames = Map();
+      List<String> fileNames = List();
       if (response.statusCode < 300) {
-        // TODO 解析xml
+        var xmlParser = XmlDocument.parse(response.data);
+        xmlParser.findAllElements("d:href").map((e) => e.text).forEach((path) {
+          int beginIndex = path.indexOf(dirName) + dirName.length + 1;
+          String fileName = path.substring(beginIndex, path.length);
+          if (fileName.isNotEmpty) {
+            fileNames.add(fileName);
+          }
+        });
+        _cache[dirName] = fileNames;
         return fileNames;
       } else {
         return null;

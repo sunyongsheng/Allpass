@@ -249,7 +249,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   }
   
   Future<Null> preCheckAllpassDir() async {
-    if (await _webDavUtil.listFiles("Allpass") == null) {
+    if (await _webDavUtil.listFilenames("Allpass") == null) {
       await _webDavUtil.createDir("Allpass");
     }
   }

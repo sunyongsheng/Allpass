@@ -8,7 +8,7 @@ void main() {
   });
 
   test("列出文件测试", () async {
-    print(await utils.listFiles("Allpass"));
+    print(await utils.listFilenames("Allpass"));
   });
 
   test("身份授权测试", () async {
