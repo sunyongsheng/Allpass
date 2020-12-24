@@ -10,7 +10,6 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 
 class PasswordWidgetItem extends StatelessWidget {
