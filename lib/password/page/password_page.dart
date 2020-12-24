@@ -184,16 +184,10 @@ class _PasswordPageState extends State<PasswordPage>
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(context,
+            Navigator.push(
+                context,
                 CupertinoPageRoute(builder: (context) => EditPasswordPage(null, DataOperation.add))
-            ).then((resData) async {
-              if (resData != null) {
-                await model.insertPassword(resData);
-                if (RuntimeData.newPasswordOrCardCount >= 3) {
-                  await model.refresh();
-                }
-              }
-            });
+            );
           },
           heroTag: "password",
         ));
