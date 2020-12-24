@@ -450,7 +450,8 @@ class _ViewCardPage extends State<ViewCardPage> {
                       if (delete) {
                         deleted = true;
                         await provider.deleteCard(bean);
-                        Navigator.pop<bool>(context, true);
+                        Fluttertoast.showToast(msg: "删除成功");
+                        Navigator.pop(context);
                       }
                     },
                     child: Icon(Icons.delete),

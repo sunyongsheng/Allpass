@@ -400,6 +400,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                       if (delete) {
                         deleted = true;
                         await provider.deletePassword(bean);
+                        Fluttertoast.showToast(msg: "删除成功");
                         Navigator.pop(context);
                       }
                     },

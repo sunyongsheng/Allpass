@@ -196,6 +196,7 @@ class _SearchPage extends State<SearchPage> {
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
             if (delete) {
               await Provider.of<PasswordProvider>(context).deletePassword(data);
+              Fluttertoast.showToast(msg: "删除成功");
               Navigator.pop(context);
             }
           },
@@ -253,6 +254,7 @@ class _SearchPage extends State<SearchPage> {
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
             if (delete) {
               await Provider.of<CardProvider>(context).deleteCard(data);
+              Fluttertoast.showToast(msg: "删除成功");
               Navigator.pop(context);
             }
           }
