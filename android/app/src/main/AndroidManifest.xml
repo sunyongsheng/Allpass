@@ -30,7 +30,7 @@
                 android:resource="@style/LaunchTheme" />
         </activity>
 
-        <activity android:name=".ReceiveShareActivity" android:label="导入到Allpass中">
+        <activity android:name=".share.ReceiveShareActivity" android:label="导入到Allpass中">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

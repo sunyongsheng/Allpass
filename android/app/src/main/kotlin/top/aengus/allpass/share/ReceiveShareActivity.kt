@@ -1,4 +1,4 @@
-package top.aengus.allpass
+package top.aengus.allpass.share
 
 import android.content.Intent
 import android.net.Uri
@@ -9,6 +9,9 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.android.FlutterActivity
+import top.aengus.allpass.R
+import top.aengus.allpass.core.CHANNEL
+import top.aengus.allpass.core.METHOD_IMPORT_CHROME_DATA
 
 class ReceiveShareActivity : FlutterActivity() {
 
@@ -22,7 +25,7 @@ class ReceiveShareActivity : FlutterActivity() {
 
         val intent: Intent = intent
         val action: String? = intent.action
-        val type: String = if (intent.type != null) intent.type!! else "unknown"
+        val type: String = intent.type ?: "unknown"
         if (Intent.ACTION_SEND == (action)) {
             if (type.startsWith("text/")) {
                 val data = parseDataFromIntent(intent)

@@ -1,4 +1,4 @@
-package top.aengus.allpass
+package top.aengus.allpass.core
 
 const val CHANNEL = "allpass.aengus.top";
 
