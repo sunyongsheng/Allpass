@@ -13,6 +13,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -242,8 +243,13 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除密码"),
           onTap: () async {
-            await Provider.of<PasswordProvider>(context).deletePassword(data);
-            Navigator.pop(context);
+            bool delete = await showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
+            if (delete) {
+              await Provider.of<PasswordProvider>(context).deletePassword(data);
+              Navigator.pop(context);
+            }
           },
         )
       ],
@@ -293,8 +299,13 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除卡片"),
           onTap: () async {
-            await Provider.of<CardProvider>(context).deleteCard(data);
-            Navigator.pop(context);
+            bool delete = await showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
+            if (delete) {
+              await Provider.of<CardProvider>(context).deleteCard(data);
+              Navigator.pop(context);
+            }
           }
         )
       ],
