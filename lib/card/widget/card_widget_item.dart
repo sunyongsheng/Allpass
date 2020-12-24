@@ -10,7 +10,6 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/common/anim/animation_routes.dart';
 
 class CardWidgetItem extends StatelessWidget {
 
@@ -117,9 +116,10 @@ class CardWidgetContainerItem extends StatelessWidget {
 class SimpleCardWidgetItem extends StatelessWidget {
 
   final Key key;
-  final int index;
+  final CardBean data;
+  final VoidCallback onCardClicked;
 
-  SimpleCardWidgetItem(this.index, {this.key}): super(key: key);
+  SimpleCardWidgetItem({this.key, this.data, this.onCardClicked}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,31 +133,19 @@ class SimpleCardWidgetItem extends StatelessWidget {
               leading: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    color: model.cardList[index].color
+                    color: data.color
                 ),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   child: Text(
-                    model.cardList[index].name.substring(0, 1),
+                    data.name.substring(0, 1),
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
-              title: Text(model.cardList[index].name),
-              subtitle: Text(model.cardList[index].ownerName),
-              onTap: () => Navigator.push(context, ExtendRoute(
-                page: ViewCardPage(index),
-                tapPosition: RuntimeData.tapVerticalPosition,
-              )).then((bean) async {
-                if (bean != null) {
-                  // 改变了就更新，没改变就删除
-                  if (bean.isChanged) {
-                    await model.updateCard(bean);
-                  } else {
-                    await model.deleteCard(model.cardList[index]);
-                  }
-                }
-              }),
+              title: Text(data.name),
+              subtitle: Text(data.ownerName),
+              onTap: () => onCardClicked?.call(),
             ),
           ),
         );
@@ -187,39 +175,35 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardProvider>(
-      builder: (context, model, child) {
-        return Container(
-          margin: AllpassEdgeInsets.listInset,
-          child: CheckboxListTile(
-            value: RuntimeData.multiCardList.contains(data),
-            onChanged: (value) {
-              setState(() {
-                if (value) {
-                  RuntimeData.multiCardList.add(data);
-                } else {
-                  RuntimeData.multiCardList.remove(data);
-                }
-              });
-            },
-            secondary: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: data.color
-              ),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Text(
-                  data.name.substring(0, 1),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            title: Text(data.name, overflow: TextOverflow.ellipsis,),
-            subtitle: Text(data.cardId, overflow: TextOverflow.ellipsis,),
+    return Container(
+      margin: AllpassEdgeInsets.listInset,
+      child: CheckboxListTile(
+        value: RuntimeData.multiCardList.contains(data),
+        onChanged: (value) {
+          setState(() {
+            if (value) {
+              RuntimeData.multiCardList.add(data);
+            } else {
+              RuntimeData.multiCardList.remove(data);
+            }
+          });
+        },
+        secondary: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+              color: data.color
           ),
-        );
-      },
+          child: CircleAvatar(
+            backgroundColor: Colors.transparent,
+            child: Text(
+              data.name.substring(0, 1),
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        title: Text(data.name, overflow: TextOverflow.ellipsis,),
+        subtitle: Text(data.cardId, overflow: TextOverflow.ellipsis,),
+      ),
     );
   }
 }

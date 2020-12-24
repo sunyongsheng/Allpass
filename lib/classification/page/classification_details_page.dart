@@ -5,6 +5,7 @@ import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/view_password_page.dart';
@@ -65,7 +66,12 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < cardList.length; index++) {
       try {
         if (type == cardList[index].folder) {
-          list2.add(SimpleCardWidgetItem(index));
+          list2.add(SimpleCardWidgetItem(data: cardList[index], onCardClicked: () {
+            Navigator.push(context, ExtendRoute(
+              page: ViewCardPage(index),
+              tapPosition: RuntimeData.tapVerticalPosition,
+            ));
+          }));
         }
       } catch (e) {
       }

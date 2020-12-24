@@ -4,11 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'package:allpass/core/model/data/base_model.dart';
-import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/password/widget/password_widget_item.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
@@ -85,54 +88,35 @@ class _SearchPage extends State<SearchPage> {
     _result.clear();
     _searchText = _searchController.text.toLowerCase();
     if (_type == AllpassType.Password) {
-      for (var item in Provider.of<PasswordProvider>(context).passwordList) {
+      PasswordProvider provider = Provider.of<PasswordProvider>(context);
+      for (int index = 0; index < provider.count; index++) {
+        var item = provider.passwordList[index];
         if (containsKeyword(item)) {
-          _result.add(ListTile(
-            leading: CircleAvatar(
-              backgroundColor: item.color,
-              child: Text(
-                item.name.substring(0, 1),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            title: Text(item.name),
-            subtitle: Text(item.username),
-            onTap: () {
-              // 显示模态BottomSheet
+          _result.add(PasswordWidgetItem(
+            data: item,
+            onPasswordClicked: () {
               showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return createPassBottomSheet(context, item);
-                });
-            }));
+                  context: context,
+                  builder: (BuildContext context) {
+                    return createPassBottomSheet(context, index, item);
+                  });
+            },
+          ));
         }
       }
     } else {
-      for (var item in Provider.of<CardProvider>(context).cardList) {
+      CardProvider provider = Provider.of<CardProvider>(context);
+      for (int index = 0; index < provider.count; index++) {
+        var item = provider.cardList[index];
         if (containsKeyword(item)) {
-          _result.add(ListTile(
-            leading: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  color: item.color,
-              ),
-              child: CircleAvatar(
-                backgroundColor: Colors.transparent,
-                child: Text(
-                  item.name.substring(0, 1),
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-            title: Text(item.name),
-            subtitle: Text(item.ownerName),
-            onTap: () {
-              // 显示模态BottomSheet
+          _result.add(SimpleCardWidgetItem(
+            data: provider.cardList[index],
+            onCardClicked: () {
               showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return createCardBottomSheet(context, item);
-                });
+                  context: context,
+                  builder: (BuildContext context) {
+                    return createCardBottomSheet(context, item, index);
+                  });
             },
           ));
         }
@@ -213,7 +197,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   // 点击密码弹出模态菜单
-  Widget createPassBottomSheet(BuildContext context, PasswordBean data) {
+  Widget createPassBottomSheet(BuildContext context, int index, PasswordBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -221,36 +205,18 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => ViewPasswordPage(data))
-            ).then((reData) async {
-              if (reData != null) {
-                if (reData.isChanged) {
-                  await Provider.of<PasswordProvider>(context).updatePassword(reData);
-                } else {
-                  await Provider.of<PasswordProvider>(context).deletePassword(data);
-                }
-              }
-              Navigator.pop(context);
-            });
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => ViewPasswordPage(index)))
+                .then((_) => Navigator.pop(context));
           },
         ),
         ListTile(
           leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => EditPasswordPage(data, "编辑密码"))
-            ).then((reData) async {
-              if (reData != null) {
-                if (reData.isChanged) {
-                  await Provider.of<PasswordProvider>(context).updatePassword(reData);
-                } else {
-                  await Provider.of<PasswordProvider>(context).deletePassword(data);
-                }
-              }
-              Navigator.pop(context);
-            });
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => EditPasswordPage(data, DataOperation.update)))
+                .then((reData) => Navigator.pop(context));
           },
         ),
         ListTile(
@@ -285,7 +251,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   // 点击卡片弹出模态菜单
-  Widget createCardBottomSheet(BuildContext context, CardBean data) {
+  Widget createCardBottomSheet(BuildContext context, CardBean data, int index) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -293,41 +259,17 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) =>
-                            ViewCardPage(data)))
-                .then((resData) async {
-              if (resData != null) {
-                if (resData.isChanged) {
-                  await Provider.of<CardProvider>(context).updateCard(resData);
-                } else {
-                  await Provider.of<CardProvider>(context).deleteCard(resData);
-                }
-              }
-              Navigator.pop(context);
-            });
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => ViewCardPage(index)))
+                .then((_) => Navigator.pop(context));
           }),
         ListTile(
           leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
-            Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) =>
-                            EditCardPage(data, "编辑卡片")))
-                .then((resData) async {
-              if (resData != null) {
-                if (resData.isChanged) {
-                  await Provider.of<CardProvider>(context).updateCard(resData);
-                } else {
-                  await Provider.of<CardProvider>(context).deleteCard(resData);
-                }
-              }
-              Navigator.pop(context);
-            });
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => EditCardPage(data, DataOperation.update)))
+                .then((_) => Navigator.pop(context));
           }),
         ListTile(
           leading: Icon(Icons.person, color: Colors.teal,),
