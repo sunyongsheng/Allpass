@@ -39,6 +39,8 @@ class _ViewCardPage extends State<ViewCardPage> {
 
   Color _mainColor;
 
+  bool deleted = false;
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +58,8 @@ class _ViewCardPage extends State<ViewCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (deleted) return Container();
+
     CardProvider provider = Provider.of<CardProvider>(context);
     CardBean bean = provider.cardList[widget.index];
     if (_cache != bean.password) {
@@ -444,6 +448,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           context: context,
                           builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
                       if (delete) {
+                        deleted = true;
                         await provider.deleteCard(bean);
                         Navigator.pop<bool>(context, true);
                       }

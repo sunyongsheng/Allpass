@@ -41,6 +41,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   String _cache = "noCache";
   Color _mainColor;
 
+  bool deleted = false;
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +59,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (deleted) return Container();
+
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
     PasswordBean bean = provider.passwordList[widget.index];
     if (_cache != bean.password) {
@@ -394,6 +398,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           context: context,
                           builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
                       if (delete) {
+                        deleted = true;
                         await provider.deletePassword(bean);
                         Navigator.pop(context);
                       }
