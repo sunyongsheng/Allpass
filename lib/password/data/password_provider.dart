@@ -70,8 +70,8 @@ class PasswordProvider with ChangeNotifier {
 
   void _sortByAlphabeticalOrder() {
     _passwordList.sort((one, two) {
-      return PinyinHelper.getShortPinyin(one.name, defPinyin: one.name).toLowerCase()
-          .compareTo(PinyinHelper.getShortPinyin(two.name, defPinyin: two.name).toLowerCase());
+      return PinyinHelper.getShortPinyin(one.name).toLowerCase()
+          .compareTo(PinyinHelper.getShortPinyin(two.name).toLowerCase());
     });
   }
 

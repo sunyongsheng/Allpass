@@ -13,43 +13,43 @@ dependencies:
   # 动画
   animations: ^1.1.2
   # IOS图标
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.0
   # 弹出底部通知
-  fluttertoast: ^3.1.3
+  fluttertoast: ^7.1.6
   # 数据库
-  sqflite: ^1.2.0
+  sqflite: ^1.3.2
   # 应用路径
-  path_provider: ^1.5.1
+  path_provider: ^1.6.24
   # 密码加密
   encrypt: ^4.1.0
   # 文件管理
-  file_picker: ^2.0.11
+  file_picker: ^2.1.4
   # 路径选择
   directory_picker: ^1.0.0
   # 打开链接
-  url_launcher: ^5.4.11
+  url_launcher: ^5.7.10
   # 状态管理
   provider: ^3.2.0
   # 路由管理
   fluro: ^1.7.7
   # 持久化
-  shared_preferences: ^0.5.6
+  shared_preferences: ^0.5.12+4
   # 依赖注入
-  get_it: ^3.0.3
+  get_it: ^5.0.3
   # 生物识别
   local_auth: ^0.6.3+4
   # 屏幕尺寸管理
   flutter_screenutil: ^0.7.0
   # 汉字转拼音
-  lpinyin: ^1.0.9
+  lpinyin: ^1.1.0
   # 网络请求
   dio: ^3.0.8
   # 设备信息
-  device_info: ^0.4.2+9
+  device_info: ^1.0.0
   # 分享功能
-  share: ^0.6.3+6
+  share: ^0.6.5+4
   # 密钥存储
-  flutter_secure_storage: ^3.3.3
+  flutter_secure_storage: ^3.3.5
   # XML解析
   xml: ^4.5.1
 
