@@ -16,6 +16,7 @@ class CardProvider with ChangeNotifier {
   bool _haveInit = false;
 
   List<CardBean> get cardList => _cardList;
+  int get count => _cardList.length;
 
   Future<Null> init() async {
     if (_haveInit) return;

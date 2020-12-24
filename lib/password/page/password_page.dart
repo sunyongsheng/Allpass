@@ -56,12 +56,12 @@ class _PasswordPageState extends State<PasswordPage>
     super.build(context);
     PasswordProvider model = Provider.of<PasswordProvider>(context);
     Widget listView;
-    if (model.passwordList.length >= 1) {
+    if (model.passwordList.isNotEmpty) {
       if (RuntimeData.multiSelected) {
         listView = ListView.builder(
           controller: _controller,
           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
-          itemCount: model.passwordList.length,
+          itemCount: model.count,
         );
       } else {
         listView = Stack(
@@ -69,14 +69,13 @@ class _PasswordPageState extends State<PasswordPage>
             ListView.builder(
               controller: _controller,
               itemBuilder: (context, index) {
-                return PasswordWidgetItem(data: model.passwordList[index], onPasswordClicked: () {
-                  Navigator.push(context, ExtendRoute(
-                      page: ViewPasswordPage(index),
-                      tapPosition: RuntimeData.tapVerticalPosition
-                  ));
-                });
+                return PasswordWidgetItem(
+                    data: model.passwordList[index],
+                    onPasswordClicked: () => Navigator.push(context, ExtendRoute(
+                        page: ViewPasswordPage(index),
+                        tapPosition: RuntimeData.tapVerticalPosition)));
               },
-              itemCount: model.passwordList.length,
+              itemCount: model.count,
             ),
             LetterIndexBar(_controller),
           ],
@@ -131,7 +130,7 @@ class _PasswordPageState extends State<PasswordPage>
                   splashColor: Colors.transparent,
                   child: Icon(Icons.select_all),
                   onTap: () {
-                    if (RuntimeData.multiPasswordList.length != model.passwordList.length) {
+                    if (RuntimeData.multiPasswordList.length != model.count) {
                       RuntimeData.multiPasswordList.clear();
                       setState(() {
                         RuntimeData.multiPasswordList.addAll(model.passwordList);

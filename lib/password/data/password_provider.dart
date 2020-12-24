@@ -23,6 +23,7 @@ class PasswordProvider with ChangeNotifier {
 
   List<PasswordBean> get passwordList => _passwordList;
   Map<String, int> get letterCountIndex => _letterCountIndex;
+  int get count => _passwordList.length;
 
   Future<Null> init() async {
     if (_haveInit) return;

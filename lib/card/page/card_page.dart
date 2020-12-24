@@ -56,27 +56,25 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     super.build(context);
     CardProvider model = Provider.of<CardProvider>(context);
     Widget listView;
-    if (model.cardList.length >= 1) {
+    if (model.cardList.isNotEmpty) {
       if (RuntimeData.multiSelected) {
         listView = ListView.builder(
           controller: _controller,
-          itemBuilder: (context, index) {
-            return MultiCardWidgetItem(data: model.cardList[index]);
-          },
-          itemCount: model.cardList.length,
+          itemBuilder: (context, index) => MultiCardWidgetItem(data: model.cardList[index]),
+          itemCount: model.count,
         );
       } else {
         listView = ListView.builder(
           controller: _controller,
           itemBuilder: (context, index) {
-            return CardWidgetItem(data: model.cardList[index], onCardClicked: () {
-              Navigator.push(context, ExtendRoute(
-                  page: ViewCardPage(index),
-                  tapPosition: RuntimeData.tapVerticalPosition
-              ));
-            });
+            return CardWidgetItem(
+                data: model.cardList[index],
+                onCardClicked: () => Navigator.push(context, ExtendRoute(
+                    page: ViewCardPage(index),
+                    tapPosition: RuntimeData.tapVerticalPosition)),
+            );
           },
-          itemCount: model.cardList.length,
+          itemCount: model.count,
         );
       }
     } else {
@@ -131,7 +129,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                 splashColor: Colors.transparent,
                 child: Icon(Icons.select_all),
                 onTap: () {
-                  if (RuntimeData.multiCardList.length != model.cardList.length) {
+                  if (RuntimeData.multiCardList.length != model.count) {
                     RuntimeData.multiCardList.clear();
                     setState(() {
                       RuntimeData.multiCardList.addAll(model.cardList);
@@ -186,11 +184,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           Navigator.push(
               context,
               CupertinoPageRoute(builder: (context) => EditCardPage(null, DataOperation.add))
-          ).then((_) async {
-            if (RuntimeData.newPasswordOrCardCount >= 3) {
-              await model.refresh();
-            }
-          });
+          );
         },
         heroTag: "card",
       ),
