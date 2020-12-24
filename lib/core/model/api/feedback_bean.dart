@@ -22,7 +22,7 @@ class FeedbackBean {
   });
 
   Map<String, String> toJson() {
-    Map map = Map();
+    Map<String, String> map = Map();
     map['feedbackContent'] = this.content;
     map['contact'] = this.contact;
     map['allpassVersion'] = this.version;
