@@ -13,6 +13,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/search/search_page.dart';
+import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
@@ -201,7 +202,11 @@ class _PasswordPageState extends State<PasswordPage>
   _searchPress() {
     Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => SearchPage(AllpassType.Password)));
+        MaterialPageRoute(
+            builder: (context) => ChangeNotifierProvider.value(
+              value: SearchProvider(AllpassType.Password, context),
+              child: SearchPage(AllpassType.Password),
+            )));
   }
 
   void _deletePassword(BuildContext context, PasswordProvider model) {

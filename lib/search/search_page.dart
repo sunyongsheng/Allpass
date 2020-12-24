@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
-import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/password/model/password_bean.dart';
@@ -15,13 +14,13 @@ import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/string_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
 import 'package:allpass/password/page/view_password_page.dart';
+import 'package:allpass/search/search_provider.dart';
 
 class SearchPage extends StatefulWidget {
   final AllpassType type;
@@ -35,11 +34,13 @@ class SearchPage extends StatefulWidget {
 class _SearchPage extends State<SearchPage> {
   final AllpassType _type;
 
-  String _searchText = "";
   TextEditingController _searchController;
-  List<Widget> _result = List();
 
-  _SearchPage(this._type) {
+  _SearchPage(this._type);
+
+  @override
+  void initState() {
+    super.initState();
     _searchController = TextEditingController();
   }
 
@@ -51,101 +52,54 @@ class _SearchPage extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: searchWidget(),
-        automaticallyImplyLeading: false,
-      ),
-      body: FutureBuilder(
-        future: getSearchResult(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case ConnectionState.done:
-              return _result.length == 0
-                  ? Center(
-                      child: Text("无结果"),
-                    )
-                  : ListView.builder(
-                      itemBuilder: (_, index) => _result[index],
-                      itemCount: _result.length,
-                    );
-            default:
-              return Center(child: Text("未知状态，请联系开发者：sys6511@126.com"));
-          }
-        },
-      ),
+    return Consumer<SearchProvider>(
+      builder: (_, provider, __) {
+        return Scaffold(
+            appBar: AppBar(
+              title: searchWidget(provider),
+              automaticallyImplyLeading: false,
+            ),
+            body: provider.empty()
+                ? Center(child: Text("无结果"),)
+                : ListView.builder(
+              itemBuilder: (_, index) => getSearchWidget(provider, index),
+              itemCount: provider.length())
+        );
+      }
     );
   }
 
-  Future<Null> getSearchResult() async {
-    _result.clear();
-    _searchText = _searchController.text.toLowerCase();
+  Widget getSearchWidget(SearchProvider provider, int index) {
     if (_type == AllpassType.Password) {
-      PasswordProvider provider = Provider.of<PasswordProvider>(context);
-      for (int index = 0; index < provider.count; index++) {
-        var item = provider.passwordList[index];
-        if (containsKeyword(item)) {
-          _result.add(PasswordWidgetItem(
-            data: item,
-            onPasswordClicked: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return createPassBottomSheet(context, index, item);
-                  });
-            },
-          ));
-        }
-      }
-    } else {
-      CardProvider provider = Provider.of<CardProvider>(context);
-      for (int index = 0; index < provider.count; index++) {
-        var item = provider.cardList[index];
-        if (containsKeyword(item)) {
-          _result.add(SimpleCardWidgetItem(
-            data: provider.cardList[index],
-            onCardClicked: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return createCardBottomSheet(context, item, index);
-                  });
-            },
-          ));
-        }
-      }
+      var item = provider.passwordSearch[index];
+      return PasswordWidgetItem(
+        data: item,
+        onPasswordClicked: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return createPassBottomSheet(context, item);
+              });
+        },
+      );
+    } else if (_type == AllpassType.Card) {
+      var item = provider.cardSearch[index];
+      return SimpleCardWidgetItem(
+        data: provider.cardSearch[index],
+        onCardClicked: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return createCardBottomSheet(context, item);
+              });
+        },
+      );
     }
-  }
-
-  bool containsKeyword(BaseModel baseModel) {
-    if (baseModel is PasswordBean) {
-      StringBuffer stringBuffer = StringBuffer();
-      stringBuffer.write(baseModel.name.toLowerCase());
-      stringBuffer.write(baseModel.username.toLowerCase());
-      stringBuffer.write(baseModel.notes.toLowerCase());
-      stringBuffer.write(StringUtil.list2PureStr(baseModel.label).toLowerCase());
-      return stringBuffer.toString().contains(_searchText);
-    } else if (baseModel is CardBean) {
-      StringBuffer stringBuffer = StringBuffer();
-      stringBuffer.write(baseModel.name.toLowerCase());
-      stringBuffer.write(baseModel.ownerName.toLowerCase());
-      stringBuffer.write(baseModel.notes.toLowerCase());
-      stringBuffer.write(StringUtil.list2PureStr(baseModel.label).toLowerCase());
-      return stringBuffer.toString().contains(_searchText);
-    }
-    return false;
+    return Container();
   }
 
   /// 搜索栏
-  Widget searchWidget() {
+  Widget searchWidget(SearchProvider provider) {
     return Container(
         padding: EdgeInsets.only(left: 0, right: 0, bottom: 11, top: 11),
         child: Row(
@@ -169,18 +123,11 @@ class _SearchPage extends State<SearchPage> {
                           ? Colors.grey
                           : Colors.grey[900],),
                   ),
-                  onChanged: (_) async {
-                    await getSearchResult();
-                    setState(() {});
+                  onChanged: (_) {
+                    provider.search(_searchController.text.toLowerCase());
                   },
-                  onEditingComplete: () async {
-                    if (_type == AllpassType.Password) {
-                      await Provider.of<PasswordProvider>(context).refresh();
-                    } else if (_type == AllpassType.Card) {
-                      await Provider.of<CardProvider>(context).refresh();
-                    }
-                    await getSearchResult();
-                    setState(() {});
+                  onEditingComplete: () {
+                    provider.search(_searchController.text.toLowerCase());
                   },
                   autofocus: true,
                 ),
@@ -198,7 +145,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   // 点击密码弹出模态菜单
-  Widget createPassBottomSheet(BuildContext context, int index, PasswordBean data) {
+  Widget createPassBottomSheet(BuildContext context, PasswordBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -206,6 +153,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
+            int index = Provider.of<PasswordProvider>(context).passwordList.indexOf(data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewPasswordPage(index)))
                 .then((_) => Navigator.pop(context));
@@ -257,7 +205,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   // 点击卡片弹出模态菜单
-  Widget createCardBottomSheet(BuildContext context, CardBean data, int index) {
+  Widget createCardBottomSheet(BuildContext context, CardBean data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -265,6 +213,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
+            int index = Provider.of<CardProvider>(context).cardList.indexOf(data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewCardPage(index)))
                 .then((_) => Navigator.pop(context));

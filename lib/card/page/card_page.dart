@@ -12,6 +12,7 @@ import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/search/search_page.dart';
+import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
 import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
@@ -194,7 +195,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   _searchPress() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SearchPage(AllpassType.Card)));
+      MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(
+        value: SearchProvider(AllpassType.Card, context),
+        child: SearchPage(AllpassType.Card),
+      )));
   }
 
   void _deleteCard(BuildContext context, CardProvider model) {
