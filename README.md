@@ -22,6 +22,8 @@
 
 # 构建Allpass
 
+若有一些莫名其妙的编译错误，请尝试执行`flutter clean`并重启IDE。
+
 ## Android
 
 1. 修改`lib/utils/encrypt_util.dart`中的`_key`（32位字符串），此字符串将作为初始密钥；
@@ -54,19 +56,6 @@ TODO
 - 自动填充
 - 自动获取网站favicon作为密码头像
 - 智能识别网址生成名称
-
-## 文件结构
-
-- dao/ 与数据库交互层
-- model/ 密码或卡片实体类
-- pages/ 页面
-- params/ 软件相关参数
-- provider/ 状态管理
-- route/ 路由管理
-- services/ 服务管理，包括生物识别授权及路由服务
-- utils/ 工具
-- ui/ 界面相关
-- widgets/ 自定义组件
 
 ## 命名规范
 
