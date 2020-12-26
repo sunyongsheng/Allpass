@@ -214,9 +214,9 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            int index = Provider.of<CardProvider>(context).cardList.indexOf(data);
+            Provider.of<CardProvider>(context).previewCard(bean: data);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewCardPage(index)))
+                builder: (context) => ViewCardPage()))
                 .then((_) => Navigator.pop(context));
           }),
         ListTile(

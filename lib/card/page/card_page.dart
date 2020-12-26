@@ -70,9 +70,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           itemBuilder: (context, index) {
             return CardWidgetItem(
                 data: model.cardList[index],
-                onCardClicked: () => Navigator.push(context, ExtendRoute(
-                    page: ViewCardPage(index),
-                    tapPosition: RuntimeData.tapVerticalPosition)),
+                onCardClicked: () {
+                  model.previewCard(index: index);
+                  Navigator.push(context, ExtendRoute(
+                    page: ViewCardPage(),
+                    tapPosition: RuntimeData.tapVerticalPosition));
+                }
             );
           },
           itemCount: model.count,

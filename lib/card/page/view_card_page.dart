@@ -20,14 +20,8 @@ import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 
 class ViewCardPage extends StatefulWidget {
-
-  final int index;
-
-  ViewCardPage(this.index);
-
   @override
   _ViewCardPage createState() => _ViewCardPage();
-
 }
 
 class _ViewCardPage extends State<ViewCardPage> {
@@ -61,7 +55,12 @@ class _ViewCardPage extends State<ViewCardPage> {
     if (deleted) return Container();
 
     CardProvider provider = Provider.of<CardProvider>(context);
-    CardBean bean = provider.cardList[widget.index];
+    CardBean bean = provider.currCard;
+    if (bean == CardBean.empty) {
+      Fluttertoast.showToast(msg: "出现错误");
+      Navigator.pop(context);
+      return Container();
+    }
     if (_cache != bean.password) {
       _password = EncryptUtil.decrypt(bean.password);
       _cache = bean.password;

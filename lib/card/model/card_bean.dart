@@ -6,6 +6,9 @@ import 'package:allpass/util/encrypt_util.dart';
 
 /// 保存“卡片”数据
 class CardBean extends BaseModel {
+
+  static CardBean empty = CardBean(key: -1, name: "", ownerName: "", cardId: "");
+
   int uniqueKey; // 1 ID
   String name; // 2 卡片名称
   String ownerName; // 3 卡片拥有者
@@ -42,7 +45,7 @@ class CardBean extends BaseModel {
     this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
 
-    if (name.trim().length < 1 && ownerName.length > 0) {
+    if ((name?.trim()?.length ?? 0) < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
     } else {
       this.name = name;

@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -47,12 +46,12 @@ class ClassificationDetailsPage extends StatelessWidget {
     List<Widget> all = List();
     List<Widget> list1 = List();
     List<Widget> list2 = List();
-    PasswordProvider provider = Provider.of<PasswordProvider>(context);
-    for (int index = 0; index < provider.count; index++) {
+    PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
+    for (int index = 0; index < provider1.count; index++) {
       try {
-        if (provider.passwordList[index].folder == type) {
-          list1.add(PasswordWidgetItem(data: provider.passwordList[index], onPasswordClicked: () {
-            provider.previewPassword(index: index);
+        if (provider1.passwordList[index].folder == type) {
+          list1.add(PasswordWidgetItem(data: provider1.passwordList[index], onPasswordClicked: () {
+            provider1.previewPassword(index: index);
             Navigator.push(context, ExtendRoute(
                 page: ViewPasswordPage(),
                 tapPosition: RuntimeData.tapVerticalPosition
@@ -62,13 +61,14 @@ class ClassificationDetailsPage extends StatelessWidget {
       } catch (e) {
       }
     }
-    List<CardBean> cardList = Provider.of<CardProvider>(context).cardList;
-    for (int index = 0; index < cardList.length; index++) {
+    CardProvider provider2 = Provider.of<CardProvider>(context);
+    for (int index = 0; index < provider2.count; index++) {
       try {
-        if (type == cardList[index].folder) {
-          list2.add(SimpleCardWidgetItem(data: cardList[index], onCardClicked: () {
+        if (type == provider2.cardList[index].folder) {
+          list2.add(SimpleCardWidgetItem(data: provider2.cardList[index], onCardClicked: () {
+            provider2.previewCard(index: index);
             Navigator.push(context, ExtendRoute(
-              page: ViewCardPage(index),
+              page: ViewCardPage(),
               tapPosition: RuntimeData.tapVerticalPosition,
             ));
           }));

@@ -12,11 +12,13 @@ class CardProvider with ChangeNotifier {
 
   List<CardBean> _cardList = emptyList;
   CardDao _dao = CardDao();
+  CardBean _currCard = CardBean.empty;
 
   bool _haveInit = false;
 
   List<CardBean> get cardList => _cardList;
   int get count => _cardList.length;
+  CardBean get currCard => _currCard;
 
   Future<Null> init() async {
     if (_haveInit) return;
@@ -79,6 +81,7 @@ class CardProvider with ChangeNotifier {
       _sortByAlphabeticalOrder();
     }
     await _dao.updateCardBeanById(bean);
+    _currCard = bean;
     notifyListeners();
   }
 
@@ -86,5 +89,15 @@ class CardProvider with ChangeNotifier {
     _cardList?.clear();
     await _dao.deleteContent();
     notifyListeners();
+  }
+
+  void previewCard({int index, CardBean bean}) {
+    if (index != null) {
+      _currCard = _cardList[index];
+    } else if (bean != null) {
+      _currCard = bean;
+    } else {
+      _currCard = CardBean.empty;
+    }
   }
 }

@@ -61,58 +61,6 @@ class CardWidgetItem extends StatelessWidget {
   }
 }
 
-class CardWidgetContainerItem extends StatelessWidget {
-  final Key key;
-  final int index;
-  CardWidgetContainerItem(this.index, {this.key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<CardProvider>(
-      builder: (context, model, _) {
-        return OpenContainer(
-          closedElevation: 0,
-          openBuilder: (context, _) {
-            return ViewCardPage(index);
-          },
-          closedBuilder: (context, _) {
-            return SizedBox(
-              height: 100,
-              child: Card(
-                elevation: 2,
-                color: model.cardList[index].color,
-                margin: AllpassEdgeInsets.forCardInset,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))),
-                child: ListTile(
-                  title: Text(
-                    model.cardList[index].name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    "ID: ${model.cardList[index].cardId}",
-                    style:
-                    TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  contentPadding: EdgeInsets.only(left: 30, right: 30, top: 5),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
 class SimpleCardWidgetItem extends StatelessWidget {
 
   final Key key;
