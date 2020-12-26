@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/common/anim/animation_routes.dart';
@@ -45,13 +44,14 @@ class FavoritePage extends StatelessWidget {
     List<Widget> list1 = List();
     List<Widget> list2 = List();
     List<Widget> all = List();
-    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
-    for (int index = 0; index < passwordList.length; index++) {
+    PasswordProvider provider = Provider.of<PasswordProvider>(context);
+    for (int index = 0; index < provider.count; index++) {
       try {
-        if (passwordList[index].fav == 1) {
-          list1.add(PasswordWidgetItem(data: passwordList[index], onPasswordClicked: () {
+        if (provider.passwordList[index].fav == 1) {
+          list1.add(PasswordWidgetItem(data: provider.passwordList[index], onPasswordClicked: () {
+            provider.previewPassword(index: index);
             Navigator.push(context, ExtendRoute(
-                page: ViewPasswordPage(index),
+                page: ViewPasswordPage(),
                 tapPosition: RuntimeData.tapVerticalPosition
             ));
           }));

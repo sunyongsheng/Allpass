@@ -7,7 +7,6 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
@@ -48,13 +47,14 @@ class ClassificationDetailsPage extends StatelessWidget {
     List<Widget> all = List();
     List<Widget> list1 = List();
     List<Widget> list2 = List();
-    List<PasswordBean> passwordList = Provider.of<PasswordProvider>(context).passwordList;
-    for (int index = 0; index < passwordList.length; index++) {
+    PasswordProvider provider = Provider.of<PasswordProvider>(context);
+    for (int index = 0; index < provider.count; index++) {
       try {
-        if (passwordList[index].folder == type) {
-          list1.add(PasswordWidgetItem(data: passwordList[index], onPasswordClicked: () {
+        if (provider.passwordList[index].folder == type) {
+          list1.add(PasswordWidgetItem(data: provider.passwordList[index], onPasswordClicked: () {
+            provider.previewPassword(index: index);
             Navigator.push(context, ExtendRoute(
-                page: ViewPasswordPage(index),
+                page: ViewPasswordPage(),
                 tapPosition: RuntimeData.tapVerticalPosition
             ));
           }));

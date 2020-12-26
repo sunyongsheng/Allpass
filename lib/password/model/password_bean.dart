@@ -6,6 +6,9 @@ import 'package:allpass/util/string_util.dart';
 
 /// 存储新建的“密码”
 class PasswordBean extends BaseModel {
+
+  static PasswordBean empty = PasswordBean(key: -1, name: "", username: "", password: "", url: "");
+
   int uniqueKey; // 1 ID
   String name; // 2 账号名称
   String username; // 3 用户名
@@ -39,7 +42,7 @@ class PasswordBean extends BaseModel {
     this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
 
-    if (name.trim().length < 1) {
+    if ((name?.trim()?.length ?? 0) < 1) {
       if (url.contains("weibo")) {
         this.name = "微博";
       } else if (url.contains("zhihu")) {

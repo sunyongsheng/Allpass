@@ -72,9 +72,12 @@ class _PasswordPageState extends State<PasswordPage>
               itemBuilder: (context, index) {
                 return PasswordWidgetItem(
                     data: model.passwordList[index],
-                    onPasswordClicked: () => Navigator.push(context, ExtendRoute(
-                        page: ViewPasswordPage(index),
-                        tapPosition: RuntimeData.tapVerticalPosition)));
+                    onPasswordClicked: () {
+                      model.previewPassword(index: index);
+                      Navigator.push(context, ExtendRoute(
+                          page: ViewPasswordPage(),
+                          tapPosition: RuntimeData.tapVerticalPosition));
+                    });
               },
               itemCount: model.count,
             ),

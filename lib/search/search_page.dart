@@ -153,9 +153,9 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            int index = Provider.of<PasswordProvider>(context).passwordList.indexOf(data);
+            Provider.of<PasswordProvider>(context).previewPassword(bean: data);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewPasswordPage(index)))
+                builder: (context) => ViewPasswordPage()))
                 .then((_) => Navigator.pop(context));
           },
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:animations/animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/config.dart';
@@ -10,7 +9,6 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/password/page/view_password_page.dart';
 
 class PasswordWidgetItem extends StatelessWidget {
 
@@ -48,38 +46,6 @@ class PasswordWidgetItem extends StatelessWidget {
         ),
         onPanDown: (details) => RuntimeData.updateTapPosition(details),
       ),
-    );
-  }
-}
-
-class PasswordWidgetContainerItem extends StatelessWidget {
-
-  final Key key;
-  final int index;
-  PasswordWidgetContainerItem(this.index, {this.key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<PasswordProvider>(
-      builder: (context, model, _) {
-        return OpenContainer(
-          closedElevation: 0,
-          openBuilder: (context, _) {
-            return ViewPasswordPage(index);
-          },
-          closedBuilder: (context, _) {
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: model.passwordList[index].color,
-                child: Text(model.passwordList[index].name.substring(0, 1),
-                  style: TextStyle(color: Colors.white),),
-              ),
-              title: Text(model.passwordList[index].name, overflow: TextOverflow.ellipsis,),
-              subtitle: Text(model.passwordList[index].username, overflow: TextOverflow.ellipsis,),
-            );
-          },
-        );
-      },
     );
   }
 }

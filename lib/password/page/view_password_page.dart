@@ -22,11 +22,6 @@ import 'package:allpass/common/widget/confirm_dialog.dart';
 
 /// 查看密码页
 class ViewPasswordPage extends StatefulWidget {
-
-  final int index;
-
-  ViewPasswordPage(this.index);
-
   @override
   State<StatefulWidget> createState() {
     return _ViewPasswordPage();
@@ -62,7 +57,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     if (deleted) return Container();
 
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
-    PasswordBean bean = provider.passwordList[widget.index];
+    PasswordBean bean = provider.currPassword;
+    if (bean == PasswordBean.empty) {
+      Fluttertoast.showToast(msg: "出现了错误");
+      Navigator.pop(context);
+      return Container();
+    }
     if (_cache != bean.password) {
       _password = EncryptUtil.decrypt(bean.password);
       _cache = bean.password;

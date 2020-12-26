@@ -15,6 +15,7 @@ class PasswordProvider with ChangeNotifier {
   /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
   Map<String, int> _letterCountIndex = Map();
+  PasswordBean _currPassword = PasswordBean.empty;
 
   bool _haveInit = false;
 
@@ -24,6 +25,7 @@ class PasswordProvider with ChangeNotifier {
   List<PasswordBean> get passwordList => _passwordList;
   Map<String, int> get letterCountIndex => _letterCountIndex;
   int get count => _passwordList.length;
+  PasswordBean get currPassword => _currPassword;
 
   Future<Null> init() async {
     if (_haveInit) return;
@@ -108,7 +110,18 @@ class PasswordProvider with ChangeNotifier {
       _refreshLetterCountIndex();
     }
     await _dao.updatePasswordBeanById(bean);
+    _currPassword = bean;
     notifyListeners();
+  }
+
+  void previewPassword({int index, PasswordBean bean}) {
+    if (index != null) {
+      _currPassword = _passwordList[index];
+    } else if (bean != null) {
+      _currPassword = bean;
+    } else {
+      _currPassword = PasswordBean.empty;
+    }
   }
 
   Future<Null> clear() async {
