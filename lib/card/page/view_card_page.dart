@@ -166,21 +166,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                           Padding(
                             padding: AllpassEdgeInsets.smallTBPadding,),
                           // 拥有者姓名标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("拥有者姓名",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("拥有者姓名"),
                           // 拥有者姓名主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
                                   .spaceBetween,
@@ -206,20 +195,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                             ),
                           ),
                           // 卡号标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("卡号",
-                              style: TextStyle(fontSize: 16, color: _mainColor),),
-                          ),
+                          _titleContainer("卡号"),
                           // 卡号主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(30)),
+                            margin: AllpassEdgeInsets.bottom30Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -262,21 +241,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                             ),
                           ),
                           // 密码标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("密码",
-                                style: TextStyle(fontSize: 16, color: _mainColor)
-                            ),
-                          ),
+                          _titleContainer("密码"),
                           // 密码主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(30)),
+                            margin: AllpassEdgeInsets.bottom30Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -316,21 +284,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                             ),
                           ),
                           // 绑定手机号标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("绑定手机号",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("绑定手机号"),
                           // 绑定手机号主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
                                   .spaceBetween,
@@ -356,21 +313,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                             ),
                           ),
                           // 备注标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("备注",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("备注"),
                           // 备注主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
                                   .spaceBetween,
@@ -401,21 +347,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                             ),
                           ),
                           // 标签标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("标签",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("标签"),
                           // 标签主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom30Inset,
                             child: Wrap(
                               children: _getTag(bean),
                               spacing: 5,
@@ -478,5 +413,14 @@ class _ViewCardPage extends State<ViewCardPage> {
       labelChoices.add(Text("无标签", style: AllpassTextUI.hintTextStyle,));
     }
     return labelChoices;
+  }
+
+  Widget _titleContainer(String title) {
+    return Container(
+      margin: AllpassEdgeInsets.bottom10Inset,
+      child: Text(title,
+        style: TextStyle(fontSize: 16, color: _mainColor),
+      ),
+    );
   }
 }

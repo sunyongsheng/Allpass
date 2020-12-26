@@ -159,20 +159,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                         children: <Widget>[
                           Padding(padding: AllpassEdgeInsets.smallTBPadding,),
                           // 账号标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("账号", style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("账号"),
                           // 用户名主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -193,19 +183,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             ),
                           ),
                           // 密码标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("密码", style: TextStyle(fontSize: 16, color: _mainColor),),
-                          ),
+                          _titleContainer("密码"),
                           // 密码主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(30)),
+                            margin: AllpassEdgeInsets.bottom30Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -245,21 +226,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             ),
                           ),
                           // 链接标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("链接",
-                                style: TextStyle(fontSize: 16, color: _mainColor)
-                            ),
-                          ),
+                          _titleContainer("链接"),
                           // 链接主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -291,21 +261,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             ),
                           ),
                           // 备注标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("备注",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("备注"),
                           // 备注主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -329,21 +288,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             ),
                           ),
                           // 标签标题
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(10)),
-                            child: Text("标签",
-                              style: TextStyle(fontSize: 16, color: _mainColor),
-                            ),
-                          ),
+                          _titleContainer("标签"),
                           // 标签主体
                           Container(
-                            margin: EdgeInsets.only(
-                                left: AllpassScreenUtil.setWidth(100),
-                                right: AllpassScreenUtil.setWidth(100),
-                                bottom: AllpassScreenUtil.setHeight(50)),
+                            margin: AllpassEdgeInsets.bottom50Inset,
                             child: Wrap(
                               children: _getTag(bean),
                               spacing: 5,
@@ -428,5 +376,14 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       labelChoices.add(Text("无标签", style: AllpassTextUI.hintTextStyle,));
     }
     return labelChoices;
+  }
+
+  Widget _titleContainer(String title) {
+    return Container(
+      margin: AllpassEdgeInsets.bottom10Inset,
+      child: Text(title,
+        style: TextStyle(fontSize: 16, color: _mainColor),
+      ),
+    );
   }
 }

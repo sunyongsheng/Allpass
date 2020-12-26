@@ -80,6 +80,22 @@ class AllpassEdgeInsets {
   static EdgeInsets smallLPadding = EdgeInsets.only(
     left: AllpassScreenUtil.setWidth(50),
   );
+
+
+  static EdgeInsets bottom10Inset = EdgeInsets.only(
+      left: AllpassScreenUtil.setWidth(100),
+      right: AllpassScreenUtil.setWidth(100),
+      bottom: AllpassScreenUtil.setHeight(10));
+
+  static EdgeInsets bottom30Inset = EdgeInsets.only(
+      left: AllpassScreenUtil.setWidth(100),
+      right: AllpassScreenUtil.setWidth(100),
+      bottom: AllpassScreenUtil.setHeight(30));
+
+  static EdgeInsets bottom50Inset = EdgeInsets.only(
+      left: AllpassScreenUtil.setWidth(100),
+      right: AllpassScreenUtil.setWidth(100),
+      bottom: AllpassScreenUtil.setHeight(50));
 }
 
 /// 其他样式
