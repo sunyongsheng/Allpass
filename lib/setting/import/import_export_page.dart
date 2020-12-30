@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:directory_picker/directory_picker.dart';
@@ -19,6 +18,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/ui/icon_resource.dart';
 import 'package:allpass/util/csv_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/setting/import/chrome_import_help_page.dart';
 import 'package:allpass/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -164,7 +164,7 @@ class ImportTypeSelectPage extends StatelessWidget {
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
-          Fluttertoast.showToast(msg: "导入 ${passwordList.length}条记录");
+          ToastUtil.show(msg: "导入 ${passwordList.length}条记录");
           await Provider.of<PasswordProvider>(context).refresh();
         } else {
           List<CardBean> cardList = await CsvUtil().cardImportFromCsv(path);
@@ -173,14 +173,14 @@ class ImportTypeSelectPage extends StatelessWidget {
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
-          Fluttertoast.showToast(msg: "导入 ${cardList.length}条记录");
+          ToastUtil.show(msg: "导入 ${cardList.length}条记录");
           await Provider.of<CardProvider>(context).refresh();
         }
       } catch (assertError) {
-        Fluttertoast.showToast(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
+        ToastUtil.show(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
       }
     } else {
-      Fluttertoast.showToast(msg: "取消导入");
+      ToastUtil.show(msg: "取消导入");
     }
   }
 }
@@ -210,7 +210,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                   builder: (context) => ConfirmDialog("导出确认", "导出后的密码将被所有人可见，确认吗？")).then((confirm) {
                     if (confirm) {
                       if (!Platform.isAndroid) {
-                        Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                        ToastUtil.show(msg: "导出目前只支持安卓设备");
                         return;
                       }
                       showDialog<bool>(
@@ -242,7 +242,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                     builder: (context) => ConfirmDialog("导出确认", "导出后的卡片将被所有人可见，确认吗？")).then((confirm) {
                   if (confirm) {
                     if (!Platform.isAndroid) {
-                      Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                      ToastUtil.show(msg: "导出目前只支持安卓设备");
                       return;
                     }
                     showDialog<bool>(
@@ -274,7 +274,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                     builder: (context) => ConfirmDialog("导出确认", "导出后的数据将被所有人可见，确认吗？")).then((confirm) {
                   if (confirm) {
                     if (!Platform.isAndroid) {
-                      Fluttertoast.showToast(msg: "导出目前只支持安卓设备");
+                      ToastUtil.show(msg: "导出目前只支持安卓设备");
                       return;
                     }
                     showDialog<bool>(
@@ -318,7 +318,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         List<CardBean> cardList = await CardDao().getAllCardBeanList();
         await CsvUtil().cardExportCsv(cardList, newDir);
     }
-    Fluttertoast.showToast(msg: "已导出到$newDir");
+    ToastUtil.show(msg: "已导出到$newDir");
   }
 }
 

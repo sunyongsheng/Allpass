@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/webdav_util.dart';
 import 'package:allpass/setting/webdav/webdav_sync_page.dart';
@@ -182,7 +182,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
           port: int.parse(_portController.text),
         );
       } catch (e) {
-        Fluttertoast.showToast(msg: "端口号必须为数字！");
+        ToastUtil.show(msg: "端口号必须为数字！");
         setState(() {
           _pressNext = false;
         });
@@ -195,11 +195,11 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavPassword(EncryptUtil.encrypt(_utils.password));
         Config.setWebDavPort(_utils.port);
         Config.setWebDavAuthSuccess(true);
-        Fluttertoast.showToast(msg: "账号验证成功");
+        ToastUtil.show(msg: "账号验证成功");
         Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
       } else {
         Config.setWebDavAuthSuccess(false);
-        Fluttertoast.showToast(msg: "验证失败，请重试");
+        ToastUtil.show(msg: "验证失败，请重试");
       }
       setState(() {
         _pressNext = false;

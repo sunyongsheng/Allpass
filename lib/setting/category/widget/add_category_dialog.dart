@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 添加属性对话框
@@ -86,7 +86,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
     if (_inputFormatCorr && ((_addTextController.text?.trim()?.length) ?? 0) > 0) {
       Navigator.pop<String>(context, _addTextController.text);
     } else {
-      Fluttertoast.showToast(msg: "输入内容不合法");
+      ToastUtil.show(msg: "输入内容不合法");
     }
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/setting/account/widget/modify_password_dialog.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
@@ -51,7 +51,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                 ),
               ),
               onTap: () {
-                Fluttertoast.showToast(msg: "暂不支持主账号修改");
+                ToastUtil.show(msg: "暂不支持主账号修改");
               },
             )
           ),
@@ -138,7 +138,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                     ).then((right) async {
                       if (right) {
                         await Application.clearAll(context);
-                        Fluttertoast.showToast(msg: "已删除所有数据");
+                        ToastUtil.show(msg: "已删除所有数据");
                         NavigationUtil.goLoginPage(context);
                       }
                     });

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/core/param/constants.dart';
@@ -12,6 +11,7 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/theme_util.dart';
@@ -57,7 +57,7 @@ class _ViewCardPage extends State<ViewCardPage> {
     CardProvider provider = Provider.of<CardProvider>(context);
     CardBean bean = provider.currCard;
     if (bean == CardBean.empty) {
-      Fluttertoast.showToast(msg: "出现错误");
+      ToastUtil.show(msg: "出现错误");
       Navigator.pop(context);
       return Container();
     }
@@ -187,7 +187,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   onTap: () {
                                     Clipboard.setData(ClipboardData(
                                         text: bean.ownerName));
-                                    Fluttertoast.showToast(msg: "已复制姓名");
+                                    ToastUtil.show(msg: "已复制姓名");
                                   },
                                 )
                               ],
@@ -227,7 +227,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                       onTap: () {
                                         Clipboard.setData(
                                             ClipboardData(text: bean.cardId));
-                                        Fluttertoast.showToast(
+                                        ToastUtil.show(
                                             msg: "已复制卡号");
                                       },
                                       child: Text("复制",
@@ -271,7 +271,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                     InkWell(
                                       onTap: () {
                                         Clipboard.setData(ClipboardData(text: _password));
-                                        Fluttertoast.showToast(msg: "已复制密码");
+                                        ToastUtil.show(msg: "已复制密码");
                                       },
                                       child: Text("复制",
                                         style: TextStyle(fontSize: 14, color: _mainColor),
@@ -305,7 +305,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   onTap: () {
                                     Clipboard.setData(ClipboardData(
                                         text: bean.telephone));
-                                    Fluttertoast.showToast(msg: "已复制手机号");
+                                    ToastUtil.show(msg: "已复制手机号");
                                   },
                                 )
                               ],
@@ -384,7 +384,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                       if (delete) {
                         deleted = true;
                         await provider.deleteCard(bean);
-                        Fluttertoast.showToast(msg: "删除成功");
+                        ToastUtil.show(msg: "删除成功");
                         Navigator.pop(context);
                       }
                     },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +12,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -70,10 +70,10 @@ class Application {
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }
-      Fluttertoast.showToast(msg: "导入 ${passwordList.length} 条记录");
+      ToastUtil.show(msg: "导入 ${passwordList.length} 条记录");
       SystemNavigator.pop();
     } else {
-      Fluttertoast.showToast(msg: "导入了0条记录，可能是文件格式不正确");
+      ToastUtil.show(msg: "导入了0条记录，可能是文件格式不正确");
       SystemNavigator.pop();
     }
   }

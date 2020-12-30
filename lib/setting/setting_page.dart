@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:provider/provider.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
@@ -11,6 +10,7 @@ import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/core/service/allpass_service.dart';
@@ -117,13 +117,13 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                                       Config.setEnabledBiometrics(sw);
                                     });
                                   } else {
-                                    Fluttertoast.showToast(msg: "授权失败");
+                                    ToastUtil.show(msg: "授权失败");
                                   }
                                 }
                               });
                             } else {
                               Config.setEnabledBiometrics(false);
-                              Fluttertoast.showToast(msg: "您的设备似乎不支持生物识别");
+                              ToastUtil.show(msg: "您的设备似乎不支持生物识别");
                             }
                           },
                         ),

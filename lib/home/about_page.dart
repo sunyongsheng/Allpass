@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/develop/debug_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 
@@ -67,7 +67,7 @@ class AboutPage extends StatelessWidget {
                           onLongPress: () {
                             longPressTimes++;
                             if (longPressTimes == 3) {
-                              Fluttertoast.showToast(msg: "进入开发者模式");
+                              ToastUtil.show(msg: "进入开发者模式");
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => DebugPage()
                               ));

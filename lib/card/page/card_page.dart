@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -18,6 +17,7 @@ import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/common/widget/nodata_widget.dart';
+import 'package:allpass/util/toast_util.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -206,7 +206,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
   void _deleteCard(BuildContext context, CardProvider model) {
     if (RuntimeData.multiCardList.length == 0) {
-      Fluttertoast.showToast(msg: "请选择至少一项卡片");
+      ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog<bool>(
           context: context,
@@ -225,7 +225,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
   void _moveCard(BuildContext context, CardProvider model) {
     if (RuntimeData.multiCardList.length == 0) {
-      Fluttertoast.showToast(msg: "请选择至少一项卡片");
+      ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog(
           context: context,
@@ -236,7 +236,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             RuntimeData.multiCardList[i].folder = value;
             await model.updateCard(RuntimeData.multiCardList[i]);
           }
-          Fluttertoast.showToast(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
+          ToastUtil.show(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
           setState(() {
             RuntimeData.multiCardList.clear();
           });

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
@@ -46,7 +46,7 @@ class InputMainPasswordDialog extends StatelessWidget {
       Application.updateLatestUsePasswordTime();
       Navigator.pop<bool>(context, true);
     } else {
-      Fluttertoast.showToast(msg: "密码错误");
+      ToastUtil.show(msg: "密码错误");
       _passwordController.clear();
       Navigator.pop<bool>(context, false);
     }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -165,7 +165,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                               setState(() {
                                 _groupValue = value;
                               });
-                              Fluttertoast.showToast(msg: "请在第一行输入默认账号");
+                              ToastUtil.show(msg: "请在第一行输入默认账号");
                             },
                           ),
                           Text("名称 密码", style: AllpassTextUI.firstTitleStyle,),
@@ -175,7 +175,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                         setState(() {
                           _groupValue = 5;
                         });
-                        Fluttertoast.showToast(msg: "请在第一行输入默认账号");
+                        ToastUtil.show(msg: "请在第一行输入默认账号");
                       },
                     ),
                   ],
@@ -205,9 +205,9 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                     for (var bean in list) {
                       await Provider.of<PasswordProvider>(context).insertPassword(bean);
                     }
-                    Fluttertoast.showToast(msg: "导入了${list.length}条记录");
+                    ToastUtil.show(msg: "导入了${list.length}条记录");
                   } catch (e) {
-                    Fluttertoast.showToast(msg: e.toString());
+                    ToastUtil.show(msg: e.toString());
                   }
                 },
               ),

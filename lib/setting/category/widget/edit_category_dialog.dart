@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
@@ -96,7 +96,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         Navigator.pop(context);
       }
     } else if (!_inputFormatCorr) {
-      Fluttertoast.showToast(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
+      ToastUtil.show(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
     } else {
       Navigator.pop(context);
     }

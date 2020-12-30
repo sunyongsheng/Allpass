@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -10,6 +9,7 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/widget/label_chip.dart';
@@ -159,7 +159,7 @@ class _EditCardPage extends State<EditCardPage> {
                     createTime: _createTime
                   );
                   if (_passwordController.text.length < 1) {
-                    Fluttertoast.showToast(msg: "未输入密码，自动初始化为00000");
+                    ToastUtil.show(msg: "未输入密码，自动初始化为00000");
                   }
                   if (operation == DataOperation.add) {
                     provider.insertCard(tempData);
@@ -169,7 +169,7 @@ class _EditCardPage extends State<EditCardPage> {
                   }
                   Navigator.pop(context);
                 } else {
-                  Fluttertoast.showToast(msg: "拥有者姓名和卡号不允许为空！");
+                  ToastUtil.show(msg: "拥有者姓名和卡号不允许为空！");
                 }
               },
             )
@@ -435,9 +435,9 @@ class _EditCardPage extends State<EditCardPage> {
               ).then((label) {
                 if (label != null && RuntimeData.labelListAdd([label])) {
                   setState(() {});
-                  Fluttertoast.showToast(msg: "添加标签 $label 成功");
+                  ToastUtil.show(msg: "添加标签 $label 成功");
                 } else if (label != null) {
-                  Fluttertoast.showToast(msg: "标签 $label 已存在");
+                  ToastUtil.show(msg: "标签 $label 已存在");
                 }
               }),
       ),

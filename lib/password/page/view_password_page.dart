@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +10,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/theme_util.dart';
@@ -59,7 +59,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
     PasswordBean bean = provider.currPassword;
     if (bean == PasswordBean.empty) {
-      Fluttertoast.showToast(msg: "出现了错误");
+      ToastUtil.show(msg: "出现了错误");
       Navigator.pop(context);
       return Container();
     }
@@ -176,7 +176,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                   child: Text("复制", style: TextStyle(fontSize: 14, color: _mainColor),),
                                   onTap: () {
                                     Clipboard.setData(ClipboardData(text: bean.username));
-                                    Fluttertoast.showToast(msg: "已复制账号");
+                                    ToastUtil.show(msg: "已复制账号");
                                   },
                                 )
                               ],
@@ -214,7 +214,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     InkWell(
                                       onTap: () {
                                         Clipboard.setData(ClipboardData(text: _password));
-                                        Fluttertoast.showToast(msg: "已复制密码");
+                                        ToastUtil.show(msg: "已复制密码");
                                       },
                                       child: Text("复制",
                                         style: TextStyle(fontSize: 14, color: _mainColor),
@@ -245,13 +245,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                         style: AllpassTextUI
                                             .firstTitleStyle,
                                       ),
-                                      onLongPress: () => Fluttertoast.showToast(msg: bean.url),
+                                      onLongPress: () => ToastUtil.show(msg: bean.url),
                                     )),
                                 Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                 InkWell(
                                   onTap: () {
                                     Clipboard.setData(ClipboardData(text: bean.url));
-                                    Fluttertoast.showToast(msg: "已复制链接");
+                                    ToastUtil.show(msg: "已复制链接");
                                   },
                                   child: Text("复制",
                                     style: TextStyle(fontSize: 14, color: _mainColor),
@@ -330,7 +330,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                       Clipboard.setData(ClipboardData(text:
                       "账号：${bean.username}\n密码：$_password"
                       ));
-                      Fluttertoast.showToast(msg: "已复制账号及密码");
+                      ToastUtil.show(msg: "已复制账号及密码");
                     },
                     child: Icon(Icons.content_copy),
                   ),
@@ -348,7 +348,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                       if (delete) {
                         deleted = true;
                         await provider.deletePassword(bean);
-                        Fluttertoast.showToast(msg: "删除成功");
+                        ToastUtil.show(msg: "删除成功");
                         Navigator.pop(context);
                       }
                     },

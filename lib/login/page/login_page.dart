@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/application.dart';
@@ -8,6 +7,7 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/login/page/register_page.dart';
@@ -139,7 +139,7 @@ class _LoginPage extends State<LoginPage> {
                     onPressed: () {
                       if (Config.enabledBiometrics)
                         NavigationUtil.goAuthLoginPage(context);
-                      else Fluttertoast.showToast(msg: "您还未开启生物识别");
+                      else ToastUtil.show(msg: "您还未开启生物识别");
                     },
                   )
                 ],
@@ -155,25 +155,25 @@ class _LoginPage extends State<LoginPage> {
   void login() async {
     if (inputErrorTimes >= 5) {
       await Application.clearAll(context);
-      Fluttertoast.showToast(msg: "连续错误超过五次！已清除所有数据，请重新注册");
+      ToastUtil.show(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       NavigationUtil.goLoginPage(context);
     } else {
       if (_passwordController.text.length == 0 || _usernameController.text.length == 0) {
-        Fluttertoast.showToast(msg: "请先输入用户名或密码");
+        ToastUtil.show(msg: "请先输入用户名或密码");
         return;
       }
       if (Config.username != "" && Config.password != "") {
         if (Config.username == _usernameController.text
             && Config.password == EncryptUtil.encrypt(_passwordController.text)) {
           NavigationUtil.goHomePage(context);
-          Fluttertoast.showToast(msg: "登录成功");
+          ToastUtil.show(msg: "登录成功");
           Application.updateLatestUsePasswordTime();
         }  else {
           inputErrorTimes++;
-          Fluttertoast.showToast(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+          ToastUtil.show(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
         }
       } else {
-        Fluttertoast.showToast(msg: "当前不存在用户，请先注册！");
+        ToastUtil.show(msg: "当前不存在用户，请先注册！");
       }
     }
   }

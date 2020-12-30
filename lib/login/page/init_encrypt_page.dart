@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -112,7 +112,7 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                       child: Text("去登录", style: TextStyle(color: Colors.white),),
                       onPressed: () async {
                         if (!haveGen) {
-                          Fluttertoast.showToast(msg: "请先生成密钥");
+                          ToastUtil.show(msg: "请先生成密钥");
                         } else {
                           EncryptHolder holder = EncryptHolder(EncryptUtil.initialKey);
                           Config.setPassword(EncryptUtil.encrypt(holder.decrypt(Config.password)));
@@ -128,17 +128,17 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                       child: Text("默认密钥", style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         if (haveGen) {
-                          Fluttertoast.showToast(msg: "您已点击了生成按钮，若要使用默认密钥，请清除Allpass数据后再进行此操作");
+                          ToastUtil.show(msg: "您已点击了生成按钮，若要使用默认密钥，请清除Allpass数据后再进行此操作");
                           return;
                         }
-                        Fluttertoast.showToast(msg: "使用默认密钥");
+                        ToastUtil.show(msg: "使用默认密钥");
                         NavigationUtil.goLoginPage(context);
                       },
                     )
                   ],
                 ),
                 TextField(controller: controller, textAlign: TextAlign.center, onChanged: (_) {
-                  Fluttertoast.showToast(msg: "此页面编辑密钥无效");
+                  ToastUtil.show(msg: "此页面编辑密钥无效");
                 },)
               ],
             ),

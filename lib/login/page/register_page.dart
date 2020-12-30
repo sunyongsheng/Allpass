@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -99,22 +99,22 @@ class _RegisterPage extends State<RegisterPage> {
 
   Future<Null> register(BuildContext context) async {
     if (_passwordController.text != _secondController.text) {
-      Fluttertoast.showToast(msg: "两次密码输入不一致！");
+      ToastUtil.show(msg: "两次密码输入不一致！");
       return;
     }
     if (_usernameController.text.length < 6 && _passwordController.text.length < 6) {
-      Fluttertoast.showToast(msg: "用户名或密码长度必须大于等于6！");
+      ToastUtil.show(msg: "用户名或密码长度必须大于等于6！");
       return;
     }
     if (_usernameController.text.length > 15) {
-      Fluttertoast.showToast(msg: "用户名长度最长为15个字符！");
+      ToastUtil.show(msg: "用户名长度最长为15个字符！");
       return;
     }
     // 判断是否已有账号存在
     if (Application.sp.getString(SPKeys.username) == "") {
       _registerActual();
     } else {
-      Fluttertoast.showToast(msg: "已有账号注册过，只允许单账号");
+      ToastUtil.show(msg: "已有账号注册过，只允许单账号");
     }
   }
 
@@ -123,7 +123,7 @@ class _RegisterPage extends State<RegisterPage> {
     Config.setUsername(_usernameController.text);
     Config.setPassword(_password);
     Config.setEnabledBiometrics(false);
-    Fluttertoast.showToast(msg: "注册成功");
+    ToastUtil.show(msg: "注册成功");
     NavigationUtil.goInitEncryptPage(context);
   }
 }

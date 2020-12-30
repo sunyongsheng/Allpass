@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -9,6 +8,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
@@ -161,7 +161,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 }
                 Navigator.pop(context);
               } else {
-                Fluttertoast.showToast(msg: "账号和密码不允许为空！");
+                ToastUtil.show(msg: "账号和密码不允许为空！");
               }
             },
           )
@@ -401,9 +401,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             ).then((label) {
               if (label != null && RuntimeData.labelListAdd([label])) {
                 setState(() {});
-                Fluttertoast.showToast(msg: "添加标签 $label 成功");
+                ToastUtil.show(msg: "添加标签 $label 成功");
               } else if (label != null) {
-                Fluttertoast.showToast(msg: "标签 $label 已存在");
+                ToastUtil.show(msg: "标签 $label 已存在");
               }
             });
           }),

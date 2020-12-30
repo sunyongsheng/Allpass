@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 修改密码对话框
@@ -57,13 +57,13 @@ class ModifyPasswordDialog extends StatelessWidget {
                   && _newPasswordController.text == _secondInputController.text) {
                 String newPassword = EncryptUtil.encrypt(_newPasswordController.text);
                 Config.setPassword(newPassword);
-                Fluttertoast.showToast(msg: "修改成功");
+                ToastUtil.show(msg: "修改成功");
                 Navigator.pop(context);
               } else {
-                Fluttertoast.showToast(msg: "密码过短或两次密码输入不一致！");
+                ToastUtil.show(msg: "密码过短或两次密码输入不一致！");
               }
             } else {
-              Fluttertoast.showToast(msg: "输入旧密码错误！");
+              ToastUtil.show(msg: "输入旧密码错误！");
             }
           },
         ),

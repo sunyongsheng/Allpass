@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
@@ -8,6 +7,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/util/screen_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 
@@ -105,21 +105,21 @@ class _AuthLoginPage extends State<StatefulWidget> {
         ),
       ).then((value) {
         if (value) {
-          Fluttertoast.showToast(msg: "验证成功");
+          ToastUtil.show(msg: "验证成功");
           Application.updateLatestUsePasswordTime();
           NavigationUtil.goHomePage(context);
         } else {
-          Fluttertoast.showToast(msg: "您似乎忘记了主密码");
+          ToastUtil.show(msg: "您似乎忘记了主密码");
           NavigationUtil.goLoginPage(context);
         }
       });
     } else {
       var authSucceed = await _localAuthService.authenticate();
       if (authSucceed) {
-        Fluttertoast.showToast(msg: "验证成功");
+        ToastUtil.show(msg: "验证成功");
         NavigationUtil.goHomePage(context);
       } else {
-        Fluttertoast.showToast(msg: "认证失败，请重试");
+        ToastUtil.show(msg: "认证失败，请重试");
       }
     }
   }

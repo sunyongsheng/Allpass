@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/setting/category/widget/add_category_dialog.dart';
 import 'package:allpass/setting/category/widget/edit_category_dialog.dart';
@@ -84,11 +84,11 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           ).then((value) {
             if (value != null) {
               if (this.type == CategoryType.Folder && RuntimeData.folderListAdd(value)) {
-                Fluttertoast.showToast(msg: "添加$categoryName $value 成功");
+                ToastUtil.show(msg: "添加$categoryName $value 成功");
               } else if (this.type == CategoryType.Label && RuntimeData.labelListAdd([value])) {
-                Fluttertoast.showToast(msg: "添加$categoryName $value 成功");
+                ToastUtil.show(msg: "添加$categoryName $value 成功");
               } else {
-                Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+                ToastUtil.show(msg: "$categoryName $value 已存在");
               }
             }
           });
@@ -109,7 +109,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
             if (this.type == CategoryType.Folder && currCategoryName == defaultFolderName) {
-              Fluttertoast.showToast(msg: "此文件夹不允许修改！");
+              ToastUtil.show(msg: "此文件夹不允许修改！");
               return;
             }
             showModalBottomSheet(
@@ -133,18 +133,18 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             if (value != null) {
                               if (this.type == CategoryType.Label) {
                                 if (RuntimeData.labelList.contains(value)) {
-                                  Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+                                  ToastUtil.show(msg: "$categoryName $value 已存在");
                                   return;
                                 }
                                 await editLabelAndUpdate(currIndex, value);
                               } else if (this.type == CategoryType.Folder){
                                 if (RuntimeData.folderList.contains(value)) {
-                                  Fluttertoast.showToast(msg: "$categoryName $value 已存在");
+                                  ToastUtil.show(msg: "$categoryName $value 已存在");
                                   return;
                                 }
                                 await editFolderAndUpdate(currIndex, value);
                               }
-                              Fluttertoast.showToast(msg: "保存$categoryName $value");
+                              ToastUtil.show(msg: "保存$categoryName $value");
                             }
                           });
                         },

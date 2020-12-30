@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
@@ -13,6 +12,7 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -173,7 +173,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.username));
-            Fluttertoast.showToast(msg: "已复制用户名");
+            ToastUtil.show(msg: "已复制用户名");
             Navigator.pop(context);
           },
         ),
@@ -183,7 +183,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () async {
             String pw = EncryptUtil.decrypt(data.password);
             Clipboard.setData(ClipboardData(text: pw));
-            Fluttertoast.showToast(msg: "已复制密码");
+            ToastUtil.show(msg: "已复制密码");
             Navigator.pop(context);
           },
         ),
@@ -196,7 +196,7 @@ class _SearchPage extends State<SearchPage> {
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
             if (delete) {
               await Provider.of<PasswordProvider>(context).deletePassword(data);
-              Fluttertoast.showToast(msg: "删除成功");
+              ToastUtil.show(msg: "删除成功");
               Navigator.pop(context);
             }
           },
@@ -232,7 +232,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.ownerName));
-            Fluttertoast.showToast(msg: "已复制用户名");
+            ToastUtil.show(msg: "已复制用户名");
             Navigator.pop(context);
           },
         ),
@@ -241,7 +241,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.cardId));
-            Fluttertoast.showToast(msg: "已复制卡号");
+            ToastUtil.show(msg: "已复制卡号");
             Navigator.pop(context);
           },
         ),
@@ -254,7 +254,7 @@ class _SearchPage extends State<SearchPage> {
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
             if (delete) {
               await Provider.of<CardProvider>(context).deleteCard(data);
-              Fluttertoast.showToast(msg: "删除成功");
+              ToastUtil.show(msg: "删除成功");
               Navigator.pop(context);
             }
           }

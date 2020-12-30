@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:animations/animations.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/card/page/view_card_page.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
@@ -35,7 +33,7 @@ class CardWidgetItem extends StatelessWidget {
           onLongPress: () async {
             if (Config.longPressCopy) {
               Clipboard.setData(ClipboardData(text: data.cardId));
-              Fluttertoast.showToast(msg: "已复制卡号");
+              ToastUtil.show(msg: "已复制卡号");
             }
           },
           child: ListTile(

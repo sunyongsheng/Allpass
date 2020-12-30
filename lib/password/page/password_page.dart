@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/password/page/view_password_page.dart';
@@ -208,7 +208,7 @@ class _PasswordPageState extends State<PasswordPage>
 
   void _deletePassword(BuildContext context, PasswordProvider model) {
     if (RuntimeData.multiPasswordList.length == 0) {
-      Fluttertoast.showToast(msg: "请选择至少一项密码");
+      ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog<bool>(
           context: context,
@@ -227,7 +227,7 @@ class _PasswordPageState extends State<PasswordPage>
 
   void _movePassword(BuildContext context, PasswordProvider model) {
     if (RuntimeData.multiPasswordList.length == 0) {
-      Fluttertoast.showToast(msg: "请选择至少一项密码");
+      ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog(
           context: context,
@@ -238,7 +238,7 @@ class _PasswordPageState extends State<PasswordPage>
             RuntimeData.multiPasswordList[i].folder = value;
             await model.updatePassword(RuntimeData.multiPasswordList[i]);
           }
-          Fluttertoast.showToast(msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹");
+          ToastUtil.show(msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹");
           setState(() {
             RuntimeData.multiPasswordList.clear();
           });

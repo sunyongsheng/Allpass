@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:allpass/application.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -87,7 +87,7 @@ class _DebugPage extends State<DebugPage> {
                 child: Text("删除所有密码记录"),
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();
-                  Fluttertoast.showToast(msg: "已删除所有密码");
+                  ToastUtil.show(msg: "已删除所有密码");
                 },
               ),
             ),
@@ -96,7 +96,7 @@ class _DebugPage extends State<DebugPage> {
                 child: Text("删除所有卡片记录"),
                 onPressed: () async {
                   await Provider.of<CardProvider>(context).clear();
-                  Fluttertoast.showToast(msg: "已删除所有卡片");
+                  ToastUtil.show(msg: "已删除所有卡片");
                 },
               ),
             ),
@@ -106,7 +106,7 @@ class _DebugPage extends State<DebugPage> {
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();
                   await _passwordDao.deleteTable();
-                  Fluttertoast.showToast(msg: "已删除密码数据库");
+                  ToastUtil.show(msg: "已删除密码数据库");
                 },
               ),
             ),
@@ -116,7 +116,7 @@ class _DebugPage extends State<DebugPage> {
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();
                   await _cardDao.deleteTable();
-                  Fluttertoast.showToast(msg: "已删除卡片数据库");
+                  ToastUtil.show(msg: "已删除卡片数据库");
                 },
               ),
             ),

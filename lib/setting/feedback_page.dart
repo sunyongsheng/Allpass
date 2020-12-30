@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:device_info/device_info.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 import 'package:allpass/core/model/api/feedback_bean.dart';
 import 'package:allpass/util/screen_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
@@ -85,11 +85,11 @@ class _FeedbackPage extends State<StatefulWidget> {
               child: Text("提交", style: TextStyle(color: Colors.white),),
               onPressed: () async {
                 if (_feedbackController.text.trim().length < 1) {
-                  Fluttertoast.showToast(msg: "请输入反馈内容");
+                  ToastUtil.show(msg: "请输入反馈内容");
                   return;
                 }
                 if (_feedbackController.text.length >= 1000) {
-                  Fluttertoast.showToast(msg: "反馈内容必须小于1000字！");
+                  ToastUtil.show(msg: "反馈内容必须小于1000字！");
                   return;
                 }
                 FocusScope.of(context).requestFocus(_blankFocus);
@@ -141,7 +141,7 @@ class _FeedbackPage extends State<StatefulWidget> {
     if (response.success) {
       _submitSuccess = true;
     }
-    Fluttertoast.showToast(msg: response.msg);
+    ToastUtil.show(msg: response.msg);
     Navigator.pop(context);
   }
 

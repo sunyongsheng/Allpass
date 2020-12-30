@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/password/data/password_dao.dart';
@@ -142,7 +142,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                           return;
                         }
                         if (!haveGen) {
-                          Fluttertoast.showToast(msg: "请先生成密钥");
+                          ToastUtil.show(msg: "请先生成密钥");
                         } else {
                           setState(() {
                             inUpgrade = true;
@@ -197,7 +197,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       }
       await Provider.of<PasswordProvider>(context).refresh();
       await Provider.of<CardProvider>(context).refresh();
-      Fluttertoast.showToast(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
+      ToastUtil.show(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
       return true;
     } catch (e) {
       Config.setPassword(backup1);
@@ -214,7 +214,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       }
       await Provider.of<PasswordProvider>(context).refresh();
       await Provider.of<CardProvider>(context).refresh();
-      Fluttertoast.showToast(msg: "升级失败：$e");
+      ToastUtil.show(msg: "升级失败：$e");
       return false;
     }
   }

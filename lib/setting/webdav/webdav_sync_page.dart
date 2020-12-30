@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
@@ -72,15 +72,15 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                       _pressUpload = false;
                     });
                     if (res) {
-                      Fluttertoast.showToast(msg: "上传云端成功");
+                      ToastUtil.show(msg: "上传云端成功");
                     } else {
-                      Fluttertoast.showToast(msg: "上传云端失败，请检查网络");
+                      ToastUtil.show(msg: "上传云端失败，请检查网络");
                     }
                   } else {
                     setState(() {
                       _pressUpload = false;
                     });
-                    Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
+                    ToastUtil.show(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },
@@ -113,13 +113,13 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     setState(() {
                       _pressDownload = false;
                     });
-                    Fluttertoast.showToast(msg: res[0]);
-                    Fluttertoast.showToast(msg: res[1]);
+                    ToastUtil.show(msg: res[0]);
+                    ToastUtil.show(msg: res[1]);
                   } else {
                     setState(() {
                       _pressDownload = false;
                     });
-                    Fluttertoast.showToast(msg: "账号权限失效，请检查网络或退出账号并重新配置");
+                    ToastUtil.show(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },
@@ -141,9 +141,9 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   if (value is Map) {
                     Config.setPasswordFileName(value['password']);
                     Config.setCardFileName(value['card']);
-                    Fluttertoast.showToast(msg: "修改成功");
+                    ToastUtil.show(msg: "修改成功");
                   } else if (value is String) {
-                    Fluttertoast.showToast(msg: value);
+                    ToastUtil.show(msg: value);
                   }
                 });
               },
