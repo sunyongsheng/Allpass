@@ -86,7 +86,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
     if (_inputFormatCorr && ((_addTextController.text?.trim()?.length) ?? 0) > 0) {
       Navigator.pop<String>(context, _addTextController.text);
     } else {
-      ToastUtil.show(msg: "输入内容不合法");
+      ToastUtil.showError(msg: "输入内容不合法");
     }
   }
 }

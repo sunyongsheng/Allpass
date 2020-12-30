@@ -96,7 +96,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         Navigator.pop(context);
       }
     } else if (!_inputFormatCorr) {
-      ToastUtil.show(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
+      ToastUtil.showError(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
     } else {
       Navigator.pop(context);
     }

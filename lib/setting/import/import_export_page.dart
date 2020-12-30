@@ -177,7 +177,7 @@ class ImportTypeSelectPage extends StatelessWidget {
           await Provider.of<CardProvider>(context).refresh();
         }
       } catch (assertError) {
-        ToastUtil.show(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
+        ToastUtil.showError(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
       }
     } else {
       ToastUtil.show(msg: "取消导入");

@@ -182,7 +182,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
           port: int.parse(_portController.text),
         );
       } catch (e) {
-        ToastUtil.show(msg: "端口号必须为数字！");
+        ToastUtil.showError(msg: "端口号必须为数字！");
         setState(() {
           _pressNext = false;
         });

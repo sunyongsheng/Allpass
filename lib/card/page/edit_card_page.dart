@@ -169,7 +169,7 @@ class _EditCardPage extends State<EditCardPage> {
                   }
                   Navigator.pop(context);
                 } else {
-                  ToastUtil.show(msg: "拥有者姓名和卡号不允许为空！");
+                  ToastUtil.showError(msg: "拥有者姓名和卡号不允许为空！");
                 }
               },
             )

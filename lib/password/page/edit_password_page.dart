@@ -161,7 +161,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 }
                 Navigator.pop(context);
               } else {
-                ToastUtil.show(msg: "账号和密码不允许为空！");
+                ToastUtil.showError(msg: "账号和密码不允许为空！");
               }
             },
           )

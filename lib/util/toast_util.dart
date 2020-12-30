@@ -9,7 +9,14 @@ class ToastUtil {
   static void show({String msg}) {
     Fluttertoast.showToast(msg: msg,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.black54,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white);
+  }
+
+  static void showError({String msg}) {
+    Fluttertoast.showToast(msg: msg,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Color.fromRGBO(255, 0, 76, 0.87),
         textColor: Colors.white);
   }
 }

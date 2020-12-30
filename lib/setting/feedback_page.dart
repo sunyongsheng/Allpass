@@ -89,7 +89,7 @@ class _FeedbackPage extends State<StatefulWidget> {
                   return;
                 }
                 if (_feedbackController.text.length >= 1000) {
-                  ToastUtil.show(msg: "反馈内容必须小于1000字！");
+                  ToastUtil.showError(msg: "反馈内容必须小于1000字！");
                   return;
                 }
                 FocusScope.of(context).requestFocus(_blankFocus);

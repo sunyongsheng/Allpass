@@ -155,7 +155,7 @@ class _LoginPage extends State<LoginPage> {
   void login() async {
     if (inputErrorTimes >= 5) {
       await Application.clearAll(context);
-      ToastUtil.show(msg: "连续错误超过五次！已清除所有数据，请重新注册");
+      ToastUtil.showError(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       NavigationUtil.goLoginPage(context);
     } else {
       if (_passwordController.text.length == 0 || _usernameController.text.length == 0) {
@@ -170,10 +170,10 @@ class _LoginPage extends State<LoginPage> {
           Application.updateLatestUsePasswordTime();
         }  else {
           inputErrorTimes++;
-          ToastUtil.show(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
+          ToastUtil.showError(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
         }
       } else {
-        ToastUtil.show(msg: "当前不存在用户，请先注册！");
+        ToastUtil.showError(msg: "当前不存在用户，请先注册！");
       }
     }
   }

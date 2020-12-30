@@ -74,13 +74,13 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     if (res) {
                       ToastUtil.show(msg: "上传云端成功");
                     } else {
-                      ToastUtil.show(msg: "上传云端失败，请检查网络");
+                      ToastUtil.showError(msg: "上传云端失败，请检查网络");
                     }
                   } else {
                     setState(() {
                       _pressUpload = false;
                     });
-                    ToastUtil.show(msg: "账号权限失效，请检查网络或退出账号并重新配置");
+                    ToastUtil.showError(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },
@@ -119,7 +119,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     setState(() {
                       _pressDownload = false;
                     });
-                    ToastUtil.show(msg: "账号权限失效，请检查网络或退出账号并重新配置");
+                    ToastUtil.showError(msg: "账号权限失效，请检查网络或退出账号并重新配置");
                   }
                 }
               },

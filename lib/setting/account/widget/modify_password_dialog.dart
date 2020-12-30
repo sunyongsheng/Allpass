@@ -60,10 +60,10 @@ class ModifyPasswordDialog extends StatelessWidget {
                 ToastUtil.show(msg: "修改成功");
                 Navigator.pop(context);
               } else {
-                ToastUtil.show(msg: "密码过短或两次密码输入不一致！");
+                ToastUtil.showError(msg: "密码小于6位或两次密码输入不一致！");
               }
             } else {
-              ToastUtil.show(msg: "输入旧密码错误！");
+              ToastUtil.showError(msg: "输入旧密码错误！");
             }
           },
         ),
