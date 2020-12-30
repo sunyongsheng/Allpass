@@ -90,6 +90,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               } else {
                 ToastUtil.show(msg: "$categoryName $value 已存在");
               }
+              setState(() {});
             }
           });
         },
