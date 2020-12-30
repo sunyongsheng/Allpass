@@ -88,7 +88,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               } else if (this.type == CategoryType.Label && RuntimeData.labelListAdd([value])) {
                 ToastUtil.show(msg: "添加$categoryName $value 成功");
               } else {
-                ToastUtil.show(msg: "$categoryName $value 已存在");
+                ToastUtil.showError(msg: "$categoryName $value 已存在");
               }
               setState(() {});
             }
@@ -134,13 +134,13 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             if (value != null) {
                               if (this.type == CategoryType.Label) {
                                 if (RuntimeData.labelList.contains(value)) {
-                                  ToastUtil.show(msg: "$categoryName $value 已存在");
+                                  ToastUtil.showError(msg: "$categoryName $value 已存在");
                                   return;
                                 }
                                 await editLabelAndUpdate(currIndex, value);
                               } else if (this.type == CategoryType.Folder){
                                 if (RuntimeData.folderList.contains(value)) {
-                                  ToastUtil.show(msg: "$categoryName $value 已存在");
+                                  ToastUtil.showError(msg: "$categoryName $value 已存在");
                                   return;
                                 }
                                 await editFolderAndUpdate(currIndex, value);
