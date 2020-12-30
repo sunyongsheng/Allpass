@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/config.dart';
@@ -9,6 +10,7 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/webdav_util.dart';
 import 'package:allpass/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class WebDavConfigPage extends StatefulWidget {
@@ -65,6 +67,31 @@ class _WebDavConfigPage extends State<StatefulWidget> {
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.help_outline),
+            onPressed: () {
+              String example = "https://dav.jianguoyun.com/dav/";
+              showDialog(
+                context: context,
+                builder: (context) => InformationHelpDialog(
+                  content: [
+                    Text("此功能可以将您的数据备份到 WebDAV 服务器中或者进行数据恢复.\n"),
+                    Text("WebDAV 服务器地址请以 http:// 或 https:// 开头，如坚果云(点击复制)：\n"),
+                    InkWell(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: example));
+                        ToastUtil.show(msg: "复制成功");
+                      },
+                      child: Text(example)),
+                    Text("\n"),
+                    Text("端口号代表服务所在端口，如果您不清楚，请不要编辑.")
+                  ],
+                )
+              );
+            },
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -101,7 +128,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
               ),
               NoneBorderCircularTextField(
                 editingController: _usernameController,
-                hintText: "用户名",
+                hintText: "账号",
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
