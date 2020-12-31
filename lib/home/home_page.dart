@@ -39,10 +39,9 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     super.initState();
     _controller = PageController(initialPage: 0);
     WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<ThemeProvider>(context).setExtraColor(context: context);
-    });
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
       if (needUpdateSecret) {
         showDialog(
             context: context,
@@ -58,13 +57,12 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
           }
         });
       }
-    });
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
       UpdateBean updateBean = await Application.getIt<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
-          context: context,
-          child: UpdateDialog(updateBean)
+            context: context,
+            child: UpdateDialog(updateBean)
         );
       }
     });
