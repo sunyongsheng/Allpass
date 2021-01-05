@@ -160,6 +160,15 @@ void _registerUser() async {
     if (!((Application.sp.getString(SPKeys.allpassVersion)??"1.0.0") == Application.version)) {
       await registerUserActual();
       Application.sp.setString(SPKeys.allpassVersion, Application.version);
+    } else {
+      DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo info = await infoPlugin.androidInfo;
+        Application.identification = info.androidId;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo info = await infoPlugin.iosInfo;
+        Application.identification= info.identifierForVendor;
+      }
     }
   }
 }
