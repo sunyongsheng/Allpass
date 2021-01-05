@@ -27,7 +27,7 @@ class UpdateDialog extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("有新版本可以下载！最新版本V${updateBean.version}"),
+            Text("有新版本可以下载！最新版本 ${updateBean.channel} V${updateBean.version}"),
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
               child: Text("更新内容：", style: TextStyle(fontWeight: FontWeight.bold),),
@@ -39,7 +39,7 @@ class UpdateDialog extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("您的版本是最新版！"),
+            Text("您的版本是最新版！${updateBean.channel} V${updateBean.version}"),
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
               child: Text("最近更新：", style: TextStyle(fontWeight: FontWeight.bold),),
