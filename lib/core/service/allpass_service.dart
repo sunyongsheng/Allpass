@@ -8,7 +8,6 @@ import 'package:allpass/core/model/api/feedback_bean.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 
 abstract class AllpassService {
-
   /// 注册用户
   Future<AllpassResponse> registerUser(UserBean user);
 
@@ -23,7 +22,6 @@ abstract class AllpassService {
 }
 
 class AllpassServiceImpl implements AllpassService {
-
   Dio get dio {
     if (_dio == null) {
       _dio = Dio();
@@ -36,60 +34,55 @@ class AllpassServiceImpl implements AllpassService {
   @override
   Future<AllpassResponse> registerUser(UserBean user) async {
     try {
-      Response response = await dio.post("$allpassUrl/user/", data: user.toJson());
+      Response response =
+          await dio.post("$allpassUrl/user/", data: user.toJson());
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
         res[key] = response.data[key];
       }
       return AllpassResponse.create(res);
     } catch (e) {
-      return AllpassResponse(
-          success: false,
-          msg: e.toString()
-      );
+      return AllpassResponse(success: false, msg: e.toString());
     }
   }
 
   @override
   Future<AllpassResponse> sendFeedback(FeedbackBean content) async {
     try {
-      Response response = await dio.post("$allpassUrl/feedback/", data: content.toJson());
+      Response response =
+          await dio.post("$allpassUrl/feedback/", data: content.toJson());
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
         res[key] = response.data[key];
       }
       return AllpassResponse.create(res,
           defaultConfig: ResponseConfig(
-              defaultSuccessMsg: "感谢你的反馈！",
-              defaultFailedMsg: "提交失败，请反馈给作者！"
-          ));
+              defaultSuccessMsg: "感谢你的反馈！", defaultFailedMsg: "提交失败，请反馈给作者！"));
     } on DioError catch (dioError) {
       if (dioError.type == DioErrorType.RESPONSE) {
         return AllpassResponse(
             status: ResponseStatus.ServerError,
             msg: "提交失败，远程服务器出现问题，请向作者反馈",
-            success: false
-        );
+            success: false);
       } else {
         return AllpassResponse(
             status: ResponseStatus.NetworkError,
             msg: "提交失败，请检查网络连接",
-            success: false
-        );
+            success: false);
       }
     } catch (e) {
       return AllpassResponse(
           status: ResponseStatus.UnknownError,
           msg: "提交失败，错误原因：${e.toString()}",
-          success: false
-      );
+          success: false);
     }
   }
 
   @override
   Future<UpdateBean> checkUpdate() async {
     try {
-      Response response = await dio.get("$allpassUrl/update/?version=${Application.version}");
+      Response response = await dio.get(
+          "$allpassUrl/update/?version=${Application.version}&identification=${Application.identification}");
 
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
@@ -100,6 +93,7 @@ class AllpassServiceImpl implements AllpassService {
       String version = Application.version;
       String content = res["update_content"];
       String downloadUrl = res["download_url"];
+      String channel = res["channel"];
       if (res["have_update"] == "1") {
         result = CheckUpdateResult.HaveUpdate;
         version = res["version"];
@@ -110,9 +104,9 @@ class AllpassServiceImpl implements AllpassService {
           checkResult: result,
           version: version,
           updateContent: content,
-          downloadUrl: downloadUrl
-      );
-    } on DioError catch (e){
+          downloadUrl: downloadUrl,
+          channel: channel);
+    } on DioError catch (e) {
       return UpdateBean(
         checkResult: CheckUpdateResult.NetworkError,
         version: Application.version,
@@ -122,8 +116,7 @@ class AllpassServiceImpl implements AllpassService {
       return UpdateBean(
           checkResult: CheckUpdateResult.UnknownError,
           version: Application.version,
-          updateContent: unknownError.toString()
-      );
+          updateContent: unknownError.toString());
     }
   }
 
@@ -137,14 +130,12 @@ class AllpassServiceImpl implements AllpassService {
         res[key] = response.data[key];
       }
       return UpdateBean(
-          version: res["version"],
-          downloadUrl: res["download_url"]
-      );
+          version: res["version"], downloadUrl: res["download_url"]);
     } catch (_) {
       return UpdateBean(
           version: Application.version,
-          downloadUrl: "https://allpass.aengus.top/api/download/?version=${Application.version}"
-      );
+          downloadUrl:
+              "https://allpass.aengus.top/api/download/?version=${Application.version}");
     }
   }
 }

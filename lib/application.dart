@@ -28,6 +28,7 @@ class Application {
   static FluroRouter router;
   static SharedPreferences sp;
   static MethodChannel shareMethodChannel;
+  static String identification;
 
   static String version = "1.5.7";
 

@@ -140,6 +140,7 @@ void _registerUser() async {
     } else {
       return;
     }
+    Application.identification = _identification;
     try {
       UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: Application.version);
       AllpassResponse response = await Application.getIt<AllpassService>().registerUser(user);

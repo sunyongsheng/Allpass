@@ -10,8 +10,10 @@ class UpdateBean {
 
   String updateTime;
 
+  String channel;
+
   UpdateBean({this.checkResult = CheckUpdateResult.NoUpdate,
-    this.version, this.updateContent, this.downloadUrl, this.updateTime});
+    this.version, this.updateContent, this.downloadUrl, this.updateTime, this.channel});
 }
 
 enum CheckUpdateResult {
