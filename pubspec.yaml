@@ -1,7 +1,7 @@
 name: allpass
 description: A password manage application.
 
-version: 1.5.7
+version: 1.5.9
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
