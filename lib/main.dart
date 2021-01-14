@@ -35,7 +35,7 @@ void main() async {
     Config.initConfig();
     Application.initRouter();
     Application.initLocator();
-    Application.initChannelAndHandle();
+    Application.initAndroidChannel();
 
     if (Platform.isAndroid) {
       //设置Android头部的导航栏透明

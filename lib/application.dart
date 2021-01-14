@@ -49,7 +49,7 @@ class Application {
     Application.router = router;
   }
 
-  static void initChannelAndHandle() {
+  static void initAndroidChannel() {
     shareMethodChannel = const MethodChannel(ChannelConstants.channel);
     shareMethodChannel.setMethodCallHandler((call) {
       if (call.method == ChannelConstants.methodImportChromeData) {
