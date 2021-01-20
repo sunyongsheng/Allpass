@@ -290,7 +290,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   Future<Null> _recommend() async {
     UpdateBean data = await Application.getIt<AllpassService>().getLatestVersion();
     Share.share(
-        "【Allpass】我发现了一款应用，快来下载吧！下载地址：${data.downloadUrl}",
+        "【Allpass】一款简洁好用的私密信息管理工具。【下载地址】${data.downloadUrl}",
         subject: "软件推荐——Allpass");
   }
 }
