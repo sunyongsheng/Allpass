@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/util/toast_util.dart';
+import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
@@ -35,6 +36,19 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   @override
   Widget build(BuildContext context) {
+    String uploadTime;
+    String downloadTime;
+    if (Config.webDavUploadTime == null) {
+      uploadTime = "暂未进行过上传";
+    } else {
+      uploadTime = "最近上传于${Config.webDavUploadTime}";
+    }
+    if (Config.webDavDownloadTime == null) {
+      downloadTime = "暂未进行过恢复";
+    } else {
+      downloadTime = "最近恢复于${Config.webDavDownloadTime}";
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,6 +62,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("上传到云端"),
+              subtitle: Text(uploadTime),
               leading: Icon(Icons.cloud_upload, color: AllpassColorUI.allColor[0],),
               trailing: _pressUpload ? SizedBox(
                 child: CircularProgressIndicator(
@@ -90,6 +105,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("恢复到本地"),
+              subtitle: Text(downloadTime),
               leading: Icon(Icons.cloud_download, color: AllpassColorUI.allColor[1],),
               trailing: _pressDownload ? SizedBox(
                 child: CircularProgressIndicator(
@@ -221,8 +237,14 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   Future<bool> _upload() async {
     try {
       await _syncService.backupFolderAndLabel(context);
-      return (await _syncService.backupPassword(context)) &&
-          (await _syncService.backupCard(context));
+      bool ps = await _syncService.backupPassword(context);
+      bool cs = await _syncService.backupCard(context);
+      if (ps && cs) {
+        setState(() {
+          Config.setWebDavUploadTime(DateFormatter.format(DateTime.now()));
+        });
+      }
+      return ps && cs;
     } on Error catch (e) {
       print(e.toString());
       print(e.stackTrace.toString());
@@ -237,10 +259,13 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     List<String> msg = new List();
     bool pb = false;
     bool cb = false;
+    bool ps = false;
+    bool cs = false;
     if (p == -1) {
       msg.add("未找到云端密码文件，请确保云端文件名与设置相同并为json文件");
     } else if (p == 0) {
       msg.add("密码恢复成功");
+      ps = true;
     } else if (p == 2) {
       msg.add("密码恢复失败，请检查网络或者是云端文件受损");
       pb = true;
@@ -251,6 +276,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       msg.add("未找到云端卡片文件，请确保云端文件名与设置相同并为json文件");
     } else if (c == 0) {
       msg.add("卡片信息恢复成功");
+      cs = true;
     } else if (c == 2) {
       msg.add("卡片恢复失败，请检查网络或者是云端文件受损");
       cb = true;
@@ -259,6 +285,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     }
     if (pb && cb) {
       msg.add("请确保本机加密等级及密钥与备份云端时一致！");
+    }
+    if (ps && cs) {
+      setState(() {
+        Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
+      });
     }
     return msg;
   }
