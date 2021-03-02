@@ -38,14 +38,10 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   Widget build(BuildContext context) {
     String uploadTime;
     String downloadTime;
-    if (Config.webDavUploadTime == null) {
-      uploadTime = "暂未进行过上传";
-    } else {
+    if (Config.webDavUploadTime != null) {
       uploadTime = "最近上传于${Config.webDavUploadTime}";
     }
-    if (Config.webDavDownloadTime == null) {
-      downloadTime = "暂未进行过恢复";
-    } else {
+    if (Config.webDavDownloadTime != null) {
       downloadTime = "最近恢复于${Config.webDavDownloadTime}";
     }
 
@@ -62,7 +58,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("上传到云端"),
-              subtitle: Text(uploadTime),
+              subtitle: uploadTime == null ? null : Text(uploadTime),
               leading: Icon(Icons.cloud_upload, color: AllpassColorUI.allColor[0],),
               trailing: _pressUpload ? SizedBox(
                 child: CircularProgressIndicator(
@@ -105,7 +101,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("恢复到本地"),
-              subtitle: Text(downloadTime),
+              subtitle: downloadTime == null ? null : Text(downloadTime),
               leading: Icon(Icons.cloud_download, color: AllpassColorUI.allColor[1],),
               trailing: _pressDownload ? SizedBox(
                 child: CircularProgressIndicator(
