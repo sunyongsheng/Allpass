@@ -17,7 +17,7 @@ class PasswordProvider with ChangeNotifier {
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
   Map<String, int> _letterCountIndex = Map();
   PasswordBean _currPassword = PasswordBean.empty;
-  SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
+  SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 5);
   List<String> _mostUsedUsername = List();
 
   bool _haveInit = false;
