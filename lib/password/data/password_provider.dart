@@ -121,10 +121,13 @@ class PasswordProvider with ChangeNotifier {
       }
     }
     String oldName = _passwordList[index].name;
+    String oldUsername = _passwordList[index].username;
     _passwordList[index] = bean;
     if (oldName[0] != bean.name[0]) {
       _sortByAlphabeticalOrder();
-      _refreshLetterCountIndex();
+    }
+    if (oldUsername != bean.username) {
+      _refreshMostUsedUsername();
     }
     await _dao.updatePasswordBeanById(bean);
     _currPassword = bean;
