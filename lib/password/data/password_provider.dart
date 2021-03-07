@@ -1,3 +1,4 @@
+import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -16,16 +17,19 @@ class PasswordProvider with ChangeNotifier {
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
   Map<String, int> _letterCountIndex = Map();
   PasswordBean _currPassword = PasswordBean.empty;
+  SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
+  List<String> _mostUsedUsername = List();
 
   bool _haveInit = false;
 
   final List<String> letters = ['A','B','C','D','E','F','G','H','I','J','K','L',
     'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 
-  List<PasswordBean> get passwordList => _passwordList;
-  Map<String, int> get letterCountIndex => _letterCountIndex;
-  int get count => _passwordList.length;
-  PasswordBean get currPassword => _currPassword;
+  List<PasswordBean> get passwordList     => _passwordList;
+  Map<String, int>   get letterCountIndex => _letterCountIndex;
+  int                get count            => _passwordList.length;
+  PasswordBean       get currPassword     => _currPassword;
+  List<String>       get mostUsedUsername => _mostUsedUsername;
 
   Future<Null> init() async {
     if (_haveInit) return;
@@ -36,6 +40,7 @@ class PasswordProvider with ChangeNotifier {
     }
     _sortByAlphabeticalOrder();
     _refreshLetterCountIndex();
+    _refreshMostUsedUsername();
     notifyListeners();
     _haveInit = true;
   }
@@ -49,6 +54,7 @@ class PasswordProvider with ChangeNotifier {
     }
     _sortByAlphabeticalOrder();
     _refreshLetterCountIndex();
+    _refreshMostUsedUsername();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
   }
@@ -57,7 +63,7 @@ class PasswordProvider with ChangeNotifier {
   void _refreshLetterCountIndex() {
     int amount = 0;
     _letterCountIndex.clear();
-    for (PasswordBean bean in _passwordList) {
+    _passwordList.forEach((bean) {
       String firstLetter = PinyinHelper.getFirstWordPinyin(bean.name).substring(0, 1).toUpperCase();
       if (letters.contains(firstLetter)) {
         if (!_letterCountIndex.containsKey(firstLetter)) {
@@ -67,7 +73,7 @@ class PasswordProvider with ChangeNotifier {
         _letterCountIndex['#'] = 0;
       }
       amount++;
-    }
+    });
   }
 
   void _sortByAlphabeticalOrder() {
@@ -77,6 +83,15 @@ class PasswordProvider with ChangeNotifier {
     });
   }
 
+  void _refreshMostUsedUsername() {
+    _mostUsedUsername.clear();
+    _mostUsedCache.clear();
+    _passwordList.forEach((element) {
+      _mostUsedCache.put(element.username);
+    });
+    _mostUsedUsername.addAll(_mostUsedCache.get());
+  }
+
   Future<Null> insertPassword(PasswordBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
@@ -84,6 +99,7 @@ class PasswordProvider with ChangeNotifier {
     _passwordList.add(bean);
     _sortByAlphabeticalOrder();
     _refreshLetterCountIndex();
+    _refreshMostUsedUsername();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
   }
@@ -92,6 +108,7 @@ class PasswordProvider with ChangeNotifier {
     _passwordList.remove(bean);
     await _dao.deletePasswordBeanById(bean.uniqueKey);
     _refreshLetterCountIndex();
+    _refreshMostUsedUsername();
     notifyListeners();
   }
 
@@ -127,6 +144,8 @@ class PasswordProvider with ChangeNotifier {
   Future<Null> clear() async {
     _passwordList?.clear();
     _letterCountIndex.clear();
+    _mostUsedUsername.clear();
+    _mostUsedCache.clear();
     await _dao.deleteContent();
     notifyListeners();
   }

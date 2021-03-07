@@ -216,6 +216,17 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                         },
                       ),
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              spacing: 8.0,
+                              runSpacing: 10.0,
+                              children: _getMostUsedUsername()),
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -374,6 +385,20 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             ],
           ))
     );
+  }
+
+  List<Widget> _getMostUsedUsername() {
+    List<Widget> usernameChips = List();
+    Provider.of<PasswordProvider>(context).mostUsedUsername.forEach((element) {
+      usernameChips.add(LabelChip(
+        text: element,
+        selected: false,
+        onSelected: (_) {
+          _usernameController.text = element;
+        },
+      ));
+    });
+    return usernameChips;
   }
 
   List<Widget> _getTag() {
