@@ -106,7 +106,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
       ).then((value) {
         if (value) {
           ToastUtil.show(msg: "验证成功");
-          Application.updateLatestUsePasswordTime();
+          Config.updateLatestUsePasswordTime();
           NavigationUtil.goHomePage(context);
         } else {
           ToastUtil.show(msg: "您似乎忘记了主密码");

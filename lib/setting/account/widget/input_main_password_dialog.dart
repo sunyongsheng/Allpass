@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
@@ -43,7 +42,7 @@ class InputMainPasswordDialog extends StatelessWidget {
   void submit(BuildContext context) {
     if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
       _passwordController.clear();
-      Application.updateLatestUsePasswordTime();
+      Config.updateLatestUsePasswordTime();
       Navigator.pop<bool>(context, true);
     } else {
       ToastUtil.show(msg: "密码错误");

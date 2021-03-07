@@ -167,7 +167,7 @@ class _LoginPage extends State<LoginPage> {
             && Config.password == EncryptUtil.encrypt(_passwordController.text)) {
           NavigationUtil.goHomePage(context);
           ToastUtil.show(msg: "登录成功");
-          Application.updateLatestUsePasswordTime();
+          Config.updateLatestUsePasswordTime();
         }  else {
           inputErrorTimes++;
           ToastUtil.showError(msg: "用户名或密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");

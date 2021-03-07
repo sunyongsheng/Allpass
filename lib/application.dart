@@ -78,10 +78,6 @@ class Application {
       SystemNavigator.pop();
     }
   }
-  /// 更新上次使用密码的时间
-  static void updateLatestUsePasswordTime() {
-    Application.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());
-  }
 
   static Future<Null> clearAll(BuildContext context) async {
     await Provider.of<PasswordProvider>(context).clear();

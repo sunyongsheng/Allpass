@@ -72,6 +72,11 @@ class Config {
     RuntimeData.clearData();
   }
 
+  /// 更新上次使用密码的时间
+  static void updateLatestUsePasswordTime() {
+    Application.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());
+  }
+
   static void setUsername(String value) {
     username = value;
     Application.sp.setString(SPKeys.username, value);
