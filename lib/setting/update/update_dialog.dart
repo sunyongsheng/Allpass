@@ -1,3 +1,4 @@
+import 'package:allpass/application.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -73,7 +74,15 @@ class UpdateDialog extends StatelessWidget {
       return [
         FlatButton(
             child: Text("下载更新"),
-            onPressed: () async => await launch(updateBean.downloadUrl)),
+            onPressed: () async {
+              String downloadUrl;
+              if (updateBean.isBetaChannel()) {
+                downloadUrl = "${updateBean.downloadUrl}&identification=${Application.identification}";
+              } else {
+                downloadUrl = updateBean.downloadUrl;
+              }
+              await launch(downloadUrl);
+            }),
         FlatButton(
             child: Text("下次再说"),
             onPressed: () => Navigator.pop(context))];
