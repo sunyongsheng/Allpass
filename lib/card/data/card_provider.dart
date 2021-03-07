@@ -1,3 +1,4 @@
+import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -13,12 +14,15 @@ class CardProvider with ChangeNotifier {
   List<CardBean> _cardList = emptyList;
   CardDao _dao = CardDao();
   CardBean _currCard = CardBean.empty;
+  SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
+  List<String> _mostUsedOwnerName = List();
 
   bool _haveInit = false;
 
-  List<CardBean> get cardList => _cardList;
-  int get count => _cardList.length;
-  CardBean get currCard => _currCard;
+  List<CardBean> get cardList          => _cardList;
+  int            get count             => _cardList.length;
+  CardBean       get currCard          => _currCard;
+  List<String>   get mostUsedOwnerName => _mostUsedOwnerName;
 
   Future<Null> init() async {
     if (_haveInit) return;
@@ -40,6 +44,7 @@ class CardProvider with ChangeNotifier {
       _cardList.addAll(res);
     }
     _sortByAlphabeticalOrder();
+    _refreshMostUsedOwnerName();
     RuntimeData.newPasswordOrCardCount = 0;
     notifyListeners();
   }
@@ -51,12 +56,22 @@ class CardProvider with ChangeNotifier {
     });
   }
 
+  void _refreshMostUsedOwnerName() {
+    _mostUsedCache.clear();
+    _mostUsedOwnerName.clear();
+    _cardList.forEach((element) {
+      _mostUsedCache.put(element.ownerName);
+    });
+    _mostUsedOwnerName.addAll(_mostUsedCache.get());
+  }
+
   Future<Null> insertCard(CardBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
     bean.color = getRandomColor(seed: key);
     _cardList.add(bean);
     _sortByAlphabeticalOrder();
+    _refreshMostUsedOwnerName();
     RuntimeData.newPasswordOrCardCount++;
     notifyListeners();
   }
@@ -76,9 +91,13 @@ class CardProvider with ChangeNotifier {
       }
     }
     String oldName = _cardList[index].name;
+    String oldOwner = _cardList[index].ownerName;
     _cardList[index] = bean;
     if (oldName[0] != bean.name[0]) {
       _sortByAlphabeticalOrder();
+    }
+    if (oldOwner != bean.ownerName) {
+      _refreshMostUsedOwnerName();
     }
     await _dao.updateCardBeanById(bean);
     _currCard = bean;
@@ -87,6 +106,8 @@ class CardProvider with ChangeNotifier {
 
   Future<Null> clear() async {
     _cardList?.clear();
+    _mostUsedCache.clear();
+    _mostUsedOwnerName.clear();
     await _dao.deleteContent();
     notifyListeners();
   }

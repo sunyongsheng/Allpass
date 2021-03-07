@@ -223,6 +223,12 @@ class _EditCardPage extends State<EditCardPage> {
                         },
                       ),
                     ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: _getMostUsedOwnerName(),
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -408,6 +414,23 @@ class _EditCardPage extends State<EditCardPage> {
             ],
           ),
         ));
+  }
+
+  List<Widget> _getMostUsedOwnerName() {
+    List<Widget> chips = List();
+    Provider.of<CardProvider>(context).mostUsedOwnerName.forEach((element) {
+      chips.add(Container(
+        padding: EdgeInsets.only(right: 8),
+        child: LabelChip(
+          text: element,
+          selected: false,
+          onSelected: (_) {
+            _ownerNameController.text = element;
+          },
+        ),
+      ));
+    });
+    return chips;
   }
 
   List<Widget> _getTag() {
