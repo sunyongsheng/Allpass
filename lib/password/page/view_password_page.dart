@@ -370,6 +370,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       labelChoices.add(LabelChip(
           text: item,
           selected: true,
+          onSelected: (_) {},
       ));
     });
     if (labelChoices.length == 0) {
