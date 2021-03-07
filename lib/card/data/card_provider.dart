@@ -32,6 +32,7 @@ class CardProvider with ChangeNotifier {
       _cardList.addAll(res);
     }
     _sortByAlphabeticalOrder();
+    _refreshMostUsedOwnerName();
     notifyListeners();
     _haveInit = true;
   }
