@@ -404,8 +404,9 @@ class _ViewCardPage extends State<ViewCardPage> {
     List<Widget> labelChoices = List();
     bean.label.forEach((item) {
       labelChoices.add(LabelChip(
-          text: item,
-          selected: true,
+        text: item,
+        selected: true,
+        onSelected: (_) {},
       ));
     });
     if (labelChoices.length == 0) {
