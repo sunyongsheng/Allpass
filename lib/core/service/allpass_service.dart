@@ -62,7 +62,7 @@ class AllpassServiceImpl implements AllpassService {
       if (dioError.type == DioErrorType.RESPONSE) {
         return AllpassResponse(
             status: ResponseStatus.ServerError,
-            msg: "提交失败，远程服务器出现问题，请向作者反馈",
+            msg: "提交失败，远程服务器出现问题，请发送邮件到sys6511@126.com",
             success: false);
       } else {
         return AllpassResponse(
