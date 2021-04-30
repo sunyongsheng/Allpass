@@ -243,7 +243,7 @@ class _EditCardPage extends State<EditCardPage> {
                     ),
                     NoneBorderCircularTextField(
                       editingController: _cardIdController,
-                      inputType: TextInputType.number,
+                      inputType: TextInputType.text,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
