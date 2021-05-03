@@ -59,7 +59,7 @@ class PasswordBean extends BaseModel {
     } //name
     if (url == BaseModel.noneData) this.url = "";
     if (notes == BaseModel.noneData) this.notes = "";
-    this.label = label ?? List();
+    this.label = label ?? [];
   }
 
   @override
@@ -92,7 +92,7 @@ class PasswordBean extends BaseModel {
     assert(map["name"] != null);
     switch (encryptLevel) {
       case 0:
-        List<String> newLabel = List();
+        List<String> newLabel = [];
         if (map['label'] != null) {
           newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
@@ -108,7 +108,7 @@ class PasswordBean extends BaseModel {
             label: newLabel,
             createTime: map['createTime']);
       case 2:
-        List<String> newLabel = List();
+        List<String> newLabel = [];
         if (map['label'] != null) {
           for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
             newLabel.add(EncryptUtil.decrypt(str));
@@ -126,7 +126,7 @@ class PasswordBean extends BaseModel {
             label: newLabel,
             createTime: EncryptUtil.decrypt(map['createTime']));
       default:
-        List<String> newLabel = List();
+        List<String> newLabel = [];
         if (map['label'] != null) {
           newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
@@ -192,7 +192,7 @@ class PasswordBean extends BaseModel {
             url: pureBean.url,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List()..addAll(pureBean.label),
+            label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             color: pureBean.color);
@@ -202,7 +202,7 @@ class PasswordBean extends BaseModel {
         String url = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.url));
         String folder = EncryptUtil.encrypt(pureBean.folder);
         String notes = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.notes));
-        List<String> label = List();
+        List<String> label = [];
         for (String l in pureBean.label ?? []) {
           label.add(EncryptUtil.encrypt(l));
         }
@@ -228,10 +228,26 @@ class PasswordBean extends BaseModel {
             url: pureBean.url,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List<String>()..addAll(pureBean.label),
+            label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             color: pureBean.color);
     }
+  }
+
+  @override
+  int get hashCode => uniqueKey;
+
+  @override
+  bool operator ==(Object another) {
+    if (another is PasswordBean) {
+      if (identical(this, another)) {
+        return true;
+      }
+      if (this.uniqueKey == another.uniqueKey) {
+        return true;
+      }
+    }
+    return false;
   }
 }

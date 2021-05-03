@@ -52,7 +52,7 @@ class CardBean extends BaseModel {
     } //name
     if (notes == BaseModel.noneData) this.notes = "";
     if (telephone == BaseModel.noneData) this.telephone = "";
-    this.label = label ?? List();
+    this.label = label ?? [];
   }
 
   @override
@@ -79,7 +79,7 @@ class CardBean extends BaseModel {
     assert(map['notes'] != null);
     switch (encryptLevel) {
       case 0:
-        List<String> newLabel = List();
+        List<String> newLabel = [];
         if (map['label'] != null) {
           newLabel = StringUtil.waveLineSegStr2List(map['label']);
         }
@@ -96,7 +96,7 @@ class CardBean extends BaseModel {
             label: newLabel,
             createTime: map['createTime']);
       case 2:
-        List<String> newLabel = List();
+        List<String> newLabel = [];
         if (map['label'] != null) {
           for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
             newLabel.add(EncryptUtil.decrypt(str));
@@ -115,7 +115,7 @@ class CardBean extends BaseModel {
             label: newLabel,
             createTime: EncryptUtil.decrypt(map['createTime']));
     }
-    List<String> newLabel = List();
+    List<String> newLabel = [];
     if (map['label'] != null) {
       newLabel = StringUtil.waveLineSegStr2List(map['label']);
     }
@@ -184,7 +184,7 @@ class CardBean extends BaseModel {
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List()..addAll(pureBean.label),
+            label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             color: pureBean.color);
@@ -196,7 +196,7 @@ class CardBean extends BaseModel {
         String folder = EncryptUtil.encrypt(pureBean.folder);
         String notes = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.notes));
         String createTime = EncryptUtil.encrypt(pureBean.createTime);
-        List<String> label = List();
+        List<String> label = [];
         for (String l in pureBean.label ?? []) {
           label.add(EncryptUtil.encrypt(l));
         }
@@ -223,11 +223,28 @@ class CardBean extends BaseModel {
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List()..addAll(pureBean.label),
+            label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             color: pureBean.color);
 
     }
   }
+
+  @override
+  int get hashCode => uniqueKey;
+
+  @override
+  bool operator ==(Object another) {
+    if (another is CardBean) {
+      if (identical(this, another)) {
+        return true;
+      }
+      if (this.uniqueKey == another.uniqueKey) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
