@@ -30,7 +30,7 @@ class Application {
   static MethodChannel shareMethodChannel;
   static String identification;
 
-  static String version = "1.6.0";
+  static String version = "1.6.2";
 
   static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
