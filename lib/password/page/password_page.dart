@@ -55,10 +55,66 @@ class _PasswordPageState extends State<PasswordPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     PasswordProvider model = Provider.of<PasswordProvider>(context);
+    List<Widget> appbarActions = [
+      IconButton(
+        splashColor: Colors.transparent,
+        icon: RuntimeData.multiPasswordSelected ? Icon(Icons.clear) :Icon(Icons.sort),
+        onPressed: () {
+          setState(() {
+            RuntimeData.multiSelectClear(AllpassType.Password);
+          });
+        },
+      ),
+      Padding(padding: AllpassEdgeInsets.smallLPadding)
+    ];
+    if (RuntimeData.multiPasswordSelected) {
+      appbarActions.insertAll(0, [
+        PopupMenuButton<String>(
+          onSelected: (value) {
+            switch (value) {
+              case "删除":
+                _deletePassword(context, model);
+                break;
+              case "移动":
+                _movePassword(context, model);
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+                value: "移动",
+                child: Text("移动")
+            ),
+            PopupMenuItem(
+                value: "删除",
+                child: Text("删除")
+            ),
+          ]
+        ),
+        IconButton(
+          splashColor: Colors.transparent,
+          icon: Icon(Icons.select_all),
+          onPressed: () {
+            if (RuntimeData.multiPasswordList.length != model.count) {
+              RuntimeData.multiPasswordList.clear();
+              setState(() {
+                RuntimeData.multiPasswordList.addAll(model.passwordList);
+              });
+            } else {
+              setState(() {
+                RuntimeData.multiPasswordList.clear();
+              });
+            }
+          },
+        )
+      ]);
+    }
+
     Widget listView;
     if (model.passwordList.isNotEmpty) {
-      if (RuntimeData.multiSelected) {
+      if (RuntimeData.multiPasswordSelected) {
         listView = ListView.builder(
           controller: _controller,
           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
@@ -88,6 +144,7 @@ class _PasswordPageState extends State<PasswordPage>
     } else {
       listView = NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等");
     }
+
     return Scaffold(
         appBar: AppBar(
           title: Padding(
@@ -101,73 +158,7 @@ class _PasswordPageState extends State<PasswordPage>
             ),
           ),
           automaticallyImplyLeading: false,
-          actions: <Widget>[
-            RuntimeData.multiSelected
-                ? Row(
-              children: <Widget>[
-                PopupMenuButton<String>(
-                    onSelected: (value) {
-                      switch (value) {
-                        case "删除":
-                          _deletePassword(context, model);
-                          break;
-                        case "移动":
-                          _movePassword(context, model);
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      PopupMenuItem(
-                          value: "移动",
-                          child: Text("移动")
-                      ),
-                      PopupMenuItem(
-                          value: "删除",
-                          child: Text("删除")
-                      ),
-                    ]
-                ),
-                Padding(
-                  padding: AllpassEdgeInsets.smallLPadding,
-                ),
-                InkWell(
-                  splashColor: Colors.transparent,
-                  child: Icon(Icons.select_all),
-                  onTap: () {
-                    if (RuntimeData.multiPasswordList.length != model.count) {
-                      RuntimeData.multiPasswordList.clear();
-                      setState(() {
-                        RuntimeData.multiPasswordList.addAll(model.passwordList);
-                      });
-                    } else {
-                      setState(() {
-                        RuntimeData.multiPasswordList.clear();
-                      });
-                    }
-                  },
-                ),
-              ],
-            ) : Container(),
-            Padding(
-              padding: AllpassEdgeInsets.smallLPadding,
-            ),
-            InkWell(
-              splashColor: Colors.transparent,
-              child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
-              onTap: () {
-                setState(() {
-                  RuntimeData.multiPasswordList.clear();
-                  RuntimeData.multiSelected = !RuntimeData.multiSelected;
-                });
-              },
-            ),
-            Padding(
-              padding: AllpassEdgeInsets.smallLPadding,
-            ),
-            Padding(
-              padding: AllpassEdgeInsets.smallLPadding,
-            )
-          ],
+          actions: appbarActions,
         ),
         body: Column(
           children: <Widget>[
@@ -196,7 +187,7 @@ class _PasswordPageState extends State<PasswordPage>
         ));
   }
 
-  _searchPress() {
+  void _searchPress() {
     Navigator.push(
         context,
         MaterialPageRoute(

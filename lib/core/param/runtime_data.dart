@@ -1,3 +1,4 @@
+import 'package:allpass/core/param/allpass_type.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -12,7 +13,8 @@ class RuntimeData {
 
   static List<PasswordBean> multiPasswordList = []; // 多选的密码
   static List<CardBean> multiCardList = [];         // 多选的卡片
-  static bool multiSelected = false;                            // 是否点击了多选按钮
+  static bool multiPasswordSelected = false;        // 是否点击了多选按钮
+  static bool multiCardSelected = false;
 
   static List<String> folderList = [];              // 文件夹列表
   static List<String> labelList = [];               // 标签列表
@@ -71,5 +73,15 @@ class RuntimeData {
   static void updateTapPosition(DragDownDetails details) {
     double y = AllpassScreenUtil.screenHighDp / 2;
     RuntimeData.tapVerticalPosition = (details.globalPosition.dy - y) / y;
+  }
+
+  static void multiSelectClear(AllpassType type) {
+    if (type == AllpassType.Password) {
+      multiPasswordList.clear();
+      multiPasswordSelected = !multiPasswordSelected;
+    } else if (type == AllpassType.Card) {
+      multiCardList.clear();
+      multiCardSelected = !multiCardSelected;
+    }
   }
 }

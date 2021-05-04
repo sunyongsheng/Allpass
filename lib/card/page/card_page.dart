@@ -55,10 +55,66 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     CardProvider model = Provider.of<CardProvider>(context);
+    List<Widget> appbarActions = [
+      IconButton(
+        splashColor: Colors.transparent,
+        icon: RuntimeData.multiCardSelected ? Icon(Icons.clear) :Icon(Icons.sort),
+        onPressed: () {
+          setState(() {
+            RuntimeData.multiSelectClear(AllpassType.Card);
+          });
+        },
+      ),
+      Padding(padding: AllpassEdgeInsets.smallLPadding)
+    ];
+    if (RuntimeData.multiCardSelected) {
+      appbarActions.insertAll(0, [
+        PopupMenuButton<String>(
+          onSelected: (value) {
+            switch (value) {
+              case "删除":
+                _deleteCard(context, model);
+                break;
+              case "移动":
+                _moveCard(context, model);
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+                value: "移动",
+                child: Text("移动")
+            ),
+            PopupMenuItem(
+                value: "删除",
+                child: Text("删除")
+            ),
+          ]
+        ),
+        IconButton(
+          splashColor: Colors.transparent,
+          icon: Icon(Icons.select_all),
+          onPressed: () {
+            if (RuntimeData.multiCardList.length != model.count) {
+              RuntimeData.multiCardList.clear();
+              setState(() {
+                RuntimeData.multiCardList.addAll(model.cardList);
+              });
+            } else {
+              setState(() {
+                RuntimeData.multiCardList.clear();
+              });
+            }
+          },
+        )
+      ]);
+    }
+
     Widget listView;
     if (model.cardList.isNotEmpty) {
-      if (RuntimeData.multiSelected) {
+      if (RuntimeData.multiCardSelected) {
         listView = ListView.builder(
           controller: _controller,
           itemBuilder: (context, index) => MultiCardWidgetItem(data: model.cardList[index]),
@@ -84,6 +140,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     } else {
       listView = NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -100,73 +157,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          RuntimeData.multiSelected
-              ? Row(
-            children: <Widget>[
-              PopupMenuButton<String>(
-                  onSelected: (value) {
-                    switch (value) {
-                      case "删除":
-                        _deleteCard(context, model);
-                        break;
-                      case "移动":
-                        _moveCard(context, model);
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                        value: "移动",
-                        child: Text("移动")
-                    ),
-                    PopupMenuItem(
-                        value: "删除",
-                        child: Text("删除")
-                    ),
-                  ]
-              ),
-              Padding(
-                padding: AllpassEdgeInsets.smallLPadding,
-              ),
-              InkWell(
-                splashColor: Colors.transparent,
-                child: Icon(Icons.select_all),
-                onTap: () {
-                  if (RuntimeData.multiCardList.length != model.count) {
-                    RuntimeData.multiCardList.clear();
-                    setState(() {
-                      RuntimeData.multiCardList.addAll(model.cardList);
-                    });
-                  } else {
-                    setState(() {
-                      RuntimeData.multiCardList.clear();
-                    });
-                  }
-                },
-              ),
-            ],
-          ) : Container(),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          ),
-          InkWell(
-            splashColor: Colors.transparent,
-            child: RuntimeData.multiSelected ? Icon(Icons.clear) : Icon(Icons.sort),
-            onTap: () {
-              setState(() {
-                RuntimeData.multiCardList.clear();
-                RuntimeData.multiSelected = !RuntimeData.multiSelected;
-              });
-            },
-          ),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          ),
-          Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-          )
-        ],
+        actions: appbarActions
       ),
       body: Column(
         children: <Widget>[
