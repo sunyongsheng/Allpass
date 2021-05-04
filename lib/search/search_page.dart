@@ -70,7 +70,7 @@ class _SearchPage extends State<SearchPage> {
   }
 
   Widget getSearchWidget(SearchProvider provider, int index) {
-    if (_type == AllpassType.Password) {
+    if (_type == AllpassType.password) {
       var item = provider.passwordSearch[index];
       return PasswordWidgetItem(
         data: item,
@@ -82,7 +82,7 @@ class _SearchPage extends State<SearchPage> {
               });
         },
       );
-    } else if (_type == AllpassType.Card) {
+    } else if (_type == AllpassType.card) {
       var item = provider.cardSearch[index];
       return SimpleCardWidgetItem(
         data: provider.cardSearch[index],

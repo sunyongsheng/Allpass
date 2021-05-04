@@ -160,7 +160,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     List<PasswordBean> backup = List.from(Provider.of<PasswordProvider>(context).passwordList);
     try {
       String string = _fileUtil.readFile(filePath);
-      List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.Password);
+      List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.password);
       try {
         // 正常执行
         await Provider.of<PasswordProvider>(context).clear();
@@ -200,7 +200,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     List<CardBean> backup = List.from(Provider.of<CardProvider>(context).cardList);
     try {
       String string = _fileUtil.readFile(filePath);
-      List<CardBean> list = _fileUtil.decodeList(string, AllpassType.Card);
+      List<CardBean> list = _fileUtil.decodeList(string, AllpassType.card);
       try {
         // 正常执行
         await Provider.of<CardProvider>(context).clear();

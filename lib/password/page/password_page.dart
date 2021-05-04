@@ -63,7 +63,7 @@ class _PasswordPageState extends State<PasswordPage>
         icon: RuntimeData.multiPasswordSelected ? Icon(Icons.clear) :Icon(Icons.sort),
         onPressed: () {
           setState(() {
-            RuntimeData.multiSelectClear(AllpassType.Password);
+            RuntimeData.multiSelectClear(AllpassType.password);
           });
         },
       ),
@@ -192,8 +192,8 @@ class _PasswordPageState extends State<PasswordPage>
         context,
         MaterialPageRoute(
             builder: (context) => ChangeNotifierProvider.value(
-              value: SearchProvider(AllpassType.Password, context),
-              child: SearchPage(AllpassType.Password),
+              value: SearchProvider(AllpassType.password, context),
+              child: SearchPage(AllpassType.password),
             )));
   }
 

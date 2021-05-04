@@ -165,7 +165,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               context,
                               CupertinoPageRoute(
                                   builder: (context) =>
-                                      CategoryManagerPage(CategoryType.Label)));
+                                      CategoryManagerPage(CategoryType.label)));
                         },
                       ),
                       ListTile(
@@ -176,7 +176,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               context,
                               CupertinoPageRoute(
                                   builder: (context) =>
-                                      CategoryManagerPage(CategoryType.Folder)));
+                                      CategoryManagerPage(CategoryType.folder)));
                         },
                       ),
                     ],

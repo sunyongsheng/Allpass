@@ -40,7 +40,7 @@ class ImportFromCsvPage extends StatelessWidget {
                       type: FileType.custom,
                       allowedExtensions: ['csv']
                   );
-                  _process(context, importFuture(context, AllpassType.Password,
+                  _process(context, importFuture(context, AllpassType.password,
                       result?.files?.single?.path));
                 }
             ),
@@ -55,7 +55,7 @@ class ImportFromCsvPage extends StatelessWidget {
                       type: FileType.custom,
                       allowedExtensions: ['csv']
                   );
-                  _process(context, importFuture(context, AllpassType.Card,
+                  _process(context, importFuture(context, AllpassType.card,
                       result?.files?.single?.path));
                 }
             ),
@@ -68,7 +68,7 @@ class ImportFromCsvPage extends StatelessWidget {
   Future<Null> importFuture(BuildContext context, AllpassType type, String path) async {
     if (path != null) {
       try {
-        if (type == AllpassType.Password) {
+        if (type == AllpassType.password) {
           List<PasswordBean> passwordList = await CsvUtil.passwordImportFromCsv(path: path);
           for (var bean in passwordList) {
             await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);

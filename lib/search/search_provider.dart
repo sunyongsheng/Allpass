@@ -19,12 +19,12 @@ class SearchProvider with ChangeNotifier {
   final AllpassType type;
   
   SearchProvider(this.type, BuildContext context) {
-    if (type == AllpassType.Password) {
+    if (type == AllpassType.password) {
       _passwordList = [];
       passwordSearch = [];
       _passwordList.addAll(Provider.of<PasswordProvider>(context).passwordList);
       passwordSearch.addAll(_passwordList);
-    } else if (type == AllpassType.Card) {
+    } else if (type == AllpassType.card) {
       _cardList = [];
       cardSearch = [];
       _cardList.addAll(Provider.of<CardProvider>(context).cardList);
@@ -33,14 +33,14 @@ class SearchProvider with ChangeNotifier {
   }
   
   void search(String regex) {
-    if (type == AllpassType.Password) {
+    if (type == AllpassType.password) {
       passwordSearch.clear();
       for (var bean in _passwordList) {
         if (_containsKeyword1(bean, regex)) {
           passwordSearch.add(bean);
         }
       }
-    } else if (type == AllpassType.Card) {
+    } else if (type == AllpassType.card) {
       cardSearch.clear();
       for (var bean in _cardList) {
         if (_containsKeyword2(bean, regex)) {
@@ -52,18 +52,18 @@ class SearchProvider with ChangeNotifier {
   }
 
   bool empty() {
-    if (type == AllpassType.Password) {
+    if (type == AllpassType.password) {
       return passwordSearch.isEmpty;
-    } else if (type == AllpassType.Card) {
+    } else if (type == AllpassType.card) {
       return cardSearch.isEmpty;
     }
     return true;
   }
 
   int length() {
-    if (type == AllpassType.Password) {
+    if (type == AllpassType.password) {
       return passwordSearch.length;
-    } else if (type == AllpassType.Card) {
+    } else if (type == AllpassType.card) {
       return cardSearch.length;
     }
     return 0;

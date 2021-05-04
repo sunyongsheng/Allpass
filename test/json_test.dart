@@ -35,7 +35,7 @@ void main() {
 
   test("译码测试", () {
     test1 = util.encodeList(testData1);
-    print(util.decodeList(test1, AllpassType.Password));
+    print(util.decodeList(test1, AllpassType.password));
   });
 
   test("文件夹与标签测试", () {

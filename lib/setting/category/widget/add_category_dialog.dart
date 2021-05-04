@@ -9,7 +9,7 @@ class AddCategoryDialog extends StatefulWidget {
   final Key key;
   final CategoryType type;
 
-  AddCategoryDialog({this.key, this.type = CategoryType.Label}) : super(key: key);
+  AddCategoryDialog({this.key, this.type = CategoryType.label}) : super(key: key);
 
   @override
   _AddLabelDialog createState() {

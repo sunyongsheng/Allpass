@@ -51,7 +51,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                       if (right) {
                         String path = await goToConfirm(context);
                         if (path != null) {
-                          _process(context, exportFuture(context, Directory(path), type: AllpassType.Password));
+                          _process(context, exportFuture(context, Directory(path), type: AllpassType.password));
                         }
                       }
                     });
@@ -81,7 +81,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                       if (right != null && right) {
                         String path = await goToConfirm(context);
                         if (path != null) {
-                          _process(context, exportFuture(context, Directory(path), type: AllpassType.Card));
+                          _process(context, exportFuture(context, Directory(path), type: AllpassType.card));
                         }
                       }
                     });
@@ -152,12 +152,12 @@ class ExportTypeSelectPage extends StatelessWidget {
 
   Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType type}) async {
     switch (type) {
-      case AllpassType.Password:
+      case AllpassType.password:
         List<PasswordBean> list = await PasswordDao().getAllPasswordBeanList();
         String path = await CsvUtil.passwordExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
-      case AllpassType.Card:
+      case AllpassType.card:
         List<CardBean> list = await CardDao().getAllCardBeanList();
         String path = await CsvUtil.cardExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));

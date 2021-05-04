@@ -63,7 +63,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         icon: RuntimeData.multiCardSelected ? Icon(Icons.clear) :Icon(Icons.sort),
         onPressed: () {
           setState(() {
-            RuntimeData.multiSelectClear(AllpassType.Card);
+            RuntimeData.multiSelectClear(AllpassType.card);
           });
         },
       ),
@@ -190,8 +190,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(
-        value: SearchProvider(AllpassType.Card, context),
-        child: SearchPage(AllpassType.Card),
+        value: SearchProvider(AllpassType.card, context),
+        child: SearchPage(AllpassType.card),
       )));
   }
 

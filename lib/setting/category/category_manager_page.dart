@@ -63,7 +63,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                   var child = data.removeAt(oldIndex);
                   data.insert(newIndex, child);
                 });
-                if (this.type == CategoryType.Label) {
+                if (this.type == CategoryType.label) {
                   RuntimeData.labelParamsPersistence();
                 } else {
                   RuntimeData.folderParamsPersistence();
@@ -83,9 +83,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
             builder: (context) => AddCategoryDialog(type: this.type)
           ).then((value) {
             if (value != null) {
-              if (this.type == CategoryType.Folder && RuntimeData.folderListAdd(value)) {
+              if (this.type == CategoryType.folder && RuntimeData.folderListAdd(value)) {
                 ToastUtil.show(msg: "添加$categoryName $value 成功");
-              } else if (this.type == CategoryType.Label && RuntimeData.labelListAdd([value])) {
+              } else if (this.type == CategoryType.label && RuntimeData.labelListAdd([value])) {
                 ToastUtil.show(msg: "添加$categoryName $value 成功");
               } else {
                 ToastUtil.showError(msg: "$categoryName $value 已存在");
@@ -109,7 +109,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
           leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
-            if (this.type == CategoryType.Folder && currCategoryName == defaultFolderName) {
+            if (this.type == CategoryType.folder && currCategoryName == defaultFolderName) {
               ToastUtil.show(msg: "此文件夹不允许修改！");
               return;
             }
@@ -132,13 +132,13 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             builder: (context) => EditCategoryDialog(widget.type, data[currIndex])
                           ).then((value) async {
                             if (value != null) {
-                              if (this.type == CategoryType.Label) {
+                              if (this.type == CategoryType.label) {
                                 if (RuntimeData.labelList.contains(value)) {
                                   ToastUtil.showError(msg: "$categoryName $value 已存在");
                                   return;
                                 }
                                 await editLabelAndUpdate(currIndex, value);
-                              } else if (this.type == CategoryType.Folder){
+                              } else if (this.type == CategoryType.folder){
                                 if (RuntimeData.folderList.contains(value)) {
                                   ToastUtil.showError(msg: "$categoryName $value 已存在");
                                   return;
@@ -159,12 +159,12 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         onTap: () async {
                           String hintText = "";
                           Future<Null> Function() deleteCallback;
-                          if (this.type == CategoryType.Label) {
+                          if (this.type == CategoryType.label) {
                             hintText = "拥有此标签的密码或卡片将删除此标签，确认吗？";
                             deleteCallback = () async {
                               await deleteLabelAndUpdate(currCategoryName);
                             };
-                          } else if (this.type == CategoryType.Folder) {
+                          } else if (this.type == CategoryType.folder) {
                             hintText = "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？";
                             deleteCallback = () async {
                               await deleteFolderAndUpdate(currCategoryName);
@@ -276,9 +276,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   List<String> _getCategoryData(CategoryType type) {
-    if (type == CategoryType.Folder) {
+    if (type == CategoryType.folder) {
       return RuntimeData.folderList;
-    } else if (type == CategoryType.Label) {
+    } else if (type == CategoryType.label) {
       return RuntimeData.labelList;
     } else {
       return [];

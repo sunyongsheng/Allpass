@@ -1,21 +1,21 @@
 /// 存储app中的类型
 enum AllpassType {
-  Password,
-  Card
+  password,
+  card
 }
 
 /// 属性类型，包括文件夹与标签
 enum CategoryType {
-  Folder,
-  Label,
-  Unknown
+  folder,
+  label,
+  unknown
 }
 
 class Category {
   static String getCategoryName(CategoryType type) {
-    if (type == CategoryType.Folder) {
+    if (type == CategoryType.folder) {
       return "文件夹";
-    } else if (type == CategoryType.Label) {
+    } else if (type == CategoryType.label) {
       return "标签";
     } else {
       return "未知";
@@ -24,11 +24,11 @@ class Category {
 
   static CategoryType getCategoryType(String name) {
     if (name == "文件夹") {
-      return CategoryType.Folder;
+      return CategoryType.folder;
     } else if (name == "标签") {
-      return CategoryType.Label;
+      return CategoryType.label;
     } else {
-      return CategoryType.Unknown;
+      return CategoryType.unknown;
     }
   }
 }

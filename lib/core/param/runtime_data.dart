@@ -76,10 +76,10 @@ class RuntimeData {
   }
 
   static void multiSelectClear(AllpassType type) {
-    if (type == AllpassType.Password) {
+    if (type == AllpassType.password) {
       multiPasswordList.clear();
       multiPasswordSelected = !multiPasswordSelected;
-    } else if (type == AllpassType.Card) {
+    } else if (type == AllpassType.card) {
       multiCardList.clear();
       multiCardSelected = !multiCardSelected;
     }

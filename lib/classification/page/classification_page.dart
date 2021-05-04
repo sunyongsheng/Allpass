@@ -64,7 +64,7 @@ class ClassificationPage extends StatelessWidget {
             ));
           },
           onLongPress: () => Navigator.push(context, CupertinoPageRoute(
-            builder: (context) => CategoryManagerPage(CategoryType.Folder),
+            builder: (context) => CategoryManagerPage(CategoryType.folder),
           )),
           title: folder,
           color: getRandomColor(seed: folder.hashCode),
