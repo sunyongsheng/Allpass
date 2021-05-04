@@ -8,8 +8,10 @@ import 'package:allpass/util/string_util.dart';
 
 class CsvUtil {
 
+  CsvUtil._();
+
   /// 将PasswordList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  Future<String> passwordExportCsv(List<PasswordBean> list, Directory dst) async {
+  static Future<String> passwordExportCsv(List<PasswordBean> list, Directory dst) async {
     if (Platform.isAndroid) {
       String path = "${dst.path}/allpass_密码.csv";
       File csv = File(path);
@@ -23,7 +25,7 @@ class CsvUtil {
   }
 
   /// 将CardList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  Future<String> cardExportCsv(List<CardBean> list, Directory dst) async {
+  static Future<String> cardExportCsv(List<CardBean> list, Directory dst) async {
     if (Platform.isAndroid) {
       String path = "${dst.path}/allpass_卡片.csv";
       File csv = File(path);
@@ -37,9 +39,9 @@ class CsvUtil {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  Future<List<PasswordBean>> passwordImportFromCsv({String path, String toParseText}) async {
+  static Future<List<PasswordBean>> passwordImportFromCsv({String path, String toParseText}) async {
     assert(path == null || toParseText == null, "只能传入一个参数！");
-    List<PasswordBean> res = List();
+    List<PasswordBean> res = [];
     String fileContext;
     if (toParseText != null) {
       fileContext = toParseText;
@@ -54,23 +56,23 @@ class CsvUtil {
     if (text.length <= 1) return null;
     else {
       List<String> index = text[0].split(",");
-      Map<String, int> indexMap = findIndex(index);
+      Map<String, int> indexMap = _findIndexOf(index);
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
         if (attribute.length != index.length) continue;
-        List<String> label = List();
-        String name = getValueWithCatch(attribute, indexMap, 'name');
-        String username = getValueWithCatch(attribute, indexMap, 'username');
-        String password = getValueWithCatch(attribute, indexMap, 'password');
-        String url = getValueWithCatch(attribute, indexMap, 'url');
-        String folder = getValueWithCatch(attribute, indexMap, 'folder');
-        String notes = getValueWithCatch(attribute, indexMap, 'notes');
+        List<String> label = [];
+        String name = _getValueWithCatch(attribute, indexMap, 'name');
+        String username = _getValueWithCatch(attribute, indexMap, 'username');
+        String password = _getValueWithCatch(attribute, indexMap, 'password');
+        String url = _getValueWithCatch(attribute, indexMap, 'url');
+        String folder = _getValueWithCatch(attribute, indexMap, 'folder');
+        String notes = _getValueWithCatch(attribute, indexMap, 'notes');
         if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
-          label = StringUtil.waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
+          label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
         }
-        int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
-        String createTime = getValueWithCatch(attribute, indexMap, "createTime");
+        int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
+        String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -88,8 +90,8 @@ class CsvUtil {
   }
 
   /// 从csv文件中导入Card
-  Future<List<CardBean>> cardImportFromCsv(String path) async {
-    List<CardBean> res = List();
+  static Future<List<CardBean>> cardImportFromCsv(String path) async {
+    List<CardBean> res = [];
     File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
     String fileContext = file.readAsStringSync();
@@ -97,24 +99,24 @@ class CsvUtil {
     if (text.length <= 1) return null;
     else {
       List<String> index = text[0].split(",");
-      Map<String, int> indexMap = findIndex(index);
+      Map<String, int> indexMap = _findIndexOf(index);
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
         List<String> attribute = item.split(",");
         if (attribute.length != index.length) continue;
-        List<String> label = List();
-        String name = getValueWithCatch(attribute, indexMap, 'name');
-        String ownerName = getValueWithCatch(attribute, indexMap, 'ownerName');
-        String cardId = getValueWithCatch(attribute, indexMap, 'cardId');
-        String password = getValueWithCatch(attribute, indexMap, 'password');
-        String telephone = getValueWithCatch(attribute, indexMap, 'telephone');
-        String folder = getValueWithCatch(attribute, indexMap, 'folder');
-        String notes = getValueWithCatch(attribute, indexMap, 'notes');
-        int fav = int.parse(getValueWithCatch(attribute, indexMap, 'fav'));
+        List<String> label = [];
+        String name = _getValueWithCatch(attribute, indexMap, 'name');
+        String ownerName = _getValueWithCatch(attribute, indexMap, 'ownerName');
+        String cardId = _getValueWithCatch(attribute, indexMap, 'cardId');
+        String password = _getValueWithCatch(attribute, indexMap, 'password');
+        String telephone = _getValueWithCatch(attribute, indexMap, 'telephone');
+        String folder = _getValueWithCatch(attribute, indexMap, 'folder');
+        String notes = _getValueWithCatch(attribute, indexMap, 'notes');
+        int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
         if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
-          label = StringUtil.waveLineSegStr2List(getValueWithCatch(attribute, indexMap, 'label'));
+          label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
         }
-        String createTime = getValueWithCatch(attribute, indexMap, "createTime");
+        String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
         res.add(CardBean(
           name: name,
           ownerName: ownerName,
@@ -132,7 +134,7 @@ class CsvUtil {
     return res;
   }
 
-  Map<String, int> findIndex(List<String> index) {
+  static Map<String, int> _findIndexOf(List<String> index) {
     Map<String, int> res = HashMap();
     for (int i = 0; i < index.length; i++) {
       res[index[i]] = i;
@@ -143,7 +145,7 @@ class CsvUtil {
     return res;
   }
 
-  String getValueWithCatch(List<String> values, Map<String, int> indexMap, String mapKey) {
+  static String _getValueWithCatch(List<String> values, Map<String, int> indexMap, String mapKey) {
     try {
       if (indexMap.containsKey(mapKey)) return values[indexMap[mapKey]];
     } on RangeError {} catch (e) {}

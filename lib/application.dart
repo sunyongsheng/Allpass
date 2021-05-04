@@ -53,7 +53,7 @@ class Application {
     shareMethodChannel = const MethodChannel(ChannelConstants.channel);
     shareMethodChannel.setMethodCallHandler((call) {
       if (call.method == ChannelConstants.methodImportChromeData) {
-        Future<List<PasswordBean>> res = CsvUtil().passwordImportFromCsv(toParseText: call.arguments);
+        Future<List<PasswordBean>> res = CsvUtil.passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
         return res;
       } else {
