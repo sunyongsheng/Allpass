@@ -36,7 +36,7 @@ class _LoginPage extends State<LoginPage> {
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         showDialog(
             context: context,
-            child: AlertDialog(
+            builder: (cx) => AlertDialog(
               title: Text("服务条款"),
               content: SingleChildScrollView(
                 child: Column(
@@ -47,14 +47,14 @@ class _LoginPage extends State<LoginPage> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text("同意并继续"),
                   onPressed: () async {
                     await initAppFirstRun();
                     Navigator.pop(context);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("取消"),
                   onPressed: () => exit(0),
                 )
@@ -110,13 +110,15 @@ class _LoginPage extends State<LoginPage> {
                   textAlign: TextAlign.center,
               ),
               Padding(
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).primaryColor),
+                    padding: MaterialStateProperty.resolveWith((states) => EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8)),
+                    shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+                    ))
                   ),
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
-                  color: Theme.of(context).primaryColor,
                   onPressed: () => login(),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,
@@ -127,14 +129,14 @@ class _LoginPage extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text("注册"),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(
                         builder: (context) => RegisterPage()
                     )),
                   ),
                   Text("|"),
-                  FlatButton(
+                  TextButton(
                     child: Text("使用生物识别"),
                     onPressed: () {
                       if (Config.enabledBiometrics)

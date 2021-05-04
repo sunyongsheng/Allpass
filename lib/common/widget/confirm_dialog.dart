@@ -9,18 +9,19 @@ class ConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text(_dialogTitle),
       content: Text(_dialogMessage),
       actions: <Widget>[
-        FlatButton(
-          child: Text("确认"),
+        TextButton(
+          child: Text("确认", style: TextStyle(color: mainColor),),
           onPressed: () async {
             Navigator.pop<bool>(context, true);
           },
         ),
-        FlatButton(
-          child: Text("取消"),
+        TextButton(
+          child: Text("取消", style: TextStyle(color: mainColor)),
           onPressed: () {
             Navigator.pop<bool>(context, false);
           },

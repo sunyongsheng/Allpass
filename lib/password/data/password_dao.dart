@@ -85,7 +85,7 @@ class PasswordDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      List<PasswordBean> res = List();
+      List<PasswordBean> res = [];
       for (var map in maps) {
         PasswordBean bean = PasswordBean.fromJson(map);
         bean.color = getRandomColor(seed: bean.uniqueKey);

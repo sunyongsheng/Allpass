@@ -44,6 +44,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text("编辑$categoryName"),
       content: Column(
@@ -74,15 +75,15 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         ],
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           onPressed: () => _submit(),
-          child: Text('提交'),
+          child: Text('提交', style: TextStyle(color: mainColor)),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('取消'),
+          child: Text('取消', style: TextStyle(color: mainColor)),
         ),
       ],
     );

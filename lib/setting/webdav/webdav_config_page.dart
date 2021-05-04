@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -40,7 +38,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _portController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
+        _mainColor = Theme.of(context).primaryColor;
       });
       _frameDone = true;
     });
@@ -171,8 +169,13 @@ class _WebDavConfigPage extends State<StatefulWidget> {
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: FlatButton(
-                  color: _mainColor,
+                child: TextButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(_mainColor),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    ))
+                  ),
                   child: _pressNext
                       ? SizedBox(
                     height: 20,
@@ -183,9 +186,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     ),
                   )
                       : Text("下一步", style: TextStyle(color: Colors.white)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  ),
                   onPressed: () async => await _nextStep(),
                 ),
               )

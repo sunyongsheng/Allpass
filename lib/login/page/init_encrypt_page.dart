@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/navigation_util.dart';
@@ -79,8 +77,10 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    FlatButton(
-                      color: Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
+                      ),
                       child: haveGen
                           ? Text("重新生成", style: TextStyle(color: Colors.white))
                           : (inGen
@@ -105,10 +105,13 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                       },
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 10),),
-                    FlatButton(
-                      color: haveGen
-                          ? Provider.of<ThemeProvider>(context).lightTheme.primaryColor
-                          : Colors.grey,
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => haveGen
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey
+                        )
+                      ),
                       child: Text("去登录", style: TextStyle(color: Colors.white),),
                       onPressed: () async {
                         if (!haveGen) {
@@ -121,10 +124,12 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                       },
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 10),),
-                    FlatButton(
-                      color: haveGen
-                          ? Colors.grey
-                          : Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
+                    TextButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) => haveGen
+                              ? Colors.grey
+                              : Theme.of(context).primaryColor)
+                      ),
                       child: Text("默认密钥", style: TextStyle(color: Colors.white),),
                       onPressed: () {
                         if (haveGen) {

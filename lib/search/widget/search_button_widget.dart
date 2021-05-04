@@ -1,3 +1,4 @@
+import 'package:allpass/util/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
@@ -11,18 +12,21 @@ class SearchButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = ThemeUtil.isInDarkTheme(context) ? Colors.grey : Colors.grey[900];
     return Container(
       padding: AllpassEdgeInsets.forSearchButtonInset,
-      child: FlatButton(
+      child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all((Theme.of(context).inputDecorationTheme.fillColor)),
+        ),
         onPressed: press,
         child: Row(
           children: <Widget>[
-            Icon(Icons.search),
-            Text("搜索$searchType"),
+            Icon(Icons.search, color: textColor,),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
+            Text("搜索$searchType", style: TextStyle(color: textColor),),
           ],
-        ),
-        color: Theme.of(context).inputDecorationTheme.fillColor,
-        splashColor: Colors.transparent,
+        )
       ),
     );
   }

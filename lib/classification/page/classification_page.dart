@@ -45,7 +45,7 @@ class ClassificationPage extends StatelessWidget {
   }
 
   List<Widget> getClassWidgets(BuildContext context) {
-    List<Widget> list  = List();
+    List<Widget> list = [];
     list.add(
         ClassificationItem(
           onPress: () {

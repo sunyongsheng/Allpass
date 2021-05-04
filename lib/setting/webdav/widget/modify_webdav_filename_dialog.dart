@@ -42,7 +42,7 @@ class ModifyWebDavFileNameDialog extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
           child: Text("提交"),
           onPressed: () async {
             String password = _passwordFileNameController.text;
@@ -73,7 +73,7 @@ class ModifyWebDavFileNameDialog extends StatelessWidget {
             Navigator.pop(context, res);
           },
         ),
-        FlatButton(child: Text("取消"), onPressed: () => Navigator.pop(context, false))
+        TextButton(child: Text("取消"), onPressed: () => Navigator.pop(context, false))
       ],
     );
   }

@@ -89,7 +89,7 @@ class SimpleCountCache<T> {
     var bound = min(min(_map.length, _maxSize), count);
     T currentMaxValue;
     Set<T> res = Set();
-    List<T> exs = List();
+    List<T> exs = [];
     for (int index = 0; index < bound; index++) {
       currentMaxValue = _findMaxElement(exclusives: exs);
       exs.add(currentMaxValue);

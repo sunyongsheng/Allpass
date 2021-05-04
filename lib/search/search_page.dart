@@ -1,9 +1,9 @@
+import 'package:allpass/util/theme_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
@@ -119,7 +119,7 @@ class _SearchPage extends State<SearchPage> {
                     hintText: "搜索名称、用户名、备注或标签",
                     hintStyle: TextStyle(
                       fontSize: 14,
-                      color: Config.lightTheme == 'dark'
+                      color: ThemeUtil.isInDarkTheme(context)
                           ? Colors.grey
                           : Colors.grey[900],),
                   ),
@@ -129,7 +129,6 @@ class _SearchPage extends State<SearchPage> {
                   onEditingComplete: () {
                     provider.search(_searchController.text.toLowerCase());
                   },
-                  autofocus: true,
                 ),
               )
             ),
@@ -153,7 +152,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            Provider.of<PasswordProvider>(context).previewPassword(bean: data);
+            Provider.of<PasswordProvider>(context, listen: false).previewPassword(bean: data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewPasswordPage()))
                 .then((_) => Navigator.pop(context));
@@ -214,7 +213,7 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
-            Provider.of<CardProvider>(context).previewCard(bean: data);
+            Provider.of<CardProvider>(context, listen: false).previewCard(bean: data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewCardPage()))
                 .then((_) => Navigator.pop(context));
@@ -253,7 +252,7 @@ class _SearchPage extends State<SearchPage> {
                 context: context,
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
             if (delete) {
-              await Provider.of<CardProvider>(context).deleteCard(data);
+              await Provider.of<CardProvider>(context, listen: false).deleteCard(data);
               ToastUtil.show(msg: "删除成功");
               Navigator.pop(context);
             }

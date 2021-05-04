@@ -99,7 +99,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   }
 
   List<Widget> _getAllWidget() {
-    List<Widget> widgets = List();
+    List<Widget> widgets = [];
     for (int currIndex = 0; currIndex < data.length; currIndex++) {
       String currCategoryName = data[currIndex];
       widgets.add(Container(
@@ -281,7 +281,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     } else if (type == CategoryType.Label) {
       return RuntimeData.labelList;
     } else {
-      return List();
+      return [];
     }
   }
 

@@ -59,7 +59,7 @@ class AllpassServiceImpl implements AllpassService {
           defaultConfig: ResponseConfig(
               defaultSuccessMsg: "感谢你的反馈！", defaultFailedMsg: "提交失败，请反馈给作者！"));
     } on DioError catch (dioError) {
-      if (dioError.type == DioErrorType.RESPONSE) {
+      if (dioError.type == DioErrorType.response) {
         return AllpassResponse(
             status: ResponseStatus.ServerError,
             msg: "提交失败，远程服务器出现问题，请发送邮件到sys6511@126.com",

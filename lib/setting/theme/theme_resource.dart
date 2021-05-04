@@ -4,48 +4,82 @@ import '../../common/ui/allpass_ui.dart';
 
 /// 主题
 class AllpassTheme {
-  ThemeData blueTheme() {
-    return defaultTheme(mainColor: Colors.blue);
+  ThemeData blueTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.blue);
+    } else {
+      return defaultTheme(mainColor: Colors.blue);
+    }
   }
 
-  ThemeData redTheme() {
-    return defaultTheme(mainColor: Colors.red);
+  ThemeData redTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.red);
+    } else {
+      return defaultTheme(mainColor: Colors.red);
+    }
   }
 
-  ThemeData tealTheme() {
-    return defaultTheme(mainColor: Colors.teal);
+  ThemeData tealTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.teal);
+    } else {
+      return defaultTheme(mainColor: Colors.teal);
+    }
   }
 
-  ThemeData deepPurpleTheme() {
-    return defaultTheme(mainColor: Colors.deepPurple);
+  ThemeData deepPurpleTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.deepPurple);
+    } else {
+      return defaultTheme(mainColor: Colors.deepPurple);
+    }
   }
 
-  ThemeData orangeTheme() {
-    return defaultTheme(mainColor: Colors.orange);
+  ThemeData orangeTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.orange);
+    } else {
+      return defaultTheme(mainColor: Colors.orange);
+    }
   }
 
-  ThemeData pinkTheme() {
-    return defaultTheme(mainColor: Colors.pink);
+  ThemeData pinkTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.pink);
+    } else {
+      return defaultTheme(mainColor: Colors.pink);
+    }
   }
 
-  ThemeData blueGreyTheme() {
-    return defaultTheme(mainColor: Colors.blueGrey);
+  ThemeData blueGreyTheme(bool dark) {
+    if (dark) {
+      return darkTheme(mainColor: Colors.blueGrey);
+    } else {
+      return defaultTheme(mainColor: Colors.blueGrey);
+    }
   }
 
-  ThemeData darkTheme() {
+  ThemeData darkTheme({Color mainColor}) {
     return ThemeData(
-      primaryColor: Colors.blueAccent,
-      primarySwatch: Colors.blue,
-      accentColor: Colors.grey,
+      primaryColor: mainColor,
+      primarySwatch: mainColor,
+      accentColor: mainColor,
       appBarTheme: AppBarTheme(
         brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white70),
         elevation: 0,
         color: Colors.black,
+        textTheme: TextTheme(headline6: TextStyle(color: Colors.white))
       ),
-      bottomAppBarColor: Colors.black,
-      floatingActionButtonTheme:
-        FloatingActionButtonThemeData(foregroundColor: Colors.white),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        unselectedItemColor: Colors.grey
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white,
+        backgroundColor: mainColor
+      ),
       scaffoldBackgroundColor: Colors.black,
       bottomSheetTheme: BottomSheetThemeData(
         modalBackgroundColor: Color.fromRGBO(25, 25, 25, 1),
@@ -61,8 +95,10 @@ class AllpassTheme {
         color: Colors.grey[900],
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius))
       ),
-      indicatorColor: Colors.blueAccent,
-      cursorColor: Colors.blueAccent,
+      indicatorColor: mainColor,
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: mainColor
+      ),
       textTheme: TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white),
@@ -74,7 +110,7 @@ class AllpassTheme {
         bodyText2: TextStyle(color: Colors.white),
         subtitle1: TextStyle(color: Colors.white),
         subtitle2: TextStyle(color: Colors.white),
-        button: TextStyle(color: Colors.white),
+        button: TextStyle(color: mainColor),
         headline6: TextStyle(color: Colors.white),
       ),
       dialogTheme: DialogTheme(
@@ -88,7 +124,6 @@ class AllpassTheme {
       ),
       dividerColor: Colors.grey,
       inputDecorationTheme: InputDecorationTheme(
-        labelStyle: TextStyle(color: Colors.white),
         fillColor: Colors.grey[900],
         hintStyle: TextStyle(color: Colors.grey),
         border: OutlineInputBorder(
@@ -101,6 +136,16 @@ class AllpassTheme {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
       ),
+      textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+              alignment: Alignment.center,
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+              ))
+          )
+      ),
       chipTheme: ChipThemeData(
         backgroundColor: Colors.grey[700],
         brightness: Brightness.dark,
@@ -109,8 +154,8 @@ class AllpassTheme {
         labelStyle: TextStyle(color: Colors.white),
         padding: EdgeInsets.all(4),
         secondaryLabelStyle: TextStyle(color: Colors.white),
-        secondarySelectedColor: Colors.blue,
-        selectedColor: Colors.blue,
+        secondarySelectedColor: mainColor,
+        selectedColor: mainColor,
         shape: StadiumBorder(),
       ),
       canvasColor: Colors.black,
@@ -130,20 +175,39 @@ class AllpassTheme {
       primaryColor: mainColor,
       primarySwatch: mainColor,
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-          foregroundColor: Colors.white),
+        foregroundColor: Colors.white
+      ),
       appBarTheme: AppBarTheme(
-          brightness: Brightness.light,
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          color: Colors.white,
-          textTheme: TextTheme(headline6: TextStyle(color: Colors.black))),
+        brightness: Brightness.light,
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        color: Colors.white,
+        textTheme: TextTheme(headline6: TextStyle(color: Colors.black))),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        elevation: 0,
+        selectedItemColor: mainColor,
+        backgroundColor: Colors.white,
+        unselectedItemColor: Colors.grey
+      ),
       scaffoldBackgroundColor: Colors.white,
       buttonTheme: ButtonThemeData(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all(Colors.black),
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          alignment: Alignment.center,
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+          ))
+        )
+      ),
       indicatorColor: mainColor,
-      cursorColor: mainColor,
+        textSelectionTheme: TextSelectionThemeData(
+            cursorColor: mainColor
+        ),
       cardTheme: CardTheme(
         color: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)),

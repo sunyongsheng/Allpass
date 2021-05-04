@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
@@ -45,6 +43,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text("密码生成器"),
       content: SingleChildScrollView(
@@ -160,10 +159,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   child: TextField(controller: _controller,),
                 ),
                 InkWell(
-                  child: Text("复制",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Provider.of<ThemeProvider>(context).lightTheme.primaryColor),),
+                  child: Text("复制", style: TextStyle(fontSize: 14)),
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: _controller.text));
                   },
@@ -174,14 +170,14 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
         )
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text("确认"),
+        TextButton(
+          child: Text("确认", style: TextStyle(color: mainColor)),
           onPressed: () {
             Navigator.pop<String>(context, _controller.text);
           },
         ),
-        FlatButton(
-          child: Text("生成"),
+        TextButton(
+          child: Text("生成", style: TextStyle(color: mainColor)),
           onPressed: () {
             setState(() {
               _controller.text = EncryptUtil.generateRandomKey(
@@ -193,8 +189,8 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
             });
           },
         ),
-        FlatButton(
-          child: Text("关闭"),
+        TextButton(
+          child: Text("关闭", style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop<String>(context, null),
         )
       ],

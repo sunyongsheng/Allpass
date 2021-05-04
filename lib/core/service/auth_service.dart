@@ -22,8 +22,8 @@ class AuthServiceImpl implements AuthService {
       cancelButton: "取消",
       goToSettingsButton: "设置",
       goToSettingsDescription: "请设置你的指纹",
-      fingerprintRequiredTitle: "请验证指纹",
-      fingerprintNotRecognized: "指纹识别失败，请重新验证"
+      biometricRequiredTitle: "请验证指纹",
+      biometricNotRecognized: "指纹识别失败，请重新验证"
   );
 
   final iosString = const IOSAuthMessages(
@@ -46,10 +46,11 @@ class AuthServiceImpl implements AuthService {
           // Touch ID.
         }
       }
-      isAuthenticated = await _auth.authenticateWithBiometrics(
+      isAuthenticated = await _auth.authenticate(
           localizedReason: '授权以访问账号',
           useErrorDialogs: true,
           stickyAuth: true,
+          biometricOnly: true,
           androidAuthStrings: androidString,
           iOSAuthStrings: iosString
       );

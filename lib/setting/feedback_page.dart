@@ -77,10 +77,12 @@ class _FeedbackPage extends State<StatefulWidget> {
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
             ),
-            FlatButton(
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+            TextButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).primaryColor),
+                shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+                ))
               ),
               child: Text("提交", style: TextStyle(color: Colors.white),),
               onPressed: () async {
@@ -95,7 +97,7 @@ class _FeedbackPage extends State<StatefulWidget> {
                 FocusScope.of(context).requestFocus(_blankFocus);
                 showDialog(
                     context: context,
-                    child: FutureBuilder(
+                    builder: (cx) => FutureBuilder(
                       future: submitFeedback(),
                       builder: (context, snapshot) {
                         switch (snapshot.connectionState) {

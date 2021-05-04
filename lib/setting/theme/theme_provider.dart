@@ -17,8 +17,8 @@ class ThemeProvider with ChangeNotifier {
   init() {
     _allpassTheme = AllpassTheme();
     themeMode = _string2ThemeMode(Config.themeMode);
-    lightTheme = _string2LightTheme(Config.lightTheme);
-    darkTheme = _string2DarkTheme();
+    lightTheme = _string2Theme(Config.lightTheme, false);
+    darkTheme = _string2Theme(Config.lightTheme, true);
   }
 
   void changeTheme(String themeName, {BuildContext context}) {
@@ -29,7 +29,8 @@ class ThemeProvider with ChangeNotifier {
       _changeThemeMode(themeModeName: "system");
     } else {
       _changeThemeMode();
-      lightTheme = _string2LightTheme(themeName);
+      lightTheme = _string2Theme(themeName, false);
+      darkTheme = _string2Theme(themeName, true);
       Config.setLightTheme(themeName);
     }
     setExtraColor(context: context);
@@ -53,29 +54,25 @@ class ThemeProvider with ChangeNotifier {
     }
   }
 
-  ThemeData _string2LightTheme(String themeName) {
+  ThemeData _string2Theme(String themeName, bool dark) {
     switch (themeName) {
       case "blue":
-        return _allpassTheme.blueTheme();
+        return _allpassTheme.blueTheme(dark);
       case "red":
-        return _allpassTheme.redTheme();
+        return _allpassTheme.redTheme(dark);
       case "teal":
-        return _allpassTheme.tealTheme();
+        return _allpassTheme.tealTheme(dark);
       case "deepPurple":
-        return _allpassTheme.deepPurpleTheme();
+        return _allpassTheme.deepPurpleTheme(dark);
       case "orange":
-        return _allpassTheme.orangeTheme();
+        return _allpassTheme.orangeTheme(dark);
       case "pink":
-        return _allpassTheme.pinkTheme();
+        return _allpassTheme.pinkTheme(dark);
       case "blueGrey":
-        return _allpassTheme.blueGreyTheme();
+        return _allpassTheme.blueGreyTheme(dark);
       default:
-        return _allpassTheme.blueTheme();
+        return _allpassTheme.blueTheme(dark);
     }
-  }
-
-  ThemeData _string2DarkTheme() {
-    return _allpassTheme.darkTheme();
   }
   
   void setExtraColor({BuildContext context, bool needReverse = false}) {

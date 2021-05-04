@@ -84,7 +84,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Text("微博：@Aengus_Sun"),
                         onPressed: () async {
                           await launch("https://weibo.com/u/5484402663");
@@ -93,7 +93,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Text("邮箱：sys6511@126.com"),
                         onPressed: () async {
                           await launch("mailto:sys6511@126.com");
@@ -102,7 +102,7 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
-                      child: FlatButton(
+                      child: TextButton(
                         child: Text("开发者网址：https://www.aengus.top"),
                         onPressed: () async {
                           await launch("https://www.aengus.top");
@@ -113,14 +113,14 @@ class AboutPage extends StatelessWidget {
                         padding: AllpassEdgeInsets.dividerInset,
                         child: Row(
                           children: <Widget>[
-                            FlatButton(
+                            TextButton(
                               child: Text("开源地址：Github"),
                               onPressed: () async {
                                 await launch("https://github.com/sunyongsheng/Allpass");
                               },
                             ),
                             Text("|"),
-                            FlatButton(
+                            TextButton(
                               child: Text("码云"),
                               onPressed: () async {
                                 await launch("https://gitee.com/sunyongsheng/Allpass");
@@ -141,7 +141,7 @@ class AboutPage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("服务条款"),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(

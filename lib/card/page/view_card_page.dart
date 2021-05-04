@@ -14,7 +14,6 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
@@ -41,11 +40,7 @@ class _ViewCardPage extends State<ViewCardPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        if (ThemeUtil.isInDarkTheme(context)) {
-          _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
-        } else {
-          _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
-        }
+        _mainColor = Theme.of(context).primaryColor;
       });
     });
   }
@@ -401,7 +396,7 @@ class _ViewCardPage extends State<ViewCardPage> {
   }
 
   List<Widget> _getTag(CardBean bean) {
-    List<Widget> labelChoices = List();
+    List<Widget> labelChoices = [];
     bean.label.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,

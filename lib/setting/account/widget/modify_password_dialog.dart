@@ -19,6 +19,7 @@ class ModifyPasswordDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text(
         "修改主密码",
@@ -49,8 +50,8 @@ class ModifyPasswordDialog extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text("提交"),
+        TextButton(
+          child: Text("提交", style: TextStyle(color: mainColor)),
           onPressed: () async {
             if (Config.password == EncryptUtil.encrypt(_oldPasswordController.text)) {
               if (_newPasswordController.text.length >= 6
@@ -67,7 +68,10 @@ class ModifyPasswordDialog extends StatelessWidget {
             }
           },
         ),
-        FlatButton(child: Text("取消"), onPressed: () => Navigator.pop(context))
+        TextButton(
+          child: Text("取消", style: TextStyle(color: mainColor)),
+          onPressed: () => Navigator.pop(context)
+        )
       ],
     );
   }

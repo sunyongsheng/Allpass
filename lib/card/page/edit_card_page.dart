@@ -15,7 +15,6 @@ import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/common/widget/password_generation_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/setting/category/widget/add_category_dialog.dart';
 
 /// 查看或编辑“卡片”页面
@@ -64,7 +63,7 @@ class _EditCardPage extends State<EditCardPage> {
     if (operation == DataOperation.update) {
       this._oldData = widget.data;
       _folder = _oldData.folder;
-      _labels = List()..addAll(_oldData.label);
+      _labels = List.from(_oldData.label);
       _fav = _oldData.fav;
       _createTime = _oldData.createTime;
 
@@ -81,16 +80,12 @@ class _EditCardPage extends State<EditCardPage> {
       _telephoneController = TextEditingController();
       _notesController = TextEditingController();
       _passwordController = TextEditingController();
-      _labels = List();
+      _labels = [];
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        if (ThemeUtil.isInDarkTheme(context)) {
-          _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
-        } else {
-          _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
-        }
+        _mainColor = Theme.of(context).primaryColor;
       });
       _frameDone = true;
     });
@@ -121,7 +116,7 @@ class _EditCardPage extends State<EditCardPage> {
             IconButton(
               icon: Icon(Icons.code),
               onPressed: () {
-                showDialog(context: context, child: PasswordGenerationDialog())
+                showDialog(context: context, builder: (cx) => PasswordGenerationDialog())
                     .then((value) {
                   if (value != null) _passwordController.text = value;
                 });
@@ -417,7 +412,7 @@ class _EditCardPage extends State<EditCardPage> {
   }
 
   List<Widget> _getMostUsedOwnerName() {
-    List<Widget> chips = List();
+    List<Widget> chips = [];
     Provider.of<CardProvider>(context).mostUsedOwnerName.forEach((element) {
       chips.add(Container(
         padding: EdgeInsets.only(right: 8),
@@ -434,7 +429,7 @@ class _EditCardPage extends State<EditCardPage> {
   }
 
   List<Widget> _getTag() {
-    List<Widget> labelChoices = List();
+    List<Widget> labelChoices = [];
     RuntimeData.labelList.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,

@@ -43,9 +43,9 @@ class ClassificationDetailsPage extends StatelessWidget {
   }
 
   Widget _getListView(BuildContext context, ScrollController controller) {
-    List<Widget> all = List();
-    List<Widget> list1 = List();
-    List<Widget> list2 = List();
+    List<Widget> all = [];
+    List<Widget> list1 = [];
+    List<Widget> list2 = [];
     PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
     for (int index = 0; index < provider1.count; index++) {
       try {

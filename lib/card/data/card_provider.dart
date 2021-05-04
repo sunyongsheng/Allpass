@@ -6,7 +6,7 @@ import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
-final List<CardBean> emptyList = List();
+final List<CardBean> emptyList = [];
 
 /// 保存程序中所有的Card
 class CardProvider with ChangeNotifier {
@@ -15,7 +15,7 @@ class CardProvider with ChangeNotifier {
   CardDao _dao = CardDao();
   CardBean _currCard = CardBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
-  List<String> _mostUsedOwnerName = List();
+  List<String> _mostUsedOwnerName = [];
 
   bool _haveInit = false;
 
@@ -26,7 +26,7 @@ class CardProvider with ChangeNotifier {
 
   Future<Null> init() async {
     if (_haveInit) return;
-    _cardList = List();
+    _cardList = [];
     var res = await _dao.getAllCardBeanList();
     if (res != null) {
       _cardList.addAll(res);

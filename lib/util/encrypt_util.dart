@@ -69,15 +69,15 @@ class EncryptUtil {
 
   static String generateRandomKey(int len, {bool cap = true, bool low = true, bool number = true, bool sym = true}) {
 
-    List<String> _capitalList = List()..addAll(['D', 'E', 'F', 'G',
+    List<String> _capitalList = List.from(['D', 'E', 'F', 'G',
       'H', 'I', 'J', 'O', 'K', 'L', 'M', 'A', 'B', 'C', 'X', 'Y', 'N',
       'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Z']);
-    List<String> _lowCaseList = List()..addAll(['a', 'v', 'w', 'f', 'g','x', 'm',
+    List<String> _lowCaseList = List.from(['a', 'v', 'w', 'f', 'g','x', 'm',
       'h', 'i', 'k', 'l', 'n', 'b', 'c', 'd', 'e', 'o', 'p', 'r', 'j',  's', 't', 'u',
       'y', 'q', 'z']);
-    List<String> _numberList = List()..addAll(['1', '9', '0', '2', '5', '6', '3', '4', '7', '8']);
-    List<String> _symbolList = List()..addAll(['!', '@', '*', '?', '#', '%', '~', '=']);
-    List<String> list = List();
+    List<String> _numberList = List.from(['1', '9', '0', '2', '5', '6', '3', '4', '7', '8']);
+    List<String> _symbolList = List.from(['!', '@', '*', '?', '#', '%', '~', '=']);
+    List<String> list =[];
     if (cap && low && number && sym) {
       list.addAll(_lowCaseList);
       list.addAll(_capitalList);

@@ -157,7 +157,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<PasswordBean> backup = List()..addAll(Provider.of<PasswordProvider>(context).passwordList);
+    List<PasswordBean> backup = List.from(Provider.of<PasswordProvider>(context).passwordList);
     try {
       String string = _fileUtil.readFile(filePath);
       List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.Password);
@@ -197,7 +197,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<CardBean> backup = List()..addAll(Provider.of<CardProvider>(context).cardList);
+    List<CardBean> backup = List.from(Provider.of<CardProvider>(context).cardList);
     try {
       String string = _fileUtil.readFile(filePath);
       List<CardBean> list = _fileUtil.decodeList(string, AllpassType.Card);

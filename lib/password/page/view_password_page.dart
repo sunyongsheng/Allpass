@@ -13,7 +13,6 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
@@ -43,11 +42,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        if (ThemeUtil.isInDarkTheme(context)) {
-          _mainColor = Provider.of<ThemeProvider>(context).darkTheme.primaryColor;
-        } else {
-          _mainColor = Provider.of<ThemeProvider>(context).lightTheme.primaryColor;
-        }
+        _mainColor = Theme.of(context).primaryColor;
       });
     });
   }
@@ -365,7 +360,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   }
 
   List<Widget> _getTag(PasswordBean bean) {
-    List<Widget> labelChoices = List();
+    List<Widget> labelChoices = [];
     bean.label.forEach((item) {
       labelChoices.add(LabelChip(
           text: item,

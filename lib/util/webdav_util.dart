@@ -73,7 +73,7 @@ class WebDavUtil {
           )
       );
       if (response.statusCode < 300) {
-        List<String> fileNames = List();
+        List<String> fileNames = [];
         var xmlDoc = XmlDocument.parse(response.data);
         xmlDoc.findAllElements("d:displayname").map((e) => e.text).forEach((fileName) {
           if (fileName.isNotEmpty) {
@@ -123,7 +123,7 @@ class WebDavUtil {
           headers: _baseHeaders,
         )
       );
-      List<String> fileNames = List();
+      List<String> fileNames = [];
       if (response.statusCode < 300) {
         var xmlDoc = XmlDocument.parse(response.data);
         xmlDoc.findAllElements("d:displayname").map((e) => e.text).forEach((fileName) {

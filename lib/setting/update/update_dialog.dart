@@ -70,10 +70,11 @@ class UpdateDialog extends StatelessWidget {
   }
 
   List<Widget> _createUpdateAction(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
       return [
-        FlatButton(
-            child: Text("下载更新"),
+        TextButton(
+            child: Text("下载更新", style: TextStyle(color: mainColor)),
             onPressed: () async {
               String downloadUrl;
               if (updateBean.isBetaChannel()) {
@@ -83,16 +84,16 @@ class UpdateDialog extends StatelessWidget {
               }
               await launch(downloadUrl);
             }),
-        FlatButton(
-            child: Text("下次再说"),
+        TextButton(
+            child: Text("下次再说", style: TextStyle(color: mainColor),),
             onPressed: () => Navigator.pop(context))];
     } else {
       return [
-        FlatButton(
-            child: Text("确定"),
+        TextButton(
+            child: Text("确定", style: TextStyle(color: mainColor)),
             onPressed: () => Navigator.pop(context)),
-        FlatButton(
-          child: Text("取消"),
+        TextButton(
+          child: Text("取消", style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop(context),)];
     }
   }

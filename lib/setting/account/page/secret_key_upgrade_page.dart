@@ -10,7 +10,6 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
 class SecretKeyUpgradePage extends StatefulWidget {
@@ -108,8 +107,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    FlatButton(
-                      color: Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
+                      ),
                       child: haveGen
                           ? Text("重新生成", style: TextStyle(color: Colors.white))
                           : Text("点击生成", style: TextStyle(color: Colors.white),),
@@ -122,10 +123,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                       },
                     ),
                     Padding(padding: EdgeInsets.symmetric(horizontal: 10),),
-                    FlatButton(
-                      color: haveGen
-                          ? Provider.of<ThemeProvider>(context).lightTheme.primaryColor
-                          : Colors.grey,
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith((states) => haveGen
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey)
+                      ),
                       child: haveUpgrade
                           ? Text("升级完成", style: TextStyle(color: Colors.white),)
                           : inUpgrade ? SizedBox(
@@ -173,10 +176,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     encryptHolder = EncryptHolder(await EncryptUtil.getStoreKey());
     await EncryptUtil.initEncryptByKey(_latestKey);
     List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList() ?? [];
-    List<PasswordBean> passwordsBackup = List();
+    List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
     List<CardBean> cards = await cardDao.getAllCardBeanList() ?? [];
-    List<CardBean> cardsBackup = List();
+    List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
     String backup2 = Config.webDavPassword;

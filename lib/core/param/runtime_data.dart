@@ -10,24 +10,20 @@ import 'package:allpass/util/string_util.dart';
 class RuntimeData {
   RuntimeData._();
 
-  static List<PasswordBean> multiPasswordList = List(); // 多选的密码
-  static List<CardBean> multiCardList = List();         // 多选的卡片
-  static bool multiSelected;                            // 是否点击了多选按钮
+  static List<PasswordBean> multiPasswordList = []; // 多选的密码
+  static List<CardBean> multiCardList = [];         // 多选的卡片
+  static bool multiSelected = false;                            // 是否点击了多选按钮
 
-  static List<String> folderList = List();              // 文件夹列表
-  static List<String> labelList = List();               // 标签列表
+  static List<String> folderList = [];              // 文件夹列表
+  static List<String> labelList = [];               // 标签列表
 
-  static int newPasswordOrCardCount;  // 每次打开软件新增的密码或卡片数量
+  static int newPasswordOrCardCount = 0;  // 每次打开软件新增的密码或卡片数量
 
-  static double tapVerticalPosition;  // 取值范围-1到1，0代表中心位置
+  static double tapVerticalPosition = 0;  // 取值范围-1到1，0代表中心位置
 
   static void initData() {
-    newPasswordOrCardCount = 0;
-    tapVerticalPosition = 0;
-    multiSelected = false;
-
-    String folder = Application.sp.getString(SPKeys.folder)??"";
-    String label = Application.sp.getString(SPKeys.label)??"";
+    String folder = Application.sp.getString(SPKeys.folder) ?? "";
+    String label = Application.sp.getString(SPKeys.label) ?? "";
     folderList = StringUtil.waveLineSegStr2List(folder);
     labelList = StringUtil.waveLineSegStr2List(label);
   }

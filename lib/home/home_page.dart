@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
 
-  final List<Widget> _pagesList = List()
+  final List<Widget> _pagesList = []
     ..add(PasswordPage())
     ..add(CardPage())
     ..add(ClassificationPage())
@@ -40,7 +40,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     _controller = PageController(initialPage: 0);
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<ThemeProvider>(context).setExtraColor(context: context);
+      Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
 
       if (needUpdateSecret) {
         showDialog(
@@ -62,7 +62,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
             context: context,
-            child: UpdateDialog(updateBean)
+            builder: (cx) => UpdateDialog(updateBean)
         );
       }
     });
@@ -71,7 +71,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    Provider.of<ThemeProvider>(context).setExtraColor(context: context, needReverse: true);
+    Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context, needReverse: true);
   }
 
   @override
@@ -97,7 +97,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Theme.of(context).bottomAppBarColor,
+        unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle,),

@@ -139,7 +139,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
               trailing: theme == -1 ? Icon(Icons.check, color: Colors.grey,) : null,
               onTap: () {
                 setState(() {
-                  Provider.of<ThemeProvider>(context).changeTheme("system", context: context);
+                  Provider.of<ThemeProvider>(context, listen: false).changeTheme("system", context: context);
                 });
               },
             ),
@@ -151,7 +151,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
 
   void setTheme(String themeName) {
     setState(() {
-      Provider.of<ThemeProvider>(context).changeTheme(themeName);
+      Provider.of<ThemeProvider>(context, listen: false).changeTheme(themeName);
     });
   }
 

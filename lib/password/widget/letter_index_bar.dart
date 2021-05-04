@@ -36,7 +36,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _children = List();
+    List<Widget> _children = [];
     Map<String, int> map = Provider.of<PasswordProvider>(context).letterCountIndex;
     var keys = map.keys;
     letters.forEach((item) {

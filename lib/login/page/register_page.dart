@@ -66,12 +66,14 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
+                child: TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
+                    )),
+                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
                   ),
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
-                  color: Theme.of(context).primaryColor,
                   onPressed: () async => await register(context),
                 ),
               ),
@@ -81,7 +83,7 @@ class _RegisterPage extends State<RegisterPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text("已有账号？登录"),
                     onPressed: () => Navigator.push(context, MaterialPageRoute(
                         builder: (context) => LoginPage()

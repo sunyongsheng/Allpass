@@ -11,47 +11,49 @@ dependencies:
     sdk: flutter
 
   # 动画
-  animations: ^1.1.2
-  # IOS图标
-  cupertino_icons: ^1.0.0
+  animations: ^2.0.0
+#  # IOS图标
+#  cupertino_icons: ^1.0.2
+  # 权限申请
+  permission_handler: ^7.1.0
   # 弹出底部通知
-  fluttertoast: ^7.1.6
+  fluttertoast: ^8.0.6
   # 数据库
-  sqflite: ^1.3.2
+  sqflite: ^2.0.0
   # 应用路径
-  path_provider: ^1.6.24
+  path_provider: ^2.0.1
   # 密码加密
   encrypt: ^4.1.0
   # 文件管理
-  file_picker: ^2.1.4
+  file_picker: ^3.0.1
   # 路径选择
-  directory_picker: ^1.0.0
+  filesystem_picker: ^1.0.4
   # 打开链接
-  url_launcher: ^5.7.10
+  url_launcher: ^6.0.3
   # 状态管理
-  provider: ^3.2.0
+  provider: ^5.0.0
   # 路由管理
-  fluro: ^1.7.7
+  fluro: ^2.0.3
   # 持久化
-  shared_preferences: ^0.5.12+4
+  shared_preferences: ^2.0.5
   # 依赖注入
-  get_it: ^5.0.3
+  get_it: ^7.0.0
   # 生物识别
-  local_auth: ^0.6.3+4
+  local_auth: ^1.1.5
   # 屏幕尺寸管理
   flutter_screenutil: ^0.7.0
   # 汉字转拼音
-  lpinyin: ^1.1.0
+  lpinyin: ^2.0.1
   # 网络请求
-  dio: ^3.0.8
+  dio: ^4.0.0
   # 设备信息
-  device_info: ^1.0.0
+  device_info: ^2.0.0
   # 分享功能
-  share: ^0.6.5+4
+  share: ^2.0.1
   # 密钥存储
-  flutter_secure_storage: ^3.3.5
+  flutter_secure_storage: ^4.2.0
   # XML解析
-  xml: ^4.5.1
+  xml: ^5.1.0
 
 dev_dependencies:
   flutter_test:

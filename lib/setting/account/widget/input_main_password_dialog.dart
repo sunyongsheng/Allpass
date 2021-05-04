@@ -16,6 +16,7 @@ class InputMainPasswordDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text("请输入主密码"),
       content: NoneBorderCircularTextField(
@@ -27,12 +28,12 @@ class InputMainPasswordDialog extends StatelessWidget {
         onEditingComplete: () => submit(context),
       ),
       actions: <Widget>[
-        FlatButton(
-          child: Text("确认"),
+        TextButton(
+          child: Text("确认", style: TextStyle(color: mainColor)),
           onPressed: () => submit(context),
         ),
-        FlatButton(
-          child: Text("取消"),
+        TextButton(
+          child: Text("取消", style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop<bool>(context, false),
         )
       ],
@@ -40,6 +41,10 @@ class InputMainPasswordDialog extends StatelessWidget {
   }
 
   void submit(BuildContext context) {
+    if (_passwordController.text.isEmpty) {
+      ToastUtil.showError(msg: "请输入密码");
+      return;
+    }
     if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
       _passwordController.clear();
       Config.updateLatestUsePasswordTime();

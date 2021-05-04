@@ -1,7 +1,5 @@
-import 'package:allpass/util/theme_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
+import 'package:allpass/util/theme_util.dart';
 
 class LabelChip extends StatelessWidget {
   final Key key;
@@ -27,7 +25,7 @@ class LabelChip extends StatelessWidget {
       labelStyle: TextStyle(fontSize: 14, color: textColor),
       selected: selected,
       onSelected: onSelected,
-      selectedColor: Provider.of<ThemeProvider>(context).lightTheme.primaryColor,
+      selectedColor: Theme.of(context).primaryColor,
     );
   }
 

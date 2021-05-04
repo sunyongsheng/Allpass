@@ -20,13 +20,13 @@ class SearchProvider with ChangeNotifier {
   
   SearchProvider(this.type, BuildContext context) {
     if (type == AllpassType.Password) {
-      _passwordList = List();
-      passwordSearch = List();
+      _passwordList = [];
+      passwordSearch = [];
       _passwordList.addAll(Provider.of<PasswordProvider>(context).passwordList);
       passwordSearch.addAll(_passwordList);
     } else if (type == AllpassType.Card) {
-      _cardList = List();
-      cardSearch = List();
+      _cardList = [];
+      cardSearch = [];
       _cardList.addAll(Provider.of<CardProvider>(context).cardList);
       cardSearch.addAll(_cardList);
     }

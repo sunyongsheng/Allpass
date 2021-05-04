@@ -6,7 +6,7 @@ import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
-final List<PasswordBean> emptyList = List();
+final List<PasswordBean> emptyList = [];
 
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier {
@@ -18,7 +18,7 @@ class PasswordProvider with ChangeNotifier {
   Map<String, int> _letterCountIndex = Map();
   PasswordBean _currPassword = PasswordBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 5);
-  List<String> _mostUsedUsername = List();
+  List<String> _mostUsedUsername = [];
 
   bool _haveInit = false;
 
@@ -33,7 +33,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> init() async {
     if (_haveInit) return;
-    _passwordList = List();
+    _passwordList = [];
     var res = await _dao.getAllPasswordBeanList();
     if (res != null) {
       _passwordList.addAll(res);

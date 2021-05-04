@@ -40,9 +40,9 @@ class FavoritePage extends StatelessWidget {
   }
 
   Widget _getFavWidgetListView(BuildContext context, ScrollController controller) {
-    List<Widget> list1 = List();
-    List<Widget> list2 = List();
-    List<Widget> all = List();
+    List<Widget> list1 = [];
+    List<Widget> list2 = [];
+    List<Widget> all = [];
     PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
     for (int index = 0; index < provider1.count; index++) {
       try {

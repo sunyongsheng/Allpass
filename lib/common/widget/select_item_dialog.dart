@@ -21,7 +21,7 @@ class SelectItemDialog extends StatelessWidget {
   }
 
   List<Widget> _getList(BuildContext context) {
-    List<Widget> list = List();
+    List<Widget> list = [];
     for (String f in _list) {
       list.add(ListTile(
         title: Text(f),

@@ -35,7 +35,7 @@ class _DebugPage extends State<DebugPage> {
         child: Column(
           children: <Widget>[
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("页面测试"),
                 onPressed: () async {
                   showDialog<String>(
@@ -61,7 +61,7 @@ class _DebugPage extends State<DebugPage> {
               ),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("查看sp"),
                 onPressed: () async {
                   Set<String> keys = Application.sp.getKeys();
@@ -83,7 +83,7 @@ class _DebugPage extends State<DebugPage> {
               ),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("删除所有密码记录"),
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();
@@ -92,7 +92,7 @@ class _DebugPage extends State<DebugPage> {
               ),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("删除所有卡片记录"),
                 onPressed: () async {
                   await Provider.of<CardProvider>(context).clear();
@@ -101,7 +101,7 @@ class _DebugPage extends State<DebugPage> {
               ),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("删除密码数据库"),
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();
@@ -111,7 +111,7 @@ class _DebugPage extends State<DebugPage> {
               ),
             ),
             ListTile(
-              title: FlatButton(
+              title: TextButton(
                 child: Text("删除卡片数据库"),
                 onPressed: () async {
                   await Provider.of<PasswordProvider>(context).clear();

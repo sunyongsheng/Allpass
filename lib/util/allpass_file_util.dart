@@ -34,13 +34,13 @@ class AllpassFileUtil {
   String encodeList(List<BaseModel> list) {
     if (list == null || list.isEmpty) return null;
     if (list[0] is PasswordBean) {
-      List<PasswordBean> passwords = List();
+      List<PasswordBean> passwords = [];
       for (PasswordBean bean in list) {
         passwords.add(PasswordBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
       }
       return json.encode(passwords);
     } else if (list[0] is CardBean){
-      List<CardBean> cards = List();
+      List<CardBean> cards = [];
       for (CardBean bean in list) {
         cards.add(CardBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
       }
@@ -53,13 +53,13 @@ class AllpassFileUtil {
   List<BaseModel> decodeList(String string, AllpassType type) {
     List<dynamic> decodedRes = json.decode(string);
     if (type == AllpassType.Password) {
-      List<PasswordBean> results = List();
+      List<PasswordBean> results = [];
       for (var temp in decodedRes) {
         results.add(PasswordBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));
       }
       return results;
     } else if (type == AllpassType.Card) {
-      List<CardBean> results = List();
+      List<CardBean> results = [];
       for (var temp in decodedRes) {
         results.add(CardBean.fromJson(temp, encryptLevel: Config.webDavEncryptLevel));
       }
@@ -77,11 +77,11 @@ class AllpassFileUtil {
   Map<String, List<String>> decodeFolderAndLabel(String string) {
     var decoded = json.decode(string);
     Map<String, List<String>> res = Map();
-    res['folder'] = List<String>();
+    res['folder'] = [];
     for (var item in decoded['folder']) {
       res['folder'].add(item.toString());
     }
-    res['label'] = List<String>();
+    res['label'] = [];
     for (var item in decoded['label']) {
       res['label'].add(item.toString());
     }

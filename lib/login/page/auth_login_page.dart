@@ -58,8 +58,10 @@ class _AuthLoginPage extends State<StatefulWidget> {
           Padding(
             padding: AllpassEdgeInsets.smallTBPadding,
           ),
-          FlatButton(
-            color: Colors.transparent,
+          TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.transparent)
+            ),
             autofocus: true,
             onPressed: () => askAuth(context),
             child: Column(
@@ -76,7 +78,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text("使用密码登录"),
                 onPressed: () async {
                   await _localAuthService.stopAuthenticate();

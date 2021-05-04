@@ -11,14 +11,14 @@ import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 从剪贴板中导入
-class ImportFromClipboard extends StatefulWidget {
+class ImportFromClipboardPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _ImportFromClipboard();
+    return _ImportFromClipboardPage();
   }
 }
 
-class _ImportFromClipboard extends State<ImportFromClipboard> {
+class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
   final TextEditingController _controller = TextEditingController();
   int _groupValue = 1;
 
@@ -190,10 +190,12 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
                   hintText: "在此粘贴您的数据",
                 )
               ),
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                  ))
                 ),
                 child: Text(
                   "导入",
@@ -221,7 +223,7 @@ class _ImportFromClipboard extends State<ImportFromClipboard> {
 
   Future<List<PasswordBean>> parseText(int value) async {
     String text = _controller.text;
-    if (text.isEmpty) return List();
+    if (text.isEmpty) return [];
     List<String> tempRows = text.split("\n");
     List<String> rows = [];
     for (String tr in tempRows) {

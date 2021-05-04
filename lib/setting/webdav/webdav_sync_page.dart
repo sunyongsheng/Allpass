@@ -252,7 +252,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     int p = await _syncService.recoverPassword(context);
     int c = await _syncService.recoverCard(context);
     await _syncService.recoverFolderAndLabel();
-    List<String> msg = new List();
+    List<String> msg = [];
     bool pb = false;
     bool cb = false;
     bool ps = false;
