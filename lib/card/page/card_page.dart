@@ -69,6 +69,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
+    Widget floatingButton;
     if (RuntimeData.multiCardSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
@@ -110,6 +111,17 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           },
         )
       ]);
+    } else {
+      floatingButton = FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context,
+              CupertinoPageRoute(builder: (context) => EditCardPage(null, DataOperation.add))
+          );
+        },
+        heroTag: "card",
+      );
     }
 
     Widget listView;
@@ -172,21 +184,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           )
         ],
       ),
-      // 添加按钮
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => EditCardPage(null, DataOperation.add))
-          );
-        },
-        heroTag: "card",
-      ),
+      floatingActionButton: floatingButton,
     );
   }
 
-  _searchPress() {
+  void _searchPress() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(

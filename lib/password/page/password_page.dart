@@ -69,6 +69,7 @@ class _PasswordPageState extends State<PasswordPage>
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
+    Widget floatingButton;
     if (RuntimeData.multiPasswordSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
@@ -110,6 +111,14 @@ class _PasswordPageState extends State<PasswordPage>
           },
         )
       ]);
+    } else {
+      floatingButton = FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (cx) => EditPasswordPage(null, DataOperation.add))),
+        heroTag: "password",
+      );
     }
 
     Widget listView;
@@ -174,17 +183,8 @@ class _PasswordPageState extends State<PasswordPage>
             )
           ],
         ),
-        // 添加 按钮
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-                context,
-                CupertinoPageRoute(builder: (context) => EditPasswordPage(null, DataOperation.add))
-            );
-          },
-          heroTag: "password",
-        ));
+        floatingActionButton: floatingButton
+    );
   }
 
   void _searchPress() {
