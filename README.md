@@ -78,10 +78,10 @@ TODO
 
 # Flutter环境
 ```
-[✓] Flutter (Channel stable, 1.22.4, on Mac OS X 10.15.7 19H2 darwin-x64, locale zh-Hans-CN)
+[✓] Flutter (Channel stable, 2.0.6, on Mac OS X 10.15.7 19H2 darwin-x64, locale en-CN)
 
-[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.2)
-[✓] Android Studio (version 4.0)
+[✓] Android toolchain - develop for Android devices (Android SDK version 30.0.3)
+[✓] Android Studio (version 4.2)
 ```
 
 # LICENSE
