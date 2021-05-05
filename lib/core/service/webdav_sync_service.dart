@@ -80,7 +80,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   Future<bool> backupPassword(BuildContext context) async {
     await preCheckAllpassDir();
 
-    List<PasswordBean> passwords = Provider.of<PasswordProvider>(context).passwordList;
+    List<PasswordBean> passwords = Provider.of<PasswordProvider>(context, listen: false).passwordList;
     String contents = _fileUtil.encodeList(passwords);
     if (contents == null) return true;
 
@@ -104,7 +104,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   Future<bool> backupCard(BuildContext context) async {
     await preCheckAllpassDir();
 
-    List<CardBean> cards = Provider.of<CardProvider>(context).cardList;
+    List<CardBean> cards = Provider.of<CardProvider>(context, listen: false).cardList;
     String contents = _fileUtil.encodeList(cards);
     if (contents == null) return true;
 
@@ -157,15 +157,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<PasswordBean> backup = List.from(Provider.of<PasswordProvider>(context).passwordList);
+    List<PasswordBean> backup = List.from(Provider.of<PasswordProvider>(context, listen: false).passwordList);
     try {
       String string = _fileUtil.readFile(filePath);
       List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.password);
       try {
         // 正常执行
-        await Provider.of<PasswordProvider>(context).clear();
+        await Provider.of<PasswordProvider>(context, listen: false).clear();
         for (var bean in list) {
-          await Provider.of<PasswordProvider>(context).insertPassword(bean);
+          await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -174,7 +174,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
-          await Provider.of<PasswordProvider>(context).insertPassword(bean);
+          await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -197,15 +197,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     if (filePath == null) {
       return -1;
     }
-    List<CardBean> backup = List.from(Provider.of<CardProvider>(context).cardList);
+    List<CardBean> backup = List.from(Provider.of<CardProvider>(context, listen: false).cardList);
     try {
       String string = _fileUtil.readFile(filePath);
       List<CardBean> list = _fileUtil.decodeList(string, AllpassType.card);
       try {
         // 正常执行
-        await Provider.of<CardProvider>(context).clear();
+        await Provider.of<CardProvider>(context, listen: false).clear();
         for (var bean in list) {
-          await Provider.of<CardProvider>(context).insertCard(bean);
+          await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
@@ -214,7 +214,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
       } catch (e1) {
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
-          await Provider.of<CardProvider>(context).insertCard(bean);
+          await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);

@@ -86,7 +86,7 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("删除所有密码记录"),
                 onPressed: () async {
-                  await Provider.of<PasswordProvider>(context).clear();
+                  await Provider.of<PasswordProvider>(context, listen: false).clear();
                   ToastUtil.show(msg: "已删除所有密码");
                 },
               ),
@@ -95,7 +95,7 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("删除所有卡片记录"),
                 onPressed: () async {
-                  await Provider.of<CardProvider>(context).clear();
+                  await Provider.of<CardProvider>(context, listen: false).clear();
                   ToastUtil.show(msg: "已删除所有卡片");
                 },
               ),
@@ -104,7 +104,7 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("删除密码数据库"),
                 onPressed: () async {
-                  await Provider.of<PasswordProvider>(context).clear();
+                  await Provider.of<PasswordProvider>(context, listen: false).clear();
                   await _passwordDao.deleteTable();
                   ToastUtil.show(msg: "已删除密码数据库");
                 },
@@ -114,7 +114,7 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("删除卡片数据库"),
                 onPressed: () async {
-                  await Provider.of<PasswordProvider>(context).clear();
+                  await Provider.of<PasswordProvider>(context, listen: false).clear();
                   await _cardDao.deleteTable();
                   ToastUtil.show(msg: "已删除卡片数据库");
                 },

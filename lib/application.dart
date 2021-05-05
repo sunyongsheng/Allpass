@@ -80,8 +80,8 @@ class Application {
   }
 
   static Future<Null> clearAll(BuildContext context) async {
-    await Provider.of<PasswordProvider>(context).clear();
-    await Provider.of<CardProvider>(context).clear();
+    await Provider.of<PasswordProvider>(context, listen: false).clear();
+    await Provider.of<CardProvider>(context, listen: false).clear();
     await EncryptUtil.clearEncrypt();
     await Application.sp.clear();
     Config.configClear();

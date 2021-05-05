@@ -173,8 +173,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   }
 
   Future<bool> updateData() async {
-    encryptHolder = EncryptHolder(await EncryptUtil.getStoreKey());
-    await EncryptUtil.initEncryptByKey(_latestKey);
+    String backupKey = await EncryptUtil.getStoreKey();
+    encryptHolder = EncryptHolder(backupKey);
     List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList() ?? [];
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
@@ -183,6 +183,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
     String backup2 = Config.webDavPassword;
+
+    await EncryptUtil.initEncryptByKey(_latestKey);
     try {
       Config.setPassword(EncryptUtil.encrypt(encryptHolder.decrypt(Config.password)));
       if (Config.webDavPassword.length > 6) {
@@ -198,11 +200,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateCardBeanById(bean);
       }
-      await Provider.of<PasswordProvider>(context).refresh();
-      await Provider.of<CardProvider>(context).refresh();
+      await Provider.of<PasswordProvider>(context, listen: false).refresh();
+      await Provider.of<CardProvider>(context, listen: false).refresh();
       ToastUtil.show(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
       return true;
     } catch (e) {
+      await EncryptUtil.initEncryptByKey(backupKey);
       Config.setPassword(backup1);
       Config.setWebDavPassword(backup2);
       for (PasswordBean bean in passwordsBackup) {
@@ -215,8 +218,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateCardBeanById(bean);
       }
-      await Provider.of<PasswordProvider>(context).refresh();
-      await Provider.of<CardProvider>(context).refresh();
+      await Provider.of<PasswordProvider>(context, listen: false).refresh();
+      await Provider.of<CardProvider>(context, listen: false).refresh();
       ToastUtil.show(msg: "升级失败：$e");
       return false;
     }
