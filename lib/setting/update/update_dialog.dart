@@ -53,7 +53,7 @@ class UpdateDialog extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text("由于网络原因出现错误，若您确保您的网络无问题，请截图发送到sys6511@126.com\n"),
+            Text("由于网络原因出现错误，若您确保您的网络无问题，则可能是下面的原因\n"),
             Text(_updateContent)
           ],
         );

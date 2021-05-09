@@ -106,11 +106,11 @@ class AllpassServiceImpl implements AllpassService {
           updateContent: content,
           downloadUrl: downloadUrl,
           channel: channel);
-    } on DioError catch (e) {
+    } on DioError catch (_) {
       return UpdateBean(
         checkResult: CheckUpdateResult.NetworkError,
         version: Application.version,
-        updateContent: e.toString(),
+        updateContent: 'Allpass远程服务未开启，建议前往「酷安」下载最新版本',
       );
     } catch (unknownError) {
       return UpdateBean(
