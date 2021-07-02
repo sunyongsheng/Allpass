@@ -23,6 +23,7 @@ class CardDao extends BaseDBProvider {
   final String columnLabel = "label";
   final String columnFav = "fav";
   final String columnCreateTime = "createTime";
+  final String columnSortNumber = "sortNumber";
 
   @override
   String tableName() {
@@ -43,7 +44,8 @@ class CardDao extends BaseDBProvider {
       $columnNotes TEXT,
       $columnLabel TEXT,
       $columnFav INTEGER DEFAULT 0,
-      $columnCreateTime TEXT)
+      $columnCreateTime TEXT,
+      $columnSortNumber INTEGER DEFAULT -1)
       ''';
   }
 
@@ -113,7 +115,8 @@ class CardDao extends BaseDBProvider {
         "$columnFolder=?,"
         "$columnNotes=?,"
         "$columnLabel=?,"
-        "$columnFav=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.ownerName, bean.cardId, bean.password, bean.telephone, bean.folder, bean.notes, labels, bean.fav]);
+        "$columnFav=?,"
+        "$columnSortNumber=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.ownerName, bean.cardId, bean.password, bean.telephone, bean.folder, bean.notes, labels, bean.fav, bean.sortNumber]);
   }
 }

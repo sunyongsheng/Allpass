@@ -20,6 +20,7 @@ class CardBean extends BaseModel {
   List<String> label; // 9 标签
   int fav; // 10 是否标心
   String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
+  int sortNumber;  // 12 排序号
 
   CardBean(
       {int key,
@@ -33,6 +34,7 @@ class CardBean extends BaseModel {
       List<String> label,
       int fav: 0,
       String createTime,
+      int sortNumber: -1,
       Color color}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
@@ -44,6 +46,7 @@ class CardBean extends BaseModel {
     this.password = password;
     this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
+    this.sortNumber = sortNumber;
 
     if ((name?.trim()?.length ?? 0) < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
@@ -94,7 +97,8 @@ class CardBean extends BaseModel {
             telephone: map["telephone"],
             password: EncryptUtil.encrypt(map['password']),
             label: newLabel,
-            createTime: map['createTime']);
+            createTime: map['createTime'],
+            sortNumber: map['sortNumber']);
       case 2:
         List<String> newLabel = [];
         if (map['label'] != null) {
@@ -113,7 +117,8 @@ class CardBean extends BaseModel {
             telephone: EncryptUtil.decrypt(map["telephone"]),
             password: map['password'],
             label: newLabel,
-            createTime: EncryptUtil.decrypt(map['createTime']));
+            createTime: EncryptUtil.decrypt(map['createTime']),
+            sortNumber: map['sortNumber']);
     }
     List<String> newLabel = [];
     if (map['label'] != null) {
@@ -130,7 +135,9 @@ class CardBean extends BaseModel {
         telephone: map["telephone"],
         password: map['password'],
         label: newLabel,
-        createTime: map['createTime']);
+        createTime: map['createTime'],
+        sortNumber: map['sortNumber']
+    );
   }
 
   /// 将CardBean转化为Map
@@ -147,7 +154,8 @@ class CardBean extends BaseModel {
       "fav": this.fav,
       "notes": this.notes,
       "label": labels,
-      "createTime": this.createTime
+      "createTime": this.createTime,
+      "sortNumber": this.sortNumber
     };
     return map;
   }
@@ -166,7 +174,8 @@ class CardBean extends BaseModel {
         "${bean.notes},"
         "$labels,"
         "${bean.fav},"
-        "${bean.createTime}\n";
+        "${bean.createTime},"
+        "${bean.sortNumber}\n";
     return csv;
   }
 
@@ -187,6 +196,7 @@ class CardBean extends BaseModel {
             label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
+            sortNumber: pureBean.sortNumber,
             color: pureBean.color);
       case 2:
         String name = EncryptUtil.encrypt(pureBean.name);
@@ -212,6 +222,7 @@ class CardBean extends BaseModel {
             label: label,
             fav: pureBean.fav,
             createTime: createTime,
+            sortNumber: pureBean.sortNumber,
             color: pureBean.color);
       default:
         return CardBean(
@@ -226,8 +237,8 @@ class CardBean extends BaseModel {
             label: List.from(pureBean.label),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
+            sortNumber: pureBean.sortNumber,
             color: pureBean.color);
-
     }
   }
 
