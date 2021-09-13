@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/ui/icon_resource.dart';
@@ -15,7 +14,6 @@ class ImportExportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          brightness: Brightness.light,
           title: Text(
             "导入/导出",
             style: AllpassTextUI.titleBarStyle,

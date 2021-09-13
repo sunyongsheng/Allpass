@@ -49,6 +49,7 @@ class DBManager {
 
   /// 数据库版本升级
   static void onUpdate(Database database, int oldVersion, int newVersion) {
+    if (oldVersion < 1 || oldVersion >= newVersion) return;
     List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3];
     int startIndex = oldVersion - 1;
     int endIndex = newVersion - 1;

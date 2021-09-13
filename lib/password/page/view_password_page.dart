@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -147,154 +146,152 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 padding: AllpassEdgeInsets.forViewCardInset,
                 child: Card(
                     elevation: 0,
-                    child: SizedBox(
-                      width: ScreenUtil.screenWidth * 0.8,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(padding: AllpassEdgeInsets.smallTBPadding,),
-                          // 账号标题
-                          _titleContainer("账号"),
-                          // 用户名主体
-                          Container(
-                            margin: AllpassEdgeInsets.bottom50Inset,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(bean.username,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AllpassTextUI.firstTitleStyle,
-                                  ),),
-                                Padding(padding: AllpassEdgeInsets.smallLPadding,),
-                                InkWell(
-                                  child: Text("复制", style: TextStyle(fontSize: 14, color: _mainColor),),
-                                  onTap: () {
-                                    Clipboard.setData(ClipboardData(text: bean.username));
-                                    ToastUtil.show(msg: "已复制账号");
-                                  },
-                                )
-                              ],
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(padding: AllpassEdgeInsets.smallTBPadding,),
+                        // 账号标题
+                        _titleContainer("账号"),
+                        // 用户名主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom50Inset,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(bean.username,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AllpassTextUI.firstTitleStyle,
+                                ),),
+                              Padding(padding: AllpassEdgeInsets.smallLPadding,),
+                              InkWell(
+                                child: Text("复制", style: TextStyle(fontSize: 14, color: _mainColor),),
+                                onTap: () {
+                                  Clipboard.setData(ClipboardData(text: bean.username));
+                                  ToastUtil.show(msg: "已复制账号");
+                                },
+                              )
+                            ],
                           ),
-                          // 密码标题
-                          _titleContainer("密码"),
-                          // 密码主体
-                          Container(
-                            margin: AllpassEdgeInsets.bottom30Inset,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(_passwordVisible
-                                      ? _password
-                                      : "*" * _password.length,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AllpassTextUI.firstTitleStyle,
-                                  ),
+                        ),
+                        // 密码标题
+                        _titleContainer("密码"),
+                        // 密码主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom30Inset,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(_passwordVisible
+                                    ? _password
+                                    : "*" * _password.length,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AllpassTextUI.firstTitleStyle,
                                 ),
-                                Row(
-                                  children: <Widget>[
-                                    InkWell(
-                                      child: _passwordVisible
-                                          ? Icon(Icons.visibility)
-                                          : Icon(Icons.visibility_off),
-                                      onTap: () {
-                                        setState(() {
-                                          _passwordVisible = !_passwordVisible;
-                                        });
-                                      },
-                                    ),
-                                    Padding(padding: AllpassEdgeInsets.smallLPadding,),
-                                    InkWell(
-                                      onTap: () {
-                                        Clipboard.setData(ClipboardData(text: _password));
-                                        ToastUtil.show(msg: "已复制密码");
-                                      },
-                                      child: Text("复制",
-                                        style: TextStyle(fontSize: 14, color: _mainColor),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          // 链接标题
-                          _titleContainer("链接"),
-                          // 链接主体
-                          Container(
-                            margin: AllpassEdgeInsets.bottom50Inset,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                    child: InkWell(
-                                      onTap: () async {
-                                        if (bean.url.startsWith("https")
-                                            || bean.url.startsWith("http"))
-                                          await launch(bean.url);
-                                      },
-                                      child: Text(bean.url,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: AllpassTextUI
-                                            .firstTitleStyle,
-                                      ),
-                                      onLongPress: () => ToastUtil.show(msg: bean.url),
-                                    )),
-                                Padding(padding: AllpassEdgeInsets.smallLPadding,),
-                                InkWell(
-                                  onTap: () {
-                                    Clipboard.setData(ClipboardData(text: bean.url));
-                                    ToastUtil.show(msg: "已复制链接");
-                                  },
-                                  child: Text("复制",
-                                    style: TextStyle(fontSize: 14, color: _mainColor),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    child: _passwordVisible
+                                        ? Icon(Icons.visibility)
+                                        : Icon(Icons.visibility_off),
+                                    onTap: () {
+                                      setState(() {
+                                        _passwordVisible = !_passwordVisible;
+                                      });
+                                    },
                                   ),
-                                )
-                              ],
-                            ),
+                                  Padding(padding: AllpassEdgeInsets.smallLPadding,),
+                                  InkWell(
+                                    onTap: () {
+                                      Clipboard.setData(ClipboardData(text: _password));
+                                      ToastUtil.show(msg: "已复制密码");
+                                    },
+                                    child: Text("复制",
+                                      style: TextStyle(fontSize: 14, color: _mainColor),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
                           ),
-                          // 备注标题
-                          _titleContainer("备注"),
-                          // 备注主体
-                          Container(
-                            margin: AllpassEdgeInsets.bottom50Inset,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        if (bean.notes.length >= 1) {
-                                          Navigator.push(context, CupertinoPageRoute(
-                                            builder: (context) => DetailTextPage("备注", bean.notes, false),));
-                                        }
-                                      },
-                                      child: Text(bean.notes.length<1?"无备注":bean.notes,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: bean.notes.length<1
-                                            ?AllpassTextUI.hintTextStyle
-                                            :AllpassTextUI.firstTitleStyle,
-                                      ),
-                                    )),
-                              ],
-                            ),
+                        ),
+                        // 链接标题
+                        _titleContainer("链接"),
+                        // 链接主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom50Inset,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (bean.url.startsWith("https")
+                                          || bean.url.startsWith("http"))
+                                        await launch(bean.url);
+                                    },
+                                    child: Text(bean.url,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: AllpassTextUI
+                                          .firstTitleStyle,
+                                    ),
+                                    onLongPress: () => ToastUtil.show(msg: bean.url),
+                                  )),
+                              Padding(padding: AllpassEdgeInsets.smallLPadding,),
+                              InkWell(
+                                onTap: () {
+                                  Clipboard.setData(ClipboardData(text: bean.url));
+                                  ToastUtil.show(msg: "已复制链接");
+                                },
+                                child: Text("复制",
+                                  style: TextStyle(fontSize: 14, color: _mainColor),
+                                ),
+                              )
+                            ],
                           ),
-                          // 标签标题
-                          _titleContainer("标签"),
-                          // 标签主体
-                          Container(
-                            margin: AllpassEdgeInsets.bottom50Inset,
-                            child: Wrap(
-                              children: _getTag(bean),
-                              spacing: 5,
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
+                        ),
+                        // 备注标题
+                        _titleContainer("备注"),
+                        // 备注主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom50Inset,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                  child: InkWell(
+                                    onTap: () {
+                                      if (bean.notes.length >= 1) {
+                                        Navigator.push(context, CupertinoPageRoute(
+                                          builder: (context) => DetailTextPage("备注", bean.notes, false),));
+                                      }
+                                    },
+                                    child: Text(bean.notes.length<1?"无备注":bean.notes,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: bean.notes.length<1
+                                          ?AllpassTextUI.hintTextStyle
+                                          :AllpassTextUI.firstTitleStyle,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        // 标签标题
+                        _titleContainer("标签"),
+                        // 标签主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom50Inset,
+                          child: Wrap(
+                            children: _getTag(bean),
+                            spacing: 5,
+                          ),
+                        )
+                      ],
+                    )
+                ),
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,

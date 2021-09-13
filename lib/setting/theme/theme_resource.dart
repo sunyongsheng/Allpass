@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../common/ui/allpass_ui.dart';
 
@@ -66,11 +67,11 @@ class AllpassTheme {
       primarySwatch: mainColor,
       accentColor: mainColor,
       appBarTheme: AppBarTheme(
-        brightness: Brightness.dark,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: Colors.white70),
         elevation: 0,
         color: Colors.black,
-        textTheme: TextTheme(headline6: TextStyle(color: Colors.white))
+        titleTextStyle: TextStyle(color: Colors.white)
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.black,
@@ -178,11 +179,12 @@ class AllpassTheme {
         foregroundColor: Colors.white
       ),
       appBarTheme: AppBarTheme(
-        brightness: Brightness.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
         color: Colors.white,
-        textTheme: TextTheme(headline6: TextStyle(color: Colors.black))),
+        titleTextStyle: TextStyle(color: Colors.black)
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         elevation: 0,
         selectedItemColor: mainColor,

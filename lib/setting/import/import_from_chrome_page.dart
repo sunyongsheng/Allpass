@@ -22,7 +22,7 @@ class ImportFromChromePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("1. 打开手机Chrome，点击“菜单”", style: AllpassTextUI.titleBarStyle,),
-              Image.asset("assets/images/import_step1.jpg", width: ScreenUtil.screenWidth*0.5,),
+              Image.asset("assets/images/import_step1.jpg", width: ScreenUtil().screenWidth*0.5,),
               Padding(padding: AllpassEdgeInsets.smallTBPadding,),
               Divider(thickness: 2,),
               Text("2. 点击“设置”", style: AllpassTextUI.titleBarStyle,),

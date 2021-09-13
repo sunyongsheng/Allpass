@@ -73,7 +73,12 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
+    ScreenUtil.init(BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width,
+        maxHeight: MediaQuery.of(context).size.height),
+        designSize: Size(1080, 1920),
+        orientation: Orientation.portrait
+    );
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
