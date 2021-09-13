@@ -336,7 +336,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                     onPressed: () async {
                       bool delete = await showDialog(
                           context: context,
-                          builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
+                          builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？", danger: true,));
                       if (delete) {
                         deleted = true;
                         await provider.deletePassword(bean);

@@ -372,7 +372,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                     onPressed: () async {
                       bool delete = await showDialog(
                           context: context,
-                          builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
+                          builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？", danger: true));
                       if (delete) {
                         deleted = true;
                         await provider.deleteCard(bean);

@@ -204,7 +204,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？")
+              "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
+            danger: true)
       ).then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiCardList) {

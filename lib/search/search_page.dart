@@ -192,7 +192,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () async {
             bool delete = await showDialog(
                 context: context,
-                builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？"));
+                builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？", danger: true,));
             if (delete) {
               await Provider.of<PasswordProvider>(context).deletePassword(data);
               ToastUtil.show(msg: "删除成功");
@@ -250,7 +250,7 @@ class _SearchPage extends State<SearchPage> {
           onTap: () async {
             bool delete = await showDialog(
                 context: context,
-                builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？"));
+                builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？", danger: true,));
             if (delete) {
               await Provider.of<CardProvider>(context, listen: false).deleteCard(data);
               ToastUtil.show(msg: "删除成功");

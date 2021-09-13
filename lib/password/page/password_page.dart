@@ -204,7 +204,7 @@ class _PasswordPageState extends State<PasswordPage>
       showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？")
+              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？", danger: true,)
       ).then((confirm) async {
         if (confirm) {
           for (var item in RuntimeData.multiPasswordList) {

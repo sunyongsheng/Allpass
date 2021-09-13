@@ -128,7 +128,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => ConfirmDialog("确认删除", "此操作将删除所有数据，继续吗？")
+                    builder: (context) => ConfirmDialog("确认删除", "此操作将删除所有数据，继续吗？", danger: true,)
                 ).then((confirm) {
                   if (confirm) {
                     // 二次确认
