@@ -151,8 +151,10 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 if (operation == DataOperation.add) {
                   provider.insertPassword(tempData);
                   RuntimeData.newPasswordOrCardCount++;
+                  ToastUtil.show(msg: "新增成功");
                 } else {
                   provider.updatePassword(tempData);
+                  ToastUtil.show(msg: "更新成功");
                 }
                 Navigator.pop(context);
               } else {

@@ -159,8 +159,10 @@ class _EditCardPage extends State<EditCardPage> {
                   if (operation == DataOperation.add) {
                     provider.insertCard(tempData);
                     RuntimeData.newPasswordOrCardCount++;
+                    ToastUtil.show(msg: "新增成功");
                   } else {
                     provider.updateCard(tempData);
+                    ToastUtil.show(msg: "更新成功");
                   }
                   Navigator.pop(context);
                 } else {
