@@ -10,11 +10,11 @@ import 'package:allpass/util/string_util.dart';
 
 class SearchProvider with ChangeNotifier {
   
-  List<PasswordBean> _passwordList;
-  List<CardBean> _cardList;
+  late List<PasswordBean> _passwordList;
+  late List<CardBean> _cardList;
   
-  List<PasswordBean> passwordSearch;
-  List<CardBean> cardSearch;
+  late List<PasswordBean> passwordSearch;
+  late List<CardBean> cardSearch;
   
   final AllpassType type;
   

@@ -6,23 +6,23 @@ import 'package:allpass/core/param/runtime_data.dart';
 class Config {
   Config._();
 
-  static String username; // 当前使用者用户名
-  static String password; // 使用者密码
-  static bool enabledBiometrics; // 是否启用生物识别
-  static bool longPressCopy; // 是否开启长按复制，否则为长按多选
-  static String lightTheme; // 浅色主题名
-  static String themeMode; // 主题模式
-  static bool webDavAuthSuccess; // WebDAV是否验证成功
-  static String webDavUrl; // WebDAV地址
-  static String webDavUsername; // WebDAV用户名
-  static String webDavPassword; // WebDAV密码
-  static int webDavPort; // WebDAV端口号
-  static String webDavPasswordName; // WebDAV备份密码文件名
-  static String webDavCardName; // WebDAV备份卡片文件名
-  static int webDavEncryptLevel; // WebDAV备份加密等级 0：不加密；1：密码字段；2：全加密
-  static String webDavUploadTime; // WebDAV上次上传时间
-  static String webDavDownloadTime; // WebDAV上次下载时间
-  static int timingInMainPassword; // 定期输入主密码天数
+  static late String username; // 当前使用者用户名
+  static late String password; // 使用者密码
+  static late bool enabledBiometrics; // 是否启用生物识别
+  static late bool longPressCopy; // 是否开启长按复制，否则为长按多选
+  static late String lightTheme; // 浅色主题名
+  static late String themeMode; // 主题模式
+  static late bool webDavAuthSuccess; // WebDAV是否验证成功
+  static late String? webDavUrl; // WebDAV地址
+  static late String? webDavUsername; // WebDAV用户名
+  static late String? webDavPassword; // WebDAV密码
+  static late int? webDavPort; // WebDAV端口号
+  static late String webDavPasswordName; // WebDAV备份密码文件名
+  static late String webDavCardName; // WebDAV备份卡片文件名
+  static late int webDavEncryptLevel; // WebDAV备份加密等级 0：不加密；1：密码字段；2：全加密
+  static late String? webDavUploadTime; // WebDAV上次上传时间
+  static late String? webDavDownloadTime; // WebDAV上次下载时间
+  static late int timingInMainPassword; // 定期输入主密码天数
 
   /// 参数初始化
   static void initConfig() {
@@ -112,24 +112,40 @@ class Config {
     Application.sp.setBool(SPKeys.webDavAuthSuccess, value);
   }
 
-  static void setWebDavUrl(String value) {
+  static void setWebDavUrl(String? value) {
     webDavUrl = value;
-    Application.sp.setString(SPKeys.webDavUrl, value);
+    if (value == null) {
+      Application.sp.remove(SPKeys.webDavUrl);
+    } else {
+      Application.sp.setString(SPKeys.webDavUrl, value);
+    }
   }
 
-  static void setWebDavUsername(String value) {
+  static void setWebDavUsername(String? value) {
     webDavUsername = value;
-    Application.sp.setString(SPKeys.webDavUsername, value);
+    if (value == null) {
+      Application.sp.remove(SPKeys.webDavUsername);
+    } else {
+      Application.sp.setString(SPKeys.webDavUsername, value);
+    }
   }
 
-  static void setWebDavPassword(String encryptedValue) {
+  static void setWebDavPassword(String? encryptedValue) {
     webDavPassword = encryptedValue;
-    Application.sp.setString(SPKeys.webDavPassword, encryptedValue);
+    if (encryptedValue == null) {
+      Application.sp.remove(SPKeys.webDavPassword);
+    } else {
+      Application.sp.setString(SPKeys.webDavPassword, encryptedValue);
+    }
   }
 
-  static void setWebDavPort(int value) {
+  static void setWebDavPort(int? value) {
     webDavPort = value;
-    Application.sp.setInt(SPKeys.webDavPort, value);
+    if (value == null) {
+      Application.sp.remove(SPKeys.webDavPort);
+    } else {
+      Application.sp.setInt(SPKeys.webDavPort, value);
+    }
   }
 
   static void setPasswordFileName(String value) {

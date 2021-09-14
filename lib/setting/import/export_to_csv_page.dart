@@ -48,8 +48,8 @@ class ExportTypeSelectPage extends StatelessWidget {
                         context: context,
                         builder: (context) => InputMainPasswordDialog()
                     ).then((right) async {
-                      if (right) {
-                        String path = await goToConfirm(context);
+                      if (right ?? false) {
+                        String? path = await goToConfirm(context);
                         if (path != null) {
                           _process(context, exportFuture(context, Directory(path), type: AllpassType.password));
                         }
@@ -79,7 +79,7 @@ class ExportTypeSelectPage extends StatelessWidget {
                         builder: (context) => InputMainPasswordDialog()
                     ).then((right) async{
                       if (right != null && right) {
-                        String path = await goToConfirm(context);
+                        String? path = await goToConfirm(context);
                         if (path != null) {
                           _process(context, exportFuture(context, Directory(path), type: AllpassType.card));
                         }
@@ -108,8 +108,8 @@ class ExportTypeSelectPage extends StatelessWidget {
                         context: context,
                         builder: (context) => InputMainPasswordDialog()
                     ).then((right) async{
-                      if (right) {
-                        String path = await goToConfirm(context);
+                      if (right ?? false) {
+                        String? path = await goToConfirm(context);
                         if (path != null) {
                           _process(context, exportFuture(context, Directory(path)));
                         }
@@ -125,12 +125,12 @@ class ExportTypeSelectPage extends StatelessWidget {
     );
   }
 
-  Future<String> goToConfirm(BuildContext context) async {
+  Future<String?> goToConfirm(BuildContext context) async {
     return await FilesystemPicker.open(
         title: '保存到文件夹',
         context: context,
         rootName: "/Android/data/top.aengus.allpass/files",
-        rootDirectory: await getExternalStorageDirectory(),
+        rootDirectory: (await getExternalStorageDirectory())!,
         fsType: FilesystemType.folder,
         pickText: '确认保存',
         folderIconColor: Theme.of(context).primaryColor,
@@ -150,22 +150,22 @@ class ExportTypeSelectPage extends StatelessWidget {
     return false;
   }
 
-  Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType type}) async {
+  Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType? type}) async {
     switch (type) {
       case AllpassType.password:
-        List<PasswordBean> list = await PasswordDao().getAllPasswordBeanList();
-        String path = await CsvUtil.passwordExportCsv(list, newDir);
+        List<PasswordBean>? list = await PasswordDao().getAllPasswordBeanList();
+        String? path = await CsvUtil.passwordExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
       case AllpassType.card:
-        List<CardBean> list = await CardDao().getAllCardBeanList();
-        String path = await CsvUtil.cardExportCsv(list, newDir);
+        List<CardBean>? list = await CardDao().getAllCardBeanList();
+        String? path = await CsvUtil.cardExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
       default:
-        List<PasswordBean> passList = await PasswordDao().getAllPasswordBeanList();
+        List<PasswordBean>? passList = await PasswordDao().getAllPasswordBeanList();
         await CsvUtil.passwordExportCsv(passList, newDir);
-        List<CardBean> cardList = await CardDao().getAllCardBeanList();
+        List<CardBean>? cardList = await CardDao().getAllCardBeanList();
         await CsvUtil.cardExportCsv(cardList, newDir);
     }
     ToastUtil.show(msg: "已导出到$newDir");

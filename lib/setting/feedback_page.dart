@@ -20,10 +20,9 @@ class FeedbackPage extends StatefulWidget {
 
 class _FeedbackPage extends State<StatefulWidget> {
 
-  TextEditingController _feedbackController;
-  TextEditingController _contactController;
-  String _contactCache;
-  FocusNode _blankFocus;
+  late TextEditingController _feedbackController;
+  late TextEditingController _contactController;
+  late String _contactCache;
 
   bool _submitSuccess = false;
 
@@ -33,15 +32,12 @@ class _FeedbackPage extends State<StatefulWidget> {
     _contactCache = Application.sp.getString(SPKeys.contact) ?? "";
     _feedbackController = TextEditingController();
     _contactController = TextEditingController(text: _contactCache);
-    _blankFocus = FocusNode();
   }
 
   @override
   void dispose() {
-    _blankFocus.unfocus();
     _feedbackController.dispose();
     _contactController.dispose();
-    _blankFocus.dispose();
     super.dispose();
   }
 
@@ -94,7 +90,7 @@ class _FeedbackPage extends State<StatefulWidget> {
                   ToastUtil.showError(msg: "反馈内容必须小于1000字！");
                   return;
                 }
-                FocusScope.of(context).requestFocus(_blankFocus);
+                FocusScope.of(context).requestFocus(FocusNode());
                 showDialog(
                     context: context,
                     builder: (cx) => FutureBuilder(
@@ -143,7 +139,7 @@ class _FeedbackPage extends State<StatefulWidget> {
     if (response.success) {
       _submitSuccess = true;
     }
-    ToastUtil.show(msg: response.msg);
+    ToastUtil.show(msg: response.msg!);
     Navigator.pop(context);
   }
 

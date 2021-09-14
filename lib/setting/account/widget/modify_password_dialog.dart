@@ -9,7 +9,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 修改密码对话框
 class ModifyPasswordDialog extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
 
   final _oldPasswordController = TextEditingController();
   final _newPasswordController = TextEditingController();

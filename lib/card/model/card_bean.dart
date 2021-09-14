@@ -9,33 +9,33 @@ class CardBean extends BaseModel {
 
   static CardBean empty = CardBean(key: -1, name: "", ownerName: "", cardId: "");
 
-  int uniqueKey; // 1 ID
-  String name; // 2 卡片名称
-  String ownerName; // 3 卡片拥有者
-  String cardId; // 4 卡片ID/卡号
-  String password; // 5 URL
-  String telephone; // 6 手机号
-  String folder; // 7 文件夹
-  String notes; // 8 备注
-  List<String> label; // 9 标签
-  int fav; // 10 是否标心
-  String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
-  int sortNumber;  // 12 排序号
+  late int? uniqueKey; // 1 ID
+  late String name; // 2 卡片名称
+  late String ownerName; // 3 卡片拥有者
+  late String cardId; // 4 卡片ID/卡号
+  late String password; // 5 URL
+  late String telephone; // 6 手机号
+  late String folder; // 7 文件夹
+  late String notes; // 8 备注
+  late List<String>? label; // 9 标签
+  late int fav; // 10 是否标心
+  late String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
+  late int sortNumber;  // 12 排序号
 
   CardBean(
-      {int key,
-      String name,
-      @required String ownerName,
-      @required String cardId,
+      {int? key,
+      String? name,
+      required String ownerName,
+      required String cardId,
       String password: "",
       String telephone: "",
       String folder: "默认",
       String notes: "",
-      List<String> label,
+      List<String>? label,
       int fav: 0,
-      String createTime,
+      String? createTime,
       int sortNumber: -1,
-      Color color}) {
+      Color? color}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -48,10 +48,10 @@ class CardBean extends BaseModel {
     this.createTime = createTime ?? DateTime.now().toIso8601String();
     this.sortNumber = sortNumber;
 
-    if ((name?.trim()?.length ?? 0) < 1 && ownerName.length > 0) {
+    if ((name?.trim().length ?? 0) < 1 && ownerName.length > 0) {
       this.name = this.ownerName + "的卡片";
     } else {
-      this.name = name;
+      this.name = name!;
     } //name
     if (notes == BaseModel.noneData) this.notes = "";
     if (telephone == BaseModel.noneData) this.telephone = "";
@@ -193,7 +193,7 @@ class CardBean extends BaseModel {
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List.from(pureBean.label),
+            label: List.from(pureBean.label ?? []),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             sortNumber: pureBean.sortNumber,
@@ -234,7 +234,7 @@ class CardBean extends BaseModel {
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List.from(pureBean.label),
+            label: List.from(pureBean.label ?? []),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             sortNumber: pureBean.sortNumber,
@@ -243,7 +243,7 @@ class CardBean extends BaseModel {
   }
 
   @override
-  int get hashCode => uniqueKey;
+  int get hashCode => uniqueKey ?? -1;
 
   @override
   bool operator ==(Object another) {

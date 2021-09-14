@@ -3,16 +3,16 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_resource.dart';
 
 class ThemeProvider with ChangeNotifier {
-  AllpassTheme _allpassTheme;
+  late AllpassTheme _allpassTheme;
 
-  ThemeData lightTheme;
-  ThemeData darkTheme;
-  ThemeMode themeMode;
+  late ThemeData lightTheme;
+  late ThemeData darkTheme;
+  late ThemeMode themeMode;
   
   /// 特殊的背景颜色
   /// 少部分页面背景颜色为浅白色
-  Color specialBackgroundColor;
-  Color offsetColor;
+  late Color specialBackgroundColor;
+  late Color offsetColor;
 
   init() {
     _allpassTheme = AllpassTheme();
@@ -21,7 +21,7 @@ class ThemeProvider with ChangeNotifier {
     darkTheme = _string2Theme(Config.lightTheme, true);
   }
 
-  void changeTheme(String themeName, {BuildContext context}) {
+  void changeTheme(String themeName, {required BuildContext context}) {
     if (themeMode == ThemeMode.light && themeName == Config.lightTheme) return;
     if (themeName == "dark") {
       _changeThemeMode(themeModeName: "dark");
@@ -75,7 +75,7 @@ class ThemeProvider with ChangeNotifier {
     }
   }
   
-  void setExtraColor({BuildContext context, bool needReverse = false}) {
+  void setExtraColor({required BuildContext context, bool needReverse = false}) {
     if (themeMode == ThemeMode.system) {
       _setExtraColorAuto(context, reverse: needReverse);
     } else if (themeMode == ThemeMode.dark) {
@@ -93,7 +93,7 @@ class ThemeProvider with ChangeNotifier {
 
   void _setExtraColorDarkMode() {
     specialBackgroundColor = Colors.black;
-    offsetColor = Colors.grey[600];
+    offsetColor = Colors.grey[600]!;
   }
 
   void _setExtraColorAuto(BuildContext context, {bool reverse = false}) {

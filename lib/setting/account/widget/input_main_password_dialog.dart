@@ -7,8 +7,8 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class InputMainPasswordDialog extends StatelessWidget {
 
-  final Key key;
-  final String helperText;
+  final Key? key;
+  final String? helperText;
 
   final TextEditingController _passwordController = TextEditingController();
 

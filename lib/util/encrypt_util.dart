@@ -9,13 +9,13 @@ class EncryptUtil {
   static String initialKey = "6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG";
 
   static bool _haveInit = false;
-  static FlutterSecureStorage _storage;
-  static Key _key;
-  static IV _iv;
-  static Encrypter _encrypt;
+  static final FlutterSecureStorage _storage = FlutterSecureStorage();
+  static late Key? _key;
+  static late IV? _iv;
+  static late Encrypter? _encrypt;
 
-  static Future<String> initEncrypt({bool needFresh = false}) async {
-    String keyStored = await _getStoreKey();
+  static Future<String?> initEncrypt({bool needFresh = false}) async {
+    String? keyStored = await _getStoreKey();
     if (needFresh) {
       keyStored = generateRandomKey(32);
       await _setStoreKey(keyStored);
@@ -29,7 +29,7 @@ class EncryptUtil {
     }
     _key = Key.fromUtf8(keyStored);
     _iv = IV.fromLength(16);
-    _encrypt = Encrypter(AES(_key));
+    _encrypt = Encrypter(AES(_key!));
     _haveInit = true;
     if (needFresh) return keyStored;
     return null;
@@ -40,11 +40,11 @@ class EncryptUtil {
     await _setStoreKey(key);
     _key = Key.fromUtf8(key);
     _iv = IV.fromLength(16);
-    _encrypt = Encrypter(AES(_key));
+    _encrypt = Encrypter(AES(_key!));
     _haveInit = true;
   }
 
-  static Future<String> getStoreKey() async {
+  static Future<String?> getStoreKey() async {
     return await _getStoreKey();
   }
 
@@ -59,12 +59,12 @@ class EncryptUtil {
 
   static String encrypt(String password) {
     if (!_haveInit) throw ArgumentError("请先调用initEncrypt函数");
-    return _encrypt.encrypt(password, iv: _iv).base64;
+    return _encrypt!.encrypt(password, iv: _iv).base64;
   }
 
   static String decrypt(String encryptTxt) {
     if (!_haveInit) throw ArgumentError("请先调用initEncrypt函数");
-    return _encrypt.decrypt(Encrypted.fromBase64(encryptTxt), iv: _iv);
+    return _encrypt!.decrypt(Encrypted.fromBase64(encryptTxt), iv: _iv);
   }
 
   static String generateRandomKey(int len, {bool cap = true, bool low = true, bool number = true, bool sym = true}) {
@@ -136,13 +136,10 @@ class EncryptUtil {
   }
 
   static FlutterSecureStorage _getSecureStorage() {
-    if (_storage == null) {
-      _storage = FlutterSecureStorage();
-    }
     return _storage;
   }
 
-  static Future<String> _getStoreKey() async {
+  static Future<String?> _getStoreKey() async {
     final storage = _getSecureStorage();
     return await storage.read(key: ExtraKeys.storeKey);
   }
@@ -156,9 +153,9 @@ class EncryptUtil {
 
 class EncryptHolder {
 
-  Key key;
-  IV iv;
-  Encrypter encrypt;
+  late Key key;
+  late IV iv;
+  late Encrypter encrypt;
 
   EncryptHolder(String specialKey) {
     key = Key.fromUtf8(specialKey);

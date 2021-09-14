@@ -7,7 +7,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 返回[null]代表未编辑；否则返回修改后的数据
 class EditCategoryDialog extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
   final CategoryType type;
   final String initialValue;
 
@@ -22,11 +22,11 @@ class EditCategoryDialog extends StatefulWidget {
 
 class _EditCategoryDialog extends State<EditCategoryDialog> {
 
-  String categoryName;
-  String initialValue;
+  late String categoryName;
+  late String initialValue;
 
   bool _inputFormatCorr = true;
-  TextEditingController _editTextController;
+  late TextEditingController _editTextController;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   @override
   void dispose() {
     super.dispose();
-    _editTextController?.dispose();
+    _editTextController.dispose();
   }
 
   @override
@@ -90,7 +90,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   }
 
   void _submit() {
-    if (_inputFormatCorr && (_editTextController.text?.trim()?.length ?? 0) > 0) {
+    if (_inputFormatCorr && (_editTextController.text.trim().length) > 0) {
       if (_editTextController.text != initialValue) {
         Navigator.pop<String>(context, _editTextController.text);
       } else {

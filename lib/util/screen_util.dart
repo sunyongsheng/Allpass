@@ -5,11 +5,11 @@ class AllpassScreenUtil {
   static ScreenUtil _instance = ScreenUtil();
   static double screenHighDp = _instance.screenHeight;
 
-  static num setWidth(num width) {
+  static double setWidth(num width) {
     return _instance.setWidth(width);
   }
 
-  static num setHeight(num height) {
+  static double setHeight(num height) {
     return _instance.setHeight(height);
   }
 }

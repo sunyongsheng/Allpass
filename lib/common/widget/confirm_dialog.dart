@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  final Key key;
+  final Key? key;
   final bool danger;
   final String _dialogMessage;
   final String _dialogTitle;

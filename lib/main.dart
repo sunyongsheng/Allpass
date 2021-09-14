@@ -86,9 +86,9 @@ class Allpass extends StatelessWidget {
 
 class InitialErrorPage extends StatelessWidget {
 
-  final String errorMsg;
+  final String? errorMsg;
 
-  const InitialErrorPage({Key key, this.errorMsg}) : super(key: key);
+  const InitialErrorPage({Key? key, this.errorMsg}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +101,9 @@ class InitialErrorPage extends StatelessWidget {
 
 class _InitialErrorPage extends StatelessWidget {
 
-  final String msg;
+  final String? msg;
 
-  const _InitialErrorPage({Key key, this.msg}) : super(key: key);
+  const _InitialErrorPage({Key? key, this.msg}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +115,7 @@ class _InitialErrorPage extends StatelessWidget {
           children: <Widget>[
             Text("软件初始化时出现了错误(灬ꈍ ꈍ灬)\n", style: TextStyle(color: Colors.red, fontSize: 20),),
             Text("错误信息：\n"),
-            Text(msg)
+            Text(msg ?? "null")
           ],
         )
       ),

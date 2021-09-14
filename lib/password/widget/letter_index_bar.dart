@@ -8,7 +8,7 @@ import 'package:allpass/setting/theme/theme_provider.dart';
 /// 首字母索引列
 class LetterIndexBar extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
   final ScrollController scrollController;
 
   LetterIndexBar(this.scrollController, {this.key}) : super(key: key);
@@ -26,7 +26,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
 
   double _tapPositionY = RuntimeData.tapVerticalPosition;
   bool _pressed = false;
-  ScrollController _controller;
+  late ScrollController _controller;
 
   @override
   void initState() {
@@ -78,7 +78,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
                 int index = (_tapPositionY / 16).floor();
                 if (index >= 26) index = 26;
                 if (keys.contains(letters[index])) {
-                  double offset = map[letters[index]] * 72.0;
+                  double offset = (map[letters[index]] ?? 0) * 72.0;
                   if (offset == 0) offset = 0.5;
                   _controller.animateTo(offset, curve: Curves.easeOut, duration: Duration(milliseconds: 200));
                 }
@@ -96,7 +96,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
                 int index = (_tapPositionY / 16).floor();
                 if (index >= 26) index = 26;
                 if (keys.contains(letters[index])) {
-                  double offset = map[letters[index]] * 72.0;
+                  double offset = (map[letters[index]] ?? 0) * 72.0;
                   if (offset == 0) offset = 0.5;
                   _controller.animateTo(offset, curve: Curves.easeOut, duration: Duration(milliseconds: 200));
                 }

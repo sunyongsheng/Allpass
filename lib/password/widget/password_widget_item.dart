@@ -12,13 +12,13 @@ import 'package:allpass/util/encrypt_util.dart';
 
 class PasswordWidgetItem extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
 
   final PasswordBean data;
 
-  final VoidCallback onPasswordClicked;
+  final VoidCallback? onPasswordClicked;
 
-  PasswordWidgetItem({this.key, this.data, this.onPasswordClicked}) : super(key: key);
+  PasswordWidgetItem({this.key, required this.data, this.onPasswordClicked}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class PasswordWidgetItem extends StatelessWidget {
 
 class MultiPasswordWidgetItem extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
   final int index;
   MultiPasswordWidgetItem(this.index, {this.key}) : super(key: key);
 
@@ -79,7 +79,7 @@ class _MultiPasswordWidgetItem extends State<StatefulWidget> {
             value: RuntimeData.multiPasswordList.contains(model.passwordList[index]),
             onChanged: (value) {
               setState(() {
-                if (value) {
+                if (value ?? false) {
                   RuntimeData.multiPasswordList.add(model.passwordList[index]);
                 } else {
                   RuntimeData.multiPasswordList.remove(model.passwordList[index]);

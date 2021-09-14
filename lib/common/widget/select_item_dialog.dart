@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class SelectItemDialog extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final List<String> _list;
-  final String initialSelected;
+  final String? initialSelected;
 
   SelectItemDialog(this._list, {this.key, this.initialSelected}): super(key: key);
 

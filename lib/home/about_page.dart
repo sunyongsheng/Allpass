@@ -165,7 +165,7 @@ class DetailsPage extends StatelessWidget {
   final String title;
   final Widget content;
 
-  const DetailsPage({this.title, this.content});
+  const DetailsPage({required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {

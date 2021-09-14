@@ -51,26 +51,26 @@ abstract class WebDavSyncService {
 
 class WebDavSyncServiceImpl implements WebDavSyncService{
 
-  WebDavUtil _webDavUtilHolder;
-  AllpassFileUtil _fileUtilHolder;
+  WebDavUtil? _webDavUtilHolder;
+  AllpassFileUtil? _fileUtilHolder;
 
   WebDavUtil get _webDavUtil {
     if (_webDavUtilHolder == null) {
       _webDavUtilHolder = WebDavUtil(
         urlPath: Config.webDavUrl,
         username: Config.webDavUsername,
-        password: EncryptUtil.decrypt(Config.webDavPassword),
+        password: Config.webDavPassword == null ? null : EncryptUtil.decrypt(Config.webDavPassword!),
         port: Config.webDavPort,
       );
     }
-    return _webDavUtilHolder;
+    return _webDavUtilHolder!;
   }
 
   AllpassFileUtil get _fileUtil {
     if (_fileUtilHolder == null) {
       _fileUtilHolder = AllpassFileUtil();
     }
-    return _fileUtilHolder;
+    return _fileUtilHolder!;
   }
 
   @override
@@ -81,7 +81,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     await preCheckAllpassDir();
 
     List<PasswordBean> passwords = Provider.of<PasswordProvider>(context, listen: false).passwordList;
-    String contents = _fileUtil.encodeList(passwords);
+    String? contents = _fileUtil.encodeList(passwords);
     if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -105,7 +105,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     await preCheckAllpassDir();
 
     List<CardBean> cards = Provider.of<CardProvider>(context, listen: false).cardList;
-    String contents = _fileUtil.encodeList(cards);
+    String? contents = _fileUtil.encodeList(cards);
     if (contents == null) return true;
 
     Directory appDir = await getApplicationDocumentsDirectory();
@@ -151,7 +151,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   @override
   Future<int> recoverPassword(BuildContext context) async {
     String fileName = "${Config.webDavPasswordName}.json";
-    String filePath = await _webDavUtil.downloadFile(
+    String? filePath = await _webDavUtil.downloadFile(
         fileName: fileName,
         dirName: "Allpass");
     if (filePath == null) {
@@ -160,11 +160,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     List<PasswordBean> backup = List.from(Provider.of<PasswordProvider>(context, listen: false).passwordList);
     try {
       String string = _fileUtil.readFile(filePath);
-      List<PasswordBean> list = _fileUtil.decodeList(string, AllpassType.password);
+      List<PasswordBean>? list = _fileUtil.decodeList(string, AllpassType.password) as List<PasswordBean>?;
       try {
         // 正常执行
         await Provider.of<PasswordProvider>(context, listen: false).clear();
-        for (var bean in list) {
+        for (var bean in list ?? []) {
           await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
@@ -191,7 +191,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   @override
   Future<int> recoverCard(BuildContext context) async {
     String fileName = "${Config.webDavCardName}.json";
-    String filePath = await _webDavUtil.downloadFile(
+    String? filePath = await _webDavUtil.downloadFile(
         fileName: fileName,
         dirName: "Allpass");
     if (filePath == null) {
@@ -200,11 +200,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
     List<CardBean> backup = List.from(Provider.of<CardProvider>(context, listen: false).cardList);
     try {
       String string = _fileUtil.readFile(filePath);
-      List<CardBean> list = _fileUtil.decodeList(string, AllpassType.card);
+      List<CardBean>? list = _fileUtil.decodeList(string, AllpassType.card) as List<CardBean>?;
       try {
         // 正常执行
         await Provider.of<CardProvider>(context, listen: false).clear();
-        for (var bean in list) {
+        for (var bean in list ?? []) {
           await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
           if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
           RuntimeData.labelListAdd(bean.label);
@@ -231,15 +231,16 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
   @override
   Future<bool> recoverFolderAndLabel() async {
     try {
-      String filePath = await _webDavUtil.downloadFile(
+      String? filePath = await _webDavUtil.downloadFile(
           fileName: "folder_label_info.json",
           dirName: "Allpass");
+      if (filePath == null) return false;
       String contents = _fileUtil.readFile(filePath);
       Map<String, List<String>> res = _fileUtil.decodeFolderAndLabel(contents);
       RuntimeData.folderList.clear();
-      RuntimeData.folderList.addAll(res['folder']);
+      RuntimeData.folderList.addAll(res['folder']!);
       RuntimeData.labelList.clear();
-      RuntimeData.labelList.addAll(res['label']);
+      RuntimeData.labelList.addAll(res['label']!);
       RuntimeData.folderParamsPersistence();
       RuntimeData.labelParamsPersistence();
       return true;

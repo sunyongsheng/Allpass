@@ -70,7 +70,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 根据uniqueKey查询记录
-  Future<CardBean> getCardBeanById(String id) async {
+  Future<CardBean?> getCardBeanById(String id) async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
@@ -82,7 +82,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 获取所有的卡片List
-  Future<List<CardBean>> getAllCardBeanList() async {
+  Future<List<CardBean>?> getAllCardBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {

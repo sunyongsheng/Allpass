@@ -151,7 +151,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
 
   void setTheme(String themeName) {
     setState(() {
-      Provider.of<ThemeProvider>(context, listen: false).changeTheme(themeName);
+      Provider.of<ThemeProvider>(context, listen: false).changeTheme(themeName, context: context);
     });
   }
 

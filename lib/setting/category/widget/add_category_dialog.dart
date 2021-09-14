@@ -6,7 +6,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 添加属性对话框
 class AddCategoryDialog extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
   final CategoryType type;
 
   AddCategoryDialog({this.key, this.type = CategoryType.label}) : super(key: key);
@@ -22,8 +22,8 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
 
   var _addTextController = TextEditingController();
   bool _inputFormatCorr = true;
-  String categoryName;
-  CategoryType type;
+  late String categoryName;
+  late CategoryType type;
 
   @override
   void initState() {
@@ -84,7 +84,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   }
 
   void submit() {
-    if (_inputFormatCorr && ((_addTextController.text?.trim()?.length) ?? 0) > 0) {
+    if (_inputFormatCorr && ((_addTextController.text.trim().length)) > 0) {
       Navigator.pop<String>(context, _addTextController.text);
     } else {
       ToastUtil.showError(msg: "输入内容不合法");

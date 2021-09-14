@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class ClassificationItem extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final String title;
   final Color color;
-  final VoidCallback onPress;
-  final VoidCallback onLongPress;
+  final VoidCallback? onPress;
+  final VoidCallback? onLongPress;
 
   ClassificationItem({this.key,
-    this.title,
+    required this.title,
     this.color = Colors.redAccent,
     this.onPress,
     this.onLongPress}) : super(key: key);

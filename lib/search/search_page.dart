@@ -34,7 +34,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPage extends State<SearchPage> {
   final AllpassType _type;
 
-  TextEditingController _searchController;
+  late TextEditingController _searchController;
 
   _SearchPage(this._type);
 
@@ -46,7 +46,7 @@ class _SearchPage extends State<SearchPage> {
 
   @override
   void dispose() {
-    _searchController?.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 

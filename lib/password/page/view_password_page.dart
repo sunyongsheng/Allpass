@@ -32,19 +32,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
   String _password = "";
   String _cache = "noCache";
-  Color _mainColor;
 
   bool deleted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _mainColor = Theme.of(context).primaryColor;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +41,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
     PasswordBean bean = provider.currPassword;
+    Color _mainColor = Theme.of(context).primaryColor;
     if (bean == PasswordBean.empty) {
       ToastUtil.show(msg: "出现了错误");
       Navigator.pop(context);
@@ -151,7 +141,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                       children: <Widget>[
                         Padding(padding: AllpassEdgeInsets.smallTBPadding,),
                         // 账号标题
-                        _titleContainer("账号"),
+                        _titleContainer(_mainColor, "账号"),
                         // 用户名主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -175,7 +165,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           ),
                         ),
                         // 密码标题
-                        _titleContainer("密码"),
+                        _titleContainer(_mainColor, "密码"),
                         // 密码主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -218,7 +208,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           ),
                         ),
                         // 链接标题
-                        _titleContainer("链接"),
+                        _titleContainer(_mainColor, "链接"),
                         // 链接主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -253,7 +243,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           ),
                         ),
                         // 备注标题
-                        _titleContainer("备注"),
+                        _titleContainer(_mainColor, "备注"),
                         // 备注主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -280,7 +270,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                           ),
                         ),
                         // 标签标题
-                        _titleContainer("标签"),
+                        _titleContainer(_mainColor, "标签"),
                         // 标签主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -358,7 +348,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
   List<Widget> _getTag(PasswordBean bean) {
     List<Widget> labelChoices = [];
-    bean.label.forEach((item) {
+    bean.label?.forEach((item) {
       labelChoices.add(LabelChip(
           text: item,
           selected: true,
@@ -371,11 +361,11 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     return labelChoices;
   }
 
-  Widget _titleContainer(String title) {
+  Widget _titleContainer(Color mainColor, String title) {
     return Container(
       margin: AllpassEdgeInsets.bottom10Inset,
       child: Text(title,
-        style: TextStyle(fontSize: 16, color: _mainColor),
+        style: TextStyle(fontSize: 16, color: mainColor),
       ),
     );
   }

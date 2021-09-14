@@ -36,7 +36,10 @@ class RuntimeData {
   }
 
   /// 添加Bean的label
-  static bool labelListAdd(List<String> labels) {
+  static bool labelListAdd(List<String>? labels) {
+    if (labels == null) {
+      return false;
+    }
     int oldLen = labelList.length;
     for (var label in labels) {
       if (!labelList.contains(label)) {

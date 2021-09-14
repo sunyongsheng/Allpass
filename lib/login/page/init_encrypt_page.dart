@@ -20,7 +20,7 @@ class _InitEncryptPage extends State<InitEncryptPage> {
   TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
   bool inGen = false;
   bool haveGen = false;
-  String _latestKey;
+  String? _latestKey;
 
   @override
   void initState() {
@@ -100,7 +100,7 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                         setState(() {
                           haveGen = true;
                           inGen = false;
-                          controller.text = _latestKey;
+                          controller.text = _latestKey!;
                         });
                       },
                     ),

@@ -11,7 +11,8 @@ class CsvUtil {
   CsvUtil._();
 
   /// 将PasswordList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  static Future<String> passwordExportCsv(List<PasswordBean> list, Directory dst) async {
+  static Future<String?> passwordExportCsv(List<PasswordBean>? list, Directory dst) async {
+    if (list == null) return null;
     if (Platform.isAndroid) {
       String path = "${dst.path}/allpass_密码.csv";
       File csv = File(path);
@@ -25,7 +26,10 @@ class CsvUtil {
   }
 
   /// 将CardList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  static Future<String> cardExportCsv(List<CardBean> list, Directory dst) async {
+  static Future<String?> cardExportCsv(List<CardBean>? list, Directory dst) async {
+    if (list == null) {
+      return null;
+    }
     if (Platform.isAndroid) {
       String path = "${dst.path}/allpass_卡片.csv";
       File csv = File(path);
@@ -39,7 +43,7 @@ class CsvUtil {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  static Future<List<PasswordBean>> passwordImportFromCsv({String path, String toParseText}) async {
+  static Future<List<PasswordBean>?> passwordImportFromCsv({String? path, String? toParseText}) async {
     assert(path == null || toParseText == null, "只能传入一个参数！");
     List<PasswordBean> res = [];
     String fileContext;
@@ -68,7 +72,7 @@ class CsvUtil {
         String url = _getValueWithCatch(attribute, indexMap, 'url');
         String folder = _getValueWithCatch(attribute, indexMap, 'folder');
         String notes = _getValueWithCatch(attribute, indexMap, 'notes');
-        if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
+        if (indexMap.containsKey('label') && attribute[indexMap['label']!].length > 0) {
           label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
         }
         int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
@@ -90,7 +94,7 @@ class CsvUtil {
   }
 
   /// 从csv文件中导入Card
-  static Future<List<CardBean>> cardImportFromCsv(String path) async {
+  static Future<List<CardBean>?> cardImportFromCsv(String path) async {
     List<CardBean> res = [];
     File file = File(path);
     if (!file.existsSync()) throw UnsupportedError("文件不存在!");
@@ -113,7 +117,7 @@ class CsvUtil {
         String folder = _getValueWithCatch(attribute, indexMap, 'folder');
         String notes = _getValueWithCatch(attribute, indexMap, 'notes');
         int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
-        if (indexMap.containsKey('label') && attribute[indexMap['label']].length > 0) {
+        if (indexMap.containsKey('label') && attribute[indexMap['label']!].length > 0) {
           label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
         }
         String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
@@ -147,7 +151,7 @@ class CsvUtil {
 
   static String _getValueWithCatch(List<String> values, Map<String, int> indexMap, String mapKey) {
     try {
-      if (indexMap.containsKey(mapKey)) return values[indexMap[mapKey]];
+      if (indexMap.containsKey(mapKey)) return values[indexMap[mapKey]!];
     } on RangeError {} catch (e) {}
     if (mapKey == "folder") return "默认";
     if (mapKey == 'fav') return '0';

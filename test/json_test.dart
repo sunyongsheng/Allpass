@@ -29,12 +29,12 @@ void main() {
   String test1;
   AllpassFileUtil util = AllpassFileUtil();
   test("编码测试", () {
-    test1 = util.encodeList(testData1);
+    test1 = util.encodeList(testData1)!;
     print(test1);
   });
 
   test("译码测试", () {
-    test1 = util.encodeList(testData1);
+    test1 = util.encodeList(testData1)!;
     print(util.decodeList(test1, AllpassType.password));
   });
 

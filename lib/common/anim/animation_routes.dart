@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ExtendRoute extends PageRouteBuilder {
   final Widget page;
   final double tapPosition;
-  ExtendRoute({this.page, this.tapPosition}): super(
+  ExtendRoute({required this.page, required this.tapPosition}): super(
     pageBuilder: (_, __, ___) {
       return page;
     },

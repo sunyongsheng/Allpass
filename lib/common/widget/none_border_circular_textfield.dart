@@ -2,29 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
 class NoneBorderCircularTextField extends StatelessWidget {
-  final Key key;
+  final Key? key;
   final TextEditingController editingController;
-  final String hintText;
-  final String helperText;
-  final String labelText;
-  final String errorText;
-  final Widget prefixIcon;
+  final String? hintText;
+  final String? helperText;
+  final String? labelText;
+  final String? errorText;
+  final Widget? prefixIcon;
   final bool obscureText;
-  final VoidCallback onEditingComplete;
-  final ValueChanged<String> onChanged;
-  final VoidCallback onTap;
+  final VoidCallback? onEditingComplete;
+  final ValueChanged<String>? onChanged;
+  final VoidCallback? onTap;
   final TextAlign textAlign;
-  final Widget trailing;
-  final TextInputType inputType;
-  final int maxLines;
+  final Widget? trailing;
+  final TextInputType? inputType;
+  final int? maxLines;
   final bool autoFocus;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
 
   final bool needPadding;
 
   NoneBorderCircularTextField({
     this.key,
-    @required this.editingController,
+    required this.editingController,
     this.hintText,
     this.helperText,
     this.labelText,

@@ -4,7 +4,7 @@ import 'package:allpass/util/encrypt_util.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
 
   PasswordGenerationDialog({this.key}): super(key: key);
 
@@ -56,7 +56,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _capitalChoose,
                     onChanged: (choose) {
                       setState(() {
-                        _capitalChoose = choose;
+                        _capitalChoose = choose ?? true;
                       });
                     },
                   ),
@@ -76,7 +76,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _lowerCaseChoose,
                     onChanged: (choose) {
                       setState(() {
-                        _lowerCaseChoose = choose;
+                        _lowerCaseChoose = choose ?? true;
                       });
                     },
                   ),
@@ -96,7 +96,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _numberChoose,
                     onChanged: (choose) {
                       setState(() {
-                        _numberChoose = choose;
+                        _numberChoose = choose ?? true;
                       });
                     },
                   ),
@@ -116,7 +116,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _symbolChoose,
                     onChanged: (choose) {
                       setState(() {
-                        _symbolChoose = choose;
+                        _symbolChoose = choose ?? true;
                       });
                     },
                   ),

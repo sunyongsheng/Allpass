@@ -34,9 +34,9 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin {
 
-  AuthService _localAuthService;
+  late AuthService _localAuthService;
 
-  ScrollController _controller;
+  late ScrollController _controller;
 
   final double cardElevation = 0;
 
@@ -271,12 +271,12 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     var bean = Application.getIt<AllpassService>().checkUpdate();
     showDialog(
         context: context,
-        builder: (cx) => FutureBuilder(
+        builder: (cx) => FutureBuilder<UpdateBean>(
           future: bean,
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                return UpdateDialog(snapshot.data);
+                return UpdateDialog(snapshot.data!);
               default:
                 return Center(
                   child: CircularProgressIndicator(),

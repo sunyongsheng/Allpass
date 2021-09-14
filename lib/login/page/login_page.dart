@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
@@ -13,6 +14,7 @@ import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/home/about_page.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
 
 /// 登陆页面
 class LoginPage extends StatefulWidget {
@@ -33,7 +35,8 @@ class _LoginPage extends State<LoginPage> {
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
     if (Application.sp.getBool(SPKeys.firstRun)??true) {
-      WidgetsBinding.instance.addPostFrameCallback((callback) {
+      WidgetsBinding.instance?.addPostFrameCallback((callback) {
+        Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
         showDialog(
             context: context,
             builder: (cx) => AlertDialog(

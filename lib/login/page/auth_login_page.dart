@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
@@ -10,6 +11,8 @@ import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
+
 
 
 /// 生物识别登录页
@@ -24,11 +27,13 @@ class AuthLoginPage extends StatefulWidget {
 class _AuthLoginPage extends State<StatefulWidget> {
 
   final AuthService _localAuthService = Application.getIt<AuthService>();
-  WidgetsBinding widgetsBinding = WidgetsBinding.instance;
 
   @override
   void initState() {
-    widgetsBinding.addPostFrameCallback((callback) => askAuth(context));
+    WidgetsBinding.instance?.addPostFrameCallback((callback) {
+      Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
+      askAuth(context);
+    });
     super.initState();
   }
 
@@ -102,7 +107,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
   Future<Null> askAuth(BuildContext context) async {
     // 两次时间
     DateTime now = DateTime.now();
-    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SPKeys.latestUsePassword)??now.toIso8601String());
+    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
     if (now.difference(latestUsePassword).inDays >= Config.timingInMainPassword) {
       await _localAuthService.stopAuthenticate();
       showDialog<bool>(
@@ -111,7 +116,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
           helperText: "Allpass会定期要求您输入密码以防止您忘记主密码",
         ),
       ).then((value) {
-        if (value) {
+        if (value ?? false) {
           ToastUtil.show(msg: "验证成功");
           Config.updateLatestUsePasswordTime();
           NavigationUtil.goHomePage(context);

@@ -16,7 +16,7 @@ void main() {
   });
 
   test("下载文件", () async {
-    String path = await utils.downloadFile(dirName: "Allpass", fileName: "test.txt", savePath: "D:/Files");
+    String? path = await utils.downloadFile(dirName: "Allpass", fileName: "test.txt", savePath: "D:/Files");
     assert(path != null);
   });
 

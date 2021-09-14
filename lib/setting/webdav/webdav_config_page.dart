@@ -19,12 +19,11 @@ class WebDavConfigPage extends StatefulWidget {
 }
 
 class _WebDavConfigPage extends State<StatefulWidget> {
-  TextEditingController _urlController;
-  TextEditingController _usernameController;
-  TextEditingController _passwordController;
-  TextEditingController _portController;
-  WebDavUtil _utils;
-  Color _mainColor;
+  late TextEditingController _urlController;
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
+  late TextEditingController _portController;
+  late WebDavUtil _utils;
 
   bool _pressNext = false;
   bool _passwordVisible = false;
@@ -36,10 +35,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _portController = TextEditingController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _mainColor = Theme.of(context).primaryColor;
-      });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _frameDone = true;
     });
     _utils = WebDavUtil();
@@ -49,15 +45,17 @@ class _WebDavConfigPage extends State<StatefulWidget> {
   @override
   void dispose() {
     super.dispose();
-    _urlController?.dispose();
-    _usernameController?.dispose();
-    _passwordController?.dispose();
-    _portController?.dispose();
+    _urlController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _portController.dispose();
     _frameDone = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    Color _mainColor = Theme.of(context).primaryColor;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

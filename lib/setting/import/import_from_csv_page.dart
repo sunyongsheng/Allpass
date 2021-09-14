@@ -36,12 +36,12 @@ class ImportFromCsvPage extends StatelessWidget {
                 title: Text("密码"),
                 leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
                 onTap: () async {
-                  FilePickerResult result = await FilePicker.platform.pickFiles(
+                  FilePickerResult? result = await FilePicker.platform.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: ['csv']
                   );
                   _process(context, importFuture(context, AllpassType.password,
-                      result?.files?.single?.path));
+                      result?.files.single.path));
                 }
             ),
           ),
@@ -51,12 +51,12 @@ class ImportFromCsvPage extends StatelessWidget {
                 title: Text("卡片"),
                 leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
                 onTap: () async {
-                  FilePickerResult result = await FilePicker.platform.pickFiles(
+                  FilePickerResult? result = await FilePicker.platform.pickFiles(
                       type: FileType.custom,
                       allowedExtensions: ['csv']
                   );
                   _process(context, importFuture(context, AllpassType.card,
-                      result?.files?.single?.path));
+                      result?.files.single.path));
                 }
             ),
           ),
@@ -65,11 +65,11 @@ class ImportFromCsvPage extends StatelessWidget {
     );
   }
 
-  Future<Null> importFuture(BuildContext context, AllpassType type, String path) async {
+  Future<Null> importFuture(BuildContext context, AllpassType type, String? path) async {
     if (path != null) {
       try {
         if (type == AllpassType.password) {
-          List<PasswordBean> passwordList = await CsvUtil.passwordImportFromCsv(path: path);
+          List<PasswordBean> passwordList = await CsvUtil.passwordImportFromCsv(path: path) ?? [];
           for (var bean in passwordList) {
             await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
             RuntimeData.labelListAdd(bean.label);
@@ -78,7 +78,7 @@ class ImportFromCsvPage extends StatelessWidget {
           ToastUtil.show(msg: "导入 ${passwordList.length}条记录");
           await Provider.of<PasswordProvider>(context, listen: false).refresh();
         } else {
-          List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path);
+          List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
           for (var bean in cardList) {
             await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
             RuntimeData.labelListAdd(bean.label);

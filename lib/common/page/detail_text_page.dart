@@ -44,7 +44,7 @@ class DetailTextPage extends StatelessWidget {
                           ),
                           onTap: () {
                             // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                            WidgetsBinding.instance.addPostFrameCallback((_) => _controller.clear());
+                            WidgetsBinding.instance?.addPostFrameCallback((_) => _controller.clear());
                           },
                         ),
                         hintText: "添加备注",

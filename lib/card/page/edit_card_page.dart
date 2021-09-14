@@ -20,7 +20,7 @@ import 'package:allpass/setting/category/widget/add_category_dialog.dart';
 /// 查看或编辑“卡片”页面
 class EditCardPage extends StatefulWidget {
 
-  final CardBean data;
+  final CardBean? data;
 
   final int operation;
 
@@ -36,22 +36,21 @@ class _EditCardPage extends State<EditCardPage> {
 
   String get pageTitle => (operation == DataOperation.add)? "添加卡片" : "编辑卡片";
 
-  CardBean _oldData;
+  CardBean? _oldData;
 
-  int operation;
+  late int operation;
 
-  Color _mainColor;
-  TextEditingController _nameController;
-  TextEditingController _ownerNameController;
-  TextEditingController _cardIdController;
-  TextEditingController _telephoneController;
-  TextEditingController _notesController;
-  TextEditingController _passwordController;
+  late TextEditingController _nameController;
+  late TextEditingController _ownerNameController;
+  late TextEditingController _cardIdController;
+  late TextEditingController _telephoneController;
+  late TextEditingController _notesController;
+  late TextEditingController _passwordController;
 
   String _folder = "默认";
-  List<String> _labels;
+  late List<String> _labels;
   int _fav = 0;
-  String _createTime;
+  late String _createTime;
 
   bool _passwordVisible = false;
   bool _frameDone = false;
@@ -62,17 +61,17 @@ class _EditCardPage extends State<EditCardPage> {
     this.operation = widget.operation;
     if (operation == DataOperation.update) {
       this._oldData = widget.data;
-      _folder = _oldData.folder;
-      _labels = List.from(_oldData.label);
-      _fav = _oldData.fav;
-      _createTime = _oldData.createTime;
+      _folder = _oldData!.folder;
+      _labels = List.from(_oldData!.label ?? []);
+      _fav = _oldData!.fav;
+      _createTime = _oldData!.createTime;
 
-      _nameController = TextEditingController(text: _oldData.name);
-      _ownerNameController = TextEditingController(text: _oldData.ownerName);
-      _cardIdController = TextEditingController(text: _oldData.cardId);
-      _telephoneController = TextEditingController(text: _oldData.telephone);
-      _notesController = TextEditingController(text: _oldData.notes);
-      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData.password));
+      _nameController = TextEditingController(text: _oldData!.name);
+      _ownerNameController = TextEditingController(text: _oldData!.ownerName);
+      _cardIdController = TextEditingController(text: _oldData!.cardId);
+      _telephoneController = TextEditingController(text: _oldData!.telephone);
+      _notesController = TextEditingController(text: _oldData!.notes);
+      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData!.password));
     } else {
       _nameController = TextEditingController();
       _ownerNameController = TextEditingController();
@@ -81,12 +80,10 @@ class _EditCardPage extends State<EditCardPage> {
       _notesController = TextEditingController();
       _passwordController = TextEditingController();
       _labels = [];
+      _createTime = DateTime.now().toIso8601String();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _mainColor = Theme.of(context).primaryColor;
-      });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _frameDone = true;
     });
   }
@@ -94,18 +91,19 @@ class _EditCardPage extends State<EditCardPage> {
   @override
   void dispose() {
     super.dispose();
-    _nameController?.dispose();
-    _ownerNameController?.dispose();
-    _cardIdController?.dispose();
-    _telephoneController?.dispose();
-    _notesController?.dispose();
-    _passwordController?.dispose();
+    _nameController.dispose();
+    _ownerNameController.dispose();
+    _cardIdController.dispose();
+    _telephoneController.dispose();
+    _notesController.dispose();
+    _passwordController.dispose();
     _frameDone = false;
   }
 
   @override
   Widget build(BuildContext context) {
     CardProvider provider = Provider.of<CardProvider>(context);
+    Color _mainColor = Theme.of(context).primaryColor;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -135,7 +133,8 @@ class _EditCardPage extends State<EditCardPage> {
             IconButton(
               icon: Icon(Icons.check,),
               onPressed: () {
-                if (_ownerNameController.text.length >= 1 && _cardIdController.text.length >= 1) {
+                if (_ownerNameController.text.length >= 1
+                    && _cardIdController.text.length >= 1) {
                   String pwd = _passwordController.text.length >= 1
                       ? EncryptUtil.encrypt(_passwordController.text)
                       : EncryptUtil.encrypt("000000");
@@ -337,7 +336,11 @@ class _EditCardPage extends State<EditCardPage> {
                     ),
                     DropdownButton(
                       onChanged: (newValue) {
-                        setState(() => _folder = newValue);
+                        setState(() => {
+                          if (newValue != null) {
+                            _folder = newValue.toString()
+                          }
+                        });
                       },
                       items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
                         return DropdownMenuItem<String>(

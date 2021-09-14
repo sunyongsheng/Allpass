@@ -31,7 +31,7 @@ class PasswordPage extends StatefulWidget {
 
 class _PasswordPageState extends State<PasswordPage>
     with AutomaticKeepAliveClientMixin {
-  ScrollController _controller;
+  late ScrollController _controller;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _PasswordPageState extends State<PasswordPage>
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
-    Widget floatingButton;
+    Widget? floatingButton;
     if (RuntimeData.multiPasswordSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
@@ -206,7 +206,7 @@ class _PasswordPageState extends State<PasswordPage>
           builder: (context) => ConfirmDialog("确认删除",
               "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？", danger: true,)
       ).then((confirm) async {
-        if (confirm) {
+        if (confirm ?? false) {
           for (var item in RuntimeData.multiPasswordList) {
             await model.deletePassword(item);
           }

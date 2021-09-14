@@ -9,60 +9,46 @@ class PasswordBean extends BaseModel {
 
   static PasswordBean empty = PasswordBean(key: -1, name: "", username: "", password: "", url: "");
 
-  int uniqueKey; // 1 ID
-  String name; // 2 账号名称
-  String username; // 3 用户名
-  String password; // 4 密码
-  String url; // 5 地址
-  String folder; // 6 文件夹
-  String notes; // 7 备注
-  List<String> label; // 8 标签
-  int fav; // 9 是否标心，0代表否
-  String createTime; // 10 创建时间，为了方便存储使用Iso8601String
-  int sortNumber;  // 12 排序号
+  late int? uniqueKey; // 1 ID
+  late String name; // 2 账号名称
+  late String username; // 3 用户名
+  late String password; // 4 密码
+  late String url; // 5 地址
+  late String folder; // 6 文件夹
+  late String notes; // 7 备注
+  late List<String>? label; // 8 标签
+  late int fav; // 9 是否标心，0代表否
+  late String createTime; // 10 创建时间，为了方便存储使用Iso8601String
+  late int sortNumber;  // 12 排序号
 
   PasswordBean(
-      {int key,
-      String name,
-      @required String username,
-      @required String password,
-      @required String url,
+      {int? key,
+      required String name,
+      required String username,
+      required String password,
+      String url: "",
       String folder: "默认",
       String notes: "",
-      List<String> label,
+      List<String>? label,
       int fav: 0,
-      String createTime,
-      Color color,
+      String? createTime,
+      Color? color,
       int sortNumber: -1}) {
+    this.uniqueKey = key;
+    this.name = name;
     this.username = username;
     this.password = password;
     this.url = url;
     this.folder = folder;
     this.notes = notes;
+    this.label = label ?? [];
     this.fav = fav;
-    this.uniqueKey = key;
-    this.color = color;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
     this.sortNumber = sortNumber;
+    this.color = color;
 
-    if ((name?.trim()?.length ?? 0) < 1) {
-      if (url.contains("weibo")) {
-        this.name = "微博";
-      } else if (url.contains("zhihu")) {
-        this.name = "知乎";
-      } else if (url.contains("gmail")) {
-        this.name = "Gmail";
-      } else if (url.contains("126")) {
-        this.name = "126邮箱";
-      } else {
-        this.name = this.username;
-      }
-    } else {
-      this.name = name;
-    } //name
     if (url == BaseModel.noneData) this.url = "";
     if (notes == BaseModel.noneData) this.notes = "";
-    this.label = label ?? [];
   }
 
   @override
@@ -76,7 +62,7 @@ class PasswordBean extends BaseModel {
         ", password:" +
         this.password +
         ", url:" +
-        this.url +
+        this.url.toString() +
         ", folder:" +
         this.folder +
         ", label:" +
@@ -200,7 +186,7 @@ class PasswordBean extends BaseModel {
             url: pureBean.url,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List.from(pureBean.label),
+            label: List.from(pureBean.label ?? []),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             color: pureBean.color,
@@ -238,7 +224,7 @@ class PasswordBean extends BaseModel {
             url: pureBean.url,
             folder: pureBean.folder,
             notes: pureBean.notes,
-            label: List.from(pureBean.label),
+            label: List.from(pureBean.label ?? []),
             fav: pureBean.fav,
             createTime: pureBean.createTime,
             sortNumber: pureBean.sortNumber,
@@ -247,7 +233,7 @@ class PasswordBean extends BaseModel {
   }
 
   @override
-  int get hashCode => uniqueKey;
+  int get hashCode => uniqueKey ?? -1;
 
   @override
   bool operator ==(Object another) {

@@ -1,5 +1,5 @@
 class VersionUtil {
-  static bool twoIsNewerVersion(String version1, String version2) {
+  static bool twoIsNewerVersion(String? version1, String? version2) {
     if (version1 == null || version2 == null) return false;
     if (version1.length != version2.length) {
       throw ArgumentError("版本号格式不正确");

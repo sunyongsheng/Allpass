@@ -24,11 +24,11 @@ import 'package:allpass/core/service/webdav_sync_service.dart';
 class Application {
   static GlobalKey<NavigatorState> key = GlobalKey();
 
-  static GetIt getIt;
-  static FluroRouter router;
-  static SharedPreferences sp;
-  static MethodChannel shareMethodChannel;
-  static String identification;
+  static late GetIt getIt;
+  static late FluroRouter router;
+  static late SharedPreferences sp;
+  static late MethodChannel shareMethodChannel;
+  static late String identification;
 
   static String version = "1.6.3";
 
@@ -53,18 +53,17 @@ class Application {
     shareMethodChannel = const MethodChannel(ChannelConstants.channel);
     shareMethodChannel.setMethodCallHandler((call) {
       if (call.method == ChannelConstants.methodImportChromeData) {
-        Future<List<PasswordBean>> res = CsvUtil.passwordImportFromCsv(toParseText: call.arguments);
+        Future<List<PasswordBean>?> res = CsvUtil.passwordImportFromCsv(toParseText: call.arguments);
         _importPasswordFromFutureList(res);
         return res;
-      } else {
-        return null;
       }
+      return Future.error(Null);
     });
   }
 
-  static void _importPasswordFromFutureList(Future<List<PasswordBean>> list) async {
+  static void _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
     PasswordDao _dao = PasswordDao();
-    List<PasswordBean> passwordList = await list;
+    List<PasswordBean>? passwordList = await list;
     if (passwordList != null) {
       for (var bean in passwordList) {
         await _dao.insert(bean);

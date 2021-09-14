@@ -2,25 +2,25 @@ class UpdateBean {
 
   CheckUpdateResult checkResult;
 
-  String version;
+  String? version;
 
-  String updateContent;
+  String? updateContent;
 
-  String downloadUrl;
+  String? downloadUrl;
 
-  String updateTime;
+  String? updateTime;
 
-  String channel;
+  String? channel;
 
   UpdateBean({this.checkResult = CheckUpdateResult.NoUpdate,
     this.version, this.updateContent, this.downloadUrl, this.updateTime, this.channel});
 
   bool isBetaChannel() {
-    return this.channel.toUpperCase() == "BETA";
+    return this.channel?.toUpperCase() == "BETA";
   }
 
   bool isReleaseChannel() {
-    return this.channel.toUpperCase() == "RELEASE";
+    return this.channel?.toUpperCase() == "RELEASE";
   }
 }
 

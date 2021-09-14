@@ -4,7 +4,7 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 class SearchButtonWidget extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final String searchType;
   final VoidCallback press;
 
@@ -12,7 +12,7 @@ class SearchButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = ThemeUtil.isInDarkTheme(context) ? Colors.grey : Colors.grey[900];
+    Color textColor = ThemeUtil.isInDarkTheme(context) ? Colors.grey : Colors.grey[900]!;
     return Container(
       padding: AllpassEdgeInsets.forSearchButtonInset,
       child: TextButton(

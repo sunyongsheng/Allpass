@@ -26,10 +26,10 @@ class AllpassServiceImpl implements AllpassService {
     if (_dio == null) {
       _dio = Dio();
     }
-    return _dio;
+    return _dio!;
   }
 
-  Dio _dio;
+  Dio? _dio;
 
   @override
   Future<AllpassResponse> registerUser(UserBean user) async {
@@ -91,12 +91,12 @@ class AllpassServiceImpl implements AllpassService {
 
       CheckUpdateResult result;
       String version = Application.version;
-      String content = res["update_content"];
-      String downloadUrl = res["download_url"];
-      String channel = res["channel"];
+      String? content = res["update_content"];
+      String? downloadUrl = res["download_url"];
+      String? channel = res["channel"];
       if (res["have_update"] == "1") {
         result = CheckUpdateResult.HaveUpdate;
-        version = res["version"];
+        version = res["version"] ?? Application.version;
       } else {
         result = CheckUpdateResult.NoUpdate;
       }
@@ -126,8 +126,10 @@ class AllpassServiceImpl implements AllpassService {
       Response<Map> response = await Dio(BaseOptions(connectTimeout: 10))
           .get("$allpassUrl/update/?version=1.0.0");
       Map<String, String> res = Map();
-      for (String key in response.data.keys) {
-        res[key] = response.data[key];
+      for (String key in response.data?.keys ?? []) {
+        if (response.data?[key] != null) {
+          res[key] = response.data?[key];
+        }
       }
       return UpdateBean(
           version: res["version"], downloadUrl: res["download_url"]);

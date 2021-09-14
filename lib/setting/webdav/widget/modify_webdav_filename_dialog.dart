@@ -4,7 +4,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class ModifyWebDavFileNameDialog extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final String oldPasswordName;
   final String oldCardName;
 
@@ -12,8 +12,8 @@ class ModifyWebDavFileNameDialog extends StatelessWidget {
   final _cardFileNameController = TextEditingController();
 
   ModifyWebDavFileNameDialog({this.key,
-    this.oldCardName,
-    this.oldPasswordName}) : super(key: key);
+    required this.oldCardName,
+    required this.oldPasswordName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

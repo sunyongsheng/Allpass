@@ -91,7 +91,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                         context: context,
                       builder: (context) => ConfirmDialog("确认选择", "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码")
                     ).then((yes) {
-                      if (yes) {
+                      if (yes ?? false) {
                         Config.setTimingInMainPassDays(36500);
                       }
                     });

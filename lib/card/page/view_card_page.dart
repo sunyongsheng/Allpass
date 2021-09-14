@@ -29,25 +29,15 @@ class _ViewCardPage extends State<ViewCardPage> {
   String _password = "";
   String _cache = "noCache";
 
-  Color _mainColor;
 
   bool deleted = false;
 
-  @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _mainColor = Theme.of(context).primaryColor;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     if (deleted) return Container();
 
+    Color _mainColor = Theme.of(context).primaryColor;
     CardProvider provider = Provider.of<CardProvider>(context);
     CardBean bean = provider.currCard;
     if (bean == CardBean.empty) {
@@ -157,7 +147,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                         Padding(
                           padding: AllpassEdgeInsets.smallTBPadding,),
                         // 拥有者姓名标题
-                        _titleContainer("拥有者姓名"),
+                        _titleContainer(_mainColor, "拥有者姓名"),
                         // 拥有者姓名主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -186,7 +176,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 卡号标题
-                        _titleContainer("卡号"),
+                        _titleContainer(_mainColor, "卡号"),
                         // 卡号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -232,7 +222,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 密码标题
-                        _titleContainer("密码"),
+                        _titleContainer(_mainColor, "密码"),
                         // 密码主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -275,7 +265,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 绑定手机号标题
-                        _titleContainer("绑定手机号"),
+                        _titleContainer(_mainColor, "绑定手机号"),
                         // 绑定手机号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -304,7 +294,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 备注标题
-                        _titleContainer("备注"),
+                        _titleContainer(_mainColor, "备注"),
                         // 备注主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -338,7 +328,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 标签标题
-                        _titleContainer("标签"),
+                        _titleContainer(_mainColor, "标签"),
                         // 标签主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -394,7 +384,7 @@ class _ViewCardPage extends State<ViewCardPage> {
 
   List<Widget> _getTag(CardBean bean) {
     List<Widget> labelChoices = [];
-    bean.label.forEach((item) {
+    bean.label?.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
         selected: true,
@@ -407,11 +397,11 @@ class _ViewCardPage extends State<ViewCardPage> {
     return labelChoices;
   }
 
-  Widget _titleContainer(String title) {
+  Widget _titleContainer(Color mainColor, String title) {
     return Container(
       margin: AllpassEdgeInsets.bottom10Inset,
       child: Text(title,
-        style: TextStyle(fontSize: 16, color: _mainColor),
+        style: TextStyle(fontSize: 16, color: mainColor),
       ),
     );
   }

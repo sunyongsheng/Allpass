@@ -61,7 +61,7 @@ class AllpassTheme {
     }
   }
 
-  ThemeData darkTheme({Color mainColor}) {
+  ThemeData darkTheme({required MaterialColor mainColor}) {
     return ThemeData(
       primaryColor: mainColor,
       primarySwatch: mainColor,
@@ -148,9 +148,9 @@ class AllpassTheme {
           )
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Colors.grey[700]!,
         brightness: Brightness.dark,
-        disabledColor: Colors.grey[700],
+        disabledColor: Colors.grey[700]!,
         labelPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         labelStyle: TextStyle(color: Colors.white),
         padding: EdgeInsets.all(4),
@@ -171,7 +171,7 @@ class AllpassTheme {
     );
   }
 
-  ThemeData defaultTheme({Color mainColor}) {
+  ThemeData defaultTheme({required MaterialColor mainColor}) {
     return ThemeData(
       primaryColor: mainColor,
       primarySwatch: mainColor,

@@ -104,7 +104,7 @@ class AllpassUI {
   static const double smallBorderRadius = 8.0;
 }
 
-Color getRandomColor({int seed}) {
+Color getRandomColor({int? seed}) {
   if (seed == null) seed = 101;
   Random random = Random(seed);
   int i = random.nextInt(AllpassColorUI.allColor.length - 1);

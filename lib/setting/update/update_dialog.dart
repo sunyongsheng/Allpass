@@ -7,7 +7,7 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 class UpdateDialog extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final UpdateBean updateBean;
 
   UpdateDialog(this.updateBean, {this.key}) : super(key: key);
@@ -22,7 +22,7 @@ class UpdateDialog extends StatelessWidget {
   }
 
   Widget _createUpdateContent() {
-    String _updateContent = updateBean.updateContent?.replaceAll("~", "\n");
+    String _updateContent = updateBean.updateContent?.replaceAll("~", "\n") ?? "无";
     switch (updateBean.checkResult) {
       case CheckUpdateResult.HaveUpdate:
         return Column(
@@ -76,13 +76,15 @@ class UpdateDialog extends StatelessWidget {
         TextButton(
             child: Text("下载更新", style: TextStyle(color: mainColor)),
             onPressed: () async {
-              String downloadUrl;
+              String? downloadUrl;
               if (updateBean.isBetaChannel()) {
                 downloadUrl = "${updateBean.downloadUrl}&identification=${Application.identification}";
               } else {
                 downloadUrl = updateBean.downloadUrl;
               }
-              await launch(downloadUrl);
+              if (downloadUrl != null) {
+                await launch(downloadUrl);
+              }
             }),
         TextButton(
             child: Text("下次再说", style: TextStyle(color: mainColor),),

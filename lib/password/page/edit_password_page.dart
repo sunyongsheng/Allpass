@@ -19,7 +19,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 /// 查看或编辑密码页面
 class EditPasswordPage extends StatefulWidget {
 
-  final PasswordBean data;
+  final PasswordBean? data;
 
   final int operation;
 
@@ -35,21 +35,19 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
 
-  PasswordBean _oldData;
+  late PasswordBean? _oldData;
 
-  int operation;
+  late int operation;
 
   String _folder = "默认";
-  TextEditingController _nameController;
-  TextEditingController _usernameController;
-  TextEditingController _passwordController;
-  TextEditingController _notesController;
-  TextEditingController _urlController;
-  List<String> _labels;
+  late TextEditingController _nameController;
+  late TextEditingController _usernameController;
+  late TextEditingController _passwordController;
+  late TextEditingController _notesController;
+  late TextEditingController _urlController;
+  late List<String> _labels;
   int _fav = 0;
-  String _createTime;
-
-  Color _mainColor;
+  late String _createTime;
 
   bool _passwordVisible = false;
   bool _frameDone = false;
@@ -58,11 +56,11 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   void dispose() {
     super.dispose();
-    _nameController?.dispose();
-    _usernameController?.dispose();
-    _passwordController?.dispose();
-    _notesController?.dispose();
-    _urlController?.dispose();
+    _nameController.dispose();
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _notesController.dispose();
+    _urlController.dispose();
     _frameDone = false;
   }
 
@@ -73,16 +71,16 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     this.operation = widget.operation;
     if (operation == DataOperation.update) {
       this._oldData = widget.data;
-      _folder = _oldData.folder;
-      _labels = []..addAll(_oldData.label);
-      _fav = _oldData.fav;
-      _createTime = _oldData.createTime;
+      _folder = _oldData!.folder;
+      _labels = []..addAll(_oldData!.label ?? []);
+      _fav = _oldData!.fav;
+      _createTime = _oldData!.createTime;
 
-      _nameController = TextEditingController(text: _oldData.name);
-      _usernameController = TextEditingController(text: _oldData.username);
-      _notesController = TextEditingController(text: _oldData.notes);
-      _urlController = TextEditingController(text: _oldData.url);
-      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData.password));
+      _nameController = TextEditingController(text: _oldData!.name);
+      _usernameController = TextEditingController(text: _oldData!.username);
+      _notesController = TextEditingController(text: _oldData!.notes);
+      _urlController = TextEditingController(text: _oldData!.url);
+      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData!.password));
     } else {
       _nameController = TextEditingController();
       _usernameController = TextEditingController();
@@ -91,10 +89,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _passwordController = TextEditingController();
       _labels = [];
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _mainColor = Theme.of(context).primaryColor;
-      });
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       _frameDone = true;
     });
   }
@@ -102,6 +97,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   Widget build(BuildContext context) {
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
+    Color _mainColor = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -132,7 +128,8 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             icon: Icon(Icons.check,),
             onPressed: () async {
               if (_usernameController.text.length >= 1
-                  && _passwordController.text.length >= 1) {
+                  && _passwordController.text.length >= 1
+                  && _nameController.text.length >= 1) {
                 String pw = EncryptUtil.encrypt(_passwordController.text);
                 String name = _nameController.text.trimLeft();
                 PasswordBean tempData = PasswordBean(
@@ -145,7 +142,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   label: _labels,
                   notes: _notesController.text,
                   fav: _fav,
-                  color: _oldData?.color??getRandomColor(),
+                  color: _oldData?.color ?? getRandomColor(),
                   createTime: _createTime
                 );
                 if (operation == DataOperation.add) {
@@ -158,7 +155,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 }
                 Navigator.pop(context);
               } else {
-                ToastUtil.showError(msg: "账号和密码不允许为空！");
+                ToastUtil.showError(msg: "名称、账号和密码不允许为空！");
               }
             },
           )
@@ -302,7 +299,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     DropdownButton(
                       onChanged: (newValue) {
                         setState(() {
-                          _folder = newValue;
+                          _folder = newValue.toString();
                         });
                       },
                       items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {

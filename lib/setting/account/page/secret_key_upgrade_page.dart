@@ -23,14 +23,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
 
   PasswordDao passwordDao = PasswordDao();
   CardDao cardDao = CardDao();
-  EncryptHolder encryptHolder;
+  late EncryptHolder encryptHolder;
 
 
   TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
   bool haveGen = false;
   bool inUpgrade = false;
   bool haveUpgrade = false;
-  String _latestKey;
+  String? _latestKey;
 
   @override
   void initState() {
@@ -118,7 +118,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                         _latestKey = EncryptUtil.generateRandomKey(32);
                         setState(() {
                           haveGen = true;
-                          controller.text = _latestKey;
+                          controller.text = _latestKey!;
                         });
                       },
                     ),
@@ -173,7 +173,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   }
 
   Future<bool> updateData() async {
-    String backupKey = await EncryptUtil.getStoreKey();
+    String backupKey = (await EncryptUtil.getStoreKey())!;
     encryptHolder = EncryptHolder(backupKey);
     List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList() ?? [];
     List<PasswordBean> passwordsBackup = [];
@@ -182,13 +182,13 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
-    String backup2 = Config.webDavPassword;
+    String? backup2 = Config.webDavPassword;
 
-    await EncryptUtil.initEncryptByKey(_latestKey);
+    await EncryptUtil.initEncryptByKey(_latestKey!);
     try {
       Config.setPassword(EncryptUtil.encrypt(encryptHolder.decrypt(Config.password)));
-      if (Config.webDavPassword.length > 6) {
-        Config.setWebDavPassword(EncryptUtil.encrypt(encryptHolder.decrypt(Config.webDavPassword)));
+      if ((Config.webDavPassword?.length ?? 0) > 6) {
+        Config.setWebDavPassword(EncryptUtil.encrypt(encryptHolder.decrypt(Config.webDavPassword!)));
       }
       for (PasswordBean bean in passwords) {
         String password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class InformationHelpDialog extends StatefulWidget {
 
-  final Key key;
+  final Key? key;
   final Widget title;
   final List<Widget> content;
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   InformationHelpDialog({this.key,
     this.title = const Text("帮助"),
-    @required this.content,
+    required this.content,
     this.actions
   }) : super(key: key);
 

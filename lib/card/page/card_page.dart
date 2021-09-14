@@ -29,7 +29,7 @@ class CardPage extends StatefulWidget {
 
 class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin {
 
-  ScrollController _controller;
+  late ScrollController _controller;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
-    Widget floatingButton;
+    Widget? floatingButton;
     if (RuntimeData.multiCardSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
@@ -207,7 +207,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
             danger: true)
       ).then((confirm) async {
-        if (confirm) {
+        if (confirm ?? false) {
           for (var item in RuntimeData.multiCardList) {
             await model.deleteCard(item);
           }

@@ -1,10 +1,10 @@
 class UserBean {
   
-  String identification;
+  String? identification;
   
-  String systemInfo;
+  String? systemInfo;
   
-  String version;
+  String? version;
   
   UserBean({
     this.identification,
@@ -12,8 +12,8 @@ class UserBean {
     this.systemInfo
   });
   
-  Map<String, String> toJson() {
-    Map<String, String> user = Map();
+  Map<String, String?> toJson() {
+    Map<String, String?> user = Map();
     user['identification'] = this.identification;
     user['systemInfo'] = this.systemInfo;
     user['allpassVersion'] = this.version;

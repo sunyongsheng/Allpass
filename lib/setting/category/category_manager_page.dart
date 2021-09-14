@@ -31,9 +31,9 @@ class CategoryManagerPage extends StatefulWidget {
 
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
-  CategoryType type;
-  String categoryName;
-  List<String> data;
+  late CategoryType type;
+  late String categoryName;
+  late List<String> data;
 
   @override
   void initState() {
@@ -158,7 +158,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
                           String hintText = "";
-                          Future<Null> Function() deleteCallback;
+                          Future<Null> Function()? deleteCallback;
                           if (this.type == CategoryType.label) {
                             hintText = "拥有此标签的密码或卡片将删除此标签，确认吗？";
                             deleteCallback = () async {
@@ -175,12 +175,12 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             };
                           }
                           Navigator.pop(context);
-                          bool res = await showDialog(
+                          bool? res = await showDialog(
                               context: context,
                               builder: (context) => ConfirmDialog("确认删除", hintText, danger: true,)
                           );
                           if (res != null && res) {
-                            await deleteCallback();
+                            await deleteCallback?.call();
                           }
                         },
                       ),
@@ -201,14 +201,14 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     try {
       String oldLabel = RuntimeData.labelList[index];
       for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
-        if (bean.label.contains(oldLabel)) {
-          bean.label[bean.label.indexOf(oldLabel)] = newLabel;
+        if (bean.label?.contains(oldLabel) ?? false) {
+          bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
           await Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
         }
       }
       for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
-        if (bean.label.contains(oldLabel)) {
-          bean.label[bean.label.indexOf(oldLabel)] = newLabel;
+        if (bean.label?.contains(oldLabel) ?? false) {
+          bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
           await Provider.of<CardProvider>(context, listen: false).updateCard(bean);
         }
       }
@@ -251,14 +251,14 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   Future<bool> deleteLabelAndUpdate(String label) async {
     try {
       for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
-        if (bean.label.contains(label)) {
-          bean.label.remove(label);
+        if (bean.label?.contains(label) ?? false) {
+          bean.label!.remove(label);
           Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
         }
       }
       for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
-        if (bean.label.contains(label)) {
-          bean.label.remove(label);
+        if (bean.label?.contains(label) ?? false) {
+          bean.label!.remove(label);
           Provider.of<CardProvider>(context, listen: false).updateCard(bean);
         }
       }

@@ -74,12 +74,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     InkWell(
                       child: Row(
                         children: <Widget>[
-                          Radio(
+                          Radio<int>(
                             value: 1, // "名称 账号 密码 网站地址"
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
-                                _groupValue = value;
+                                _groupValue = value!;
                               });
                             },
                           ),
@@ -95,12 +95,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     InkWell(
                       child: Row(
                         children: <Widget>[
-                          Radio(
+                          Radio<int>(
                             value: 2, // "名称 账号 密码",
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
-                                _groupValue = value;
+                                _groupValue = value!;
                               });
                             },
                           ),
@@ -116,12 +116,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     InkWell(
                       child: Row(
                         children: <Widget>[
-                          Radio(
+                          Radio<int>(
                             value: 3, // "账号 密码 网站地址",
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
-                                _groupValue = value;
+                                _groupValue = value!;
                               });
                             },
                           ),
@@ -137,12 +137,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     InkWell(
                       child: Row(
                         children: <Widget>[
-                          Radio(
+                          Radio<int>(
                             value: 4, // "账号 密码",
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
-                                _groupValue = value;
+                                _groupValue = value!;
                               });
                             },
                           ),
@@ -158,12 +158,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     InkWell(
                       child: Row(
                         children: <Widget>[
-                          Radio(
+                          Radio<int>(
                             value: 5, // "密码",
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
-                                _groupValue = value;
+                                _groupValue = value!;
                               });
                               ToastUtil.show(msg: "请在第一行输入默认账号");
                             },

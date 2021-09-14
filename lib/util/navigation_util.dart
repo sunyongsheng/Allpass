@@ -8,7 +8,7 @@ class NavigationUtil {
       {bool replace: false,
       bool clearStack: false,
       Duration transitionDuration: const Duration(milliseconds: 250),
-      RouteTransitionsBuilder transitionBuilder}) {
+      RouteTransitionsBuilder? transitionBuilder}) {
     Application.router.navigateTo(context, path,
         replace: replace,
         clearStack: clearStack,

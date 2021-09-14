@@ -31,18 +31,18 @@ class AllpassFileUtil {
   }
 
   /// 对[list]进行json编码
-  String encodeList(List<BaseModel> list) {
+  String? encodeList(List<BaseModel>? list) {
     if (list == null || list.isEmpty) return null;
     if (list[0] is PasswordBean) {
       List<PasswordBean> passwords = [];
-      for (PasswordBean bean in list) {
-        passwords.add(PasswordBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
+      for (var bean in list) {
+        passwords.add(PasswordBean.fromBean(bean as PasswordBean, encryptLevel: Config.webDavEncryptLevel));
       }
       return json.encode(passwords);
     } else if (list[0] is CardBean){
       List<CardBean> cards = [];
-      for (CardBean bean in list) {
-        cards.add(CardBean.fromBean(bean, encryptLevel: Config.webDavEncryptLevel));
+      for (var bean in list) {
+        cards.add(CardBean.fromBean(bean as CardBean, encryptLevel: Config.webDavEncryptLevel));
       }
       return json.encode(cards);
     }
@@ -50,7 +50,7 @@ class AllpassFileUtil {
   }
 
   /// 对json字符串[string]进行解码，返回List<PasswordBean>或List<CardBean>
-  List<BaseModel> decodeList(String string, AllpassType type) {
+  List<BaseModel>? decodeList(String string, AllpassType type) {
     List<dynamic> decodedRes = json.decode(string);
     if (type == AllpassType.password) {
       List<PasswordBean> results = [];
@@ -79,11 +79,11 @@ class AllpassFileUtil {
     Map<String, List<String>> res = Map();
     res['folder'] = [];
     for (var item in decoded['folder']) {
-      res['folder'].add(item.toString());
+      res['folder']!.add(item.toString());
     }
     res['label'] = [];
     for (var item in decoded['label']) {
-      res['label'].add(item.toString());
+      res['label']!.add(item.toString());
     }
     return res;
   }

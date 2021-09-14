@@ -3,25 +3,24 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:xml/xml.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class WebDavUtil {
 
   static const String root = "/";
 
-  Dio _dio;
-  String _basicAuth;
-  Map<String, String> _baseHeaders;
+  late Dio _dio;
+  late String _basicAuth;
+  late Map<String, String> _baseHeaders;
 
-  String urlPath;
-  String username;
-  String password;
-  int port;
+  late String urlPath;
+  late String username;
+  late String password;
+  late int port;
 
   Map<String, List<String>> _dirFilenameCache = Map();
 
-  WebDavUtil({String urlPath, int port, String username, String password}) {
+  WebDavUtil({String? urlPath,  int? port, String? username, String? password}) {
     _dio = Dio(BaseOptions(receiveTimeout: 5000));
     _baseHeaders = Map();
     this.urlPath = "https://";
@@ -32,7 +31,7 @@ class WebDavUtil {
     updateConfig(urlPath: urlPath, port: port, username: username, password: password);
   }
 
-  void updateConfig({String urlPath, int port, String username, String password}) {
+  void updateConfig({String? urlPath, int? port, String? username, String? password}) {
     if (port != null) {
       this.port = port;
     }
@@ -72,7 +71,7 @@ class WebDavUtil {
             headers: _baseHeaders,
           )
       );
-      if (response.statusCode < 300) {
+      if (_checkResponse(response.statusCode)) {
         List<String> fileNames = [];
         var xmlDoc = XmlDocument.parse(response.data);
         xmlDoc.findAllElements("d:displayname").map((e) => e.text).forEach((fileName) {
@@ -113,7 +112,7 @@ class WebDavUtil {
   }
 
   /// 列出文件夹[dirName]中的所有文件名，若目录为空返回[null]
-  Future<List<String>> listFilenames(String dirName) async {
+  Future<List<String>?> listFilenames(String dirName) async {
     try {
       String fullPath = urlPath + dirName;
       Response<String> response = await _dio.request(
@@ -124,8 +123,10 @@ class WebDavUtil {
         )
       );
       List<String> fileNames = [];
-      if (response.statusCode < 300) {
-        var xmlDoc = XmlDocument.parse(response.data);
+      if (_checkResponse(response.statusCode)) {
+        var data = response.data;
+        if (data == null) return null;
+        var xmlDoc = XmlDocument.parse(data);
         xmlDoc.findAllElements("d:displayname").map((e) => e.text).forEach((fileName) {
           if (fileName.isNotEmpty) {
             fileNames.add(fileName);
@@ -145,8 +146,8 @@ class WebDavUtil {
   /// [dirName]目录下是否含有[fileName]文件
   Future<bool> containsFile(
       { String dirName = root,
-        @required String fileName }) async {
-    List<String> allFiles = _dirFilenameCache[dirName];
+        required String fileName }) async {
+    List<String>? allFiles = _dirFilenameCache[dirName];
     if (allFiles != null) {
       return allFiles.contains(fileName);
     }
@@ -156,8 +157,8 @@ class WebDavUtil {
   /// 向文件夹[dirName]上传文件。若[dirName]为空，则默认为根目录
   Future<bool> uploadFile(
       { String dirName = root,
-        @required String fileName,
-        @required String filePath }) async {
+        required String fileName,
+        required String filePath }) async {
     String uploadPath = _concatPath(dirName, fileName);
     File file = File(filePath);
     if (!file.existsSync()) throw FileSystemException("上传文件出错！文件不存在！", filePath);
@@ -165,23 +166,22 @@ class WebDavUtil {
         uploadPath,
         data: file.readAsStringSync(),
         options: Options(headers: _baseHeaders));
-    if (response.statusCode < 300) {
+    if (_checkResponse(response.statusCode)) {
       if (_dirFilenameCache[dirName] != null) {
-        _dirFilenameCache[dirName].add(fileName);
+        _dirFilenameCache[dirName]!.add(fileName);
       }
       return true;
     }
     else return false;
-    
   }
 
   /// 下载文件夹[dirName]中的文件。若[dirName]为空，则默认为根目录
   ///
-  /// 返回保存路径，若下载失败则返回null
-  Future<String> downloadFile(
+  /// 返回保存路径，若下载失败则返回[null]
+  Future<String?> downloadFile(
       { String dirName = root,
-        @required String fileName,
-        String savePath }) async {
+        required String fileName,
+        String? savePath }) async {
     String downloadUrl = _concatPath(dirName, fileName);
     String _savePath;
     if (savePath == null) {
@@ -191,13 +191,13 @@ class WebDavUtil {
       _savePath = savePath;
     }
     try {
-      Response<ResponseBody> response = await _dio.download(
+      Response response = await _dio.download(
           downloadUrl,
           _savePath,
           options: Options(
             headers: _baseHeaders
       ));
-      if (response.statusCode < 300) {
+      if (_checkResponse(response.statusCode)) {
         return _savePath;
       }
     } catch (e) {
@@ -210,7 +210,11 @@ class WebDavUtil {
     _dio.clear();
   }
 
-  String _concatPath(String dirName, String fileName) {
+  bool _checkResponse(int? statusCode) {
+    return statusCode != null && statusCode < 300;
+  }
+
+  String _concatPath(String? dirName, String fileName) {
     if (dirName == null || dirName == root) {
       return this.urlPath + fileName;
     } else {

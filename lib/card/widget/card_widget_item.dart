@@ -11,13 +11,13 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 
 class CardWidgetItem extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
 
   final CardBean data;
 
-  final VoidCallback onCardClicked;
+  final VoidCallback? onCardClicked;
 
-  CardWidgetItem({this.key, this.data, this.onCardClicked}) : super(key: key);
+  CardWidgetItem({this.key, required this.data, this.onCardClicked}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +61,11 @@ class CardWidgetItem extends StatelessWidget {
 
 class SimpleCardWidgetItem extends StatelessWidget {
 
-  final Key key;
+  final Key? key;
   final CardBean data;
-  final VoidCallback onCardClicked;
+  final VoidCallback? onCardClicked;
 
-  SimpleCardWidgetItem({this.key, this.data, this.onCardClicked}): super(key: key);
+  SimpleCardWidgetItem({this.key, required this.data, this.onCardClicked}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +101,11 @@ class SimpleCardWidgetItem extends StatelessWidget {
 }
 
 class MultiCardWidgetItem extends StatefulWidget {
-  final Key key;
+  final Key? key;
 
   final CardBean data;
 
-  MultiCardWidgetItem({this.key, this.data}) : super(key: key);
+  MultiCardWidgetItem({this.key, required this.data}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -127,7 +127,7 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
         value: RuntimeData.multiCardList.contains(data),
         onChanged: (value) {
           setState(() {
-            if (value) {
+            if (value ?? false) {
               RuntimeData.multiCardList.add(data);
             } else {
               RuntimeData.multiCardList.remove(data);

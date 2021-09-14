@@ -20,9 +20,9 @@ class WebDavSyncPage extends StatefulWidget {
 
 class _WebDavSyncPage extends State<WebDavSyncPage> {
 
-  bool _pressUpload;
-  bool _pressDownload;
-  WebDavSyncService _syncService;
+  late bool _pressUpload;
+  late bool _pressDownload;
+  late WebDavSyncService _syncService;
 
   List<String> levels = ["不加密", "仅加密密码字段", "全部加密"];
 
@@ -36,8 +36,8 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   @override
   Widget build(BuildContext context) {
-    String uploadTime;
-    String downloadTime;
+    String? uploadTime;
+    String? downloadTime;
     if (Config.webDavUploadTime != null) {
       uploadTime = "最近上传于${Config.webDavUploadTime}";
     }
@@ -111,11 +111,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 height: 15,
               ) : null,
               onTap: () async {
-                bool yes = await showDialog<bool>(
+                bool? yes = await showDialog<bool>(
                   context: context,
                   builder: (context) => ConfirmDialog("请确认", "恢复数据将覆盖本地所有数据，是否继续？")
                 );
-                if (yes) {
+                if (yes ?? false) {
                   setState(() {
                     _pressDownload = true;
                   });
@@ -208,7 +208,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     context: context,
                   builder: (context) => ConfirmDialog("确认退出", "退出账号后需要重新登录，是否继续？")
                 ).then((yes) {
-                  if (yes) {
+                  if (yes ?? false) {
                     Config.setWebDavAuthSuccess(false);
                     Config.setWebDavUsername(null);
                     Config.setWebDavPassword(null);

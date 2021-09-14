@@ -47,7 +47,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> refresh() async {
     if (!_haveInit) return;
-    _passwordList?.clear();
+    _passwordList.clear();
     var res = await _dao.getAllPasswordBeanList();
     if (res != null) {
       _passwordList.addAll(res);
@@ -106,7 +106,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> deletePassword(PasswordBean bean) async {
     _passwordList.remove(bean);
-    await _dao.deletePasswordBeanById(bean.uniqueKey);
+    await _dao.deletePasswordBeanById(bean.uniqueKey!);
     _refreshLetterCountIndex();
     _refreshMostUsedUsername();
     notifyListeners();
@@ -134,7 +134,7 @@ class PasswordProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void previewPassword({int index, PasswordBean bean}) {
+  void previewPassword({int? index, PasswordBean? bean}) {
     if (index != null) {
       _currPassword = _passwordList[index];
     } else if (bean != null) {
@@ -145,7 +145,7 @@ class PasswordProvider with ChangeNotifier {
   }
 
   Future<Null> clear() async {
-    _passwordList?.clear();
+    _passwordList.clear();
     _letterCountIndex.clear();
     _mostUsedUsername.clear();
     _mostUsedCache.clear();

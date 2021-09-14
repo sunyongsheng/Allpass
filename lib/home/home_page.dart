@@ -29,7 +29,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     ..add(ClassificationPage())
     ..add(SettingPage());
   int _currentIndex = 0;
-  PageController _controller;
+  late PageController _controller;
 
   @override
   bool get wantKeepAlive => true;
@@ -38,10 +38,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void initState() {
     super.initState();
     _controller = PageController(initialPage: 0);
-    WidgetsBinding.instance.addObserver(this);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
-
+    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
       if (needUpdateSecret) {
         showDialog(
             context: context,
@@ -78,7 +76,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void dispose() {
     _controller.dispose();
     super.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
   }
 
   @override

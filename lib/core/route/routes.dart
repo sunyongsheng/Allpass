@@ -14,7 +14,7 @@ class Routes {
 
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
-        handlerFunc: (BuildContext context, Map<String, List<Object>> params) {
+        handlerFunc: (BuildContext? context, Map<String, List<Object>> params) {
           print("ROUTE NOT FOUND");
           return LoginPage();
         }

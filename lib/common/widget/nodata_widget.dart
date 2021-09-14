@@ -6,8 +6,8 @@ import 'package:allpass/util/screen_util.dart';
 
 class NoDataWidget extends StatelessWidget {
 
-  final Key key;
-  final String additionalInfo;
+  final Key? key;
+  final String? additionalInfo;
 
   NoDataWidget(this.additionalInfo, {this.key}) : super(key: key);
 
@@ -34,15 +34,15 @@ class NoDataWidget extends StatelessWidget {
         Padding(
           padding: AllpassEdgeInsets.smallTBPadding,
         ),
-        additionalInfo == null ?
-            Container() :
-            Padding(
-              child: Center(
-                child: Text(
-                  additionalInfo,
-                  textAlign: TextAlign.center,
+        additionalInfo == null
+            ? Container()
+            : Padding(
+                child: Center(
+                  child: Text(
+                    additionalInfo!,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
               padding: AllpassEdgeInsets.forCardInset,
         )
       ],
