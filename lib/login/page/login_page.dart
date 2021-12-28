@@ -34,9 +34,9 @@ class _LoginPage extends State<LoginPage> {
   void initState() {
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
-    if (Application.sp.getBool(SPKeys.firstRun)??true) {
-      WidgetsBinding.instance?.addPostFrameCallback((callback) {
-        Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
+    WidgetsBinding.instance?.addPostFrameCallback((callback) {
+      Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
+      if (Application.sp.getBool(SPKeys.firstRun) ?? true) {
         showDialog(
             context: context,
             builder: (cx) => AlertDialog(
@@ -63,8 +63,8 @@ class _LoginPage extends State<LoginPage> {
                 )
               ],
             ));
-      });
-    }
+      }
+    });
     super.initState();
   }
   @override
