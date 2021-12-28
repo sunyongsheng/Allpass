@@ -190,28 +190,27 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                   hintText: "在此粘贴您的数据",
                 )
               ),
-              TextButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  ))
-                ),
-                child: Text(
-                  "导入",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () async {
-                  try {
-                    List<PasswordBean> list = await parseText(_groupValue);
-                    for (var bean in list) {
-                      await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
-                    }
-                    ToastUtil.show(msg: "导入了${list.length}条记录");
-                  } catch (e) {
-                    ToastUtil.show(msg: e.toString());
-                  }
-                },
+              Container(
+                  padding: AllpassEdgeInsets.forViewCardInset,
+                  child: MaterialButton(
+                    minWidth: double.infinity,
+                    color: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    ),
+                    child: Text("导入", style: TextStyle(color: Colors.white),),
+                    onPressed: () async {
+                      try {
+                        List<PasswordBean> list = await parseText(_groupValue);
+                        for (var bean in list) {
+                          await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
+                        }
+                        ToastUtil.show(msg: "导入了${list.length}条记录");
+                      } catch (e) {
+                        ToastUtil.show(msg: e.toString());
+                      }
+                    },
+                  )
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,

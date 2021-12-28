@@ -117,16 +117,14 @@ class _LoginPage extends State<LoginPage> {
                   onEditingComplete: login,
                   textAlign: TextAlign.center,
               ),
-              Padding(
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).primaryColor),
-                    padding: MaterialStateProperty.resolveWith((states) => EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8)),
-                    shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
-                    ))
+              Container(
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
                   ),
+                  color: Theme.of(context).primaryColor,
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
+                  minWidth: double.infinity,
                   onPressed: () => login(),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,

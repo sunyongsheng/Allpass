@@ -64,15 +64,14 @@ class _RegisterPage extends State<RegisterPage> {
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
-              Padding(
+              Container(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
-                    )),
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor)
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
                   ),
+                  color: Theme.of(context).primaryColor,
+                  minWidth: double.infinity,
                   child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
                   onPressed: () async => await register(context),
                 ),

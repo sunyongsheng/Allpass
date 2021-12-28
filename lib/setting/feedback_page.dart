@@ -73,45 +73,47 @@ class _FeedbackPage extends State<StatefulWidget> {
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
             ),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith((states) => Theme.of(context).primaryColor),
-                shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(
+            Container(
+                padding: AllpassEdgeInsets.dividerInset,
+                child: MaterialButton(
+                  child: Text("提交", style: TextStyle(color: Colors.white),),
+                  minWidth: double.infinity,
+                  color: Theme.of(context).primaryColor,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
-                ))
-              ),
-              child: Text("提交", style: TextStyle(color: Colors.white),),
-              onPressed: () async {
-                if (_feedbackController.text.trim().length < 1) {
-                  ToastUtil.show(msg: "请输入反馈内容");
-                  return;
-                }
-                if (_feedbackController.text.length >= 1000) {
-                  ToastUtil.showError(msg: "反馈内容必须小于1000字！");
-                  return;
-                }
-                FocusScope.of(context).requestFocus(FocusNode());
-                showDialog(
-                    context: context,
-                    builder: (cx) => FutureBuilder(
-                      future: submitFeedback(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.done:
-                            return Center();
-                          default:
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                        }
-                      },
-                    )).then((_) {
+                  ),
+                  onPressed: () async {
+                    if (_feedbackController.text.trim().length < 1) {
+                      ToastUtil.show(msg: "请输入反馈内容");
+                      return;
+                    }
+                    if (_feedbackController.text.length >= 1000) {
+                      ToastUtil.showError(msg: "反馈内容必须小于1000字！");
+                      return;
+                    }
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    showDialog(
+                        context: context,
+                        builder: (cx) => FutureBuilder(
+                          future: submitFeedback(),
+                          builder: (context, snapshot) {
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.done:
+                                return Center();
+                              default:
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                            }
+                          },
+                        )).then((_) {
                       if (_submitSuccess) {
                         Navigator.pop(context);
                       }
-                });
-              },
-            )
+                    });
+                  },
+                ),
+            ),
           ],
         ),
       ),

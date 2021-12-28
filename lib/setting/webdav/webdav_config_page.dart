@@ -167,22 +167,14 @@ class _WebDavConfigPage extends State<StatefulWidget> {
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: TextButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(_mainColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    ))
+                child: MaterialButton(
+                  minWidth: double.infinity,
+                  color: _mainColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
                   ),
                   child: _pressNext
-                      ? SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                      strokeWidth: 2.3,
-                    ),
-                  )
+                      ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(backgroundColor: Colors.white, strokeWidth: 2.3,))
                       : Text("下一步", style: TextStyle(color: Colors.white)),
                   onPressed: () async => await _nextStep(),
                 ),
