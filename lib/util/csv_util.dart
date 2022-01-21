@@ -77,6 +77,8 @@ class CsvUtil {
         }
         int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
         String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
+        int sortNumber = int.parse(_getValueWithCatch(attribute, indexMap, 'sortNumber'));
+        String appId = _getValueWithCatch(attribute, indexMap, "appId");
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -86,7 +88,9 @@ class CsvUtil {
           notes: notes,
           label: label,
           fav: fav,
-          createTime: createTime
+          createTime: createTime,
+          sortNumber: sortNumber,
+          appId: appId
         ));
       }
     }
@@ -121,6 +125,7 @@ class CsvUtil {
           label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
         }
         String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
+        int sortNumber = int.parse(_getValueWithCatch(attribute, indexMap, 'sortNumber'));
         res.add(CardBean(
           name: name,
           ownerName: ownerName,
@@ -131,7 +136,8 @@ class CsvUtil {
           notes: notes,
           label: label,
           fav: fav,
-          createTime: createTime
+          createTime: createTime,
+          sortNumber: sortNumber
         ));
       }
     }
@@ -155,6 +161,7 @@ class CsvUtil {
     } on RangeError {} catch (e) {}
     if (mapKey == "folder") return "默认";
     if (mapKey == 'fav') return '0';
+    if (mapKey == 'sortNumber') return "-1";
     return "";
   }
 

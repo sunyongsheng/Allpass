@@ -43,13 +43,13 @@ class StringUtil {
   /// 将csv格式的List转化为一个String
   static Future<String> csvList2Str(List<BaseModel> list) async {
     if (list[0] is PasswordBean) {
-      StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav,createTime\n");
+      StringBuffer w = StringBuffer("name,username,password,url,folder,notes,label,fav,createTime,sortNumber,appId\n");
       for (var item in list) {
         w.write(await PasswordBean.toCsv(item as PasswordBean));
       }
       return w.toString();
     } else if (list[0] is CardBean) {
-      StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav,createTime\n");
+      StringBuffer w = StringBuffer("name,ownerName,cardId,password,telephone,folder,notes,label,fav,createTime,sortNumber\n");
       for (var item in list) {
         w.write(CardBean.toCsv(item as CardBean));
       }
