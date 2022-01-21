@@ -7,23 +7,23 @@ import 'package:allpass/util/string_util.dart';
 
 class CardDao extends BaseDBProvider {
   /// 表名
-  final String name = "allpass_card";
+  static final String name = "allpass_card";
 
   /// 表主键字段
-  final String columnId = "uniqueKey";
+  static final String columnId = "uniqueKey";
 
   /// 版本1列名
-  final String columnName = "name";
-  final String columnOwnerName = "ownerName";
-  final String columnCardId = "cardId";
-  final String columnPassword = "password";
-  final String columnTelephone = "telephone";
-  final String columnFolder  ="folder";
-  final String columnNotes = "notes";
-  final String columnLabel = "label";
-  final String columnFav = "fav";
-  final String columnCreateTime = "createTime";
-  final String columnSortNumber = "sortNumber";
+  static final String columnName = "name";
+  static final String columnOwnerName = "ownerName";
+  static final String columnCardId = "cardId";
+  static final String columnPassword = "password";
+  static final String columnTelephone = "telephone";
+  static final String columnFolder  ="folder";
+  static final String columnNotes = "notes";
+  static final String columnLabel = "label";
+  static final String columnFav = "fav";
+  static final String columnCreateTime = "createTime";
+  static final String columnSortNumber = "sortNumber";
 
   @override
   String tableName() {
