@@ -1,3 +1,4 @@
+import 'package:allpass/password/model/simple_user.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/password/model/password_bean.dart';
@@ -8,24 +9,26 @@ import 'package:allpass/util/string_util.dart';
 class PasswordDao extends BaseDBProvider {
 
   /// 表名
-  final String name = "allpass_password";
+  static final String name = "allpass_password";
 
   /// 表主键字段
-  final String columnId = "uniqueKey";
+  static final String columnId = "uniqueKey";
 
   /// 版本1列名
-  final String columnName = "name";
-  final String columnUsername = "username";
-  final String columnPassword = "password";
-  final String columnUrl = "url";
-  final String columnFolder = "folder";
-  final String columnNotes = "notes";
-  final String columnLabel = "label";
-  final String columnFav = "fav";
+  static final String columnName = "name";
+  static final String columnUsername = "username";
+  static final String columnPassword = "password";
+  static final String columnUrl = "url";
+  static final String columnFolder = "folder";
+  static final String columnNotes = "notes";
+  static final String columnLabel = "label";
+  static final String columnFav = "fav";
   /// 版本2列名
-  final String columnCreateTime = "createTime";
+  static final String columnCreateTime = "createTime";
   /// 版本3列名
-  final String columnSortNumber = "sortNumber";
+  static final String columnSortNumber = "sortNumber";
+  /// 版本4列名
+  static final String columnAppId = "appId";
 
   @override
   String tableName() {
@@ -60,7 +63,8 @@ class PasswordDao extends BaseDBProvider {
       $columnLabel TEXT,
       $columnFav INTEGER DEFAULT 0,
       $columnCreateTime TEXT,
-      $columnSortNumber INTEGER DEFAULT -1)
+      $columnSortNumber INTEGER DEFAULT -1,
+      $columnAppId TEXT)
       ''';
   }
 
@@ -68,6 +72,13 @@ class PasswordDao extends BaseDBProvider {
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
     Map<String, dynamic> map = bean.toJson();
+    return await db.insert(name, map);
+  }
+
+  Future<int> insertUserData(SimpleUser user) async {
+    Database db = await getDataBase();
+    Map<String, dynamic> map = user.toJson();
+    map['createTime'] = DateTime.now().toIso8601String();
     return await db.insert(name, map);
   }
 
@@ -118,8 +129,9 @@ class PasswordDao extends BaseDBProvider {
         "$columnFav=?,"
         "$columnNotes=?,"
         "$columnLabel=?,"
-        "$columnSortNumber=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels, bean.sortNumber]);
+        "$columnSortNumber=?,"
+        "$columnAppId=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels, bean.sortNumber, bean.appId]);
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));
   }

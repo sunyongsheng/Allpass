@@ -35,7 +35,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
 
-  late PasswordBean? _oldData;
+  PasswordBean? _oldData;
 
   late int operation;
 
@@ -88,6 +88,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       _urlController = TextEditingController();
       _passwordController = TextEditingController();
       _labels = [];
+      _createTime = DateTime.now().toIso8601String();
     }
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       _frameDone = true;
