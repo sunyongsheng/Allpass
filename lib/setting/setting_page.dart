@@ -111,7 +111,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                               ).then((right) async {
                                 if (right) {
                                   var auth = await _localAuthService.authenticate();
-                                  if (auth) {
+                                  if (auth == AuthResult.Success) {
                                     await _localAuthService.stopAuthenticate();
                                     setState(() {
                                       Config.setEnabledBiometrics(sw);

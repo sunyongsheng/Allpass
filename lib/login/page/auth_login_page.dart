@@ -126,11 +126,11 @@ class _AuthLoginPage extends State<StatefulWidget> {
         }
       });
     } else {
-      var authSucceed = await _localAuthService.authenticate();
-      if (authSucceed) {
+      var authResult = await _localAuthService.authenticate();
+      if (authResult == AuthResult.Success) {
         ToastUtil.show(msg: "验证成功");
         NavigationUtil.goHomePage(context);
-      } else {
+      } else if (authResult == AuthResult.Failed) {
         ToastUtil.show(msg: "认证失败，请重试");
       }
     }

@@ -18,6 +18,7 @@
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,21 +32,27 @@
                 android:resource="@style/LaunchTheme" />
         </activity>
 
-        <activity android:name=".share.ReceiveShareActivity" android:label="导入到Allpass中">
+        <activity
+            android:name=".share.ReceiveShareActivity"
+            android:label="导入到Allpass中"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-<!--        <service-->
-<!--            android:name=".AutofillService"-->
-<!--            android:label="Allpass"-->
-<!--            android:permission="android.permission.BIND_AUTOFILL_SERVICE">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.service.autofill.AutofillService" />-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+
+        <service
+            android:name=".service.AllpassAutofillService"
+            android:label="Allpass自动填充"
+            android:permission="android.permission.BIND_AUTOFILL_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.autofill.AutofillService" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="flutterEmbedding"

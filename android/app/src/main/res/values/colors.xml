@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splashBackgroundColor">@android:color/white</color>
+    <color name="background">#FFFFFF</color>
+    <color name="background_item">#ECF0F3</color>
+    <color name="text">#000000</color>
+    <color name="text_secondary">#4E4E4E</color>
 </resources>

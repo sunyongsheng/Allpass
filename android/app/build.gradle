@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId "top.aengus.allpass"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -87,4 +87,7 @@ flutter {
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
 }

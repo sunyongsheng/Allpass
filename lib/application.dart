@@ -27,7 +27,7 @@ class Application {
   static late GetIt getIt;
   static late FluroRouter router;
   static late SharedPreferences sp;
-  static late MethodChannel shareMethodChannel;
+  static late MethodChannel methodChannel;
   static late String identification;
 
   static String version = "1.6.3";
@@ -50,18 +50,17 @@ class Application {
   }
 
   static void initAndroidChannel() {
-    shareMethodChannel = const MethodChannel(ChannelConstants.channel);
-    shareMethodChannel.setMethodCallHandler((call) {
-      if (call.method == ChannelConstants.methodImportChromeData) {
-        Future<List<PasswordBean>?> res = CsvUtil.passwordImportFromCsv(toParseText: call.arguments);
-        _importPasswordFromFutureList(res);
-        return res;
-      }
-      return Future.error(Null);
-    });
+    methodChannel = MethodChannel(ChannelConstants.channel);
+
+    // 导入密码Channel
+    var importCsvMessageChannel = BasicMessageChannel(ChannelConstants.channelImportCsv, StringCodec());
+    importCsvMessageChannel.setMessageHandler((message) => Future<String>(() {
+      Future<List<PasswordBean>?> res = CsvUtil.passwordImportFromCsv(toParseText: message);
+      return _importPasswordFromFutureList(res);
+    }));
   }
 
-  static void _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
+  static Future<String> _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
     PasswordDao _dao = PasswordDao();
     List<PasswordBean>? passwordList = await list;
     if (passwordList != null) {
@@ -70,11 +69,9 @@ class Application {
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }
-      ToastUtil.show(msg: "导入 ${passwordList.length} 条记录");
-      SystemNavigator.pop();
+      return passwordList.length.toString();
     } else {
-      ToastUtil.show(msg: "导入了0条记录，可能是文件格式不正确");
-      SystemNavigator.pop();
+      return "0";
     }
   }
 

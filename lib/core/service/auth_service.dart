@@ -3,10 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
 
+enum AuthResult {
+  Success,
+  Failed,
+  Exception
+}
+
 abstract class AuthService {
 
   /// 授权，返回[true]代表授权成功
-  Future<bool> authenticate();
+  Future<AuthResult> authenticate();
 
   /// 取消授权，返回[true]代表成功
   Future<bool> stopAuthenticate();
@@ -15,8 +21,6 @@ abstract class AuthService {
 
 class AuthServiceImpl implements AuthService {
   final _auth = LocalAuthentication();
-
-  bool isAuthenticated = false;
 
   final androidString = const AndroidAuthMessages(
       cancelButton: "取消",
@@ -34,7 +38,7 @@ class AuthServiceImpl implements AuthService {
   );
 
   @override
-  Future<bool> authenticate() async {
+  Future<AuthResult> authenticate() async {
     try {
       List<BiometricType> availableBiometrics =
       await _auth.getAvailableBiometrics();
@@ -46,7 +50,7 @@ class AuthServiceImpl implements AuthService {
           // Touch ID.
         }
       }
-      isAuthenticated = await _auth.authenticate(
+      var isAuthenticated = await _auth.authenticate(
           localizedReason: '授权以访问账号',
           useErrorDialogs: true,
           stickyAuth: true,
@@ -54,11 +58,15 @@ class AuthServiceImpl implements AuthService {
           androidAuthStrings: androidString,
           iOSAuthStrings: iosString
       );
-      return isAuthenticated;
+      if (isAuthenticated) {
+        return AuthResult.Success;
+      } else {
+        return AuthResult.Failed;
+      }
     } on PlatformException catch (e) {
       print(e);
+      return AuthResult.Exception;
     }
-    return false;
   }
 
   @override
