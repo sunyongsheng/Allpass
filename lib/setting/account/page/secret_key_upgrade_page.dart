@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:allpass/application.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/card/data/card_dao.dart';
@@ -21,8 +22,8 @@ class SecretKeyUpgradePage extends StatefulWidget {
 
 class _SecretKeyUpgradePage extends State<StatefulWidget> {
 
-  PasswordDao passwordDao = PasswordDao();
-  CardDao cardDao = CardDao();
+  PasswordDao passwordDao = Application.getIt.get();
+  CardDao cardDao = Application.getIt.get();
   late EncryptHolder encryptHolder;
 
 

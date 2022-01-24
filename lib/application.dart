@@ -14,6 +14,7 @@ import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/password/data/password_dao.dart';
+import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -38,9 +39,13 @@ class Application {
 
   static void initLocator() {
     getIt = GetIt.instance;
+
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
     getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
+
+    getIt.registerSingleton(PasswordDao());
+    getIt.registerSingleton(CardDao());
   }
 
   static void initRouter() {
@@ -61,11 +66,11 @@ class Application {
   }
 
   static Future<String> _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
-    PasswordDao _dao = PasswordDao();
     List<PasswordBean>? passwordList = await list;
     if (passwordList != null) {
+      PasswordDao dao = getIt.get();
       for (var bean in passwordList) {
-        await _dao.insert(bean);
+        await dao.insert(bean);
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }

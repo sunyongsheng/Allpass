@@ -21,8 +21,8 @@ class DebugPage extends StatefulWidget {
 
 class _DebugPage extends State<DebugPage> {
 
-  final PasswordDao _passwordDao = PasswordDao();
-  final CardDao _cardDao = CardDao();
+  final PasswordDao _passwordDao = Application.getIt.get();
+  final CardDao _cardDao = Application.getIt.get();
 
   @override
   Widget build(BuildContext context) {

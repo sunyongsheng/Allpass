@@ -1,6 +1,7 @@
 import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
+import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
@@ -11,7 +12,7 @@ final List<PasswordBean> emptyList = [];
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier {
   List<PasswordBean> _passwordList = emptyList;
-  PasswordDao _dao = PasswordDao();
+  PasswordDao _dao = Application.getIt.get();
   /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0
   /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9

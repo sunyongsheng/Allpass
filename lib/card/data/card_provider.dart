@@ -1,6 +1,7 @@
 import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
+import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
@@ -12,7 +13,7 @@ final List<CardBean> emptyList = [];
 class CardProvider with ChangeNotifier {
 
   List<CardBean> _cardList = emptyList;
-  CardDao _dao = CardDao();
+  CardDao _dao = Application.getIt.get();
   CardBean _currCard = CardBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
   List<String> _mostUsedOwnerName = [];

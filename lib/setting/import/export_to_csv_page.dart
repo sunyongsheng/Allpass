@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -153,19 +154,23 @@ class ExportTypeSelectPage extends StatelessWidget {
   Future<Null> exportFuture(BuildContext context, Directory newDir, {AllpassType? type}) async {
     switch (type) {
       case AllpassType.password:
-        List<PasswordBean>? list = await PasswordDao().getAllPasswordBeanList();
+        PasswordDao passwordDao = Application.getIt.get();
+        List<PasswordBean>? list = await passwordDao.getAllPasswordBeanList();
         String? path = await CsvUtil.passwordExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
       case AllpassType.card:
-        List<CardBean>? list = await CardDao().getAllCardBeanList();
+        CardDao cardDao = Application.getIt.get();
+        List<CardBean>? list = await cardDao.getAllCardBeanList();
         String? path = await CsvUtil.cardExportCsv(list, newDir);
         Clipboard.setData(ClipboardData(text: path));
         break;
       default:
-        List<PasswordBean>? passList = await PasswordDao().getAllPasswordBeanList();
+        PasswordDao passwordDao = Application.getIt.get();
+        List<PasswordBean>? passList = await passwordDao.getAllPasswordBeanList();
         await CsvUtil.passwordExportCsv(passList, newDir);
-        List<CardBean>? cardList = await CardDao().getAllCardBeanList();
+        CardDao cardDao = Application.getIt.get();
+        List<CardBean>? cardList = await cardDao.getAllCardBeanList();
         await CsvUtil.cardExportCsv(cardList, newDir);
     }
     ToastUtil.show(msg: "已导出到$newDir");

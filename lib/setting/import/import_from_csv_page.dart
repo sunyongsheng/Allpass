@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
@@ -15,8 +16,8 @@ import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
 
 class ImportFromCsvPage extends StatelessWidget {
-  final CardDao cardDao = CardDao();
-  final PasswordDao passwordDao = PasswordDao();
+  final CardDao cardDao = Application.getIt.get();
+  final PasswordDao passwordDao = Application.getIt.get();
 
   @override
   Widget build(BuildContext context) {
