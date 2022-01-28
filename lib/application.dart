@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,10 +14,10 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/core/service/auth_service.dart';
@@ -23,15 +25,18 @@ import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 
 class Application {
-  static GlobalKey<NavigatorState> key = GlobalKey();
+  static GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
   static late GetIt getIt;
   static late FluroRouter router;
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
-  static late String identification;
 
   static String version = "1.6.3";
+
+  static int systemSdkInt = -1;
+  static bool isAndroid = true;
+  static String identification = "";
 
   static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
@@ -57,6 +62,28 @@ class Application {
   static void initAndroidChannel() {
     methodChannel = MethodChannel(ChannelConstants.channel);
 
+    // 查询自动填充Channel
+    var queryAutofillMessageChannel = BasicMessageChannel(ChannelConstants.channelQueryAutofillPassword, StringCodec());
+    queryAutofillMessageChannel.setMessageHandler((message) => Future<String>(() {
+      if (message != null) {
+        var queryAppId = message;
+        return _queryPasswordForAutofill(queryAppId);
+      }
+      return "[]";
+    }));
+
+    // 保存密码Channel
+    var savePasswordChannel = BasicMessageChannel(ChannelConstants.channelSaveForAutofill, StringCodec());
+    savePasswordChannel.setMessageHandler((jsonStr) => Future<String>(() {
+      SimpleUser userData = json.decode(jsonStr!);
+      if (userData.username != null && userData.password != null) {
+        userData.password = EncryptUtil.encrypt(userData.password!);
+        PasswordDao passwordDao = getIt.get();
+        passwordDao.insertUserData(userData);
+      }
+      return "";
+    }));
+
     // 导入密码Channel
     var importCsvMessageChannel = BasicMessageChannel(ChannelConstants.channelImportCsv, StringCodec());
     importCsvMessageChannel.setMessageHandler((message) => Future<String>(() {
@@ -78,6 +105,22 @@ class Application {
     } else {
       return "0";
     }
+  }
+
+  static Future<String> _queryPasswordForAutofill(String appId) async {
+    PasswordDao dao = getIt.get();
+    var passwordList = await dao.getAllPasswordBeanList();
+    List<SimpleUser> list = [];
+    passwordList?.forEach((password) {
+      if (password.appId?.contains(appId) ?? false) {
+        list.add(SimpleUser(
+            password.username,
+            EncryptUtil.decrypt(password.password),
+            password.appId
+        ));
+      }
+    });
+    return json.encode(list);
   }
 
   static Future<Null> clearAll(BuildContext context) async {

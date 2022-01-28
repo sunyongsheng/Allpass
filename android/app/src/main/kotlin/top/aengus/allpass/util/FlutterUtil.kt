@@ -7,9 +7,9 @@ import io.flutter.embedding.engine.dart.DartExecutor
 import io.flutter.plugin.common.BasicMessageChannel
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.StringCodec
-import top.aengus.allpass.core.CHANNEL
+import top.aengus.allpass.core.FlutterChannel
 
-fun createMessageChannel(context: Context, channel: String = CHANNEL): BasicMessageChannel<String> {
+fun createMessageChannel(context: Context, channel: String = FlutterChannel.COMMON): BasicMessageChannel<String> {
     val flutterLoader = FlutterInjector.instance().flutterLoader()
     flutterLoader.startInitialization(context)
     flutterLoader.ensureInitializationComplete(context, arrayOf())
@@ -20,7 +20,7 @@ fun createMessageChannel(context: Context, channel: String = CHANNEL): BasicMess
     return BasicMessageChannel(engine.dartExecutor.binaryMessenger, channel, StringCodec.INSTANCE)
 }
 
-fun createMethodChannel(context: Context, channel: String = CHANNEL): MethodChannel {
+fun createMethodChannel(context: Context, channel: String = FlutterChannel.COMMON): MethodChannel {
     val flutterLoader = FlutterInjector.instance().flutterLoader()
     flutterLoader.startInitialization(context)
     flutterLoader.ensureInitializationComplete(context, arrayOf())

@@ -33,9 +33,24 @@ class ExtraKeys {
 }
 
 class ChannelConstants {
-  static const String channel = "allpass.aengus.top";
 
-  static const String methodImportChromeData = "importChromeData";
+  ChannelConstants._();
+
+  static const String channel = "top.aengus.allpass";
+
+  static const String channelImportCsv = "$channel/importCsv";
+  static const String channelQueryAutofillPassword = "$channel/queryPasswordForAutofill";
+  static const String channelSaveForAutofill = "$channel/savePasswordForAutofill";
+
+  // Android -> Flutter
+  static const String methodImportFromCsv = "importChromeData";
+  static const String methodSavePasswordForAutofill = "savePasswordForAutofill";
+
+  static const String messageQueryPasswordForAutofill = "queryPasswordForAutofill:";
+
+  // Flutter -> Android
+  static const String methodIsAppDefaultAutofill = "isAppDefaultAutofill";
+  static const String methodSetAppDefaultAutofill = "setAppDefaultAutofill";
 }
 
 class DataOperation {

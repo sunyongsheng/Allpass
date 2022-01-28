@@ -7,6 +7,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -59,6 +60,161 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    var firstCardWidgets = [
+      ListTile(
+        title: Text("主账号管理"),
+        leading: Icon(Icons.account_circle_outlined, color: AllpassColorUI.allColor[0],),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => AccountManagerPage()
+          ));
+        },
+      ),
+      ListTile(
+        title: Text("生物识别"),
+        leading: Icon(Icons.fingerprint, color: AllpassColorUI.allColor[1]),
+        trailing: Switch(
+          value: Config.enabledBiometrics,
+          onChanged: (sw) async {
+            if (await LocalAuthentication().canCheckBiometrics) {
+              showDialog(context: context,
+                builder: (context) => InputMainPasswordDialog(),
+              ).then((right) async {
+                if (right) {
+                  var auth = await _localAuthService.authenticate();
+                  if (auth == AuthResult.Success) {
+                    await _localAuthService.stopAuthenticate();
+                    setState(() {
+                      Config.setEnabledBiometrics(sw);
+                    });
+                  } else {
+                    ToastUtil.show(msg: "授权失败");
+                  }
+                }
+              });
+            } else {
+              Config.setEnabledBiometrics(false);
+              ToastUtil.show(msg: "您的设备似乎不支持生物识别");
+            }
+          },
+        ),
+      ),
+      ListTile(
+        title: Text("长按复制密码或卡号"),
+        leading: Icon(Icons.content_copy, color: AllpassColorUI.allColor[2]),
+        trailing: Switch(
+          value: Config.longPressCopy,
+          onChanged: (sw) async {
+            setState(() {
+              Config.setLongPressCopy(sw);
+            });
+          },
+        ),
+      ),
+      ListTile(
+        title: Text("主题颜色"),
+        leading: Icon(Icons.color_lens_outlined, color: AllpassColorUI.allColor[5]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => ThemeSelectPage(),
+          ));
+        },
+      ),
+    ];
+
+    var secondCardWidgets = [
+      ListTile(
+        title: Text("标签管理"),
+        leading: Icon(Icons.label_outline, color: AllpassColorUI.allColor[3]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => CategoryManagerPage(CategoryType.label)
+          ));
+        },
+      ),
+      ListTile(
+        title: Text("文件夹管理"),
+        leading: Icon(Icons.folder_open, color: AllpassColorUI.allColor[4]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => CategoryManagerPage(CategoryType.folder)
+          ));
+        },
+      ),
+    ];
+
+    var thirdCardWidgets = [
+      ListTile(
+        title: Text("WebDAV同步"),
+        leading: Icon(Icons.cloud_outlined, color: AllpassColorUI.allColor[0]),
+        onTap: () {
+          if (Config.webDavAuthSuccess) {
+            Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => WebDavSyncPage(),
+            ));
+          } else {
+            Navigator.push(context, CupertinoPageRoute(
+              builder: (context) => WebDavConfigPage(),
+            ));
+          }
+        },
+      ),
+      ListTile(
+        title: Text("导入/导出"),
+        leading: Icon(Icons.import_export, color: AllpassColorUI.allColor[5]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => ImportExportPage(),
+          ));
+        },
+      )
+    ];
+    if (Application.isAndroid && Application.systemSdkInt >= 26) {
+      thirdCardWidgets.add(ListTile(
+        title: Text("自动填充"),
+        leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
+        onTap: () {
+          Application.methodChannel.invokeMethod(ChannelConstants.methodIsAppDefaultAutofill).then((enabled) => {
+            if (enabled) {
+              ToastUtil.show(msg: "Allpass已经是默认自动填充服务，无需设置")
+            } else {
+              Application.methodChannel.invokeMethod(ChannelConstants.methodSetAppDefaultAutofill)
+            }
+          });
+        },
+      ));
+    }
+
+    var forthCardWidgets = [
+      ListTile(
+          title: Text("推荐给好友"),
+          leading: Icon(Icons.share, color: AllpassColorUI.allColor[2]),
+          onTap: () async => await doRecommend()
+      ),
+      ListTile(
+          title: Text("意见反馈"),
+          leading: Icon(Icons.feedback_outlined, color: AllpassColorUI.allColor[1]),
+          onTap: () => Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => FeedbackPage(),
+          ))
+      ),
+      ListTile(
+          title: Text("检查更新"),
+          leading: Icon(Icons.update, color: AllpassColorUI.allColor[6]),
+          onTap: () => checkUpdate()
+      ),
+      ListTile(
+        title: Text("关于"),
+        leading: Icon(Icons.details, color: AllpassColorUI.allColor[0]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => AboutPage(),
+          ));
+        },
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
@@ -88,172 +244,28 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("主账号管理"),
-                        leading: Icon(Icons.account_circle, color: AllpassColorUI.allColor[0],),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => AccountManagerPage()));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("生物识别"),
-                        leading: Icon(Icons.fingerprint, color: AllpassColorUI.allColor[1]),
-                        trailing: Switch(
-                          value: Config.enabledBiometrics,
-                          onChanged: (sw) async {
-                            if (await LocalAuthentication().canCheckBiometrics) {
-                              showDialog(context: context,
-                                builder: (context) => InputMainPasswordDialog(),
-                              ).then((right) async {
-                                if (right) {
-                                  var auth = await _localAuthService.authenticate();
-                                  if (auth == AuthResult.Success) {
-                                    await _localAuthService.stopAuthenticate();
-                                    setState(() {
-                                      Config.setEnabledBiometrics(sw);
-                                    });
-                                  } else {
-                                    ToastUtil.show(msg: "授权失败");
-                                  }
-                                }
-                              });
-                            } else {
-                              Config.setEnabledBiometrics(false);
-                              ToastUtil.show(msg: "您的设备似乎不支持生物识别");
-                            }
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("长按复制密码或卡号"),
-                        leading: Icon(Icons.present_to_all, color: AllpassColorUI.allColor[2]),
-                        trailing: Switch(
-                          value: Config.longPressCopy,
-                          onChanged: (sw) async {
-                            setState(() {
-                              Config.setLongPressCopy(sw);
-                            });
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        title: Text("主题颜色"),
-                        leading: Icon(Icons.color_lens, color: AllpassColorUI.allColor[5]),
-                        onTap: () {
-                          Navigator.push(context, CupertinoPageRoute(
-                            builder: (context) => ThemeSelectPage(),
-                          ));
-                        },
-                      ),
-                    ],
+                    children: firstCardWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("标签管理"),
-                        leading: Icon(Icons.label_outline, color: AllpassColorUI.allColor[3]),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      CategoryManagerPage(CategoryType.label)));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("文件夹管理"),
-                        leading: Icon(Icons.folder_open, color: AllpassColorUI.allColor[4]),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      CategoryManagerPage(CategoryType.folder)));
-                        },
-                      ),
-                    ],
+                    children: secondCardWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("WebDAV同步"),
-                        leading: Icon(Icons.cloud_circle, color: AllpassColorUI.allColor[0]),
-                        onTap: () {
-                          if (Config.webDavAuthSuccess) {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => WebDavSyncPage(),
-                                ));
-                          } else {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                  builder: (context) => WebDavConfigPage(),
-                                ));
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: Text("导入/导出"),
-                        leading: Icon(Icons.import_export, color: AllpassColorUI.allColor[5]),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => ImportExportPage(),
-                              ));
-                        },
-                      ),
-                    ],
+                    children: thirdCardWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: <Widget>[
-                      ListTile(
-                          title: Text("推荐给好友"),
-                          leading: Icon(Icons.share, color: AllpassColorUI.allColor[2]),
-                          onTap: () async => await _recommend()
-                      ),
-                      ListTile(
-                          title: Text("意见反馈"),
-                          leading: Icon(Icons.feedback, color: AllpassColorUI.allColor[1]),
-                          onTap: () => Navigator.push(context, CupertinoPageRoute(
-                            builder: (context) => FeedbackPage(),
-                          ))
-                      ),
-                      ListTile(
-                          title: Text("检查更新"),
-                          leading: Icon(Icons.update, color: AllpassColorUI.allColor[6]),
-                          onTap: () => _checkUpdate()
-                      ),
-                      ListTile(
-                        title: Text("关于"),
-                        leading: Icon(Icons.details, color: AllpassColorUI.allColor[0]),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => AboutPage(),
-                              ));
-                        },
-                      ),
-                    ],
+                    children: forthCardWidgets,
                   ),
                 ),
                 Padding(
@@ -267,7 +279,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     );
   }
 
-  void _checkUpdate() {
+  void checkUpdate() {
     var bean = Application.getIt<AllpassService>().checkUpdate();
     showDialog(
         context: context,
@@ -287,10 +299,11 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     );
   }
 
-  Future<Null> _recommend() async {
+  Future<Null> doRecommend() async {
     UpdateBean data = await Application.getIt<AllpassService>().getLatestVersion();
     Share.share(
         "【Allpass】一款简洁好用的私密信息管理工具。【下载地址】${data.downloadUrl}",
         subject: "软件推荐——Allpass");
   }
+
 }

@@ -80,6 +80,7 @@ class Allpass extends StatelessWidget {
       themeMode: Provider.of<ThemeProvider>(context).themeMode,
       home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
       onGenerateRoute: Application.router.generator,
+      navigatorKey: Application.navigationKey,
     );
   }
 }
@@ -127,20 +128,18 @@ void _registerUser() async {
 
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-    String _identification;
+    String _identification = Application.identification;
     String _systemInfo;
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      _identification = info.androidId;
       _systemInfo = "${info.model} android${info.version.release}";
     } else if (Platform.isIOS) {
       IosDeviceInfo info = await infoPlugin.iosInfo;
-      _identification = info.identifierForVendor;
-      _systemInfo = "${info.model} IOS${info.systemVersion}";
+      _systemInfo = "${info.model} iOS${info.systemVersion}";
     } else {
       return;
     }
-    Application.identification = _identification;
+
     try {
       UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: Application.version);
       AllpassResponse response = await Application.getIt<AllpassService>().registerUser(user);
@@ -154,21 +153,25 @@ void _registerUser() async {
     }
   }
 
+  DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
+  if (Platform.isAndroid) {
+    AndroidDeviceInfo info = await infoPlugin.androidInfo;
+    Application.identification = info.androidId;
+    Application.systemSdkInt = info.version.sdkInt;
+    Application.isAndroid = true;
+  } else if (Platform.isIOS) {
+    IosDeviceInfo info = await infoPlugin.iosInfo;
+    Application.identification= info.identifierForVendor;
+    Application.systemSdkInt = -1;
+    Application.isAndroid = false;
+  }
+
   if (Application.sp.getBool(SPKeys.needRegister)??true) {
     await registerUserActual();
   } else {
     if (!((Application.sp.getString(SPKeys.allpassVersion)??"1.0.0") == Application.version)) {
       await registerUserActual();
       Application.sp.setString(SPKeys.allpassVersion, Application.version);
-    } else {
-      DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-      if (Platform.isAndroid) {
-        AndroidDeviceInfo info = await infoPlugin.androidInfo;
-        Application.identification = info.androidId;
-      } else if (Platform.isIOS) {
-        IosDeviceInfo info = await infoPlugin.iosInfo;
-        Application.identification= info.identifierForVendor;
-      }
     }
   }
 }
