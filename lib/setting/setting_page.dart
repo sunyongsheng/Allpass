@@ -77,19 +77,25 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         trailing: Switch(
           value: Config.enabledBiometrics,
           onChanged: (sw) async {
-            if (await LocalAuthentication().canCheckBiometrics) {
+            if (await _localAuthService.canAuthenticate()) {
               showDialog(context: context,
                 builder: (context) => InputMainPasswordDialog(),
               ).then((right) async {
                 if (right) {
-                  var auth = await _localAuthService.authenticate();
-                  if (auth == AuthResult.Success) {
-                    await _localAuthService.stopAuthenticate();
-                    setState(() {
-                      Config.setEnabledBiometrics(sw);
-                    });
-                  } else {
-                    ToastUtil.show(msg: "授权失败");
+                  var authResult = await _localAuthService.authenticate();
+                  switch (authResult) {
+                    case AuthResult.Success:
+                      await _localAuthService.stopAuthenticate();
+                      setState(() {
+                        Config.setEnabledBiometrics(sw);
+                      });
+                      ToastUtil.show(msg: "已开启生物识别");
+                      break;
+                    case AuthResult.NotAvailable:
+                      ToastUtil.show(msg: "生物识别不可用，请确保设备支持并已启用");
+                      break;
+                    default:
+                      ToastUtil.show(msg: "授权失败");
                   }
                 }
               });

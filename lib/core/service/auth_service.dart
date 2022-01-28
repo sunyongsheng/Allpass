@@ -6,7 +6,8 @@ import 'package:local_auth/local_auth.dart';
 enum AuthResult {
   Success,
   Failed,
-  Exception
+  Exception,
+  NotAvailable
 }
 
 abstract class AuthService {
@@ -17,9 +18,13 @@ abstract class AuthService {
   /// 取消授权，返回[true]代表成功
   Future<bool> stopAuthenticate();
 
+  /// 是否支持生物识别
+  Future<bool> canAuthenticate();
+
 }
 
 class AuthServiceImpl implements AuthService {
+
   final _auth = LocalAuthentication();
 
   final androidString = const AndroidAuthMessages(
@@ -65,12 +70,21 @@ class AuthServiceImpl implements AuthService {
       }
     } on PlatformException catch (e) {
       print(e);
-      return AuthResult.Exception;
+      if (e.code == "NotAvailable") {
+        return AuthResult.NotAvailable;
+      } else {
+        return AuthResult.Exception;
+      }
     }
   }
 
   @override
   Future<bool> stopAuthenticate() async {
     return await _auth.stopAuthentication();
+  }
+
+  @override
+  Future<bool> canAuthenticate() {
+    return _auth.canCheckBiometrics;
   }
 }
