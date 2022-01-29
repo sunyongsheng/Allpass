@@ -44,6 +44,7 @@ class ClassificationDetailsPage extends StatelessWidget {
     List<Widget> all = [];
     List<Widget> list1 = [];
     List<Widget> list2 = [];
+    var itemColor = Theme.of(context).cardTheme.color;
     PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
     for (int index = 0; index < provider1.count; index++) {
       try {
@@ -51,6 +52,7 @@ class ClassificationDetailsPage extends StatelessWidget {
           list1.add(MaterialPasswordWidget(
               data: provider1.passwordList[index],
               containerShape: 4,
+              itemColor: itemColor,
               pageCreator: () => ViewPasswordPage(),
               onPasswordClicked: () => provider1.previewPassword(index: index),
           ));
@@ -66,6 +68,7 @@ class ClassificationDetailsPage extends StatelessWidget {
               data: provider2.cardList[index],
               pageCreator: () => ViewCardPage(),
               containerShape: 4,
+              itemColor: itemColor,
               onCardClicked: () => provider2.previewCard(index: index)
           ));
         }

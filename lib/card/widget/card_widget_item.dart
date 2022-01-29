@@ -107,12 +107,15 @@ class MaterialSimpleCardWidget extends StatelessWidget {
 
   final double containerShape;
 
+  final Color? itemColor;
+
   MaterialSimpleCardWidget({
     this.key,
     required this.data,
     required this.pageCreator,
     required this.containerShape,
-    this.onCardClicked
+    this.onCardClicked,
+    this.itemColor,
   }): super(key: key);
 
   @override
@@ -123,7 +126,7 @@ class MaterialSimpleCardWidget extends StatelessWidget {
         return pageCreator.call();
       },
       openColor: backgroundColor,
-      closedColor: backgroundColor,
+      closedColor: itemColor ?? backgroundColor,
       closedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(this.containerShape)),
       ),

@@ -22,12 +22,15 @@ class MaterialPasswordWidget extends StatelessWidget {
 
   final double containerShape;
 
+  final Color? itemColor;
+
   MaterialPasswordWidget({
     this.key,
     required this.data,
     required this.containerShape,
     required this.pageCreator,
-    this.onPasswordClicked
+    this.onPasswordClicked,
+    this.itemColor
   }) : super(key: key);
 
   @override
@@ -38,7 +41,7 @@ class MaterialPasswordWidget extends StatelessWidget {
         return pageCreator.call();
       },
       openColor: backgroundColor,
-      closedColor: backgroundColor,
+      closedColor: itemColor ?? backgroundColor,
       closedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(this.containerShape)),
       ),

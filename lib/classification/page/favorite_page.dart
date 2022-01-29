@@ -41,6 +41,7 @@ class FavoritePage extends StatelessWidget {
     List<Widget> list1 = [];
     List<Widget> list2 = [];
     List<Widget> all = [];
+    var itemColor = Theme.of(context).cardTheme.color;
     PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
     for (int index = 0; index < provider1.count; index++) {
       try {
@@ -49,6 +50,7 @@ class FavoritePage extends StatelessWidget {
               data: provider1.passwordList[index],
               containerShape: 4,
               pageCreator: () => ViewPasswordPage(),
+              itemColor: itemColor,
               onPasswordClicked: () => provider1.previewPassword(index: index),
           ));
         }
@@ -63,6 +65,7 @@ class FavoritePage extends StatelessWidget {
               data: provider2.cardList[index],
               pageCreator: () => ViewCardPage(),
               containerShape: 4,
+              itemColor: itemColor,
               onCardClicked: () => provider2.previewCard(index: index),
           ));
         }

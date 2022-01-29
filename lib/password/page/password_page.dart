@@ -57,7 +57,6 @@ class _PasswordPageState extends State<PasswordPage>
     super.build(context);
 
     PasswordProvider model = Provider.of<PasswordProvider>(context);
-    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
 
     List<Widget> appbarActions = [
       IconButton(
@@ -114,16 +113,27 @@ class _PasswordPageState extends State<PasswordPage>
         )
       ]);
     } else {
+      Color mainColor = Theme.of(context).primaryColor;
+      var circleFabBorder = CircleBorder();
       floatingButton = OpenContainer(
           closedBuilder: (context, openContainer) {
-            return FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => openContainer(),
-              heroTag: "password",
+            return Tooltip(
+              message: "添加密码项目",
+              child: InkWell(
+                customBorder: circleFabBorder,
+                onTap: () => openContainer(),
+                child: SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: Center(
+                    child: Icon(Icons.add, color: Colors.white,),
+                  ),
+                ),
+              ),
             );
           },
-          openColor: backgroundColor,
-          closedColor: backgroundColor,
+          openColor: mainColor,
+          closedColor: mainColor,
           closedElevation: 6,
           closedShape: CircleBorder(),
           openBuilder: (context, closedContainer) {
