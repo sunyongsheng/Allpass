@@ -50,13 +50,12 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].folder == type) {
-          list1.add(PasswordWidgetItem(data: provider1.passwordList[index], onPasswordClicked: () {
-            provider1.previewPassword(index: index);
-            Navigator.push(context, ExtendRoute(
-                page: ViewPasswordPage(),
-                tapPosition: RuntimeData.tapVerticalPosition
-            ));
-          }));
+          list1.add(MaterialPasswordWidget(
+              data: provider1.passwordList[index],
+              containerShape: 4,
+              pageCreator: () => ViewPasswordPage(),
+              onPasswordClicked: () => provider1.previewPassword(index: index),
+          ));
         }
       } catch (e) {
       }
@@ -65,13 +64,12 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (type == provider2.cardList[index].folder) {
-          list2.add(SimpleCardWidgetItem(data: provider2.cardList[index], onCardClicked: () {
-            provider2.previewCard(index: index);
-            Navigator.push(context, ExtendRoute(
-              page: ViewCardPage(),
-              tapPosition: RuntimeData.tapVerticalPosition,
-            ));
-          }));
+          list2.add(MaterialSimpleCardWidget(
+              data: provider2.cardList[index],
+              pageCreator: () => ViewCardPage(),
+              containerShape: 4,
+              onCardClicked: () => provider2.previewCard(index: index)
+          ));
         }
       } catch (e) {
       }

@@ -5,8 +5,6 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
-import 'package:allpass/common/anim/animation_routes.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
@@ -47,13 +45,12 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].fav == 1) {
-          list1.add(PasswordWidgetItem(data: provider1.passwordList[index], onPasswordClicked: () {
-            provider1.previewPassword(index: index);
-            Navigator.push(context, ExtendRoute(
-                page: ViewPasswordPage(),
-                tapPosition: RuntimeData.tapVerticalPosition
-            ));
-          }));
+          list1.add(MaterialPasswordWidget(
+              data: provider1.passwordList[index],
+              containerShape: 4,
+              pageCreator: () => ViewPasswordPage(),
+              onPasswordClicked: () => provider1.previewPassword(index: index),
+          ));
         }
       } catch (e) {
       }
@@ -62,13 +59,12 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (provider2.cardList[index].fav == 1) {
-          list2.add(SimpleCardWidgetItem(data: provider2.cardList[index], onCardClicked: () {
-            provider2.previewCard(index: index);
-            Navigator.push(context, ExtendRoute(
-              page: ViewCardPage(),
-              tapPosition: RuntimeData.tapVerticalPosition,
-            ));
-          }));
+          list2.add(MaterialSimpleCardWidget(
+              data: provider2.cardList[index],
+              pageCreator: () => ViewCardPage(),
+              containerShape: 4,
+              onCardClicked: () => provider2.previewCard(index: index),
+          ));
         }
       } catch (e) {
         print(e.toString());

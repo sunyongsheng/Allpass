@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/allpass_type.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
@@ -57,6 +57,8 @@ class _PasswordPageState extends State<PasswordPage>
     super.build(context);
 
     PasswordProvider model = Provider.of<PasswordProvider>(context);
+    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
@@ -112,12 +114,21 @@ class _PasswordPageState extends State<PasswordPage>
         )
       ]);
     } else {
-      floatingButton = FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => Navigator.push(
-            context,
-            CupertinoPageRoute(builder: (cx) => EditPasswordPage(null, DataOperation.add))),
-        heroTag: "password",
+      floatingButton = OpenContainer(
+          closedBuilder: (context, openContainer) {
+            return FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => openContainer(),
+              heroTag: "password",
+            );
+          },
+          openColor: backgroundColor,
+          closedColor: backgroundColor,
+          closedElevation: 6,
+          closedShape: CircleBorder(),
+          openBuilder: (context, closedContainer) {
+            return EditPasswordPage(null, DataOperation.add);
+          },
       );
     }
 
@@ -135,14 +146,12 @@ class _PasswordPageState extends State<PasswordPage>
             ListView.builder(
               controller: _controller,
               itemBuilder: (context, index) {
-                return PasswordWidgetItem(
+                return MaterialPasswordWidget(
                     data: model.passwordList[index],
-                    onPasswordClicked: () {
-                      model.previewPassword(index: index);
-                      Navigator.push(context, ExtendRoute(
-                          page: ViewPasswordPage(),
-                          tapPosition: RuntimeData.tapVerticalPosition));
-                    });
+                    containerShape: 0,
+                    pageCreator: () => ViewPasswordPage(),
+                    onPasswordClicked: () => model.previewPassword(index: index)
+                );
               },
               itemCount: model.count,
             ),

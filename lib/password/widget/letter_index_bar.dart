@@ -24,7 +24,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     'H','I','J','K','L','M','N', 'O','P','Q','R','S','T',
     'U','V','W','X','Y','Z'];
 
-  double _tapPositionY = RuntimeData.tapVerticalPosition;
+  double _tapPositionY = 0;
   bool _pressed = false;
   late ScrollController _controller;
 

@@ -21,8 +21,6 @@ class RuntimeData {
 
   static int newPasswordOrCardCount = 0;  // 每次打开软件新增的密码或卡片数量
 
-  static double tapVerticalPosition = 0;  // 取值范围-1到1，0代表中心位置
-
   static void initData() {
     String folder = Application.sp.getString(SPKeys.folder) ?? "";
     String label = Application.sp.getString(SPKeys.label) ?? "";
@@ -70,12 +68,6 @@ class RuntimeData {
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
     Application.sp.setString(SPKeys.folder, StringUtil.list2WaveLineSegStr(folderList));
-  }
-
-  /// 更新点击的位置
-  static void updateTapPosition(DragDownDetails details) {
-    double y = AllpassScreenUtil.screenHighDp / 2;
-    RuntimeData.tapVerticalPosition = (details.globalPosition.dy - y) / y;
   }
 
   static void multiSelectClear(AllpassType type) {

@@ -41,8 +41,8 @@ class AllpassEdgeInsets {
   AllpassEdgeInsets._();
 
   static EdgeInsets listInset = EdgeInsets.only(
-    left: AllpassScreenUtil.setWidth(50),
-    right: AllpassScreenUtil.setWidth(50),
+    left: AllpassScreenUtil.setWidth(30),
+    right: AllpassScreenUtil.setWidth(30),
   );
 
   static EdgeInsets dividerInset = EdgeInsets.only(
@@ -58,8 +58,8 @@ class AllpassEdgeInsets {
   );
 
   static EdgeInsets forCardInset = EdgeInsets.only(
-      left: AllpassScreenUtil.setWidth(50),
-      right: AllpassScreenUtil.setWidth(50),
+      left: AllpassScreenUtil.setWidth(30),
+      right: AllpassScreenUtil.setWidth(30),
       top: AllpassScreenUtil.setHeight(15),
       bottom: AllpassScreenUtil.setHeight(25));
 

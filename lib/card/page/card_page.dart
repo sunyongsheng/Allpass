@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,6 +58,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     super.build(context);
 
     CardProvider model = Provider.of<CardProvider>(context);
+    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
@@ -112,15 +115,21 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         )
       ]);
     } else {
-      floatingButton = FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => EditCardPage(null, DataOperation.add))
-          );
-        },
-        heroTag: "card",
+      floatingButton = OpenContainer(
+          closedBuilder: (context, openContainer) {
+            return FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => openContainer(),
+              heroTag: "card",
+            );
+          },
+          openColor: backgroundColor,
+          closedColor: backgroundColor,
+          closedElevation: 6,
+          closedShape: CircleBorder(),
+          openBuilder: (context, closedContainer) {
+            return EditCardPage(null, DataOperation.add);
+          },
       );
     }
 
@@ -135,15 +144,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       } else {
         listView = ListView.builder(
           controller: _controller,
+          padding: AllpassEdgeInsets.forCardInset,
           itemBuilder: (context, index) {
-            return CardWidgetItem(
+            return MaterialCardWidget(
                 data: model.cardList[index],
-                onCardClicked: () {
-                  model.previewCard(index: index);
-                  Navigator.push(context, ExtendRoute(
-                    page: ViewCardPage(),
-                    tapPosition: RuntimeData.tapVerticalPosition));
-                }
+                pageCreator: () => ViewCardPage(),
+                onCardClicked: () => model.previewCard(index: index)
             );
           },
           itemCount: model.count,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -9,6 +10,49 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
+
+class MaterialPasswordWidget extends StatelessWidget {
+  final Key? key;
+
+  final PasswordBean data;
+
+  final Widget Function() pageCreator;
+
+  final VoidCallback? onPasswordClicked;
+
+  final double containerShape;
+
+  MaterialPasswordWidget({
+    this.key,
+    required this.data,
+    required this.containerShape,
+    required this.pageCreator,
+    this.onPasswordClicked
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    return OpenContainer(
+      openBuilder: (context, closedContainer) {
+        return pageCreator.call();
+      },
+      openColor: backgroundColor,
+      closedColor: backgroundColor,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(this.containerShape)),
+      ),
+      closedElevation: 0,
+      closedBuilder: (context, openContainer) {
+        return PasswordWidgetItem(key: key, data: data, onPasswordClicked: () {
+          onPasswordClicked?.call();
+          openContainer();
+        });
+      },
+    );
+  }
+
+}
 
 class PasswordWidgetItem extends StatelessWidget {
 
@@ -44,7 +88,6 @@ class PasswordWidgetItem extends StatelessWidget {
             }
           },
         ),
-        onPanDown: (details) => RuntimeData.updateTapPosition(details),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:animations/animations.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -8,6 +9,46 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+
+class MaterialCardWidget extends StatelessWidget {
+
+  final Key? key;
+
+  final CardBean data;
+
+  final Widget Function() pageCreator;
+
+  final VoidCallback? onCardClicked;
+
+  MaterialCardWidget({
+    this.key,
+    required this.data,
+    required this.pageCreator,
+    this.onCardClicked
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    return OpenContainer(
+      openBuilder: (context, closedContainer) {
+        return pageCreator.call();
+      },
+      openColor: backgroundColor,
+      closedColor: backgroundColor,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+      ),
+      closedElevation: 0,
+      closedBuilder: (context, openContainer) {
+        return CardWidgetItem(key: key, data: data, onCardClicked: () {
+          onCardClicked?.call();
+          openContainer();
+        });
+      },
+    );
+  }
+}
 
 class CardWidgetItem extends StatelessWidget {
 
@@ -21,40 +62,78 @@ class CardWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100,
-      child: Card(
-        elevation: 0,
-        color: data.color,
-        margin: AllpassEdgeInsets.forCardInset,
-        child: GestureDetector(
-          onPanDown: (details) => RuntimeData.updateTapPosition(details),
-          onTap: () => onCardClicked?.call(),
-          onLongPress: () async {
-            if (Config.longPressCopy) {
-              Clipboard.setData(ClipboardData(text: data.cardId));
-              ToastUtil.show(msg: "已复制卡号");
-            }
-          },
-          child: ListTile(
-            title: Text(data.name,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return Card(
+      elevation: 0,
+      color: data.color,
+      child: GestureDetector(
+        onTap: () => onCardClicked?.call(),
+        onLongPress: () async {
+          if (Config.longPressCopy) {
+            Clipboard.setData(ClipboardData(text: data.cardId));
+            ToastUtil.show(msg: "已复制卡号");
+          }
+        },
+        child: ListTile(
+          title: Text(data.name,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
-            subtitle: Text("ID: ${data.cardId}",
-              style: TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-            contentPadding: EdgeInsets.only(left: 30, right: 30, top: 5),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
+          subtitle: Text("ID: ${data.cardId}",
+            style: TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         ),
       ),
+    );
+  }
+}
+
+class MaterialSimpleCardWidget extends StatelessWidget {
+
+  final Key? key;
+
+  final CardBean data;
+
+  final Widget Function() pageCreator;
+
+  final VoidCallback? onCardClicked;
+
+  final double containerShape;
+
+  MaterialSimpleCardWidget({
+    this.key,
+    required this.data,
+    required this.pageCreator,
+    required this.containerShape,
+    this.onCardClicked
+  }): super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    return OpenContainer(
+      openBuilder: (context, closedContainer) {
+        return pageCreator.call();
+      },
+      openColor: backgroundColor,
+      closedColor: backgroundColor,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(this.containerShape)),
+      ),
+      closedElevation: 0,
+      closedBuilder: (context, openContainer) {
+        return SimpleCardWidgetItem(key: key, data: data, onCardClicked: () {
+          onCardClicked?.call();
+          openContainer();
+        });
+      },
     );
   }
 }
@@ -74,7 +153,6 @@ class SimpleCardWidgetItem extends StatelessWidget {
         return Container(
           margin: AllpassEdgeInsets.listInset,
           child: GestureDetector(
-            onPanDown: (details) => RuntimeData.updateTapPosition(details),
             child: ListTile(
               leading: Container(
                 decoration: BoxDecoration(
