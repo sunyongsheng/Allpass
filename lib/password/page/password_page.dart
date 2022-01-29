@@ -149,6 +149,7 @@ class _PasswordPageState extends State<PasswordPage>
           controller: _controller,
           itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
           itemCount: model.count,
+          physics: const AlwaysScrollableScrollPhysics(),
         );
       } else {
         listView = Stack(
@@ -164,6 +165,7 @@ class _PasswordPageState extends State<PasswordPage>
                 );
               },
               itemCount: model.count,
+              physics: const AlwaysScrollableScrollPhysics(),
             ),
             LetterIndexBar(_controller),
           ],

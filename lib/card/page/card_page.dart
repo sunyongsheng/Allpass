@@ -149,6 +149,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           controller: _controller,
           itemBuilder: (context, index) => MultiCardWidgetItem(data: model.cardList[index]),
           itemCount: model.count,
+          physics: const AlwaysScrollableScrollPhysics(),
         );
       } else {
         listView = ListView.builder(
@@ -162,6 +163,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             );
           },
           itemCount: model.count,
+          physics: const AlwaysScrollableScrollPhysics(),
         );
       }
     } else {
