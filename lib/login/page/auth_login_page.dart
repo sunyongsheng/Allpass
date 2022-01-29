@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
@@ -12,7 +11,6 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
-
 
 
 /// 生物识别登录页
@@ -44,12 +42,6 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width,
-        maxHeight: MediaQuery.of(context).size.height),
-        designSize: Size(1080, 1920),
-        orientation: Orientation.portrait
-    );
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,

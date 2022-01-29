@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -73,14 +74,26 @@ void main() async {
 class Allpass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Allpass',
-      theme: Provider.of<ThemeProvider>(context).lightTheme,
-      darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
-      themeMode: Provider.of<ThemeProvider>(context).themeMode,
-      home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
-      onGenerateRoute: Application.router.generator,
-      navigatorKey: Application.navigationKey,
+    return ScreenUtilInit(
+        designSize: Size(1080, 1920),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: () => MaterialApp(
+          title: 'Allpass',
+          theme: Provider.of<ThemeProvider>(context).lightTheme,
+          darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
+          themeMode: Provider.of<ThemeProvider>(context).themeMode,
+          builder: (context, widget) {
+            ScreenUtil.setContext(context);
+            return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: widget!
+            );
+          },
+          home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
+          onGenerateRoute: Application.router.generator,
+          navigatorKey: Application.navigationKey,
+        )
     );
   }
 }
@@ -193,18 +206,18 @@ void _initErrorPage() {
           children: <Widget>[
             Padding(
               child: Text("App出现错误，快去反馈给作者!"),
-              padding: AllpassEdgeInsets.smallTBPadding,
+              padding: EdgeInsets.symmetric(vertical: 15),
             ),
             Padding(
-              padding: AllpassEdgeInsets.smallTBPadding,
+              padding: EdgeInsets.symmetric(vertical: 15),
             ),
             Padding(
               child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
-              padding: AllpassEdgeInsets.smallTBPadding,
+              padding: EdgeInsets.symmetric(vertical: 15),
             ),
             Padding(
               child: Text(flutterErrorDetails.toString(), style: TextStyle(color: Colors.red),),
-              padding: AllpassEdgeInsets.smallTBPadding,
+              padding: EdgeInsets.symmetric(vertical: 15),
             ),
           ],
         ),
