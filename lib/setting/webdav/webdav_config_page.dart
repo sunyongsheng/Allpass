@@ -91,7 +91,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 40, right: 40, bottom: 32),
+          padding: EdgeInsets.only(left: 30, right: 30, bottom: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

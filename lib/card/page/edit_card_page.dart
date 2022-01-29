@@ -103,7 +103,9 @@ class _EditCardPage extends State<EditCardPage> {
   @override
   Widget build(BuildContext context) {
     CardProvider provider = Provider.of<CardProvider>(context);
-    Color _mainColor = Theme.of(context).primaryColor;
+    Color mainColor = Theme.of(context).primaryColor;
+    EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -175,13 +177,13 @@ class _EditCardPage extends State<EditCardPage> {
           child: Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "名称",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _nameController,
@@ -199,13 +201,13 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "拥有者姓名",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _ownerNameController,
@@ -229,13 +231,13 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "卡号",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _cardIdController,
@@ -254,13 +256,13 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "密码",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     Row(
                       children: <Widget>[
@@ -299,13 +301,13 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "绑定手机号",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _telephoneController,
@@ -325,14 +327,14 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       "文件夹",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     DropdownButton(
                       onChanged: (newValue) {
@@ -361,7 +363,7 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
+                margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -369,7 +371,7 @@ class _EditCardPage extends State<EditCardPage> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
                         "标签",
-                        style: TextStyle(fontSize: 16, color: _mainColor),
+                        style: TextStyle(fontSize: 16, color: mainColor),
                       ),
                     ),
                     Row(
@@ -387,13 +389,13 @@ class _EditCardPage extends State<EditCardPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "备注",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _notesController,

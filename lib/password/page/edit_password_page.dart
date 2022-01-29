@@ -98,7 +98,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   Widget build(BuildContext context) {
     PasswordProvider provider = Provider.of<PasswordProvider>(context);
-    Color _mainColor = Theme.of(context).primaryColor;
+    Color mainColor = Theme.of(context).primaryColor;
+    EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -166,13 +168,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           child: Column(
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "名称",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _nameController,
@@ -191,13 +193,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "账号",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _usernameController,
@@ -221,13 +223,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "密码",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     Row(
                       children: <Widget>[
@@ -264,13 +266,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "链接",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _urlController,
@@ -288,14 +290,14 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
                       "文件夹",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     DropdownButton(
                       onChanged: (newValue) {
@@ -322,7 +324,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 15),
+                margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -330,7 +332,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
                         "标签",
-                        style: TextStyle(fontSize: 16, color: _mainColor),
+                        style: TextStyle(fontSize: 16, color: mainColor),
                       ),
                     ),
                     Row(
@@ -348,13 +350,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                margin: marginInset,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       "备注",
-                      style: TextStyle(fontSize: 16, color: _mainColor),
+                      style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
                       editingController: _notesController,
