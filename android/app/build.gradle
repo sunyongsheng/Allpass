@@ -78,6 +78,9 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 flutter {

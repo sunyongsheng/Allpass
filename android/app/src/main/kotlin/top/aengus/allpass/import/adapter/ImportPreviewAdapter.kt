@@ -1,4 +1,4 @@
-package top.aengus.allpass.share
+package top.aengus.allpass.import.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import top.aengus.allpass.R
+import top.aengus.allpass.import.model.ImportPreview
 
-class ImportPreviewAdapter : ListAdapter<PreviewItem, ImportPreviewAdapter.ImportPreviewViewHolder>(ImportPreviewDiffCallback) {
+class ImportPreviewAdapter : ListAdapter<ImportPreview, ImportPreviewAdapter.ImportPreviewViewHolder>(ImportPreviewDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImportPreviewViewHolder {
         val rootView = LayoutInflater.from(parent.context).inflate(R.layout.item_import_password, parent, false)
@@ -26,24 +27,24 @@ class ImportPreviewAdapter : ListAdapter<PreviewItem, ImportPreviewAdapter.Impor
         private val tvUsername: TextView = rootView.findViewById(R.id.tv_username)
         private val tvPassword: TextView = rootView.findViewById(R.id.tv_password)
 
-        fun bind(data: PreviewItem) {
+        fun bind(data: ImportPreview) {
             tvName.text = data.name
             tvUsername.text = data.username
             tvPassword.text = data.password
         }
     }
 
-    object ImportPreviewDiffCallback : DiffUtil.ItemCallback<PreviewItem>() {
+    object ImportPreviewDiffCallback : DiffUtil.ItemCallback<ImportPreview>() {
         override fun areItemsTheSame(
-            oldItem: PreviewItem,
-            newItem: PreviewItem
+            oldItem: ImportPreview,
+            newItem: ImportPreview
         ): Boolean {
             return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: PreviewItem,
-            newItem: PreviewItem
+            oldItem: ImportPreview,
+            newItem: ImportPreview
         ): Boolean {
             return true
         }

@@ -1,4 +1,4 @@
-package top.aengus.allpass.share
+package top.aengus.allpass.`import`.model
 
 sealed class ImportState {
 

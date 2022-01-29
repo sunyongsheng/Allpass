@@ -1,4 +1,4 @@
-package top.aengus.allpass.share
+package top.aengus.allpass.import
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -9,18 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.*
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.BasicMessageChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import top.aengus.allpass.R
 import top.aengus.allpass.core.FlutterChannel
+import top.aengus.allpass.databinding.ActivityImportBinding
+import top.aengus.allpass.import.adapter.ImportPreviewAdapter
+import top.aengus.allpass.import.model.ImportPreview
+import top.aengus.allpass.import.model.ImportState
 import top.aengus.allpass.util.CsvUtil
 import top.aengus.allpass.util.createMessageChannel
 
-class ReceiveShareActivity : FlutterActivity() {
+class ImportActivity : FlutterActivity() {
 
     private val importMessageChannel: BasicMessageChannel<String> by lazy {
         createMessageChannel(this, FlutterChannel.IMPORT_CSV)
@@ -28,14 +30,10 @@ class ReceiveShareActivity : FlutterActivity() {
 
     private var currState: ImportState = ImportState.NotYet
 
-    private lateinit var mainContainer: ConstraintLayout
-    private lateinit var errorContainer: ConstraintLayout
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var btnConfirm: FrameLayout
-    private lateinit var ivConfirm: ImageView
+    private lateinit var binding: ActivityImportBinding
 
     private val rotateAnimator: ObjectAnimator by lazy {
-        ObjectAnimator.ofFloat(ivConfirm, "rotation", 0F, 360F).apply {
+        ObjectAnimator.ofFloat(binding.ivConfirm, "rotation", 0F, 360F).apply {
             duration = 800
             repeatCount = ValueAnimator.INFINITE
             repeatMode = ValueAnimator.RESTART
@@ -46,24 +44,20 @@ class ReceiveShareActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (intent.type == null || !intent.type!!.startsWith("text/")) {
+        val intentType = intent.type
+        if (intentType == null || !intentType.startsWith("text/")) {
             Toast.makeText(this, "只支持文本文件导入！", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
-        setContentView(R.layout.activity_import)
-
-        mainContainer = findViewById(R.id.main_container)
-        errorContainer = findViewById(R.id.error_container)
-        recyclerView = findViewById(R.id.preview_recyclerview)
-        btnConfirm = findViewById(R.id.btn_confirm)
-        ivConfirm = findViewById(R.id.iv_confirm)
+        binding = ActivityImportBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         modifyTopUI()
 
         val previewAdapter = ImportPreviewAdapter()
-        recyclerView.adapter = previewAdapter
+        binding.previewRecyclerview.adapter = previewAdapter
 
         val content = readContentFromIntent(intent)
         val structure = CsvUtil.parse(content)
@@ -90,17 +84,17 @@ class ReceiveShareActivity : FlutterActivity() {
             } else {
                 "未知名称"
             }
-            PreviewItem(name, it[usernameIndex], it[passwordIndex])
+            ImportPreview(name, it[usernameIndex], it[passwordIndex])
         }
         previewAdapter.submitList(dataList)
 
-        btnConfirm.setOnClickListener {
+        binding.btnConfirm.setOnClickListener {
             when (currState) {
                 ImportState.NotYet, ImportState.Failed -> {
                     Toast.makeText(this, "开始导入", Toast.LENGTH_SHORT).show()
-                    startRotating(ivConfirm)
+                    startRotating(binding.ivConfirm)
                     importMessageChannel.send(content) {
-                        stopRotating(ivConfirm, it != null)
+                        stopRotating(binding.ivConfirm, it != null)
                         if (it == null) {
                             Toast.makeText(this, "导入失败", Toast.LENGTH_SHORT).show()
                         } else {
@@ -155,11 +149,11 @@ class ReceiveShareActivity : FlutterActivity() {
 
     private fun setError(error: Boolean) {
         if (error) {
-            mainContainer.visibility = View.GONE
-            errorContainer.visibility = View.VISIBLE
+            binding.mainContainer.visibility = View.GONE
+            binding.errorContainer.visibility = View.VISIBLE
         } else {
-            mainContainer.visibility = View.VISIBLE
-            errorContainer.visibility = View.GONE
+            binding.mainContainer.visibility = View.VISIBLE
+            binding.errorContainer.visibility = View.GONE
         }
     }
 
@@ -175,12 +169,12 @@ class ReceiveShareActivity : FlutterActivity() {
     private fun modifyTopUI() {
         val statusHeight = getStatusBarHeight()
 
-        val lp1 = mainContainer.layoutParams as ViewGroup.MarginLayoutParams
+        val lp1 = binding.mainContainer.layoutParams as ViewGroup.MarginLayoutParams
         lp1.topMargin += statusHeight
-        mainContainer.layoutParams = lp1
+        binding.mainContainer.layoutParams = lp1
 
-        val lp2 = errorContainer.layoutParams as ViewGroup.MarginLayoutParams
+        val lp2 = binding.errorContainer.layoutParams as ViewGroup.MarginLayoutParams
         lp2.topMargin += statusHeight
-        errorContainer.layoutParams = lp2
+        binding.errorContainer.layoutParams = lp2
     }
 }

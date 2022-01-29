@@ -33,7 +33,7 @@
         </activity>
 
         <activity
-            android:name=".share.ReceiveShareActivity"
+            android:name=".import.ImportActivity"
             android:label="导入到Allpass中"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:exported="true">
@@ -45,7 +45,7 @@
         </activity>
 
         <service
-            android:name=".service.AllpassAutofillService"
+            android:name=".autofill.AllpassAutofillService"
             android:label="Allpass自动填充"
             android:permission="android.permission.BIND_AUTOFILL_SERVICE"
             android:exported="true">

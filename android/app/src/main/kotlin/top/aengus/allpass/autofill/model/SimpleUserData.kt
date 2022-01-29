@@ -1,4 +1,4 @@
-package top.aengus.allpass.service
+package top.aengus.allpass.autofill.model
 
 data class SimpleUserData(
     var username: String?,

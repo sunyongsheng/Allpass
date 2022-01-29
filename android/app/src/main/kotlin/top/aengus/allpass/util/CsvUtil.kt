@@ -1,6 +1,11 @@
 package top.aengus.allpass.util
 
-import top.aengus.allpass.share.CsvStructure
+data class CsvStructure(
+    val header: List<String>,
+    val content: List<List<String>>
+) {
+    fun isEmpty() = content.isEmpty()
+}
 
 object CsvUtil {
 

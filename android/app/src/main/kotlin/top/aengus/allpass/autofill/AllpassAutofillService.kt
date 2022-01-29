@@ -1,10 +1,9 @@
-package top.aengus.allpass.service
+package top.aengus.allpass.autofill
 
 import android.app.assist.AssistStructure
 import android.os.Build
 import android.os.CancellationSignal
 import android.service.autofill.*
-import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.RemoteViews
@@ -12,6 +11,8 @@ import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.BasicMessageChannel
 import org.json.JSONArray
 import org.json.JSONObject
+import top.aengus.allpass.autofill.model.ParsedStructure
+import top.aengus.allpass.autofill.model.SimpleUserData
 import top.aengus.allpass.core.FlutterChannel
 import top.aengus.allpass.util.createMessageChannel
 

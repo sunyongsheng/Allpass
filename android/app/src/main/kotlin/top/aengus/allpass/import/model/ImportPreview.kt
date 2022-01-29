@@ -1,6 +1,6 @@
-package top.aengus.allpass.share
+package top.aengus.allpass.`import`.model
 
-data class PreviewItem(
+data class ImportPreview(
     val name: String?,
     val username: String?,
     val password: String?
