@@ -1,45 +1,61 @@
 import 'dart:collection';
-import 'dart:io' show Platform, File, Directory;
+import 'dart:io' show File, Directory;
 
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
+import 'package:flutter/cupertino.dart';
+
+class ExportResult {
+
+  final bool success;
+
+  final String? path;
+
+  final String? msg;
+
+  ExportResult(this.success, this.path, this.msg);
+
+  ExportResult.success(String path) : this(true, path, null);
+
+  ExportResult.failed(String msg) : this(false, null, msg);
+}
 
 class CsvUtil {
 
   CsvUtil._();
 
   /// 将PasswordList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  static Future<String?> passwordExportCsv(List<PasswordBean>? list, Directory dst) async {
-    if (list == null) return null;
-    if (Platform.isAndroid) {
+  static Future<ExportResult> passwordExportCsv(List<PasswordBean> list, Directory dst) async {
+    try {
       String path = "${dst.path}/allpass_密码.csv";
       File csv = File(path);
       if (!csv.existsSync()) {
         csv.createSync();
       }
       csv.writeAsStringSync(await StringUtil.csvList2Str(list));
-      return path;
+      return ExportResult.success(path);
+    } catch (e) {
+      debugPrint(e.toString());
+      return ExportResult.failed(e.toString());
     }
-    return null;
   }
 
   /// 将CardList导出为csv，[,]分隔，[\n]换行，返回文件路径
-  static Future<String?> cardExportCsv(List<CardBean>? list, Directory dst) async {
-    if (list == null) {
-      return null;
-    }
-    if (Platform.isAndroid) {
+  static Future<ExportResult> cardExportCsv(List<CardBean> list, Directory dst) async {
+    try {
       String path = "${dst.path}/allpass_卡片.csv";
       File csv = File(path);
       if (!csv.existsSync()) {
         csv.createSync();
       }
       csv.writeAsStringSync(await StringUtil.csvList2Str(list));
-      return path;
+      return ExportResult.success(path);
+    } catch (e) {
+      debugPrint(e.toString());
+      return ExportResult.failed(e.toString());
     }
-    return null;
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
