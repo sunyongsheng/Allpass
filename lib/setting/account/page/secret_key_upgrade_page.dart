@@ -176,10 +176,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   Future<bool> updateData() async {
     String backupKey = (await EncryptUtil.getStoreKey())!;
     encryptHolder = EncryptHolder(backupKey);
-    List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList() ?? [];
+    List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList();
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
-    List<CardBean> cards = await cardDao.getAllCardBeanList() ?? [];
+    List<CardBean> cards = await cardDao.getAllCardBeanList();
     List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;

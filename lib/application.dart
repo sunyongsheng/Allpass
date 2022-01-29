@@ -111,7 +111,7 @@ class Application {
     PasswordDao dao = getIt.get();
     var passwordList = await dao.getAllPasswordBeanList();
     List<SimpleUser> list = [];
-    passwordList?.forEach((password) {
+    passwordList.forEach((password) {
       if (password.appId?.contains(appId) ?? false) {
         list.add(SimpleUser(
             password.username,

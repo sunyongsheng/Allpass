@@ -82,7 +82,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 获取所有的卡片List
-  Future<List<CardBean>?> getAllCardBeanList() async {
+  Future<List<CardBean>> getAllCardBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
@@ -93,7 +93,7 @@ class CardDao extends BaseDBProvider {
       }).toList();
       return res;
     }
-    return null;
+    return [];
   }
 
   /// 删除指定uniqueKey的密码

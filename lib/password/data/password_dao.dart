@@ -95,7 +95,7 @@ class PasswordDao extends BaseDBProvider {
   }
 
   /// 获取所有的密码List
-  Future<List<PasswordBean>?> getAllPasswordBeanList() async {
+  Future<List<PasswordBean>> getAllPasswordBeanList() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
@@ -107,7 +107,7 @@ class PasswordDao extends BaseDBProvider {
       }
       return res;
     }
-    return null;
+    return [];
   }
 
   /// 删除指定uniqueKey的密码

@@ -36,7 +36,7 @@ class PasswordProvider with ChangeNotifier {
     if (_haveInit) return;
     _passwordList = [];
     var res = await _dao.getAllPasswordBeanList();
-    if (res != null) {
+    if (res.isNotEmpty) {
       _passwordList.addAll(res);
     }
     _sortByAlphabeticalOrder();
@@ -50,7 +50,7 @@ class PasswordProvider with ChangeNotifier {
     if (!_haveInit) return;
     _passwordList.clear();
     var res = await _dao.getAllPasswordBeanList();
-    if (res != null) {
+    if (res.isNotEmpty) {
       _passwordList.addAll(res);
     }
     _sortByAlphabeticalOrder();

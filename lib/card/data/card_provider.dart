@@ -29,7 +29,7 @@ class CardProvider with ChangeNotifier {
     if (_haveInit) return;
     _cardList = [];
     var res = await _dao.getAllCardBeanList();
-    if (res != null) {
+    if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
     _sortByAlphabeticalOrder();
@@ -42,7 +42,7 @@ class CardProvider with ChangeNotifier {
     if (!_haveInit) return;
     _cardList.clear();
     var res = await _dao.getAllCardBeanList();
-    if (res != null) {
+    if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
     _sortByAlphabeticalOrder();

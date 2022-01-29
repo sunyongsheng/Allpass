@@ -14,7 +14,6 @@ import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
-import 'package:allpass/common/anim/animation_routes.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/common/widget/nodata_widget.dart';
