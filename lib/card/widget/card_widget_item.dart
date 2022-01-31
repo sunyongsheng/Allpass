@@ -34,8 +34,8 @@ class MaterialCardWidget extends StatelessWidget {
       openBuilder: (context, closedContainer) {
         return pageCreator.call();
       },
-      openColor: backgroundColor,
-      closedColor: backgroundColor,
+      openColor: data.color ?? backgroundColor,
+      closedColor: data.color ?? backgroundColor,
       closedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
       ),
@@ -65,6 +65,7 @@ class CardWidgetItem extends StatelessWidget {
     return Card(
       elevation: 0,
       color: data.color,
+      margin: EdgeInsets.all(0),
       child: GestureDetector(
         onTap: () => onCardClicked?.call(),
         onLongPress: () async {

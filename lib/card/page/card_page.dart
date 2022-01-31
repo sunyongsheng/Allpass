@@ -152,7 +152,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           physics: const AlwaysScrollableScrollPhysics(),
         );
       } else {
-        listView = ListView.builder(
+        listView = ListView.separated(
           controller: _controller,
           padding: AllpassEdgeInsets.forCardInset,
           itemBuilder: (context, index) {
@@ -164,6 +164,9 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           },
           itemCount: model.count,
           physics: const AlwaysScrollableScrollPhysics(),
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 8);
+          },
         );
       }
     } else {
