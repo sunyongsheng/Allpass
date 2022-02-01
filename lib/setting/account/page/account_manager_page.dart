@@ -80,9 +80,8 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                       if (Config.timingInMainPassword == 36500) {
                         initial = "永不";
                       }
-                      return SelectItemDialog<String>(
+                      return DefaultSelectItemDialog<String>(
                         list: ["7天", "10天", "15天", "30天", "永不"],
-                        itemBuilder: (_, data) => Text(data),
                         selector: (data) => data == initial,
                       );
                     }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/password/data/password_dao.dart';
@@ -36,13 +37,26 @@ class _DebugPage extends State<DebugPage> {
           children: <Widget>[
             ListTile(
               title: TextButton(
+                child: Text("显示设备已安装App"),
+                onPressed: () async {
+                  List<Application> installedApps = await DeviceApps.getInstalledApplications();
+                  showDialog(
+                      context: context,
+                      builder: (_) => DefaultSelectItemDialog<String>(
+                        list: installedApps.map((e) => e.packageName).toList(),
+                      )
+                  );
+                },
+              ),
+            ),
+            ListTile(
+              title: TextButton(
                 child: Text("页面测试"),
                 onPressed: () async {
                   showDialog<String>(
                       context: context,
-                      builder: (context) => SelectItemDialog<String>(
+                      builder: (context) => DefaultSelectItemDialog<String>(
                         list: ["init_encrypt", "webdav_sync"],
-                        itemBuilder: (_, data) => Text(data),
                       )
                   ).then((value) {
                     if (value != null) {

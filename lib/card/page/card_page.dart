@@ -243,9 +243,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     } else {
       showDialog(
           context: context,
-          builder: (context) => SelectItemDialog<String>(
+          builder: (context) => DefaultSelectItemDialog<String>(
               list: RuntimeData.folderList,
-              itemBuilder: (context, data) => Text(data),
           )
       ).then((value) async {
         if (value != null) {
