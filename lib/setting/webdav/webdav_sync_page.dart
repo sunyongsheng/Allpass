@@ -186,9 +186,10 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => SelectItemDialog(
-                      levels,
-                      initialSelected: getEncryptLevelString(),
+                    builder: (context) => SelectItemDialog<String>(
+                      list: levels,
+                      itemBuilder: (_, data) => Text(data),
+                      selector: (data) => data == getEncryptLevelString(),
                     )
                 ).then((value) {
                   if (value != null) {

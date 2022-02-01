@@ -40,10 +40,10 @@ class _DebugPage extends State<DebugPage> {
                 onPressed: () async {
                   showDialog<String>(
                       context: context,
-                      builder: (context) =>
-                          SelectItemDialog(
-                            ["init_encrypt", "webdav_sync"]
-                          )
+                      builder: (context) => SelectItemDialog<String>(
+                        list: ["init_encrypt", "webdav_sync"],
+                        itemBuilder: (_, data) => Text(data),
+                      )
                   ).then((value) {
                     if (value != null) {
                       if (value == "init_encrypt") {

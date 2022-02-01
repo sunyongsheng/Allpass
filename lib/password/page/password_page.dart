@@ -243,7 +243,10 @@ class _PasswordPageState extends State<PasswordPage>
     } else {
       showDialog(
           context: context,
-          builder: (context) => SelectItemDialog(RuntimeData.folderList)
+          builder: (context) => SelectItemDialog<String>(
+              list: RuntimeData.folderList,
+              itemBuilder: (_, data) => Text(data),
+          )
       ).then((value) async {
         if (value != null) {
           for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
