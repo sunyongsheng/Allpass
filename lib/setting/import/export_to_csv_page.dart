@@ -109,7 +109,7 @@ class ExportTypeSelectPage extends StatelessWidget {
   Future<Null> exportActual(BuildContext context, Directory newDir, {AllpassType? type}) async {
     switch (type) {
       case AllpassType.password:
-        PasswordDao passwordDao = Application.getIt.get();
+        PasswordDao passwordDao = AllpassApplication.getIt.get();
         List<PasswordBean> list = await passwordDao.getAllPasswordBeanList();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
@@ -119,7 +119,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       case AllpassType.card:
-        CardDao cardDao = Application.getIt.get();
+        CardDao cardDao = AllpassApplication.getIt.get();
         List<CardBean> list = await cardDao.getAllCardBeanList();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
@@ -129,10 +129,10 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       default:
-        PasswordDao passwordDao = Application.getIt.get();
+        PasswordDao passwordDao = AllpassApplication.getIt.get();
         List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
         ExportResult passwordResult = await CsvUtil.passwordExportCsv(passwordList, newDir);
-        CardDao cardDao = Application.getIt.get();
+        CardDao cardDao = AllpassApplication.getIt.get();
         List<CardBean> cardList = await cardDao.getAllCardBeanList();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {

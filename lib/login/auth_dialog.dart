@@ -11,7 +11,7 @@ class AuthDialog extends StatefulWidget {
 
 class _AuthDialogState extends State<AuthDialog> {
 
-  final AuthService _localAuthService = Application.getIt<AuthService>();
+  final AuthService _localAuthService = AllpassApplication.getIt<AuthService>();
 
   bool error = false;
 

@@ -36,7 +36,7 @@ class _LoginPage extends State<LoginPage> {
     _passwordController = TextEditingController();
     WidgetsBinding.instance?.addPostFrameCallback((callback) {
       Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
-      if (Application.sp.getBool(SPKeys.firstRun) ?? true) {
+      if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
         showDialog(
             context: context,
             builder: (cx) => AlertDialog(
@@ -156,7 +156,7 @@ class _LoginPage extends State<LoginPage> {
 
   void login() async {
     if (inputErrorTimes >= 5) {
-      await Application.clearAll(context);
+      await AllpassApplication.clearAll(context);
       ToastUtil.showError(msg: "连续错误超过五次！已清除所有数据，请重新注册");
       NavigationUtil.goLoginPage(context);
     } else {

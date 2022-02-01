@@ -21,8 +21,8 @@ class DebugPage extends StatefulWidget {
 
 class _DebugPage extends State<DebugPage> {
 
-  final PasswordDao _passwordDao = Application.getIt.get();
-  final CardDao _cardDao = Application.getIt.get();
+  final PasswordDao _passwordDao = AllpassApplication.getIt.get();
+  final CardDao _cardDao = AllpassApplication.getIt.get();
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("查看sp"),
                 onPressed: () async {
-                  Set<String> keys = Application.sp.getKeys();
+                  Set<String> keys = AllpassApplication.sp.getKeys();
                   keys.remove("password");
                   showDialog<Null>(
                       context: context,
@@ -72,9 +72,9 @@ class _DebugPage extends State<DebugPage> {
                           SimpleDialog(
                               children: keys.map((key) => ListTile(
                                 title: Text(key),
-                                subtitle: Text(Application.sp.get(key).toString()),
+                                subtitle: Text(AllpassApplication.sp.get(key).toString()),
                                 onLongPress: () {
-                                  Application.sp.remove(key);
+                                  AllpassApplication.sp.remove(key);
                                 },
                               )).toList()
                           )

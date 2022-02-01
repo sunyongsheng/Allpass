@@ -166,7 +166,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
         await Provider.of<PasswordProvider>(context, listen: false).clear();
         for (var bean in list ?? []) {
           await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
-          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
+          if (VersionUtil.twoIsNewerVersion("1.2.0", AllpassApplication.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -175,7 +175,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
-          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
+          if (VersionUtil.twoIsNewerVersion("1.2.0", AllpassApplication.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -206,7 +206,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
         await Provider.of<CardProvider>(context, listen: false).clear();
         for (var bean in list ?? []) {
           await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
-          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
+          if (VersionUtil.twoIsNewerVersion("1.2.0", AllpassApplication.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }
@@ -215,7 +215,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService{
         // 插入云端数据出错，恢复数据
         for (var bean in backup) {
           await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
-          if (VersionUtil.twoIsNewerVersion("1.2.0", Application.version)) continue;
+          if (VersionUtil.twoIsNewerVersion("1.2.0", AllpassApplication.version)) continue;
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         }

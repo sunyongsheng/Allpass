@@ -24,7 +24,7 @@ import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 
-class Application {
+class AllpassApplication {
   static GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
   static late GetIt getIt;
@@ -56,7 +56,7 @@ class Application {
   static void initRouter() {
     FluroRouter router = FluroRouter();
     Routes.configureRoutes(router);
-    Application.router = router;
+    AllpassApplication.router = router;
   }
 
   static void initAndroidChannel() {
@@ -114,6 +114,7 @@ class Application {
     passwordList.forEach((password) {
       if (password.appId?.contains(appId) ?? false) {
         list.add(SimpleUser(
+            password.name,
             password.username,
             EncryptUtil.decrypt(password.password),
             password.appId
@@ -127,7 +128,7 @@ class Application {
     await Provider.of<PasswordProvider>(context, listen: false).clear();
     await Provider.of<CardProvider>(context, listen: false).clear();
     await EncryptUtil.clearEncrypt();
-    await Application.sp.clear();
+    await AllpassApplication.sp.clear();
     Config.configClear();
 
     await EncryptUtil.initEncrypt();
@@ -137,16 +138,16 @@ class Application {
 /// 软件第一次运行，用户点击“同意并继续”后，对软件进行初始化，仅会调用一次
 Future<Null> initAppFirstRun() async {
   // 对10个key进行设置，label、latestUsePassword、WebDav配置相关不在其中
-  Application.sp.setBool(SPKeys.firstRun, false);
-  Application.sp.setString(SPKeys.allpassVersion, Application.version);
-  Application.sp.setBool(SPKeys.needRegister, true);
-  Application.sp.setString(SPKeys.username, "");
-  Application.sp.setString(SPKeys.password, "");
-  Application.sp.setBool(SPKeys.biometrics, false);
-  Application.sp.setBool(SPKeys.longPressCopy, true);
-  Application.sp.setBool(SPKeys.webDavAuthSuccess, false);
-  Application.sp.setString(SPKeys.lightTheme, "blue");
-  Application.sp.setString(SPKeys.themeMode, "system");
-  Application.sp.setString(SPKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
+  AllpassApplication.sp.setBool(SPKeys.firstRun, false);
+  AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
+  AllpassApplication.sp.setBool(SPKeys.needRegister, true);
+  AllpassApplication.sp.setString(SPKeys.username, "");
+  AllpassApplication.sp.setString(SPKeys.password, "");
+  AllpassApplication.sp.setBool(SPKeys.biometrics, false);
+  AllpassApplication.sp.setBool(SPKeys.longPressCopy, true);
+  AllpassApplication.sp.setBool(SPKeys.webDavAuthSuccess, false);
+  AllpassApplication.sp.setString(SPKeys.lightTheme, "blue");
+  AllpassApplication.sp.setString(SPKeys.themeMode, "system");
+  AllpassApplication.sp.setString(SPKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
   Config.initConfig();
 }

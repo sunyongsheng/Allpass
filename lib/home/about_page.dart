@@ -59,7 +59,7 @@ class AboutPage extends StatelessWidget {
                             ),
                           ),
                           subtitle: Text("一款简单的私密信息管理工具"),
-                          trailing: Text("V${Application.version}", style: TextStyle(color: Colors.grey),),
+                          trailing: Text("V${AllpassApplication.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () async {
                             await launch("https://allpass.aengus.top");

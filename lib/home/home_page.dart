@@ -56,7 +56,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         });
       }
 
-      UpdateBean updateBean = await Application.getIt<AllpassService>().checkUpdate();
+      UpdateBean updateBean = await AllpassApplication.getIt<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
             context: context,

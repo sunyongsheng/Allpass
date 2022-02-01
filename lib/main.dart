@@ -31,12 +31,12 @@ void main() async {
   _initErrorPage();
 
   try {
-    await Application.initSp();
+    await AllpassApplication.initSp();
     await EncryptUtil.initEncrypt();
     Config.initConfig();
-    Application.initRouter();
-    Application.initLocator();
-    Application.initAndroidChannel();
+    AllpassApplication.initRouter();
+    AllpassApplication.initLocator();
+    AllpassApplication.initAndroidChannel();
 
     if (Platform.isAndroid) {
       //设置Android头部的导航栏透明
@@ -45,8 +45,8 @@ void main() async {
     }
 
     // 此逻辑必须在_registerUser()之前执行，_registerUser()执行完后SP中allpassVersion已更新
-    needUpdateSecret = !(Application.sp.getBool(SPKeys.firstRun) ?? true)
-        && VersionUtil.twoIsNewerVersion(Application.sp.getString(SPKeys.allpassVersion), "1.5.0");
+    needUpdateSecret = !(AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true)
+        && VersionUtil.twoIsNewerVersion(AllpassApplication.sp.getString(SPKeys.allpassVersion), "1.5.0");
 
     _registerUser();
 
@@ -91,8 +91,8 @@ class Allpass extends StatelessWidget {
             );
           },
           home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
-          onGenerateRoute: Application.router.generator,
-          navigatorKey: Application.navigationKey,
+          onGenerateRoute: AllpassApplication.router.generator,
+          navigatorKey: AllpassApplication.navigationKey,
         )
     );
   }
@@ -141,7 +141,7 @@ void _registerUser() async {
 
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-    String _identification = Application.identification;
+    String _identification = AllpassApplication.identification;
     String _systemInfo;
     if (Platform.isAndroid) {
       AndroidDeviceInfo info = await infoPlugin.androidInfo;
@@ -154,12 +154,12 @@ void _registerUser() async {
     }
 
     try {
-      UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: Application.version);
-      AllpassResponse response = await Application.getIt<AllpassService>().registerUser(user);
+      UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: AllpassApplication.version);
+      AllpassResponse response = await AllpassApplication.getIt<AllpassService>().registerUser(user);
       if (response.success) {
-        Application.sp.setBool(SPKeys.needRegister, false);
+        AllpassApplication.sp.setBool(SPKeys.needRegister, false);
       } else {
-        Application.sp.setBool(SPKeys.needRegister, true);
+        AllpassApplication.sp.setBool(SPKeys.needRegister, true);
       }
     } catch (e) {
       debugPrint("用户注册失败：${e.toString()}");
@@ -169,22 +169,22 @@ void _registerUser() async {
   DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
   if (Platform.isAndroid) {
     AndroidDeviceInfo info = await infoPlugin.androidInfo;
-    Application.identification = info.androidId;
-    Application.systemSdkInt = info.version.sdkInt;
-    Application.isAndroid = true;
+    AllpassApplication.identification = info.androidId;
+    AllpassApplication.systemSdkInt = info.version.sdkInt;
+    AllpassApplication.isAndroid = true;
   } else if (Platform.isIOS) {
     IosDeviceInfo info = await infoPlugin.iosInfo;
-    Application.identification= info.identifierForVendor;
-    Application.systemSdkInt = -1;
-    Application.isAndroid = false;
+    AllpassApplication.identification= info.identifierForVendor;
+    AllpassApplication.systemSdkInt = -1;
+    AllpassApplication.isAndroid = false;
   }
 
-  if (Application.sp.getBool(SPKeys.needRegister)??true) {
+  if (AllpassApplication.sp.getBool(SPKeys.needRegister)??true) {
     await registerUserActual();
   } else {
-    if (!((Application.sp.getString(SPKeys.allpassVersion)??"1.0.0") == Application.version)) {
+    if (!((AllpassApplication.sp.getString(SPKeys.allpassVersion)??"1.0.0") == AllpassApplication.version)) {
       await registerUserActual();
-      Application.sp.setString(SPKeys.allpassVersion, Application.version);
+      AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
     }
   }
 }

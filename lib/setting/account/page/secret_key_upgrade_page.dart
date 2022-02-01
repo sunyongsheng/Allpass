@@ -22,8 +22,8 @@ class SecretKeyUpgradePage extends StatefulWidget {
 
 class _SecretKeyUpgradePage extends State<StatefulWidget> {
 
-  PasswordDao passwordDao = Application.getIt.get();
-  CardDao cardDao = Application.getIt.get();
+  PasswordDao passwordDao = AllpassApplication.getIt.get();
+  CardDao cardDao = AllpassApplication.getIt.get();
   late EncryptHolder encryptHolder;
 
 

@@ -31,7 +31,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     super.initState();
     _pressUpload = false;
     _pressDownload = false;
-    _syncService = Application.getIt<WebDavSyncService>();
+    _syncService = AllpassApplication.getIt<WebDavSyncService>();
   }
 
   @override

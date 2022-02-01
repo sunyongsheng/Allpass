@@ -78,7 +78,7 @@ class UpdateDialog extends StatelessWidget {
             onPressed: () async {
               String? downloadUrl;
               if (updateBean.isBetaChannel()) {
-                downloadUrl = "${updateBean.downloadUrl}&identification=${Application.identification}";
+                downloadUrl = "${updateBean.downloadUrl}&identification=${AllpassApplication.identification}";
               } else {
                 downloadUrl = updateBean.downloadUrl;
               }

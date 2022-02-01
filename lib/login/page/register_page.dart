@@ -112,7 +112,7 @@ class _RegisterPage extends State<RegisterPage> {
       return;
     }
     // 判断是否已有账号存在
-    if (Application.sp.getString(SPKeys.username) == "") {
+    if (AllpassApplication.sp.getString(SPKeys.username) == "") {
       _registerActual();
       ToastUtil.show(msg: "注册成功");
     } else {

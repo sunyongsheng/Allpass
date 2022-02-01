@@ -20,8 +20,8 @@ class RuntimeData {
   static int newPasswordOrCardCount = 0;  // 每次打开软件新增的密码或卡片数量
 
   static void initData() {
-    String folder = Application.sp.getString(SPKeys.folder) ?? "";
-    String label = Application.sp.getString(SPKeys.label) ?? "";
+    String folder = AllpassApplication.sp.getString(SPKeys.folder) ?? "";
+    String label = AllpassApplication.sp.getString(SPKeys.label) ?? "";
     folderList = StringUtil.waveLineSegStr2List(folder);
     labelList = StringUtil.waveLineSegStr2List(label);
   }
@@ -60,12 +60,12 @@ class RuntimeData {
 
   /// 标签参数持久化
   static void labelParamsPersistence() {
-    Application.sp.setString(SPKeys.label, StringUtil.list2WaveLineSegStr(labelList));
+    AllpassApplication.sp.setString(SPKeys.label, StringUtil.list2WaveLineSegStr(labelList));
   }
 
   /// 文件夹参数持久化
   static void folderParamsPersistence() {
-    Application.sp.setString(SPKeys.folder, StringUtil.list2WaveLineSegStr(folderList));
+    AllpassApplication.sp.setString(SPKeys.folder, StringUtil.list2WaveLineSegStr(folderList));
   }
 
   static void multiSelectClear(AllpassType type) {

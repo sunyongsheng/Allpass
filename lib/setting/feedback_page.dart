@@ -29,7 +29,7 @@ class _FeedbackPage extends State<StatefulWidget> {
   @override
   void initState() {
     super.initState();
-    _contactCache = Application.sp.getString(SPKeys.contact) ?? "";
+    _contactCache = AllpassApplication.sp.getString(SPKeys.contact) ?? "";
     _feedbackController = TextEditingController();
     _contactController = TextEditingController(text: _contactCache);
   }
@@ -123,10 +123,10 @@ class _FeedbackPage extends State<StatefulWidget> {
   Future<Null> submitFeedback() async {
     String _content = _feedbackController.text;
     String _contact = _contactController.text;
-    String _version = Application.version;
+    String _version = AllpassApplication.version;
     String _id = "unknown";
     if (_contactController.text.isNotEmpty) {
-      Application.sp.setString(SPKeys.contact, _contactController.text);
+      AllpassApplication.sp.setString(SPKeys.contact, _contactController.text);
     }
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     if (Platform.isAndroid) {
@@ -137,7 +137,7 @@ class _FeedbackPage extends State<StatefulWidget> {
       _id = info.identifierForVendor;
     }
     FeedbackBean feedback = FeedbackBean(content: _content, contact: _contact, version: _version, identification: _id);
-    AllpassResponse response = await Application.getIt<AllpassService>().sendFeedback(feedback);
+    AllpassResponse response = await AllpassApplication.getIt<AllpassService>().sendFeedback(feedback);
     if (response.success) {
       _submitSuccess = true;
     }

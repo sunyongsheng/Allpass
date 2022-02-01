@@ -24,7 +24,7 @@ class AuthLoginPage extends StatefulWidget {
 
 class _AuthLoginPage extends State<StatefulWidget> {
 
-  final AuthService _localAuthService = Application.getIt<AuthService>();
+  final AuthService _localAuthService = AllpassApplication.getIt<AuthService>();
 
   @override
   void initState() {
@@ -99,7 +99,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
   Future<Null> askAuth(BuildContext context) async {
     // 两次时间
     DateTime now = DateTime.now();
-    DateTime latestUsePassword = DateTime.parse(Application.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
+    DateTime latestUsePassword = DateTime.parse(AllpassApplication.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
     if (now.difference(latestUsePassword).inDays >= Config.timingInMainPassword) {
       await _localAuthService.stopAuthenticate();
       showDialog<bool>(

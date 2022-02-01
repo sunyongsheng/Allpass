@@ -45,7 +45,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
   @override
   void initState() {
-    _localAuthService = Application.getIt<AuthService>();
+    _localAuthService = AllpassApplication.getIt<AuthService>();
     _controller = ScrollController();
     super.initState();
   }
@@ -175,16 +175,16 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       )
     ];
-    if (Application.isAndroid && Application.systemSdkInt >= 26) {
+    if (AllpassApplication.isAndroid && AllpassApplication.systemSdkInt >= 26) {
       thirdCardWidgets.add(ListTile(
         title: Text("自动填充"),
         leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
         onTap: () {
-          Application.methodChannel.invokeMethod(ChannelConstants.methodIsAppDefaultAutofill).then((enabled) => {
+          AllpassApplication.methodChannel.invokeMethod(ChannelConstants.methodIsAppDefaultAutofill).then((enabled) => {
             if (enabled) {
               ToastUtil.show(msg: "Allpass已经是默认自动填充服务，无需设置")
             } else {
-              Application.methodChannel.invokeMethod(ChannelConstants.methodSetAppDefaultAutofill)
+              AllpassApplication.methodChannel.invokeMethod(ChannelConstants.methodSetAppDefaultAutofill)
             }
           });
         },
@@ -285,7 +285,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   void checkUpdate() {
-    var bean = Application.getIt<AllpassService>().checkUpdate();
+    var bean = AllpassApplication.getIt<AllpassService>().checkUpdate();
     showDialog(
         context: context,
         builder: (cx) => FutureBuilder<UpdateBean>(
@@ -305,7 +305,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   Future<Null> doRecommend() async {
-    UpdateBean data = await Application.getIt<AllpassService>().getLatestVersion();
+    UpdateBean data = await AllpassApplication.getIt<AllpassService>().getLatestVersion();
     Share.share(
         "【Allpass】一款简洁好用的私密信息管理工具。【下载地址】${data.downloadUrl}",
         subject: "软件推荐——Allpass");

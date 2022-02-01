@@ -13,7 +13,7 @@ final List<CardBean> emptyList = [];
 class CardProvider with ChangeNotifier {
 
   List<CardBean> _cardList = emptyList;
-  CardDao _dao = Application.getIt.get();
+  CardDao _dao = AllpassApplication.getIt.get();
   CardBean _currCard = CardBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
   List<String> _mostUsedOwnerName = [];

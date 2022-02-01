@@ -16,8 +16,8 @@ import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
 
 class ImportFromCsvPage extends StatelessWidget {
-  final CardDao cardDao = Application.getIt.get();
-  final PasswordDao passwordDao = Application.getIt.get();
+  final CardDao cardDao = AllpassApplication.getIt.get();
+  final PasswordDao passwordDao = AllpassApplication.getIt.get();
 
   @override
   Widget build(BuildContext context) {

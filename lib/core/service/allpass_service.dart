@@ -82,7 +82,7 @@ class AllpassServiceImpl implements AllpassService {
   Future<UpdateBean> checkUpdate() async {
     try {
       Response response = await dio.get(
-          "$allpassUrl/update/?version=${Application.version}&identification=${Application.identification}");
+          "$allpassUrl/update/?version=${AllpassApplication.version}&identification=${AllpassApplication.identification}");
 
       Map<String, String> res = Map();
       for (String key in response.data.keys) {
@@ -90,13 +90,13 @@ class AllpassServiceImpl implements AllpassService {
       }
 
       CheckUpdateResult result;
-      String version = Application.version;
+      String version = AllpassApplication.version;
       String? content = res["update_content"];
       String? downloadUrl = res["download_url"];
       String? channel = res["channel"];
       if (res["have_update"] == "1") {
         result = CheckUpdateResult.HaveUpdate;
-        version = res["version"] ?? Application.version;
+        version = res["version"] ?? AllpassApplication.version;
       } else {
         result = CheckUpdateResult.NoUpdate;
       }
@@ -109,13 +109,13 @@ class AllpassServiceImpl implements AllpassService {
     } on DioError catch (_) {
       return UpdateBean(
         checkResult: CheckUpdateResult.NetworkError,
-        version: Application.version,
+        version: AllpassApplication.version,
         updateContent: 'Allpass远程服务未开启，建议前往「酷安」下载最新版本',
       );
     } catch (unknownError) {
       return UpdateBean(
           checkResult: CheckUpdateResult.UnknownError,
-          version: Application.version,
+          version: AllpassApplication.version,
           updateContent: unknownError.toString());
     }
   }
@@ -135,9 +135,9 @@ class AllpassServiceImpl implements AllpassService {
           version: res["version"], downloadUrl: res["download_url"]);
     } catch (_) {
       return UpdateBean(
-          version: Application.version,
+          version: AllpassApplication.version,
           downloadUrl:
-              "https://allpass.aengus.top/api/download/?version=${Application.version}");
+              "https://allpass.aengus.top/api/download/?version=${AllpassApplication.version}");
     }
   }
 }

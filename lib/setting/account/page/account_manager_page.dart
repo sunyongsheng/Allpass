@@ -80,9 +80,10 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                       if (Config.timingInMainPassword == 36500) {
                         initial = "永不";
                       }
-                      return SelectItemDialog(
-                        ["7天", "10天", "15天", "30天", "永不"],
-                        initialSelected: initial,
+                      return SelectItemDialog<String>(
+                        list: ["7天", "10天", "15天", "30天", "永不"],
+                        itemBuilder: (_, data) => Text(data),
+                        selector: (data) => data == initial,
                       );
                     }
                 ).then((days) {
@@ -137,7 +138,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                       builder: (context) => InputMainPasswordDialog(),
                     ).then((right) async {
                       if (right) {
-                        await Application.clearAll(context);
+                        await AllpassApplication.clearAll(context);
                         ToastUtil.show(msg: "已删除所有数据");
                         NavigationUtil.goLoginPage(context);
                       }
