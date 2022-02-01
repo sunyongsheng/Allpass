@@ -4,16 +4,20 @@ import android.app.assist.AssistStructure
 import android.os.Build
 import android.os.CancellationSignal
 import android.service.autofill.*
+import android.text.InputType
 import android.view.View
 import android.view.autofill.AutofillValue
+import android.view.inputmethod.EditorInfo
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import io.flutter.plugin.common.BasicMessageChannel
 import org.json.JSONArray
 import org.json.JSONObject
+import top.aengus.allpass.R
 import top.aengus.allpass.autofill.model.ParsedStructure
 import top.aengus.allpass.autofill.model.SimpleUserData
 import top.aengus.allpass.core.FlutterChannel
+import top.aengus.allpass.util.AndroidUtil
 import top.aengus.allpass.util.createMessageChannel
 
 
@@ -46,9 +50,13 @@ class AllpassAutofillService : AutofillService() {
             val viewNode: AssistStructure.ViewNode? = windowNode.rootViewNode
             findUsernamePasswordFillIdRecursive(viewNode, usernameStructure)
         }
+        if (!usernameStructure.isValid()) {
+            callback.onFailure("找不到控件！")
+        }
 
         val appId = structure.activityComponent.packageName
-        queryAutofillChannel.send(appId) { resultJson ->
+        val appName = AndroidUtil.getAppName(this, appId)
+        queryAutofillChannel.send("$appId,$appName") { resultJson ->
             resultJson ?: return@send
             val jsonArray = JSONArray(resultJson)
             if (jsonArray.length() == 0) {
@@ -58,21 +66,23 @@ class AllpassAutofillService : AutofillService() {
             val fillResponseBuilder = FillResponse.Builder()
             for (index in 0 until jsonArray.length()) {
                 val jsonObj = jsonArray.getJSONObject(index)
+                val name = jsonObj.optString("name")
                 val username = jsonObj.optString("username")
                 val password = jsonObj.optString("password")
                 if (username.isNotEmpty() || password.isNotEmpty()) {
-                    if (!usernameStructure.isValid()) continue
-
                     val dataset = Dataset.Builder()
+                    val usernamePresentation = RemoteViews(packageName, R.layout.item_autofill).apply {
+                        AndroidUtil.getAppIcon(this@AllpassAutofillService, appId)?.let { it ->
+                            setImageViewBitmap(R.id.iv_app_icon, it)
+                        }
+                        setTextViewText(R.id.tv_name, name.ifEmpty { "Unknown" })
+                        setTextViewText(R.id.tv_username, username)
+                    }
                     usernameStructure.usernameId?.let {
-                        val usernamePresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-                        usernamePresentation.setTextViewText(android.R.id.text1, username)
                         dataset.setValue(it, AutofillValue.forText(username), usernamePresentation)
                     }
                     usernameStructure.passwordId?.let {
-                        val passwordPresentation = RemoteViews(packageName, android.R.layout.simple_list_item_1)
-                        passwordPresentation.setTextViewText(android.R.id.text1, password)
-                        dataset.setValue(it, AutofillValue.forText(password), passwordPresentation)
+                        dataset.setValue(it, AutofillValue.forText(password), usernamePresentation)
                     }
                     fillResponseBuilder.addDataset(dataset.build())
                 }
@@ -112,13 +122,13 @@ class AllpassAutofillService : AutofillService() {
     }
 
     private fun findUsernamePasswordFillIdRecursive(viewNode: AssistStructure.ViewNode?, parsedStructure: ParsedStructure) {
-        if (hasUsernameHint(viewNode?.autofillHints)) {
+        if (isUsernameNode(viewNode)) {
             viewNode?.autofillId?.let {
                 parsedStructure.usernameId = it
             }
             return
-        } else if (viewNode?.autofillHints?.contains(View.AUTOFILL_HINT_PASSWORD) == true) {
-            viewNode.autofillId?.let {
+        } else if (isPasswordNode(viewNode)) {
+            viewNode?.autofillId?.let {
                 parsedStructure.passwordId = it
             }
             return
@@ -134,13 +144,13 @@ class AllpassAutofillService : AutofillService() {
     }
 
     private fun obtainUsernamePasswordRecursive(viewNode: AssistStructure.ViewNode?, userData: SimpleUserData) {
-        if (hasUsernameHint(viewNode?.autofillHints)) {
+        if (isUsernameNode(viewNode)) {
             viewNode?.text?.let {
                 userData.username = it.toString()
             }
             return
-        } else if (viewNode?.autofillHints?.contains(View.AUTOFILL_HINT_PASSWORD) == true) {
-            viewNode.text?.let {
+        } else if (isPasswordNode(viewNode)) {
+            viewNode?.text?.let {
                 userData.password = it.toString()
             }
             return
@@ -155,10 +165,40 @@ class AllpassAutofillService : AutofillService() {
         }
     }
 
-    private fun hasUsernameHint(array: Array<String>?): Boolean {
-        array ?: return false
-        return array.contains(View.AUTOFILL_HINT_USERNAME) || array.contains(View.AUTOFILL_HINT_EMAIL_ADDRESS)
-                || array.contains(View.AUTOFILL_HINT_PHONE)
+    private fun isUsernameNode(viewNode: AssistStructure.ViewNode?): Boolean {
+        viewNode ?: return false
+        val autofillHints = viewNode.autofillHints
+        if (autofillHints != null) {
+            return autofillHints.contains(View.AUTOFILL_HINT_USERNAME) || autofillHints.contains(View.AUTOFILL_HINT_EMAIL_ADDRESS)
+                    || autofillHints.contains(View.AUTOFILL_HINT_PHONE)
+        }
+        val inputType = viewNode.inputType
+        return inputType == InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+                || inputType == InputType.TYPE_CLASS_PHONE
+    }
+
+    private fun isPasswordNode(viewNode: AssistStructure.ViewNode?): Boolean {
+        viewNode ?: return false
+        val autofillHints = viewNode.autofillHints
+        if (autofillHints != null) {
+            return autofillHints.contains(View.AUTOFILL_HINT_PASSWORD)
+        }
+        val inputType = viewNode.inputType
+        return isPasswordInputType(inputType) || isVisiblePasswordInputType(inputType)
+    }
+
+    private fun isPasswordInputType(inputType: Int): Boolean {
+        val variation = inputType and (EditorInfo.TYPE_MASK_CLASS or EditorInfo.TYPE_MASK_VARIATION)
+        return (variation
+                == EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_PASSWORD) || (variation
+                == EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD) || (variation
+                == EditorInfo.TYPE_CLASS_NUMBER or EditorInfo.TYPE_NUMBER_VARIATION_PASSWORD)
+    }
+
+    private fun isVisiblePasswordInputType(inputType: Int): Boolean {
+        val variation = inputType and (EditorInfo.TYPE_MASK_CLASS or EditorInfo.TYPE_MASK_VARIATION)
+        return (variation
+                == EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
     }
 
 }

@@ -342,25 +342,36 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     TextButton(
                       child: Text(appId?.isEmpty ?? true ? "无" : appName!),
                       onPressed: () async {
-                        List<Application> apps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
                         showDialog(
                           context: context,
-                          builder: (_) => SelectAppDialog(
-                            list: apps,
-                            selectedApp: appId,
-                          )
-                        ).then((value) {
-                          if (value != null) {
-                            if (value is Application) {
-                              appName = value.appName;
-                              appId = value.packageName;
-                            } else {
-                              appName = null;
-                              appId = null;
-                            }
-                            setState(() {});
-                          }
-                        });
+                          builder: (_) => FutureBuilder<List<Application>>(
+                            future: DeviceApps.getInstalledApplications(includeAppIcons: true),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.done:
+                                  return SelectAppDialog(
+                                    list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
+                                    selectedApp: appId,
+                                    onSelected: (app) {
+                                      setState(() {
+                                        appName = app.appName;
+                                        appId = app.packageName;
+                                      });
+                                    },
+                                    onCancel: () {
+                                      setState(() {
+                                        appName = null;
+                                        appId = null;
+                                      });
+                                    },
+                                  );
+                                default:
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                              }
+                          },
+                        ));
                       },
                     ),
                   ],

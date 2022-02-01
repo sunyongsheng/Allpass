@@ -46,10 +46,12 @@ class _DebugPage extends State<DebugPage> {
                       builder: (_) => SelectAppDialog(
                         list: installedApps,
                         selectedApp: "top.aengus.fove",
+                        onSelected: (app) {
+                          debugPrint(app.appName);
+                        },
+                        onCancel: () {},
                       )
-                  ).then((value) {
-                    debugPrint(value);
-                  });
+                  );
                 },
               ),
             ),

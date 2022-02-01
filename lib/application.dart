@@ -66,8 +66,8 @@ class AllpassApplication {
     var queryAutofillMessageChannel = BasicMessageChannel(ChannelConstants.channelQueryAutofillPassword, StringCodec());
     queryAutofillMessageChannel.setMessageHandler((message) => Future<String>(() {
       if (message != null) {
-        var queryAppId = message;
-        return _queryPasswordForAutofill(queryAppId);
+        var queryParam = message.split(",");
+        return _queryPasswordForAutofill(queryParam[0], queryParam[1]);
       }
       return "[]";
     }));
@@ -107,12 +107,25 @@ class AllpassApplication {
     }
   }
 
-  static Future<String> _queryPasswordForAutofill(String appId) async {
+  static Future<String> _queryPasswordForAutofill(String appId, String? appName) async {
     PasswordDao dao = getIt.get();
     var passwordList = await dao.getAllPasswordBeanList();
     List<SimpleUser> list = [];
     passwordList.forEach((password) {
-      if (password.appId?.contains(appId) ?? false) {
+      var appIdMatched = password.appId?.contains(appId) ?? false;
+      var appNameMatched = false;
+      if (!appIdMatched) {
+        if (appName != null && appName.isNotEmpty) {
+          if (password.appName == appName) {
+            // 若appName完全匹配，则设置为true
+            appNameMatched = true;
+          } else {
+            // 判断密码名称是否含有App名称
+            appNameMatched = password.name.toLowerCase().contains(appName.toLowerCase());
+          }
+        }
+      }
+      if (appIdMatched || appNameMatched) {
         list.add(SimpleUser(
             password.name,
             password.username,

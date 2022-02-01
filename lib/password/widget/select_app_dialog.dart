@@ -7,7 +7,16 @@ const String SELECT_NULL_APP = "select_null_app";
 
 class SelectAppDialog extends SelectItemDialog<Application> {
 
-  SelectAppDialog({required List<Application> list, String? selectedApp}) : super(
+  final void Function(Application) onSelected;
+
+  final void Function() onCancel;
+
+  SelectAppDialog({
+    required List<Application> list,
+    String? selectedApp,
+    required this.onSelected,
+    required this.onCancel
+  }) : super(
     list: list,
     selector: (app) => selectedApp != null && app.packageName == selectedApp
   );
@@ -18,6 +27,7 @@ class SelectAppDialog extends SelectItemDialog<Application> {
       TextButton(
         child: Text("设置为空", style: TextStyle(color: Colors.red),),
         onPressed: () async {
+          onCancel.call();
           Navigator.pop<String>(context, SELECT_NULL_APP);
         },
       ),
@@ -41,7 +51,10 @@ class SelectAppDialog extends SelectItemDialog<Application> {
       trailing: selector!.call(data)
           ? Icon(Icons.check, color: Colors.grey,)
           : null,
-      onTap: () => Navigator.pop<Application>(context, data),
+      onTap: () {
+        onSelected(data);
+        Navigator.pop<Application>(context, data);
+      },
     );
   }
 
