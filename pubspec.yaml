@@ -50,6 +50,8 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   # XML解析
   xml: ^5.3.1
+  # 已安装App
+  device_apps: ^2.1.1
 
 dev_dependencies:
   flutter_test:

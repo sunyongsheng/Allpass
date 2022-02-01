@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:device_apps/device_apps.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -242,6 +243,35 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                             ],
                           ),
                         ),
+                        // 所属App标题
+                        _titleContainer(_mainColor, "所属App"),
+                        // 所属App主体
+                        Container(
+                          margin: AllpassEdgeInsets.bottom50Inset,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (bean.appId?.isNotEmpty ?? false) {
+                                        var openable = await DeviceApps.openApp(bean.appId!);
+                                        if (!openable) {
+                                          ToastUtil.show(msg: "打开App失败，请确保App已安装");
+                                        }
+                                      }
+                                    },
+                                    child: Text(bean.appId?.isEmpty ?? true ? "无" : bean.appName!,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: bean.appId?.isEmpty ?? true
+                                          ? AllpassTextUI.hintTextStyle
+                                          : AllpassTextUI.firstTitleStyle,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
                         // 备注标题
                         _titleContainer(_mainColor, "备注"),
                         // 备注主体
@@ -261,9 +291,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                                     child: Text(bean.notes.length<1?"无备注":bean.notes,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 2,
-                                      style: bean.notes.length<1
-                                          ?AllpassTextUI.hintTextStyle
-                                          :AllpassTextUI.firstTitleStyle,
+                                      style: bean.notes.length < 1
+                                          ? AllpassTextUI.hintTextStyle
+                                          : AllpassTextUI.firstTitleStyle,
                                     ),
                                   )),
                             ],

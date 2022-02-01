@@ -10,6 +10,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/login/page/init_encrypt_page.dart';
 import 'package:allpass/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
+import 'package:allpass/password/widget/select_app_dialog.dart';
 
 /// 调试页
 class DebugPage extends StatefulWidget {
@@ -39,13 +40,16 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text("显示设备已安装App"),
                 onPressed: () async {
-                  List<Application> installedApps = await DeviceApps.getInstalledApplications();
+                  List<Application> installedApps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
                   showDialog(
                       context: context,
-                      builder: (_) => DefaultSelectItemDialog<String>(
-                        list: installedApps.map((e) => e.packageName).toList(),
+                      builder: (_) => SelectAppDialog(
+                        list: installedApps,
+                        selectedApp: "top.aengus.fove",
                       )
-                  );
+                  ).then((value) {
+                    debugPrint(value);
+                  });
                 },
               ),
             ),

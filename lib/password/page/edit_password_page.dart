@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:device_apps/device_apps.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/widget/select_app_dialog.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
@@ -37,31 +39,33 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   PasswordBean? _oldData;
 
-  late int operation;
+  int operation = DataOperation.add;
 
-  String _folder = "默认";
-  late TextEditingController _nameController;
-  late TextEditingController _usernameController;
-  late TextEditingController _passwordController;
-  late TextEditingController _notesController;
-  late TextEditingController _urlController;
-  late List<String> _labels;
-  int _fav = 0;
-  late String _createTime;
+  late TextEditingController nameController;
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+  late TextEditingController notesController;
+  late TextEditingController urlController;
+  List<String> labels = [];
+  String folder = "默认";
+  String? appName;
+  String? appId;
+  int fav = 0;
+  late String createTime;
 
   bool _passwordVisible = false;
-  bool _frameDone = false;
+  bool frameDone = false;
 
 
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _notesController.dispose();
-    _urlController.dispose();
-    _frameDone = false;
+    nameController.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+    notesController.dispose();
+    urlController.dispose();
+    frameDone = false;
   }
 
 
@@ -70,28 +74,31 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     super.initState();
     this.operation = widget.operation;
     if (operation == DataOperation.update) {
-      this._oldData = widget.data;
-      _folder = _oldData!.folder;
-      _labels = []..addAll(_oldData!.label ?? []);
-      _fav = _oldData!.fav;
-      _createTime = _oldData!.createTime;
+      _oldData = widget.data;
+      var editingPassword = _oldData!;
+      folder = editingPassword.folder;
+      labels.addAll(editingPassword.label ?? []);
+      fav = editingPassword.fav;
+      createTime = editingPassword.createTime;
+      appName = editingPassword.appName;
+      appId = editingPassword.appId;
 
-      _nameController = TextEditingController(text: _oldData!.name);
-      _usernameController = TextEditingController(text: _oldData!.username);
-      _notesController = TextEditingController(text: _oldData!.notes);
-      _urlController = TextEditingController(text: _oldData!.url);
-      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData!.password));
+      nameController = TextEditingController(text: editingPassword.name);
+      usernameController = TextEditingController(text: editingPassword.username);
+      notesController = TextEditingController(text: editingPassword.notes);
+      urlController = TextEditingController(text: editingPassword.url);
+      passwordController = TextEditingController(text: EncryptUtil.decrypt(editingPassword.password));
     } else {
-      _nameController = TextEditingController();
-      _usernameController = TextEditingController();
-      _notesController = TextEditingController();
-      _urlController = TextEditingController();
-      _passwordController = TextEditingController();
-      _labels = [];
-      _createTime = DateTime.now().toIso8601String();
+      nameController = TextEditingController();
+      usernameController = TextEditingController();
+      notesController = TextEditingController();
+      urlController = TextEditingController();
+      passwordController = TextEditingController();
+
+      createTime = DateTime.now().toIso8601String();
     }
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _frameDone = true;
+      frameDone = true;
     });
   }
 
@@ -113,40 +120,42 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             onPressed: () {
               showDialog(context: context, builder: (cx) => PasswordGenerationDialog())
                   .then((value) {
-                if (value != null) _passwordController.text = value;
+                if (value != null) passwordController.text = value;
               });
             },
           ),
           IconButton(
-            icon: _fav == 1
+            icon: fav == 1
                 ? Icon(Icons.favorite, color: Colors.redAccent,)
                 : Icon(Icons.favorite_border),
             onPressed: () {
               setState(() {
-                _fav = _fav == 1 ? 0 : 1;
+                fav = fav == 1 ? 0 : 1;
               });
             },
           ),
           IconButton(
             icon: Icon(Icons.check,),
             onPressed: () async {
-              if (_usernameController.text.length >= 1
-                  && _passwordController.text.length >= 1
-                  && _nameController.text.length >= 1) {
-                String pw = EncryptUtil.encrypt(_passwordController.text);
-                String name = _nameController.text.trimLeft();
+              if (usernameController.text.length >= 1
+                  && passwordController.text.length >= 1
+                  && nameController.text.length >= 1) {
+                String pw = EncryptUtil.encrypt(passwordController.text);
+                String name = nameController.text.trimLeft();
                 PasswordBean tempData = PasswordBean(
                   key: _oldData?.uniqueKey,
-                  username: _usernameController.text,
+                  username: usernameController.text,
                   password: pw,
-                  url: _urlController.text,
+                  url: urlController.text,
                   name: name,
-                  folder: _folder,
-                  label: _labels,
-                  notes: _notesController.text,
-                  fav: _fav,
+                  folder: folder,
+                  label: labels,
+                  notes: notesController.text,
+                  fav: fav,
                   color: _oldData?.color ?? getRandomColor(),
-                  createTime: _createTime
+                  createTime: createTime,
+                  appId: appId,
+                  appName: appName
                 );
                 if (operation == DataOperation.add) {
                   provider.insertPassword(tempData);
@@ -177,15 +186,12 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _nameController,
+                      editingController: nameController,
                       trailing: InkWell(
-                        child: Icon(
-                          Icons.cancel,
-                          size: 20,
-                        ),
+                        child: Icon(Icons.cancel, size: 20,),
                         onTap: () {
                           // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                          if (_frameDone) _nameController.clear();
+                          if (frameDone) nameController.clear();
                         },
                       ),
                     )
@@ -202,14 +208,14 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _usernameController,
+                      editingController: usernameController,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone) _usernameController.clear();
+                          if (frameDone) usernameController.clear();
                         },
                       ),
                     ),
@@ -235,13 +241,13 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       children: <Widget>[
                         Expanded(
                           child: NoneBorderCircularTextField(
-                            editingController: _passwordController,
+                            editingController: passwordController,
                             trailing: InkWell(
                               child: Icon(
                                   Icons.cancel,
                                   size: 20),
                               onTap: () {
-                                if (_frameDone) _passwordController.clear();
+                                if (frameDone) passwordController.clear();
                               },
                             ),
                             obscureText: !_passwordVisible,
@@ -275,14 +281,14 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _urlController,
+                      editingController: urlController,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone) _urlController.clear();
+                          if (frameDone) urlController.clear();
                         },
                       ),
                     )
@@ -290,7 +296,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 ),
               ),
               Container(
-                margin: marginInset,
+                margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,7 +308,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     DropdownButton(
                       onChanged: (newValue) {
                         setState(() {
-                          _folder = newValue.toString();
+                          folder = newValue.toString();
                         });
                       },
                       items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
@@ -318,7 +324,44 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       style: AllpassTextUI.firstTitleStyle,
                       elevation: 8,
                       iconSize: 30,
-                      value: _folder,
+                      value: folder,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: marginInset,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "所属App",
+                      style: TextStyle(fontSize: 16, color: mainColor),
+                    ),
+                    TextButton(
+                      child: Text(appId?.isEmpty ?? true ? "无" : appName!),
+                      onPressed: () async {
+                        List<Application> apps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
+                        showDialog(
+                          context: context,
+                          builder: (_) => SelectAppDialog(
+                            list: apps,
+                            selectedApp: appId,
+                          )
+                        ).then((value) {
+                          if (value != null) {
+                            if (value is Application) {
+                              appName = value.appName;
+                              appId = value.packageName;
+                            } else {
+                              appName = null;
+                              appId = null;
+                            }
+                            setState(() {});
+                          }
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -359,14 +402,14 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _notesController,
+                      editingController: notesController,
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage("备注", _notesController.text, true),
+                          builder: (context) => DetailTextPage("备注", notesController.text, true),
                         )).then((newValue) {
                           setState(() {
-                            _notesController.text = newValue;
+                            notesController.text = newValue;
                           });
                         });
                       },
@@ -388,7 +431,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           text: element,
           selected: false,
           onSelected: (_) {
-            _usernameController.text = element;
+            usernameController.text = element;
           },
         ),
       ));
@@ -401,11 +444,11 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     RuntimeData.labelList.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
-        selected: _labels.contains(item),
+        selected: labels.contains(item),
         onSelected: (selected) {
-          setState(() => _labels.contains(item)
-              ? _labels.remove(item)
-              : _labels.add(item));
+          setState(() => labels.contains(item)
+              ? labels.remove(item)
+              : labels.add(item));
         },
       ));
     });
