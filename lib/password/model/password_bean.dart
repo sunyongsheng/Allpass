@@ -20,7 +20,8 @@ class PasswordBean extends BaseModel {
   late int fav; // 9 是否标心，0代表否
   late String createTime; // 10 创建时间，为了方便存储使用Iso8601String
   late int sortNumber;  // 12 排序号
-  late String? appId; // 所属App包名
+  late String? appId; // 13 所属App包名
+  late String? appName; // 14 所属App名称
 
   PasswordBean(
       {int? key,
@@ -35,7 +36,8 @@ class PasswordBean extends BaseModel {
       String? createTime,
       Color? color,
       int sortNumber: -1,
-      String? appId}) {
+      String? appId,
+      String? appName,}) {
     this.uniqueKey = key;
     this.name = name;
     this.username = username;
@@ -49,6 +51,7 @@ class PasswordBean extends BaseModel {
     this.sortNumber = sortNumber;
     this.color = color;
     this.appId = appId;
+    this.appName = appName;
 
     if (url == BaseModel.noneData) this.url = "";
     if (notes == BaseModel.noneData) this.notes = "";
@@ -100,7 +103,8 @@ class PasswordBean extends BaseModel {
             label: newLabel,
             createTime: map['createTime'],
             sortNumber: map['sortNumber'],
-            appId: map['appId']
+            appId: map['appId'],
+            appName: map['appName']
         );
       case 2:
         List<String> newLabel = [];
@@ -121,7 +125,8 @@ class PasswordBean extends BaseModel {
             label: newLabel,
             createTime: EncryptUtil.decrypt(map['createTime']),
             sortNumber: map['sortNumber'],
-            appId: EncryptUtil.decrypt(map['appId'])
+            appId: EncryptUtil.decrypt(map['appId']),
+            appName: EncryptUtil.decrypt(map['appName'])
         );
       default:
         List<String> newLabel = [];
@@ -140,7 +145,8 @@ class PasswordBean extends BaseModel {
             label: newLabel,
             createTime: map['createTime'],
             sortNumber: map['sortNumber'],
-            appId: map['appId']
+            appId: map['appId'],
+            appName: map['appName']
         );
 
     }
@@ -161,7 +167,8 @@ class PasswordBean extends BaseModel {
       "label": labels,
       "createTime": this.createTime,
       "sortNumber": this.sortNumber,
-      "appId": this.appId
+      "appId": this.appId,
+      "appName": this.appName
     };
     return map;
   }
@@ -180,7 +187,8 @@ class PasswordBean extends BaseModel {
         "${bean.fav},"
         "${bean.createTime},"
         "${bean.sortNumber},"
-        "${bean.appId}\n";
+        "${bean.appId},"
+        "${bean.appName}\n";
     return csv;
   }
 
@@ -202,7 +210,8 @@ class PasswordBean extends BaseModel {
             createTime: pureBean.createTime,
             color: pureBean.color,
             sortNumber: pureBean.sortNumber,
-            appId: pureBean.appId
+            appId: pureBean.appId,
+            appName: pureBean.appName
         );
       case 2:
         String name = EncryptUtil.encrypt(pureBean.name);
@@ -215,6 +224,8 @@ class PasswordBean extends BaseModel {
           label.add(EncryptUtil.encrypt(l));
         }
         String createTime = EncryptUtil.encrypt(pureBean.createTime);
+        String? appId = pureBean.appId == null ? null : EncryptUtil.encrypt(pureBean.appId!);
+        String? appName = pureBean.appName == null ? null : EncryptUtil.encrypt(pureBean.appName!);
         return PasswordBean(
             key: pureBean.uniqueKey,
             name: name,
@@ -228,7 +239,8 @@ class PasswordBean extends BaseModel {
             createTime: createTime,
             sortNumber: pureBean.sortNumber,
             color: pureBean.color,
-            appId: pureBean.appId
+            appId: appId,
+            appName: appName
         );
       default:
         return PasswordBean(
@@ -244,7 +256,8 @@ class PasswordBean extends BaseModel {
             createTime: pureBean.createTime,
             sortNumber: pureBean.sortNumber,
             color: pureBean.color,
-            appId: pureBean.appId
+            appId: pureBean.appId,
+            appName: pureBean.appName
         );
     }
   }

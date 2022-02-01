@@ -29,6 +29,8 @@ class PasswordDao extends BaseDBProvider {
   static final String columnSortNumber = "sortNumber";
   /// 版本4列名
   static final String columnAppId = "appId";
+  /// 版本5列名
+  static final String columnAppName = "appName";
 
   @override
   String tableName() {
@@ -64,7 +66,8 @@ class PasswordDao extends BaseDBProvider {
       $columnFav INTEGER DEFAULT 0,
       $columnCreateTime TEXT,
       $columnSortNumber INTEGER DEFAULT -1,
-      $columnAppId TEXT)
+      $columnAppId TEXT,
+      $columnAppName TEXT)
       ''';
   }
 
@@ -130,8 +133,9 @@ class PasswordDao extends BaseDBProvider {
         "$columnNotes=?,"
         "$columnLabel=?,"
         "$columnSortNumber=?,"
-        "$columnAppId=? WHERE $columnId=${bean.uniqueKey}",
-        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels, bean.sortNumber, bean.appId]);
+        "$columnAppId=?,"
+        "$columnAppName=? WHERE $columnId=${bean.uniqueKey}",
+        [bean.name, bean.username, bean.password, bean.url, bean.folder, bean.fav, bean.notes, labels, bean.sortNumber, bean.appId, bean.appName]);
     // 下面的语句更新时提示UNIQUE constraint failed
     // return await db.update(name, passwordBean2Map(bean));
   }

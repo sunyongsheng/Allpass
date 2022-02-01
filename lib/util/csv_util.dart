@@ -95,6 +95,7 @@ class CsvUtil {
         String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
         int sortNumber = int.parse(_getValueWithCatch(attribute, indexMap, 'sortNumber'));
         String appId = _getValueWithCatch(attribute, indexMap, "appId");
+        String appName = _getValueWithCatch(attribute, indexMap, "appName");
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -106,7 +107,8 @@ class CsvUtil {
           fav: fav,
           createTime: createTime,
           sortNumber: sortNumber,
-          appId: appId
+          appId: appId,
+          appName: appName
         ));
       }
     }

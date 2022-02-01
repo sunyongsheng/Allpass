@@ -9,7 +9,7 @@ import 'package:allpass/card/data/card_dao.dart';
 
 class DBManager {
   /// 数据库版本
-  static const int _dbVersion = 4;
+  static const int _dbVersion = 5;
 
   /// 数据库名称
   static const String _dbName = "allpass_db";
@@ -53,7 +53,7 @@ class DBManager {
   /// 数据库版本升级
   static void onUpdate(Database database, int oldVersion, int newVersion) {
     if (oldVersion < 1 || oldVersion >= newVersion) return;
-    List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3, _upgrade3To4];
+    List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3, _upgrade3To4, _upgrade4To5];
     int startIndex = oldVersion - 1;
     int endIndex = newVersion - 1;
     for (int index = startIndex; index < endIndex; index++) {
@@ -127,6 +127,13 @@ class DBManager {
   static void _upgrade3To4(Database database) {
     debugPrint("数据库升级： 3 -> 4");
     String addPasswordColumnSql = "ALTER TABLE ${PasswordDao.name} ADD COLUMN ${PasswordDao.columnAppId} TEXT DEFAULT ''";
+    database.execute(addPasswordColumnSql);
+    debugPrint("数据库升级完成");
+  }
+
+  static void _upgrade4To5(Database database) {
+    debugPrint("数据库升级： 4 -> 5");
+    String addPasswordColumnSql = "ALTER TABLE ${PasswordDao.name} ADD COLUMN ${PasswordDao.columnAppName} TEXT DEFAULT ''";
     database.execute(addPasswordColumnSql);
     debugPrint("数据库升级完成");
   }
