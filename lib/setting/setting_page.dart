@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';

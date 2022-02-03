@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
@@ -29,7 +29,7 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   void initState() {
     super.initState();
     this.type = widget.type;
-    this.categoryName = Category.getCategoryName(type);
+    this.categoryName = CategoryTypes.getCategoryName(type);
   }
 
   @override

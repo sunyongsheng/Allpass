@@ -1,7 +1,7 @@
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/string_util.dart';
 

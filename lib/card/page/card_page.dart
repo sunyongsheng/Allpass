@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';

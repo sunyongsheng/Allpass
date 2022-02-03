@@ -7,7 +7,7 @@ import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';

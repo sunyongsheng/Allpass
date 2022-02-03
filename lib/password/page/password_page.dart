@@ -5,7 +5,7 @@ import 'package:animations/animations.dart';
 
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/password/page/view_password_page.dart';

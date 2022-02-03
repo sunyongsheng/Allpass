@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 编辑属性对话框
@@ -32,7 +32,7 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   void initState() {
     super.initState();
     this.initialValue = widget.initialValue;
-    this.categoryName = Category.getCategoryName(widget.type);
+    this.categoryName = CategoryTypes.getCategoryName(widget.type);
     _editTextController = TextEditingController(text: initialValue);
   }
 

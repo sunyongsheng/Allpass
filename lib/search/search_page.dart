@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/password/model/password_bean.dart';

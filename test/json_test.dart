@@ -1,6 +1,6 @@
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/util/allpass_file_util.dart';
 import 'package:flutter_test/flutter_test.dart';
 

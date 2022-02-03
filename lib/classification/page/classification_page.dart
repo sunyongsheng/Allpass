@@ -1,14 +1,14 @@
-import 'package:allpass/classification/widget/classification_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/classification/page/favorite_page.dart';
 import 'package:allpass/setting/category/category_manager_page.dart';
 import 'package:allpass/classification/page/classification_details_page.dart';
+import 'package:allpass/classification/widget/classification_item.dart';
 
 class ClassificationPage extends StatelessWidget {
 

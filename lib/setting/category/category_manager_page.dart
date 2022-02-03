@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/core/param/allpass_type.dart';
+import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/setting/category/widget/add_category_dialog.dart';
@@ -39,7 +39,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   void initState() {
     super.initState();
     this.type = widget.type;
-    categoryName = Category.getCategoryName(type);
+    categoryName = CategoryTypes.getCategoryName(type);
     data = _getCategoryData(type);
   }
 
