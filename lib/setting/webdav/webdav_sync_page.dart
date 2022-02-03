@@ -5,6 +5,7 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
@@ -188,11 +189,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     context: context,
                     builder: (context) => DefaultSelectItemDialog<String>(
                       list: levels,
-                      selector: (data) => data == getEncryptLevelString(),
+                      selector: (data) => data == EncryptLevels.getEncryptLevelName(Config.webDavEncryptLevel),
                     )
                 ).then((value) {
                   if (value != null) {
-                    Config.setWevDavEncryptLevel(getEncryptLevelInt(value));
+                    Config.setWevDavEncryptLevel(EncryptLevels.getEncryptLevelCode(value));
                   }
                 });
               },
@@ -290,11 +291,4 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     return msg;
   }
 
-  String getEncryptLevelString() {
-    return levels[Config.webDavEncryptLevel];
-  }
-
-  int getEncryptLevelInt(String level) {
-    return levels.indexOf(level);
-  }
 }

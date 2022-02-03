@@ -1,3 +1,4 @@
+import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/model/data/base_model.dart';
@@ -71,7 +72,7 @@ class CardBean extends BaseModel {
   }
 
   /// 将Map转化为普通的CardBean
-  static CardBean fromJson(Map<String, dynamic> map, {int encryptLevel = 1}) {
+  static CardBean fromJson(Map<String, dynamic> map, {EncryptLevel encryptLevel = EncryptLevel.OnlyPassword}) {
     assert(map["name"] != null);
     assert(map["ownerName"] != null);
     assert(map["cardId"] != null);
@@ -81,7 +82,7 @@ class CardBean extends BaseModel {
     assert(map["password"] != null);
     assert(map['notes'] != null);
     switch (encryptLevel) {
-      case 0:
+      case EncryptLevel.None:
         List<String> newLabel = [];
         if (map['label'] != null) {
           newLabel = StringUtil.waveLineSegStr2List(map['label']);
@@ -99,7 +100,7 @@ class CardBean extends BaseModel {
             label: newLabel,
             createTime: map['createTime'],
             sortNumber: map['sortNumber']);
-      case 2:
+      case EncryptLevel.All:
         List<String> newLabel = [];
         if (map['label'] != null) {
           for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
@@ -119,25 +120,26 @@ class CardBean extends BaseModel {
             label: newLabel,
             createTime: EncryptUtil.decrypt(map['createTime']),
             sortNumber: map['sortNumber']);
+      default:
+        List<String> newLabel = [];
+        if (map['label'] != null) {
+          newLabel = StringUtil.waveLineSegStr2List(map['label']);
+        }
+        return CardBean(
+            ownerName: map['ownerName'],
+            cardId: map["cardId"],
+            folder: map["folder"],
+            notes: map["notes"],
+            fav: map["fav"],
+            key: map["uniqueKey"],
+            name: map["name"],
+            telephone: map["telephone"],
+            password: map['password'],
+            label: newLabel,
+            createTime: map['createTime'],
+            sortNumber: map['sortNumber']
+        );
     }
-    List<String> newLabel = [];
-    if (map['label'] != null) {
-      newLabel = StringUtil.waveLineSegStr2List(map['label']);
-    }
-    return CardBean(
-        ownerName: map['ownerName'],
-        cardId: map["cardId"],
-        folder: map["folder"],
-        notes: map["notes"],
-        fav: map["fav"],
-        key: map["uniqueKey"],
-        name: map["name"],
-        telephone: map["telephone"],
-        password: map['password'],
-        label: newLabel,
-        createTime: map['createTime'],
-        sortNumber: map['sortNumber']
-    );
   }
 
   /// 将CardBean转化为Map
@@ -180,16 +182,15 @@ class CardBean extends BaseModel {
   }
 
   /// 将一个普通的CardBean转为加密的CardBean
-  static CardBean fromBean(CardBean pureBean, {int encryptLevel = 1}) {
+  static CardBean fromBean(CardBean pureBean, {EncryptLevel encryptLevel = EncryptLevel.OnlyPassword}) {
     switch (encryptLevel) {
-      case 0:
-        String password = EncryptUtil.decrypt(pureBean.password);
+      case EncryptLevel.None:
         return CardBean(
             key: pureBean.uniqueKey,
             name: pureBean.name,
             ownerName: pureBean.ownerName,
             cardId: pureBean.cardId,
-            password: password,
+            password: pureBean.password,
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,
@@ -198,7 +199,7 @@ class CardBean extends BaseModel {
             createTime: pureBean.createTime,
             sortNumber: pureBean.sortNumber,
             color: pureBean.color);
-      case 2:
+      case EncryptLevel.All:
         String name = EncryptUtil.encrypt(pureBean.name);
         String ownerName = EncryptUtil.encrypt(pureBean.ownerName);
         String cardId = EncryptUtil.encrypt(pureBean.cardId);
@@ -225,12 +226,13 @@ class CardBean extends BaseModel {
             sortNumber: pureBean.sortNumber,
             color: pureBean.color);
       default:
+        String password = EncryptUtil.decrypt(pureBean.password);
         return CardBean(
             key: pureBean.uniqueKey,
             name: pureBean.name,
             ownerName: pureBean.ownerName,
             cardId: pureBean.cardId,
-            password: pureBean.password,
+            password: password,
             telephone: pureBean.telephone,
             folder: pureBean.folder,
             notes: pureBean.notes,

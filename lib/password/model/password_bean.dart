@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 
@@ -77,7 +78,7 @@ class PasswordBean extends BaseModel {
   }
 
   /// 将Map转化为普通的PasswordBean
-  static PasswordBean fromJson(Map<String, dynamic> map, {int encryptLevel = 1}) {
+  static PasswordBean fromJson(Map<String, dynamic> map, {EncryptLevel encryptLevel = EncryptLevel.None}) {
     assert(map["username"] != null);
     assert(map["password"] != null);
     assert(map["url"] != null);
@@ -86,7 +87,7 @@ class PasswordBean extends BaseModel {
     assert(map["fav"] != null);
     assert(map["name"] != null);
     switch (encryptLevel) {
-      case 0:
+      case EncryptLevel.OnlyPassword:
         List<String> newLabel = [];
         if (map['label'] != null) {
           newLabel = StringUtil.waveLineSegStr2List(map['label']);
@@ -106,7 +107,7 @@ class PasswordBean extends BaseModel {
             appId: map['appId'],
             appName: map['appName']
         );
-      case 2:
+      case EncryptLevel.All:
         List<String> newLabel = [];
         if (map['label'] != null) {
           for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
@@ -193,9 +194,9 @@ class PasswordBean extends BaseModel {
   }
 
   /// 将一个普通的PasswordBean转为加密的PasswordBean
-  static PasswordBean fromBean(PasswordBean pureBean, {int encryptLevel = 1}) {
+  static PasswordBean fromBean(PasswordBean pureBean, {EncryptLevel encryptLevel = EncryptLevel.None}) {
     switch (encryptLevel) {
-      case 0:
+      case EncryptLevel.OnlyPassword:
         String _password = EncryptUtil.decrypt(pureBean.password);
         return PasswordBean(
             key: pureBean.uniqueKey,
@@ -213,7 +214,7 @@ class PasswordBean extends BaseModel {
             appId: pureBean.appId,
             appName: pureBean.appName
         );
-      case 2:
+      case EncryptLevel.All:
         String name = EncryptUtil.encrypt(pureBean.name);
         String username = EncryptUtil.encrypt(pureBean.username);
         String url = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.url));
