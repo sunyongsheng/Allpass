@@ -70,9 +70,12 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 根据uniqueKey查询记录
-  Future<CardBean?> getCardBeanById(String id) async {
+  Future<CardBean?> findById(String id) async {
     Database db = await getDataBase();
-    List<Map<String, dynamic>> maps = await db.query(name);
+    List<Map<String, dynamic>> maps = await db.query(name,
+      where: "$columnId=?",
+      whereArgs: [id]
+    );
     if (maps.length > 0) {
       CardBean bean = CardBean.fromJson(maps.first);
       bean.color = getRandomColor(seed: bean.uniqueKey);
@@ -82,7 +85,7 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 获取所有的卡片List
-  Future<List<CardBean>> getAllCardBeanList() async {
+  Future<List<CardBean>> findAll() async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
@@ -97,13 +100,13 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 删除指定uniqueKey的密码
-  Future<int> deleteCardBeanById(int key) async {
+  Future<int> deleteById(int key) async {
     Database db = await getDataBase();
     return await db.delete(name, where: '$columnId=?', whereArgs: [key]);
   }
 
   /// 更新
-  Future<int> updateCardBeanById(CardBean bean) async {
+  Future<int> updateById(CardBean bean) async {
     Database db = await getDataBase();
     String labels = StringUtil.list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET "

@@ -110,7 +110,7 @@ class ExportTypeSelectPage extends StatelessWidget {
     switch (type) {
       case AllpassType.password:
         PasswordDao passwordDao = AllpassApplication.getIt.get();
-        List<PasswordBean> list = await passwordDao.getAllPasswordBeanList();
+        List<PasswordBean> list = await passwordDao.findAll();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -120,7 +120,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         break;
       case AllpassType.card:
         CardDao cardDao = AllpassApplication.getIt.get();
-        List<CardBean> list = await cardDao.getAllCardBeanList();
+        List<CardBean> list = await cardDao.findAll();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -130,10 +130,10 @@ class ExportTypeSelectPage extends StatelessWidget {
         break;
       default:
         PasswordDao passwordDao = AllpassApplication.getIt.get();
-        List<PasswordBean> passwordList = await passwordDao.getAllPasswordBeanList();
+        List<PasswordBean> passwordList = await passwordDao.findAll();
         ExportResult passwordResult = await CsvUtil.passwordExportCsv(passwordList, newDir);
         CardDao cardDao = AllpassApplication.getIt.get();
-        List<CardBean> cardList = await cardDao.getAllCardBeanList();
+        List<CardBean> cardList = await cardDao.findAll();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {
           Share.shareFiles([passwordResult.path!, cardResult.path!], mimeTypes: ["text/*", "text/*"]);

@@ -1,6 +1,6 @@
-import 'package:allpass/password/model/simple_user.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/dao/db_provider.dart';
@@ -86,9 +86,12 @@ class PasswordDao extends BaseDBProvider {
   }
 
   /// 根据uniqueKey查询记录
-  Future<PasswordBean?> getPasswordBeanById(String id) async {
+  Future<PasswordBean?> findById(String id) async {
     Database db = await getDataBase();
-    List<Map<String, dynamic>> maps = await db.query(name);
+    List<Map<String, dynamic>> maps = await db.query(name,
+      where: "$columnId=?",
+      whereArgs: [id]
+    );
     if (maps.length > 0) {
       PasswordBean bean = PasswordBean.fromJson(maps.first);
       bean.color = getRandomColor(seed: bean.uniqueKey);
@@ -98,12 +101,12 @@ class PasswordDao extends BaseDBProvider {
   }
 
   /// 获取所有的密码List
-  Future<List<PasswordBean>> getAllPasswordBeanList() async {
+  Future<List<PasswordBean>> findAll() async {
     Database db = await getDataBase();
-    List<Map<String, dynamic>> maps = await db.query(name);
-    if (maps.length > 0) {
+    List<Map<String, dynamic>> list = await db.query(name);
+    if (list.length > 0) {
       List<PasswordBean> res = [];
-      for (var map in maps) {
+      for (var map in list) {
         PasswordBean bean = PasswordBean.fromJson(map);
         bean.color = getRandomColor(seed: bean.uniqueKey);
         res.add(bean);
@@ -114,13 +117,13 @@ class PasswordDao extends BaseDBProvider {
   }
 
   /// 删除指定uniqueKey的密码
-  Future<int> deletePasswordBeanById(int key) async {
+  Future<int> deleteById(int key) async {
     Database db = await getDataBase();
     return await db.delete(name, where: '$columnId = ?', whereArgs: [key]);
   }
 
   /// 更新
-  Future<int> updatePasswordBeanById(PasswordBean bean) async {
+  Future<int> updateById(PasswordBean bean) async {
     Database db = await getDataBase();
     String labels = StringUtil.list2WaveLineSegStr(bean.label);
     return await db.rawUpdate("UPDATE $name SET "

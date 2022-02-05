@@ -176,10 +176,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   Future<bool> updateData() async {
     String backupKey = (await EncryptUtil.getStoreKey())!;
     encryptHolder = EncryptHolder(backupKey);
-    List<PasswordBean> passwords = await passwordDao.getAllPasswordBeanList();
+    List<PasswordBean> passwords = await passwordDao.findAll();
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
-    List<CardBean> cards = await cardDao.getAllCardBeanList();
+    List<CardBean> cards = await cardDao.findAll();
     List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
@@ -194,12 +194,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       for (PasswordBean bean in passwords) {
         String password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        passwordDao.updatePasswordBeanById(bean);
+        passwordDao.updateById(bean);
       }
       for (CardBean bean in cards) {
         String password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        cardDao.updateCardBeanById(bean);
+        cardDao.updateById(bean);
       }
       await Provider.of<PasswordProvider>(context, listen: false).refresh();
       await Provider.of<CardProvider>(context, listen: false).refresh();
@@ -212,12 +212,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       for (PasswordBean bean in passwordsBackup) {
         String password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        passwordDao.updatePasswordBeanById(bean);
+        passwordDao.updateById(bean);
       }
       for (CardBean bean in cardsBackup) {
         String password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        cardDao.updateCardBeanById(bean);
+        cardDao.updateById(bean);
       }
       await Provider.of<PasswordProvider>(context, listen: false).refresh();
       await Provider.of<CardProvider>(context, listen: false).refresh();

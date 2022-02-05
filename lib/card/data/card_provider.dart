@@ -28,7 +28,7 @@ class CardProvider with ChangeNotifier {
   Future<Null> init() async {
     if (_haveInit) return;
     _cardList = [];
-    var res = await _dao.getAllCardBeanList();
+    var res = await _dao.findAll();
     if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
@@ -41,7 +41,7 @@ class CardProvider with ChangeNotifier {
   Future<Null> refresh() async {
     if (!_haveInit) return;
     _cardList.clear();
-    var res = await _dao.getAllCardBeanList();
+    var res = await _dao.findAll();
     if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
@@ -80,7 +80,7 @@ class CardProvider with ChangeNotifier {
 
   Future<Null> deleteCard(CardBean bean) async {
     _cardList.remove(bean);
-    await _dao.deleteCardBeanById(bean.uniqueKey!);
+    await _dao.deleteById(bean.uniqueKey!);
     notifyListeners();
   }
 
@@ -101,7 +101,7 @@ class CardProvider with ChangeNotifier {
     if (oldOwner != bean.ownerName) {
       _refreshMostUsedOwnerName();
     }
-    await _dao.updateCardBeanById(bean);
+    await _dao.updateById(bean);
     _currCard = bean;
     notifyListeners();
   }
