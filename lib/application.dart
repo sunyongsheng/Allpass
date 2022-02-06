@@ -74,14 +74,8 @@ class AllpassApplication {
 
     // 保存密码Channel
     var savePasswordChannel = BasicMessageChannel(ChannelConstants.channelSaveForAutofill, StringCodec());
-    savePasswordChannel.setMessageHandler((jsonStr) => Future<String>(() {
-      SimpleUser userData = json.decode(jsonStr!);
-      if (userData.username != null && userData.password != null) {
-        userData.password = EncryptUtil.encrypt(userData.password!);
-        PasswordDao passwordDao = getIt.get();
-        passwordDao.insertUserData(userData);
-      }
-      return "";
+    savePasswordChannel.setMessageHandler((jsonStr) => Future<String>(() async {
+      return _savePasswordForAutofill(jsonStr!);
     }));
 
     // 导入密码Channel
@@ -107,33 +101,32 @@ class AllpassApplication {
     }
   }
 
+  static Future<String> _savePasswordForAutofill(String jsonStr) async {
+    SimpleUser userData = SimpleUser.fromJson(json.decode(jsonStr));
+    if (userData.username != null && userData.password != null && userData.appId != null) {
+      userData.password = EncryptUtil.encrypt(userData.password!);
+      PasswordDao passwordDao = getIt.get();
+      // 如果同AppId下有相同的username则更新；否则创建
+      var existList = await passwordDao.findByAppIdAndUsername(userData.appId!, userData.username!);
+      if (existList.isEmpty) {
+        passwordDao.insertUserData(userData);
+      } else {
+        passwordDao.updateUserData(userData);
+      }
+    }
+    return "";
+  }
+
   static Future<String> _queryPasswordForAutofill(String appId, String? appName) async {
     PasswordDao dao = getIt.get();
-    var passwordList = await dao.getAllPasswordBeanList();
-    List<SimpleUser> list = [];
-    passwordList.forEach((password) {
-      var appIdMatched = password.appId?.contains(appId) ?? false;
-      var appNameMatched = false;
-      if (!appIdMatched) {
-        if (appName != null && appName.isNotEmpty) {
-          if (password.appName == appName) {
-            // 若appName完全匹配，则设置为true
-            appNameMatched = true;
-          } else {
-            // 判断密码名称是否含有App名称
-            appNameMatched = password.name.toLowerCase().contains(appName.toLowerCase());
-          }
-        }
-      }
-      if (appIdMatched || appNameMatched) {
-        list.add(SimpleUser(
-            password.name,
-            password.username,
-            EncryptUtil.decrypt(password.password),
-            password.appId
-        ));
-      }
-    });
+    var passwordList = await dao.findByAppIdOrAppName(appId, appName);
+    List<SimpleUser> list = passwordList.map((password) => SimpleUser(
+        password.name,
+        password.username,
+        EncryptUtil.decrypt(password.password),
+        password.appName,
+        password.appId
+    )).toList(growable: false);
     return json.encode(list);
   }
 

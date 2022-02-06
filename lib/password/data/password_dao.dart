@@ -81,8 +81,21 @@ class PasswordDao extends BaseDBProvider {
   Future<int> insertUserData(SimpleUser user) async {
     Database db = await getDataBase();
     Map<String, dynamic> map = user.toJson();
-    map['createTime'] = DateTime.now().toIso8601String();
+    map[columnUrl] = "";
+    map[columnCreateTime] = DateTime.now().toIso8601String();
+    map[columnNotes] = "";
+    map[columnFolder] = "默认";
+    map[columnLabel] = "";
     return await db.insert(name, map);
+  }
+
+  Future<int> updateUserData(SimpleUser user) async {
+    Database db = await getDataBase();
+    return await db.rawUpdate("UPDATE $name SET "
+        "$columnName=?,"
+        "$columnPassword=?,"
+        "$columnAppName=? WHERE $columnUsername=${user.username!} AND $columnAppId=${user.appId}",
+        [user.name, user.password, user.appName]);
   }
 
   /// 根据uniqueKey查询记录
@@ -114,6 +127,40 @@ class PasswordDao extends BaseDBProvider {
       return res;
     }
     return [];
+  }
+
+  Future<List<PasswordBean>> findByAppIdAndUsername(String appId, String username) async {
+    if (appId.length == 0) {
+      return [];
+    }
+    Database db = await getDataBase();
+    List<Map<String, dynamic>> list = await db.query(name,
+        where: "$columnAppId=? AND $columnUsername=?",
+        whereArgs: [appId, username]
+    );
+    return list.map((e) => PasswordBean.fromJson(e)).toList();
+  }
+
+  Future<List<PasswordBean>> findByAppIdOrAppName(String appId, String? appName,
+      {int page: 0,
+      int pageSize: 10,}) async {
+    Database db = await getDataBase();
+    List<Map<String, dynamic>> list;
+    if (appName == null) {
+      list = await db.query(name,
+        where: "$columnAppId LIKE ?",
+        whereArgs: ["%$appId%"],
+        offset: page * pageSize,
+        limit: pageSize
+      );
+    } else {
+      list = await db.query(name,
+        where: "$columnAppId LIKE ? OR $columnAppName=? OR $columnName LIKE ?",
+        whereArgs: ["%$appId%", appName, "%$appName%"],
+
+      );
+    }
+    return list.map((e) => PasswordBean.fromJson(e)).toList(growable: false);
   }
 
   /// 删除指定uniqueKey的密码
