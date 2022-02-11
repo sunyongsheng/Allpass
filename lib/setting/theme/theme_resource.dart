@@ -64,8 +64,7 @@ class AllpassTheme {
   ThemeData darkTheme({required MaterialColor mainColor}) {
     return ThemeData(
       primaryColor: mainColor,
-      primarySwatch: mainColor,
-      accentColor: mainColor,
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: mainColor).copyWith(secondary: mainColor),
       appBarTheme: AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: Colors.white70),
@@ -106,7 +105,7 @@ class AllpassTheme {
         headline3: TextStyle(color: Colors.white),
         headline4: TextStyle(color: Colors.white),
         headline5: TextStyle(color: Colors.white),
-        caption: TextStyle(color: Colors.white),
+        caption: TextStyle(color: Color.fromARGB(255, 161, 161, 161)),
         bodyText1: TextStyle(color: Colors.white),
         bodyText2: TextStyle(color: Colors.white),
         subtitle1: TextStyle(color: Colors.white),
@@ -167,7 +166,7 @@ class AllpassTheme {
             Radius.circular(AllpassUI.smallBorderRadius),
           ),
         ),
-      )
+      ),
     );
   }
 

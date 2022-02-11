@@ -24,6 +24,11 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color mainColor = Theme.of(context).primaryColor;
+    var fillColor = MaterialStateColor.resolveWith((states) {
+      if (states.contains(MaterialState.selected)) return mainColor;
+      return Colors.grey;
+    });
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -75,6 +80,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                       child: Row(
                         children: <Widget>[
                           Radio<int>(
+                            fillColor: fillColor,
                             value: 1, // "名称 账号 密码 网站地址"
                             groupValue: _groupValue,
                             onChanged: (value) {
@@ -97,6 +103,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                         children: <Widget>[
                           Radio<int>(
                             value: 2, // "名称 账号 密码",
+                            fillColor: fillColor,
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
@@ -119,6 +126,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                           Radio<int>(
                             value: 3, // "账号 密码 网站地址",
                             groupValue: _groupValue,
+                            fillColor: fillColor,
                             onChanged: (value) {
                               setState(() {
                                 _groupValue = value!;
@@ -139,6 +147,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                         children: <Widget>[
                           Radio<int>(
                             value: 4, // "账号 密码",
+                            fillColor: fillColor,
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
@@ -160,6 +169,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                         children: <Widget>[
                           Radio<int>(
                             value: 5, // "密码",
+                            fillColor: fillColor,
                             groupValue: _groupValue,
                             onChanged: (value) {
                               setState(() {
