@@ -12,6 +12,7 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/common/widget/nodata_widget.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -32,21 +33,28 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
-  final AllpassType _type;
 
-  late TextEditingController _searchController;
+  final AllpassType type;
 
-  _SearchPage(this._type);
+  late TextEditingController searchController;
+  late FocusNode focusNode;
+
+  _SearchPage(this.type);
 
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
+    searchController = TextEditingController();
+    focusNode = FocusNode();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      focusNode.requestFocus();
+    });
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    searchController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -62,36 +70,36 @@ class _SearchPage extends State<SearchPage> {
             body: provider.empty()
                 ? Center(child: NoDataWidget(title: "无结果，换个关键词试试吧"))
                 : ListView.builder(
-              itemBuilder: (_, index) => getSearchWidget(provider, index),
+              itemBuilder: (_, index) => buildSearchResultItem(provider, index),
               itemCount: provider.length())
         );
       }
     );
   }
 
-  Widget getSearchWidget(SearchProvider provider, int index) {
-    if (_type == AllpassType.password) {
+  Widget buildSearchResultItem(SearchProvider provider, int index) {
+    if (type == AllpassType.password) {
       var item = provider.passwordSearch[index];
       return PasswordWidgetItem(
         data: item,
         onPasswordClicked: () {
+          focusNode.unfocus();
           showModalBottomSheet(
               context: context,
-              builder: (BuildContext context) {
-                return createPassBottomSheet(context, item);
-              });
+              builder: (context) => createPassBottomSheet(context, item)
+          );
         },
       );
-    } else if (_type == AllpassType.card) {
+    } else if (type == AllpassType.card) {
       var item = provider.cardSearch[index];
       return SimpleCardWidgetItem(
         data: provider.cardSearch[index],
         onCardClicked: () {
+          focusNode.unfocus();
           showModalBottomSheet(
               context: context,
-              builder: (BuildContext context) {
-                return createCardBottomSheet(context, item);
-              });
+              builder: (context) => createCardBottomSheet(context, item)
+          );
         },
       );
     }
@@ -113,7 +121,8 @@ class _SearchPage extends State<SearchPage> {
                 height: 35,
                 child: TextField(
                   style: TextStyle(fontSize: 14),
-                  controller: _searchController,
+                  controller: searchController,
+                  focusNode: focusNode,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 20, right: 20),
                     hintText: "搜索名称、用户名、备注或标签",
@@ -124,10 +133,10 @@ class _SearchPage extends State<SearchPage> {
                           : Colors.grey[900],),
                   ),
                   onChanged: (_) {
-                    provider.search(_searchController.text.toLowerCase());
+                    provider.search(searchController.text.toLowerCase());
                   },
                   onEditingComplete: () {
-                    provider.search(_searchController.text.toLowerCase());
+                    provider.search(searchController.text.toLowerCase());
                   },
                 ),
               )
@@ -152,19 +161,21 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
+            Navigator.pop(context);
             Provider.of<PasswordProvider>(context, listen: false).previewPassword(bean: data);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewPasswordPage()))
-                .then((_) => Navigator.pop(context));
+                builder: (context) => ViewPasswordPage())
+            );
           },
         ),
         ListTile(
           leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
+            Navigator.pop(context);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => EditPasswordPage(data, DataOperation.update)))
-                .then((reData) => Navigator.pop(context));
+                builder: (context) => EditPasswordPage(data, DataOperation.update))
+            );
           },
         ),
         ListTile(
@@ -213,18 +224,20 @@ class _SearchPage extends State<SearchPage> {
           leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
           title: Text("查看"),
           onTap: () {
+            Navigator.pop(context);
             Provider.of<CardProvider>(context, listen: false).previewCard(bean: data);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewCardPage()))
-                .then((_) => Navigator.pop(context));
+                builder: (context) => ViewCardPage())
+            );
           }),
         ListTile(
           leading: Icon(Icons.edit, color: Colors.blue,),
           title: Text("编辑"),
           onTap: () {
+            Navigator.pop(context);
             Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => EditCardPage(data, DataOperation.update)))
-                .then((_) => Navigator.pop(context));
+                builder: (context) => EditCardPage(data, DataOperation.update))
+            );
           }),
         ListTile(
           leading: Icon(Icons.person, color: Colors.teal,),
