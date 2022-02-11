@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:allpass/custom_error_page.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
@@ -26,9 +26,7 @@ bool needUpdateSecret = false;
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  // 自定义报错页面
-  _initErrorPage();
+  ErrorWidget.builder = (flutterErrorDetails) => CustomErrorPage(msg: flutterErrorDetails.toString());
 
   try {
     await AllpassApplication.initSp();
@@ -65,7 +63,7 @@ void main() async {
       child: Allpass(),
     ));
   } on Error catch (e) {
-    runApp(InitialErrorPage(
+    runApp(InitialErrorApp(
         errorMsg: " ${e.runtimeType.toString()} \n ${e.toString()}\n ${e.stackTrace.toString()}"
     ));
   }
@@ -94,45 +92,6 @@ class Allpass extends StatelessWidget {
           onGenerateRoute: AllpassApplication.router.generator,
           navigatorKey: AllpassApplication.navigationKey,
         )
-    );
-  }
-}
-
-class InitialErrorPage extends StatelessWidget {
-
-  final String? errorMsg;
-
-  const InitialErrorPage({Key? key, this.errorMsg}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Allpass",
-      home: _InitialErrorPage(msg: errorMsg),
-    );
-  }
-}
-
-class _InitialErrorPage extends StatelessWidget {
-
-  final String? msg;
-
-  const _InitialErrorPage({Key? key, this.msg}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("软件初始化时出现了错误(灬ꈍ ꈍ灬)\n", style: TextStyle(color: Colors.red, fontSize: 20),),
-            Text("错误信息：\n"),
-            Text(msg ?? "null")
-          ],
-        )
-      ),
     );
   }
 }
@@ -187,41 +146,4 @@ void _registerUser() async {
       AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
     }
   }
-}
-
-void _initErrorPage() {
-  ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "出错了",
-          style: AllpassTextUI.titleBarStyle,
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              child: Text("App出现错误，快去反馈给作者!"),
-              padding: EdgeInsets.symmetric(vertical: 15),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
-            ),
-            Padding(
-              child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
-              padding: EdgeInsets.symmetric(vertical: 15),
-            ),
-            Padding(
-              child: Text(flutterErrorDetails.toString(), style: TextStyle(color: Colors.red),),
-              padding: EdgeInsets.symmetric(vertical: 15),
-            ),
-          ],
-        ),
-      ),
-    );
-  };
 }
