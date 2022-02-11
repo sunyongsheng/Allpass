@@ -37,7 +37,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
 
-  PasswordBean? _oldData;
+  PasswordBean? editingData;
 
   int operation = DataOperation.add;
 
@@ -72,10 +72,10 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   void initState() {
     super.initState();
-    this.operation = widget.operation;
+    operation = widget.operation;
     if (operation == DataOperation.update) {
-      _oldData = widget.data;
-      var editingPassword = _oldData!;
+      editingData = widget.data;
+      var editingPassword = editingData!;
       folder = editingPassword.folder;
       labels.addAll(editingPassword.label ?? []);
       fav = editingPassword.fav;
@@ -143,7 +143,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 String pw = EncryptUtil.encrypt(passwordController.text);
                 String name = nameController.text.trimLeft();
                 PasswordBean tempData = PasswordBean(
-                  key: _oldData?.uniqueKey,
+                  key: editingData?.uniqueKey,
                   username: usernameController.text,
                   password: pw,
                   url: urlController.text,
@@ -152,7 +152,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   label: labels,
                   notes: notesController.text,
                   fav: fav,
-                  color: _oldData?.color ?? getRandomColor(),
+                  color: editingData?.color ?? getRandomColor(),
                   createTime: createTime,
                   appId: appId,
                   appName: appName

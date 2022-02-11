@@ -27,22 +27,21 @@ void main() {
         label: []
     )];
   String test1;
-  AllpassFileUtil util = AllpassFileUtil();
   test("编码测试", () {
-    test1 = util.encodeList(testData1)!;
+    test1 = AllpassFileUtil.encodeList(testData1)!;
     print(test1);
   });
 
   test("译码测试", () {
-    test1 = util.encodeList(testData1)!;
-    print(util.decodeList(test1, AllpassType.password));
+    test1 = AllpassFileUtil.encodeList(testData1)!;
+    print(AllpassFileUtil.decodeList(test1, AllpassType.password));
   });
 
   test("文件夹与标签测试", () {
     List<String> folderList = ["aaa", "bbb", "ccc"];
     var labelList = ["AAA", "BBB", 'CCC'];
-    test1 = util.encodeFolderAndLabel(folderList, labelList);
+    test1 = AllpassFileUtil.encodeFolderAndLabel(folderList, labelList);
     print(test1);
-    print(util.decodeFolderAndLabel(test1));
+    print(AllpassFileUtil.decodeFolderAndLabel(test1));
   });
 }

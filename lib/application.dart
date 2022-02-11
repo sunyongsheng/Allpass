@@ -25,6 +25,9 @@ import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/webdav_sync_service.dart';
 
 class AllpassApplication {
+
+  AllpassApplication._();
+
   static GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
   static late GetIt getIt;

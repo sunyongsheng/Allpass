@@ -19,6 +19,7 @@ class WebDavConfigPage extends StatefulWidget {
 }
 
 class _WebDavConfigPage extends State<StatefulWidget> {
+
   late TextEditingController _urlController;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
@@ -54,7 +55,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Color _mainColor = Theme.of(context).primaryColor;
+    Color mainColor = Theme.of(context).primaryColor;
 
     return Scaffold(
       appBar: AppBar(
@@ -169,7 +170,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: MaterialButton(
                   minWidth: double.infinity,
-                  color: _mainColor,
+                  color: mainColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
                   ),

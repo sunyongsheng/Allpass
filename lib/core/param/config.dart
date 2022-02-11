@@ -27,29 +27,30 @@ class Config {
 
   /// 参数初始化
   static void initConfig() {
+    var sp = AllpassApplication.sp;
     // 初始化当前用户名与密码
-    username = AllpassApplication.sp.getString(SPKeys.username) ?? "";
-    password = AllpassApplication.sp.getString(SPKeys.password) ?? "";
+    username = sp.getString(SPKeys.username) ?? "";
+    password = sp.getString(SPKeys.password) ?? "";
     // 判断是否开启生物识别
-    enabledBiometrics = AllpassApplication.sp.getBool(SPKeys.biometrics) ?? false;
+    enabledBiometrics = sp.getBool(SPKeys.biometrics) ?? false;
     // 判断长按功能
-    longPressCopy = AllpassApplication.sp.getBool(SPKeys.longPressCopy) ?? true;
+    longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
     // 初始化主题
-    lightTheme = AllpassApplication.sp.getString(SPKeys.lightTheme) ?? "blue";
-    themeMode = AllpassApplication.sp.getString(SPKeys.themeMode) ?? "system";
+    lightTheme = sp.getString(SPKeys.lightTheme) ?? "blue";
+    themeMode = sp.getString(SPKeys.themeMode) ?? "system";
     // 初始化WebDAV
-    webDavAuthSuccess = AllpassApplication.sp.getBool(SPKeys.webDavAuthSuccess) ?? false;
-    webDavUrl = AllpassApplication.sp.getString(SPKeys.webDavUrl) ?? "";
-    webDavUsername = AllpassApplication.sp.getString(SPKeys.webDavUsername) ?? "";
-    webDavPassword = AllpassApplication.sp.getString(SPKeys.webDavPassword) ?? "";
-    webDavPort = AllpassApplication.sp.getInt(SPKeys.webDavPort) ?? 443;
-    webDavPasswordName = AllpassApplication.sp.getString(SPKeys.webDavPasswordName) ?? "allpass_password";
-    webDavCardName = AllpassApplication.sp.getString(SPKeys.webDavCardName) ?? "allpass_card";
-    webDavEncryptLevel = EncryptLevels.getEncryptLevel(AllpassApplication.sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
-    webDavUploadTime = AllpassApplication.sp.getString(SPKeys.webDavUploadTime);
-    webDavDownloadTime = AllpassApplication.sp.getString(SPKeys.webDavDownloadTime);
+    webDavAuthSuccess = sp.getBool(SPKeys.webDavAuthSuccess) ?? false;
+    webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
+    webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
+    webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
+    webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
+    webDavPasswordName = sp.getString(SPKeys.webDavPasswordName) ?? "allpass_password";
+    webDavCardName = sp.getString(SPKeys.webDavCardName) ?? "allpass_card";
+    webDavEncryptLevel = EncryptLevels.getEncryptLevel(sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
+    webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
+    webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
-    timingInMainPassword = AllpassApplication.sp.getInt(SPKeys.timingInputMainPassword) ?? 10;
+    timingInMainPassword = sp.getInt(SPKeys.timingInputMainPassword) ?? 10;
     RuntimeData.initData();
   }
 

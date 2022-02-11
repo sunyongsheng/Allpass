@@ -24,30 +24,30 @@ class ViewCardPage extends StatefulWidget {
 
 class _ViewCardPage extends State<ViewCardPage> {
 
-  bool _cardIdVisible = false;
-  bool _passwordVisible = false;
-  String _password = "";
-  String _cache = "noCache";
-
+  bool cardIdVisible = false;
+  bool passwordVisible = false;
+  String password = "";
+  String cache = "noCache";
 
   bool deleted = false;
-
 
   @override
   Widget build(BuildContext context) {
     if (deleted) return Container();
 
-    Color _mainColor = Theme.of(context).primaryColor;
+    Color mainColor = Theme.of(context).primaryColor;
     CardProvider provider = Provider.of<CardProvider>(context);
     CardBean bean = provider.currCard;
+
     if (bean == CardBean.empty) {
       ToastUtil.show(msg: "出现错误");
       Navigator.pop(context);
       return Container();
     }
-    if (_cache != bean.password) {
-      _password = EncryptUtil.decrypt(bean.password);
-      _cache = bean.password;
+
+    if (cache != bean.password) {
+      password = EncryptUtil.decrypt(bean.password);
+      cache = bean.password;
     }
     return Scaffold(
         appBar: AppBar(
@@ -147,7 +147,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                         Padding(
                           padding: AllpassEdgeInsets.smallTBPadding,),
                         // 拥有者姓名标题
-                        _titleContainer(_mainColor, "拥有者姓名"),
+                        _titleContainer(mainColor, "拥有者姓名"),
                         // 拥有者姓名主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -165,7 +165,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   .smallLPadding,),
                               InkWell(
                                 child: Text("复制",
-                                  style: TextStyle(fontSize: 14, color: _mainColor),),
+                                  style: TextStyle(fontSize: 14, color: mainColor),),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: bean.ownerName));
@@ -176,7 +176,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 卡号标题
-                        _titleContainer(_mainColor, "卡号"),
+                        _titleContainer(mainColor, "卡号"),
                         // 卡号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -184,7 +184,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                child: Text(_cardIdVisible
+                                child: Text(cardIdVisible
                                     ? bean.cardId
                                     : "*" * bean.cardId.length,
                                   overflow: TextOverflow.ellipsis,
@@ -195,12 +195,12 @@ class _ViewCardPage extends State<ViewCardPage> {
                               Row(
                                 children: <Widget>[
                                   InkWell(
-                                    child: _cardIdVisible
+                                    child: cardIdVisible
                                         ? Icon(Icons.visibility)
                                         : Icon(Icons.visibility_off),
                                     onTap: () {
                                       setState(() {
-                                        _cardIdVisible = !_cardIdVisible;
+                                        cardIdVisible = !cardIdVisible;
                                       });
                                     },
                                   ),
@@ -213,7 +213,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           msg: "已复制卡号");
                                     },
                                     child: Text("复制",
-                                      style: TextStyle(fontSize: 14, color: _mainColor),
+                                      style: TextStyle(fontSize: 14, color: mainColor),
                                     ),
                                   )
                                 ],
@@ -222,7 +222,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 密码标题
-                        _titleContainer(_mainColor, "密码"),
+                        _titleContainer(mainColor, "密码"),
                         // 密码主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -230,9 +230,9 @@ class _ViewCardPage extends State<ViewCardPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                child: Text(_passwordVisible
-                                    ? _password
-                                    : "*" * _password.length,
+                                child: Text(passwordVisible
+                                    ? password
+                                    : "*" * password.length,
                                   overflow: TextOverflow.ellipsis,
                                   style: AllpassTextUI.firstTitleStyle,
                                 ),
@@ -240,23 +240,23 @@ class _ViewCardPage extends State<ViewCardPage> {
                               Row(
                                 children: <Widget>[
                                   InkWell(
-                                    child: _passwordVisible
+                                    child: passwordVisible
                                         ? Icon(Icons.visibility)
                                         : Icon(Icons.visibility_off),
                                     onTap: () {
                                       setState(() {
-                                        _passwordVisible = !_passwordVisible;
+                                        passwordVisible = !passwordVisible;
                                       });
                                     },
                                   ),
                                   Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                   InkWell(
                                     onTap: () {
-                                      Clipboard.setData(ClipboardData(text: _password));
+                                      Clipboard.setData(ClipboardData(text: password));
                                       ToastUtil.show(msg: "已复制密码");
                                     },
                                     child: Text("复制",
-                                      style: TextStyle(fontSize: 14, color: _mainColor),
+                                      style: TextStyle(fontSize: 14, color: mainColor),
                                     ),
                                   )
                                 ],
@@ -265,7 +265,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 绑定手机号标题
-                        _titleContainer(_mainColor, "绑定手机号"),
+                        _titleContainer(mainColor, "绑定手机号"),
                         // 绑定手机号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -283,7 +283,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   .smallLPadding,),
                               InkWell(
                                 child: Text("复制",
-                                  style: TextStyle(fontSize: 14, color: _mainColor),),
+                                  style: TextStyle(fontSize: 14, color: mainColor),),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                       text: bean.telephone));
@@ -294,7 +294,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 备注标题
-                        _titleContainer(_mainColor, "备注"),
+                        _titleContainer(mainColor, "备注"),
                         // 备注主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -328,7 +328,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 标签标题
-                        _titleContainer(_mainColor, "标签"),
+                        _titleContainer(mainColor, "标签"),
                         // 标签主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,

@@ -1,4 +1,7 @@
 class VersionUtil {
+
+  VersionUtil._();
+
   static bool twoIsNewerVersion(String? version1, String? version2) {
     if (version1 == null || version2 == null) return false;
     if (version1.length != version2.length) {

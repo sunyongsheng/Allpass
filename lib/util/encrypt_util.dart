@@ -6,6 +6,8 @@ import 'package:allpass/core/param/constants.dart';
 /// 加密解密辅助类
 class EncryptUtil {
 
+  EncryptUtil._();
+
   static String initialKey = "6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG";
 
   static bool _haveInit = false;

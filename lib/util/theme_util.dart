@@ -3,6 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:allpass/core/param/config.dart';
 
 class ThemeUtil {
+
+  ThemeUtil._();
+
   static bool isInDarkTheme(BuildContext context) {
     return Config.themeMode == "dark"
         || (Config.themeMode == "system" && MediaQuery.platformBrightnessOf(context) == Brightness.dark);

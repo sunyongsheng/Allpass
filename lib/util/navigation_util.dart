@@ -4,6 +4,9 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/route/routes.dart';
 
 class NavigationUtil {
+
+  NavigationUtil._();
+
   static _navigateTo(BuildContext context, String path,
       {bool replace: false,
       bool clearStack: false,

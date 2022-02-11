@@ -2,6 +2,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AllpassScreenUtil {
 
+  AllpassScreenUtil._();
+
   static ScreenUtil _instance = ScreenUtil();
   static double screenHighDp = _instance.screenHeight;
 

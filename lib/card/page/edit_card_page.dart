@@ -36,68 +36,69 @@ class _EditCardPage extends State<EditCardPage> {
 
   String get pageTitle => (operation == DataOperation.add)? "添加卡片" : "编辑卡片";
 
-  CardBean? _oldData;
+  CardBean? editingData;
 
   late int operation;
 
-  late TextEditingController _nameController;
-  late TextEditingController _ownerNameController;
-  late TextEditingController _cardIdController;
-  late TextEditingController _telephoneController;
-  late TextEditingController _notesController;
-  late TextEditingController _passwordController;
+  late TextEditingController nameController;
+  late TextEditingController ownerNameController;
+  late TextEditingController cardIdController;
+  late TextEditingController telephoneController;
+  late TextEditingController notesController;
+  late TextEditingController passwordController;
 
-  String _folder = "默认";
-  late List<String> _labels;
-  int _fav = 0;
-  late String _createTime;
+  String folder = "默认";
+  List<String> labels = [];
+  int fav = 0;
+  late String createTime;
 
-  bool _passwordVisible = false;
-  bool _frameDone = false;
+  bool passwordVisible = false;
+  bool frameDone = false;
 
   @override
   void initState() {
     super.initState();
-    this.operation = widget.operation;
+    operation = widget.operation;
     if (operation == DataOperation.update) {
-      this._oldData = widget.data;
-      _folder = _oldData!.folder;
-      _labels = List.from(_oldData!.label ?? []);
-      _fav = _oldData!.fav;
-      _createTime = _oldData!.createTime;
+      editingData = widget.data;
+      var editingCard = editingData!;
+      folder = editingCard.folder;
+      labels.addAll(editingCard.label ?? []);
+      fav = editingCard.fav;
+      createTime = editingCard.createTime;
 
-      _nameController = TextEditingController(text: _oldData!.name);
-      _ownerNameController = TextEditingController(text: _oldData!.ownerName);
-      _cardIdController = TextEditingController(text: _oldData!.cardId);
-      _telephoneController = TextEditingController(text: _oldData!.telephone);
-      _notesController = TextEditingController(text: _oldData!.notes);
-      _passwordController = TextEditingController(text: EncryptUtil.decrypt(_oldData!.password));
+      nameController = TextEditingController(text: editingCard.name);
+      ownerNameController = TextEditingController(text: editingCard.ownerName);
+      cardIdController = TextEditingController(text: editingCard.cardId);
+      telephoneController = TextEditingController(text: editingCard.telephone);
+      notesController = TextEditingController(text: editingCard.notes);
+      passwordController = TextEditingController(text: EncryptUtil.decrypt(editingCard.password));
     } else {
-      _nameController = TextEditingController();
-      _ownerNameController = TextEditingController();
-      _cardIdController = TextEditingController();
-      _telephoneController = TextEditingController();
-      _notesController = TextEditingController();
-      _passwordController = TextEditingController();
-      _labels = [];
-      _createTime = DateTime.now().toIso8601String();
+      nameController = TextEditingController();
+      ownerNameController = TextEditingController();
+      cardIdController = TextEditingController();
+      telephoneController = TextEditingController();
+      notesController = TextEditingController();
+      passwordController = TextEditingController();
+
+      createTime = DateTime.now().toIso8601String();
     }
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      _frameDone = true;
+      frameDone = true;
     });
   }
 
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
-    _ownerNameController.dispose();
-    _cardIdController.dispose();
-    _telephoneController.dispose();
-    _notesController.dispose();
-    _passwordController.dispose();
-    _frameDone = false;
+    nameController.dispose();
+    ownerNameController.dispose();
+    cardIdController.dispose();
+    telephoneController.dispose();
+    notesController.dispose();
+    passwordController.dispose();
+    frameDone = false;
   }
 
   @override
@@ -118,43 +119,43 @@ class _EditCardPage extends State<EditCardPage> {
               onPressed: () {
                 showDialog(context: context, builder: (cx) => PasswordGenerationDialog())
                     .then((value) {
-                  if (value != null) _passwordController.text = value;
+                  if (value != null) passwordController.text = value;
                 });
               },
             ),
             IconButton(
-              icon: _fav == 1
+              icon: fav == 1
                   ? Icon(Icons.favorite, color: Colors.redAccent,)
                   : Icon(Icons.favorite_border,),
               onPressed: () {
                 setState(() {
-                  _fav = _fav == 1 ? 0 : 1;
+                  fav = fav == 1 ? 0 : 1;
                 });
               },
             ),
             IconButton(
               icon: Icon(Icons.check,),
               onPressed: () {
-                if (_ownerNameController.text.length >= 1
-                    && _cardIdController.text.length >= 1) {
-                  String pwd = _passwordController.text.length >= 1
-                      ? EncryptUtil.encrypt(_passwordController.text)
+                if (ownerNameController.text.length >= 1
+                    && cardIdController.text.length >= 1) {
+                  String pwd = passwordController.text.length >= 1
+                      ? EncryptUtil.encrypt(passwordController.text)
                       : EncryptUtil.encrypt("000000");
                   CardBean tempData = CardBean(
-                    ownerName: _ownerNameController.text,
-                    cardId: _cardIdController.text,
-                    key: _oldData?.uniqueKey,
-                    name: _nameController.text,
-                    telephone: _telephoneController.text,
-                    folder: _folder,
-                    label: _labels,
-                    fav: _fav,
-                    notes: _notesController.text,
+                    ownerName: ownerNameController.text,
+                    cardId: cardIdController.text,
+                    key: editingData?.uniqueKey,
+                    name: nameController.text,
+                    telephone: telephoneController.text,
+                    folder: folder,
+                    label: labels,
+                    fav: fav,
+                    notes: notesController.text,
                     password: pwd,
-                    color: _oldData?.color ?? getRandomColor(),
-                    createTime: _createTime
+                    color: editingData?.color ?? getRandomColor(),
+                    createTime: createTime
                   );
-                  if (_passwordController.text.length < 1) {
+                  if (passwordController.text.length < 1) {
                     ToastUtil.show(msg: "未输入密码，自动初始化为00000");
                   }
                   if (operation == DataOperation.add) {
@@ -186,14 +187,14 @@ class _EditCardPage extends State<EditCardPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _nameController,
+                      editingController: nameController,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone) _nameController.clear();
+                          if (frameDone) nameController.clear();
                         },
                       ),
                     ),
@@ -210,14 +211,14 @@ class _EditCardPage extends State<EditCardPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _ownerNameController,
+                      editingController: ownerNameController,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone) _ownerNameController.clear();
+                          if (frameDone) ownerNameController.clear();
                         },
                       ),
                     ),
@@ -240,7 +241,7 @@ class _EditCardPage extends State<EditCardPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _cardIdController,
+                      editingController: cardIdController,
                       inputType: TextInputType.text,
                       trailing: InkWell(
                         child: Icon(
@@ -248,7 +249,7 @@ class _EditCardPage extends State<EditCardPage> {
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone) _cardIdController.clear();
+                          if (frameDone) cardIdController.clear();
                         },
                       ),
                     ),
@@ -268,8 +269,8 @@ class _EditCardPage extends State<EditCardPage> {
                       children: <Widget>[
                         Expanded(
                           child: NoneBorderCircularTextField(
-                            editingController: _passwordController,
-                            obscureText: !_passwordVisible,
+                            editingController: passwordController,
+                            obscureText: !passwordVisible,
                             trailing: InkWell(
                               child: Icon(
                                 Icons.cancel,
@@ -277,21 +278,21 @@ class _EditCardPage extends State<EditCardPage> {
                               ),
                               onTap: () {
                                 // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                if (_frameDone) _passwordController.clear();
+                                if (frameDone) passwordController.clear();
                               },
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: _passwordVisible == true
+                          icon: passwordVisible == true
                               ? Icon(Icons.visibility)
                               : Icon(Icons.visibility_off),
                           onPressed: () {
                             this.setState(() {
-                              if (_passwordVisible == false)
-                                _passwordVisible = true;
+                              if (passwordVisible == false)
+                                passwordVisible = true;
                               else
-                                _passwordVisible = false;
+                                passwordVisible = false;
                             });
                           },
                         )
@@ -310,7 +311,7 @@ class _EditCardPage extends State<EditCardPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _telephoneController,
+                      editingController: telephoneController,
                       inputType: TextInputType.numberWithOptions(signed: true),
                       trailing: InkWell(
                         child: Icon(
@@ -319,7 +320,7 @@ class _EditCardPage extends State<EditCardPage> {
                         ),
                         onTap: () {
                           // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                          if (_frameDone) _telephoneController.clear();
+                          if (frameDone) telephoneController.clear();
                         },
                       ),
                     ),
@@ -340,7 +341,7 @@ class _EditCardPage extends State<EditCardPage> {
                       onChanged: (newValue) {
                         setState(() => {
                           if (newValue != null) {
-                            _folder = newValue.toString()
+                            folder = newValue.toString()
                           }
                         });
                       },
@@ -357,7 +358,7 @@ class _EditCardPage extends State<EditCardPage> {
                       style: AllpassTextUI.firstTitleStyle,
                       elevation: 8,
                       iconSize: 30,
-                      value: _folder,
+                      value: folder,
                     ),
                   ],
                 ),
@@ -398,14 +399,14 @@ class _EditCardPage extends State<EditCardPage> {
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
-                      editingController: _notesController,
+                      editingController: notesController,
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage("备注", _notesController.text, true),
+                          builder: (context) => DetailTextPage("备注", notesController.text, true),
                         )).then((newValue) {
                           setState(() {
-                            _notesController.text = newValue;
+                            notesController.text = newValue;
                           });
                         });
                       },
@@ -427,7 +428,7 @@ class _EditCardPage extends State<EditCardPage> {
           text: element,
           selected: false,
           onSelected: (_) {
-            _ownerNameController.text = element;
+            ownerNameController.text = element;
           },
         ),
       ));
@@ -440,11 +441,11 @@ class _EditCardPage extends State<EditCardPage> {
     RuntimeData.labelList.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
-        selected: _labels.contains(item),
+        selected: labels.contains(item),
         onSelected: (selected) {
-          setState(() => _labels.contains(item)
-              ? _labels.remove(item)
-              : _labels.add(item));
+          setState(() => labels.contains(item)
+              ? labels.remove(item)
+              : labels.add(item));
         },
       ));
     });
