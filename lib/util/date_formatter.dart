@@ -3,12 +3,19 @@ class DateFormatter {
   DateFormatter._();
 
   static String format(DateTime dateTime) {
-    var year = dateTime.year.toString();
-    var month = dateTime.month.toString();
-    var day = dateTime.day.toString();
-    var hour = dateTime.hour.toString();
-    var minute = dateTime.minute.toString();
-    var second = dateTime.minute.toString();
-    return "$year年$month月$day日 $hour:$minute:$second";
+    var year = dateTime.year;
+    var month = optimizeFormat(dateTime.month);
+    var day = optimizeFormat(dateTime.day);
+    var hour = optimizeFormat(dateTime.hour);
+    var minute = optimizeFormat(dateTime.minute);
+    var second = optimizeFormat(dateTime.second);
+    return "$year-$month-$day $hour:$minute:$second";
+  }
+
+  static String optimizeFormat(int number) {
+    if (number < 10) {
+      return "0$number";
+    }
+    return number.toString();
   }
 }
