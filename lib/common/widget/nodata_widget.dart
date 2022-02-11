@@ -7,9 +7,10 @@ import 'package:allpass/util/screen_util.dart';
 class NoDataWidget extends StatelessWidget {
 
   final Key? key;
-  final String? additionalInfo;
+  final String? title;
+  final String? subtitle;
 
-  NoDataWidget(this.additionalInfo, {this.key}) : super(key: key);
+  NoDataWidget({this.title, this.subtitle, this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,18 +29,18 @@ class NoDataWidget extends StatelessWidget {
           padding: AllpassEdgeInsets.smallTBPadding,
         ),
         Padding(
-          child: Center(child: Text("什么也没有，赶快添加吧"),),
+          child: Center(child: Text(title ?? "什么也没有，赶快添加吧"),),
           padding: AllpassEdgeInsets.forCardInset,
         ),
         Padding(
           padding: AllpassEdgeInsets.smallTBPadding,
         ),
-        additionalInfo == null
+        subtitle == null
             ? Container()
             : Padding(
                 child: Center(
                   child: Text(
-                    additionalInfo!,
+                    subtitle!,
                     textAlign: TextAlign.center,
                   ),
                 ),

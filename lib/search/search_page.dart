@@ -60,7 +60,7 @@ class _SearchPage extends State<SearchPage> {
               automaticallyImplyLeading: false,
             ),
             body: provider.empty()
-                ? Center(child: Text("无结果"),)
+                ? Center(child: NoDataWidget(title: "无结果，换个关键词试试吧"))
                 : ListView.builder(
               itemBuilder: (_, index) => getSearchWidget(provider, index),
               itemCount: provider.length())

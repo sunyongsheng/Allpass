@@ -170,7 +170,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         );
       }
     } else {
-      listView = NoDataWidget("这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
+      listView = NoDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
     }
 
     return Scaffold(

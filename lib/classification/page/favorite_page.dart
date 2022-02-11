@@ -74,7 +74,7 @@ class FavoritePage extends StatelessWidget {
       }
     }
     if (list1.length == 0 && list2.length == 0) {
-      return NoDataWidget(null);
+      return NoDataWidget();
     }
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),

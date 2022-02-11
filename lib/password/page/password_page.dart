@@ -172,7 +172,7 @@ class _PasswordPageState extends State<PasswordPage>
         );
       }
     } else {
-      listView = NoDataWidget("这里存储你的密码信息，例如\n微博账号、知乎账号等");
+      listView = NoDataWidget(subtitle: "这里存储你的密码信息，例如\n微博账号、知乎账号等");
     }
 
     return Scaffold(
