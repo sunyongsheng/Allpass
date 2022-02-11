@@ -17,11 +17,9 @@ import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/auth_login_page.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/version_util.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 import 'package:allpass/core/model/api/user_bean.dart';
 
-bool needUpdateSecret = false;
 
 void main() async {
 
@@ -41,10 +39,6 @@ void main() async {
       var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
-
-    // 此逻辑必须在_registerUser()之前执行，_registerUser()执行完后SP中allpassVersion已更新
-    needUpdateSecret = !(AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true)
-        && VersionUtil.twoIsNewerVersion(AllpassApplication.sp.getString(SPKeys.allpassVersion), "1.5.0");
 
     _registerUser();
 

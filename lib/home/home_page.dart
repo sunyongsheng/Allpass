@@ -2,18 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/main.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
-import 'package:allpass/setting/account/page/secret_key_upgrade_page.dart';
 import 'package:allpass/password/page/password_page.dart';
 import 'package:allpass/card/page/card_page.dart';
 import 'package:allpass/classification/page/classification_page.dart';
 import 'package:allpass/setting/setting_page.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
-import 'package:allpass/common/widget/confirm_dialog.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -40,22 +37,6 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     _controller = PageController(initialPage: 0);
     WidgetsBinding.instance?.addObserver(this);
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
-      if (needUpdateSecret) {
-        showDialog(
-            context: context,
-            builder: (context) => ConfirmDialog(
-                "密钥升级建议",
-                "检测到您升级到Allpass 1.5.0，建议您进行密钥升级，可以极大的增加密码的安全性，是否前往升级页（之后可在“设置-主账号管理-加密密钥更新”中操作）？"
-            )
-        ).then((value) {
-          if (value != null && value) {
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => SecretKeyUpgradePage()
-            ));
-          }
-        });
-      }
-
       UpdateBean updateBean = await AllpassApplication.getIt<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
