@@ -10,6 +10,7 @@ import 'package:allpass/util/webdav_util.dart';
 import 'package:allpass/setting/webdav/webdav_sync_page.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/common/widget/loading_text_button.dart';
 
 class WebDavConfigPage extends StatefulWidget {
   @override
@@ -168,15 +169,11 @@ class _WebDavConfigPage extends State<StatefulWidget> {
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: MaterialButton(
-                  minWidth: double.infinity,
+                child: LoadingTextButton(
                   color: mainColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                  ),
-                  child: _pressNext
-                      ? SizedBox(height: 20, width: 20, child: CircularProgressIndicator(backgroundColor: Colors.white, strokeWidth: 2.3,))
-                      : Text("下一步", style: TextStyle(color: Colors.white)),
+                  title: "下一步",
+                  loadingTitle: "配置中",
+                  loading: _pressNext,
                   onPressed: () async => await _nextStep(),
                 ),
               )

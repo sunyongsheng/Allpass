@@ -7,6 +7,7 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
@@ -19,8 +20,25 @@ class ImportFromClipboardPage extends StatefulWidget {
 }
 
 class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
-  final TextEditingController _controller = TextEditingController();
+
+  late TextEditingController _controller;
+
   int _groupValue = 1;
+
+  bool importing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,14 +220,15 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
               ),
               Container(
                   padding: AllpassEdgeInsets.forViewCardInset,
-                  child: MaterialButton(
-                    minWidth: double.infinity,
+                  child: LoadingTextButton(
+                    title: "开始导入",
+                    loadingTitle: "导入中请稍后",
+                    loading: importing,
                     color: Theme.of(context).primaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    ),
-                    child: Text("导入", style: TextStyle(color: Colors.white),),
                     onPressed: () async {
+                      setState(() {
+                        importing = true;
+                      });
                       try {
                         List<PasswordBean> list = await parseText(_groupValue);
                         for (var bean in list) {
@@ -219,6 +238,9 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                       } catch (e) {
                         ToastUtil.show(msg: e.toString());
                       }
+                      setState(() {
+                        importing = false;
+                      });
                     },
                   )
               ),

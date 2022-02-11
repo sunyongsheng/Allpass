@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:device_info/device_info.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
@@ -10,6 +8,7 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/common/widget/loading_text_button.dart';
 
 class FeedbackPage extends StatefulWidget {
   @override
@@ -24,7 +23,7 @@ class _FeedbackPage extends State<StatefulWidget> {
   late TextEditingController _contactController;
   late String _contactCache;
 
-  bool _submitSuccess = false;
+  bool submitting = false;
 
   @override
   void initState() {
@@ -75,13 +74,11 @@ class _FeedbackPage extends State<StatefulWidget> {
             ),
             Container(
                 padding: AllpassEdgeInsets.dividerInset,
-                child: MaterialButton(
-                  child: Text("提交", style: TextStyle(color: Colors.white),),
-                  minWidth: double.infinity,
+                child: LoadingTextButton(
+                  title: "提交",
                   color: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
-                  ),
+                  loadingTitle: "提交中，请稍后",
+                  loading: submitting,
                   onPressed: () async {
                     if (_feedbackController.text.trim().length < 1) {
                       ToastUtil.show(msg: "请输入反馈内容");
@@ -92,25 +89,10 @@ class _FeedbackPage extends State<StatefulWidget> {
                       return;
                     }
                     FocusScope.of(context).requestFocus(FocusNode());
-                    showDialog(
-                        context: context,
-                        builder: (cx) => FutureBuilder(
-                          future: submitFeedback(),
-                          builder: (context, snapshot) {
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.done:
-                                return Center();
-                              default:
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                            }
-                          },
-                        )).then((_) {
-                      if (_submitSuccess) {
-                        Navigator.pop(context);
-                      }
-                    });
+                    var result = await submitFeedback();
+                    if (result) {
+                      Navigator.pop(context);
+                    }
                   },
                 ),
             ),
@@ -120,29 +102,24 @@ class _FeedbackPage extends State<StatefulWidget> {
     );
   }
 
-  Future<Null> submitFeedback() async {
-    String _content = _feedbackController.text;
-    String _contact = _contactController.text;
-    String _version = AllpassApplication.version;
-    String _id = "unknown";
+  Future<bool> submitFeedback() async {
+    setState(() {
+      submitting = true;
+    });
+    String content = _feedbackController.text;
+    String contact = _contactController.text;
+    String version = AllpassApplication.version;
+    String id = AllpassApplication.identification;
     if (_contactController.text.isNotEmpty) {
       AllpassApplication.sp.setString(SPKeys.contact, _contactController.text);
     }
-    DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo info = await infoPlugin.androidInfo;
-      _id = info.androidId;
-    } else if (Platform.isIOS) {
-      IosDeviceInfo info = await infoPlugin.iosInfo;
-      _id = info.identifierForVendor;
-    }
-    FeedbackBean feedback = FeedbackBean(content: _content, contact: _contact, version: _version, identification: _id);
+    FeedbackBean feedback = FeedbackBean(content: content, contact: contact, version: version, identification: id);
     AllpassResponse response = await AllpassApplication.getIt<AllpassService>().sendFeedback(feedback);
-    if (response.success) {
-      _submitSuccess = true;
-    }
     ToastUtil.show(msg: response.msg!);
-    Navigator.pop(context);
+    setState(() {
+      submitting = false;
+    });
+    return response.success;
   }
 
 }
