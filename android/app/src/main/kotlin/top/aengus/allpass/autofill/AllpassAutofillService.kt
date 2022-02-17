@@ -7,7 +7,6 @@ import android.os.CancellationSignal
 import android.service.autofill.*
 import android.text.InputType
 import android.view.View
-import android.view.autofill.AutofillId
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import android.widget.RemoteViews
@@ -44,69 +43,103 @@ class AllpassAutofillService : AutofillService() {
         cancellationSignal: CancellationSignal,
         callback: FillCallback
     ) {
+        try {
+            println("toggle onFillRequest")
+            val fillContexts = request.fillContexts
+            val fillContext = fillContexts[fillContexts.size - 1]
+            val structure = fillContext.structure
 
-        val fillContext = request.fillContexts
-        val structure = fillContext[fillContext.size - 1].structure
-
-        val windowNodes: List<AssistStructure.WindowNode> = structure.run {
-            (0 until windowNodeCount).map { getWindowNodeAt(it) }
-        }
-
-        val usernameStructure = ParsedStructure(null, null)
-        windowNodes.forEach { windowNode: AssistStructure.WindowNode ->
-            val viewNode: AssistStructure.ViewNode? = windowNode.rootViewNode
-            findUsernamePasswordFillIdRecursive(viewNode, usernameStructure)
-        }
-        if (!usernameStructure.isValid()) {
-            callback.onFailure("暂不支持此页面自动填充")
-            return
-        }
-
-        val appId = structure.activityComponent.packageName
-        val appName = AndroidUtil.getAppName(this, appId)
-        // TODO 使用包签名进行查询以提升安全性
-        queryAutofillChannel.send("$appId,$appName") { resultJson ->
-            resultJson ?: return@send
-            val jsonArray = JSONArray(resultJson)
-            if (jsonArray.length() == 0) {
-                callback.onSuccess(null)
-                return@send
+            val windowNodes: List<AssistStructure.WindowNode> = structure.run {
+                (0 until windowNodeCount).map { getWindowNodeAt(it) }
             }
 
-            val fillResponseBuilder = FillResponse.Builder()
-            val clientState = Bundle()
-            // 设置自动填充数据
-            for (index in 0 until jsonArray.length()) {
-                val jsonObj = jsonArray.getJSONObject(index)
-                val name = jsonObj.optString("name")
-                val username = jsonObj.optString("username")
-                val password = jsonObj.optString("password")
-                if (username.isNotEmpty() || password.isNotEmpty()) {
-                    val autofillItem = Dataset.Builder()
-                    val usernamePresentation = RemoteViews(packageName, R.layout.item_autofill).apply {
-                        AndroidUtil.getAppIcon(this@AllpassAutofillService, appId)?.let { it ->
-                            setImageViewBitmap(R.id.iv_app_icon, it)
-                        }
-                        setTextViewText(R.id.tv_name, name.ifEmpty { "Unknown" })
-                        setTextViewText(R.id.tv_username, username)
-                    }
-                    usernameStructure.usernameId?.let {
-                        clientState.putParcelable(AUTOFILL_ID_USERNAME, it)
-                        autofillItem.setValue(it, AutofillValue.forText(username), usernamePresentation)
-                    }
-                    usernameStructure.passwordId?.let {
-                        clientState.putParcelable(AUTOFILL_ID_PASSWORD, it)
-                        autofillItem.setValue(it, AutofillValue.forText(password), usernamePresentation)
-                    }
-                    fillResponseBuilder.addDataset(autofillItem.build())
+            val parsedStructure = ParsedStructure(null, null)
+            windowNodes.forEach { windowNode: AssistStructure.WindowNode ->
+                val viewNode: AssistStructure.ViewNode? = windowNode.rootViewNode
+                findUsernamePasswordFillIdRecursive(viewNode, parsedStructure)
+            }
+            if (parsedStructure.usernameId == null && parsedStructure.passwordId != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && parsedStructure.passwordId != fillContext.focusedId) {
+                    parsedStructure.usernameId = fillContext.focusedId
                 }
             }
-            // 设置保存信息
-            fillResponseBuilder.setSaveInfo(SaveInfo.Builder(
-                SaveInfo.SAVE_DATA_TYPE_USERNAME or SaveInfo.SAVE_DATA_TYPE_PASSWORD,
-                arrayOf(usernameStructure.usernameId, usernameStructure.passwordId)
-            ).build())
-            callback.onSuccess(fillResponseBuilder.build())
+            if (!parsedStructure.isValid()) {
+                callback.onSuccess(null)
+                return
+            }
+
+            val appId = structure.activityComponent.packageName
+            val appName = AndroidUtil.getAppName(this, appId)
+            // TODO 使用包签名进行查询以提升安全性
+            queryAutofillChannel.send("$appId,$appName") { resultJson ->
+                if (resultJson.isNullOrEmpty()) {
+                    callback.onSuccess(null)
+                    return@send
+                }
+                val jsonArray = JSONArray(resultJson)
+                if (jsonArray.length() == 0) {
+                    callback.onSuccess(null)
+                    return@send
+                }
+
+                val fillResponseBuilder = FillResponse.Builder()
+                val clientState = Bundle()
+                // 设置自动填充数据
+                for (index in 0 until jsonArray.length()) {
+                    val jsonObj = jsonArray.getJSONObject(index)
+                    val name = jsonObj.optString("name")
+                    val username = jsonObj.optString("username")
+                    val password = jsonObj.optString("password")
+                    if (username.isNotEmpty() || password.isNotEmpty()) {
+                        val autofillItem = Dataset.Builder()
+                        val usernamePresentation = createRemoteView(appId, name, username)
+                        parsedStructure.usernameId?.let {
+                            clientState.putParcelable(AUTOFILL_ID_USERNAME, it)
+                            autofillItem.setValue(it, AutofillValue.forText(username), usernamePresentation)
+                        }
+                        parsedStructure.passwordId?.let {
+                            clientState.putParcelable(AUTOFILL_ID_PASSWORD, it)
+                            autofillItem.setValue(it, AutofillValue.forText(password), usernamePresentation)
+                        }
+                        fillResponseBuilder.addDataset(autofillItem.build())
+                    }
+                }
+                // 设置保存信息
+                when {
+                    parsedStructure.usernameId != null && parsedStructure.passwordId != null -> {
+                        fillResponseBuilder.setSaveInfo(SaveInfo.Builder(
+                            SaveInfo.SAVE_DATA_TYPE_USERNAME or SaveInfo.SAVE_DATA_TYPE_PASSWORD,
+                            arrayOf(parsedStructure.usernameId, parsedStructure.passwordId)
+                        ).build())
+                    }
+                    parsedStructure.usernameId != null -> {
+                        fillResponseBuilder.setSaveInfo(SaveInfo.Builder(
+                            SaveInfo.SAVE_DATA_TYPE_USERNAME,
+                            arrayOf(parsedStructure.usernameId)
+                        ).build())
+                    }
+                    parsedStructure.passwordId != null -> {
+                        fillResponseBuilder.setSaveInfo(SaveInfo.Builder(
+                            SaveInfo.SAVE_DATA_TYPE_PASSWORD,
+                            arrayOf(parsedStructure.passwordId)
+                        ).build())
+                    }
+                }
+
+                callback.onSuccess(fillResponseBuilder.build())
+            }
+        } catch (t: Throwable) {
+            callback.onFailure(t.message)
+        }
+    }
+
+    private fun createRemoteView(appId: String, name: String, username: String): RemoteViews {
+        return RemoteViews(packageName, R.layout.item_autofill).apply {
+            AndroidUtil.getAppIcon(this@AllpassAutofillService, appId)?.let { it ->
+                setImageViewBitmap(R.id.iv_app_icon, it)
+            }
+            setTextViewText(R.id.tv_name, name.ifEmpty { "Unknown" })
+            setTextViewText(R.id.tv_username, username)
         }
     }
 
