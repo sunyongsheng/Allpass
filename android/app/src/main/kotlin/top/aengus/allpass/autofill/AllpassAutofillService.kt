@@ -7,6 +7,7 @@ import android.os.CancellationSignal
 import android.service.autofill.*
 import android.text.InputType
 import android.view.View
+import android.view.autofill.AutofillId
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import android.widget.RemoteViews
@@ -58,6 +59,7 @@ class AllpassAutofillService : AutofillService() {
                 val viewNode: AssistStructure.ViewNode? = windowNode.rootViewNode
                 findUsernamePasswordFillIdRecursive(viewNode, parsedStructure)
             }
+            println("parsedStructure=$parsedStructure")
             if (parsedStructure.usernameId == null && parsedStructure.passwordId != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && parsedStructure.passwordId != fillContext.focusedId) {
                     parsedStructure.usernameId = fillContext.focusedId
@@ -144,12 +146,12 @@ class AllpassAutofillService : AutofillService() {
     }
 
     override fun onSaveRequest(request: SaveRequest, callback: SaveCallback) {
-        val fillContext = request.fillContexts
-        val structure = fillContext[fillContext.size - 1].structure
+        val fillContexts = request.fillContexts
+        val fillContext = fillContexts[fillContexts.size - 1]
+        val structure = fillContext.structure
 
-        // TODO 使用 AutofillId 查找 ViewNode, ViewNode#autofillValue#textValue#toString() 获取值
-//        val usernameAutofillId = request.clientState?.getParcelable<AutofillId>(AUTOFILL_ID_USERNAME)
-//        val passwordAutofillId = request.clientState?.getParcelable<AutofillId>(AUTOFILL_ID_PASSWORD)
+        val usernameAutofillId = request.clientState?.getParcelable<AutofillId>(AUTOFILL_ID_USERNAME)
+        val passwordAutofillId = request.clientState?.getParcelable<AutofillId>(AUTOFILL_ID_PASSWORD)
 
         val windowNodes: List<AssistStructure.WindowNode> = structure.run {
             (0 until windowNodeCount).map { getWindowNodeAt(it) }
@@ -159,7 +161,7 @@ class AllpassAutofillService : AutofillService() {
 
         windowNodes.forEach { windowNode: AssistStructure.WindowNode ->
             val viewNode: AssistStructure.ViewNode? = windowNode.rootViewNode
-            obtainUsernamePasswordRecursive(viewNode, userData)
+            obtainUsernamePasswordRecursive(viewNode, userData, usernameAutofillId, passwordAutofillId)
         }
 
         val packageName = structure.activityComponent.packageName
@@ -203,14 +205,14 @@ class AllpassAutofillService : AutofillService() {
         }
     }
 
-    private fun obtainUsernamePasswordRecursive(viewNode: AssistStructure.ViewNode?, userData: SimpleUserData) {
-        if (isUsernameNode(viewNode)) {
-            viewNode?.text?.let {
+    private fun obtainUsernamePasswordRecursive(viewNode: AssistStructure.ViewNode?, userData: SimpleUserData, usernameAutofillId: AutofillId?, passwordAutofillId: AutofillId?) {
+        if (viewNode?.autofillId != null && viewNode.autofillId == usernameAutofillId) {
+            viewNode.text?.let {
                 userData.username = it.toString()
             }
             return
-        } else if (isPasswordNode(viewNode)) {
-            viewNode?.text?.let {
+        } else if (viewNode?.autofillId != null && viewNode.autofillId == passwordAutofillId) {
+            viewNode.text?.let {
                 userData.password = it.toString()
             }
             return
@@ -221,7 +223,7 @@ class AllpassAutofillService : AutofillService() {
         }
 
         children?.forEach { childNode: AssistStructure.ViewNode ->
-            obtainUsernamePasswordRecursive(childNode, userData)
+            obtainUsernamePasswordRecursive(childNode, userData, usernameAutofillId, passwordAutofillId)
         }
     }
 
