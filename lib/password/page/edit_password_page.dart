@@ -12,6 +12,7 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/theme_util.dart';
+import 'package:allpass/util/device_apps_holder.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/setting/category/widget/add_category_dialog.dart';
@@ -345,7 +346,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                         showDialog(
                           context: context,
                           builder: (_) => FutureBuilder<List<Application>>(
-                            future: DeviceApps.getInstalledApplications(includeAppIcons: true),
+                            future: DeviceAppsHolder.getInstalledApps(),
                             builder: (context, snapshot) {
                               switch (snapshot.connectionState) {
                                 case ConnectionState.done:
