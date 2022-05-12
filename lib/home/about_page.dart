@@ -62,7 +62,7 @@ class AboutPage extends StatelessWidget {
                           trailing: Text("V${AllpassApplication.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () async {
-                            await launch("https://allpass.aengus.top");
+                            await launchUrl(Uri.parse("https://allpass.aengus.top"));
                           },
                           onLongPress: () {
                             longPressTimes++;
@@ -87,7 +87,7 @@ class AboutPage extends StatelessWidget {
                       child: TextButton(
                         child: Text("微博：@Aengus_Sun"),
                         onPressed: () async {
-                          await launch("https://weibo.com/u/5484402663");
+                          await launchUrl(Uri.parse("https://weibo.com/u/5484402663"));
                         },
                       ),
                     ),
@@ -96,7 +96,7 @@ class AboutPage extends StatelessWidget {
                       child: TextButton(
                         child: Text("邮箱：sys6511@126.com"),
                         onPressed: () async {
-                          await launch("mailto:sys6511@126.com");
+                          await launchUrl(Uri.parse("mailto:sys6511@126.com"));
                         },
                       ),
                     ),
@@ -105,7 +105,7 @@ class AboutPage extends StatelessWidget {
                       child: TextButton(
                         child: Text("开发者网址：https://www.aengus.top"),
                         onPressed: () async {
-                          await launch("https://www.aengus.top");
+                          await launchUrl(Uri.parse("https://www.aengus.top"));
                         },
                       ),
                     ),
@@ -116,14 +116,14 @@ class AboutPage extends StatelessWidget {
                             TextButton(
                               child: Text("开源地址：Github"),
                               onPressed: () async {
-                                await launch("https://github.com/sunyongsheng/Allpass");
+                                await launchUrl(Uri.parse("https://github.com/sunyongsheng/Allpass"));
                               },
                             ),
                             Text("|"),
                             TextButton(
                               child: Text("码云"),
                               onPressed: () async {
-                                await launch("https://gitee.com/sunyongsheng/Allpass");
+                                await launchUrl(Uri.parse("https://gitee.com/sunyongsheng/Allpass"));
                               },
                             ),
                           ],

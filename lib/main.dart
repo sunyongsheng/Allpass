@@ -22,7 +22,6 @@ import 'package:allpass/core/model/api/user_bean.dart';
 
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   ErrorWidget.builder = (flutterErrorDetails) => CustomErrorPage(msg: flutterErrorDetails.toString());
 
@@ -42,12 +41,9 @@ void main() async {
 
     _registerUser();
 
-    final PasswordProvider passwords = PasswordProvider()
-      ..init();
-    final CardProvider cards = CardProvider()
-      ..init();
-    final ThemeProvider theme = ThemeProvider()
-      ..init();
+    final PasswordProvider passwords = PasswordProvider()..init();
+    final CardProvider cards = CardProvider()..init();
+    final ThemeProvider theme = ThemeProvider()..init();
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<PasswordProvider>.value(value: passwords),
@@ -67,31 +63,24 @@ class Allpass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(1080, 1920),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: () => MaterialApp(
-          title: 'Allpass',
-          theme: Provider.of<ThemeProvider>(context).lightTheme,
-          darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
-          themeMode: Provider.of<ThemeProvider>(context).themeMode,
-          builder: (context, widget) {
-            ScreenUtil.setContext(context);
-            return MediaQuery(
-                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-                child: widget!
-            );
-          },
-          home: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
-          onGenerateRoute: AllpassApplication.router.generator,
-          navigatorKey: AllpassApplication.navigationKey,
-        )
+      designSize: const Size(1080, 1920),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (child) => MaterialApp(
+        title: 'Allpass',
+        theme: Provider.of<ThemeProvider>(context).lightTheme,
+        darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
+        themeMode: Provider.of<ThemeProvider>(context).themeMode,
+        onGenerateRoute: AllpassApplication.router.generator,
+        navigatorKey: AllpassApplication.navigationKey,
+        home: child,
+      ),
+      child: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
     );
   }
 }
 
 void _registerUser() async {
-
   Future<Null> registerUserActual() async {
     DeviceInfoPlugin infoPlugin = DeviceInfoPlugin();
     String _identification = AllpassApplication.identification;
@@ -107,7 +96,11 @@ void _registerUser() async {
     }
 
     try {
-      UserBean user = UserBean(identification: _identification, systemInfo: _systemInfo, version: AllpassApplication.version);
+      UserBean user = UserBean(
+          identification: _identification,
+          systemInfo: _systemInfo,
+          version: AllpassApplication.version
+      );
       AllpassResponse response = await AllpassApplication.getIt<AllpassService>().registerUser(user);
       if (response.success) {
         AllpassApplication.sp.setBool(SPKeys.needRegister, false);
@@ -127,15 +120,15 @@ void _registerUser() async {
     AllpassApplication.isAndroid = true;
   } else if (Platform.isIOS) {
     IosDeviceInfo info = await infoPlugin.iosInfo;
-    AllpassApplication.identification= info.identifierForVendor;
+    AllpassApplication.identification = info.identifierForVendor;
     AllpassApplication.systemSdkInt = -1;
     AllpassApplication.isAndroid = false;
   }
 
-  if (AllpassApplication.sp.getBool(SPKeys.needRegister)??true) {
+  if (AllpassApplication.sp.getBool(SPKeys.needRegister) ?? true) {
     await registerUserActual();
   } else {
-    if (!((AllpassApplication.sp.getString(SPKeys.allpassVersion)??"1.0.0") == AllpassApplication.version)) {
+    if (!((AllpassApplication.sp.getString(SPKeys.allpassVersion) ?? "1.0.0") == AllpassApplication.version)) {
       await registerUserActual();
       AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
     }

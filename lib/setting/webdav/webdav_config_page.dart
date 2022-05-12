@@ -220,7 +220,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         _pressNext = false;
       });
     } else {
-      _utils.cancel();
+      _utils.cancelConfirmAuth();
     }
   }
 

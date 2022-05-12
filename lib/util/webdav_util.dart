@@ -18,6 +18,8 @@ class WebDavUtil {
   late String password;
   late int port;
 
+  CancelToken _cancelToken = CancelToken();
+
   Map<String, List<String>> _dirFilenameCache = Map();
 
   WebDavUtil({String? urlPath,  int? port, String? username, String? password}) {
@@ -65,11 +67,12 @@ class WebDavUtil {
   Future<bool> authConfirm() async {
     try {
       Response response = await _dio.request(
-          urlPath,
-          options: Options(
-            method: WebDAVMethods.propFind,
-            headers: _baseHeaders,
-          )
+        urlPath,
+        options: Options(
+          method: WebDAVMethods.propFind,
+          headers: _baseHeaders,
+        ),
+        cancelToken: _cancelToken
       );
       if (_checkResponse(response.statusCode)) {
         List<String> fileNames = [];
@@ -206,8 +209,8 @@ class WebDavUtil {
     return null;
   }
 
-  void cancel() {
-    _dio.clear();
+  void cancelConfirmAuth() {
+    _cancelToken.cancel();
   }
 
   bool _checkResponse(int? statusCode) {

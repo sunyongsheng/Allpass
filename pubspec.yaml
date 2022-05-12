@@ -15,33 +15,33 @@ dependencies:
 #  # IOS图标
 #  cupertino_icons: ^1.0.2
   # Toast通知
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.0.9
   # 数据库
   sqflite: ^2.0.2
   # 应用路径
-  path_provider: ^2.0.8
+  path_provider: ^2.0.10
   # 密码加密
   encrypt: ^5.0.1
   # 文件管理
   file_picker: ^4.3.3
   # 打开链接
-  url_launcher: ^6.0.18
+  url_launcher: ^6.1.1
   # 状态管理
   provider: ^6.0.2
   # 路由管理
   fluro: ^2.0.3
   # 持久化
-  shared_preferences: ^2.0.12
+  shared_preferences: ^2.0.14
   # 依赖注入
   get_it: ^7.2.0
   # 生物识别
-  local_auth: ^1.1.10
+  local_auth: ^1.1.11
   # 屏幕尺寸管理
-  flutter_screenutil: ^5.1.1
+  flutter_screenutil: ^5.5.2
   # 汉字转拼音
   lpinyin: ^2.0.3
   # 网络请求
-  dio: ^4.0.4
+  dio: ^4.0.6
   # 设备信息
   device_info: ^2.0.3
   # 分享功能
@@ -52,6 +52,8 @@ dependencies:
   xml: ^5.3.1
   # 已安装App
   device_apps: ^2.1.1
+  # Firebase Analytics
+  firebase_analytics: ^9.1.1
 
 dev_dependencies:
   flutter_test:
