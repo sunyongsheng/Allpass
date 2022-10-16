@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/constants.dart';
@@ -84,7 +83,7 @@ class _EditCardPage extends State<EditCardPage> {
       createTime = DateTime.now().toIso8601String();
     }
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       frameDone = true;
     });
   }

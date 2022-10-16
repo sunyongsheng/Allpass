@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 

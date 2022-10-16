@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/card/data/card_dao.dart';

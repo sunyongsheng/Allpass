@@ -34,7 +34,7 @@ class _LoginPage extends State<LoginPage> {
   void initState() {
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
-    WidgetsBinding.instance?.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
       Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
       if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
         showDialog(

@@ -98,7 +98,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
       createTime = DateTime.now().toIso8601String();
     }
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       frameDone = true;
     });
   }

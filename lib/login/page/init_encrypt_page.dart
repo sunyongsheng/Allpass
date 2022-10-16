@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';

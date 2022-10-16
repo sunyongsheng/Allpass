@@ -28,7 +28,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
       Provider.of<ThemeProvider>(context, listen: false).setExtraColor(context: context);
       askAuth(context);
     });

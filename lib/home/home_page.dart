@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,8 +34,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void initState() {
     super.initState();
     _controller = PageController(initialPage: 0);
-    WidgetsBinding.instance?.addObserver(this);
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       UpdateBean updateBean = await AllpassApplication.getIt<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
@@ -57,7 +56,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   void dispose() {
     _controller.dispose();
     super.dispose();
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override

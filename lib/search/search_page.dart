@@ -46,7 +46,7 @@ class _SearchPage extends State<SearchPage> {
     super.initState();
     searchController = TextEditingController();
     focusNode = FocusNode();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       focusNode.requestFocus();
     });
   }

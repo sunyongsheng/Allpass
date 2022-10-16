@@ -37,7 +37,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _portController = TextEditingController();
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _frameDone = true;
     });
     _utils = WebDavUtil();
