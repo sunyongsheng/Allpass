@@ -20,7 +20,6 @@ import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 import 'package:allpass/core/model/api/user_bean.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ErrorWidget.builder = (flutterErrorDetails) => CustomErrorPage(msg: flutterErrorDetails.toString());
@@ -66,14 +65,14 @@ class Allpass extends StatelessWidget {
       designSize: const Size(1080, 1920),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (child) => MaterialApp(
+      builder: (_, child) => MaterialApp(
         title: 'Allpass',
         theme: Provider.of<ThemeProvider>(context).lightTheme,
         darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
         themeMode: Provider.of<ThemeProvider>(context).themeMode,
+        home: child,
         onGenerateRoute: AllpassApplication.router.generator,
         navigatorKey: AllpassApplication.navigationKey,
-        home: child,
       ),
       child: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
     );
@@ -101,7 +100,8 @@ void _registerUser() async {
           systemInfo: _systemInfo,
           version: AllpassApplication.version
       );
-      AllpassResponse response = await AllpassApplication.getIt<AllpassService>().registerUser(user);
+      AllpassResponse response =
+          await AllpassApplication.getIt<AllpassService>().registerUser(user);
       if (response.success) {
         AllpassApplication.sp.setBool(SPKeys.needRegister, false);
       } else {
