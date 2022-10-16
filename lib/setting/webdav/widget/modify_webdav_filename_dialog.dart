@@ -43,7 +43,9 @@ class ModifyWebDavFileNameDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text("提交"),
+          child: Text("提交", style: TextStyle(
+            color: Theme.of(context).primaryColor
+          )),
           onPressed: () async {
             String password = _passwordFileNameController.text;
             String card = _cardFileNameController.text;

@@ -129,7 +129,18 @@ class AllpassTheme {
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
             borderSide: BorderSide.none
-        )
+        ),
+        labelStyle: MaterialStateTextStyle.resolveWith((states) {
+          if (states.contains(MaterialState.focused)) {
+            return TextStyle(
+              color: mainColor
+            );
+          } else {
+            return TextStyle(
+              color: Colors.grey
+            );
+          }
+        })
       ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.accent,
