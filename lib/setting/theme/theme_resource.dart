@@ -140,7 +140,8 @@ class AllpassTheme {
               color: Colors.grey
             );
           }
-        })
+        }),
+        helperStyle: TextStyle(color: Colors.grey)
       ),
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.accent,
