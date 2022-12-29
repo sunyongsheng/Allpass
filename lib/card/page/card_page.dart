@@ -55,7 +55,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     super.build(context);
 
-    CardProvider model = Provider.of<CardProvider>(context);
+    CardProvider model = context.watch();
 
     List<Widget> appbarActions = [
       IconButton(

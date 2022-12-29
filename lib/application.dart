@@ -134,8 +134,8 @@ class AllpassApplication {
   }
 
   static Future<Null> clearAll(BuildContext context) async {
-    await Provider.of<PasswordProvider>(context, listen: false).clear();
-    await Provider.of<CardProvider>(context, listen: false).clear();
+    await context.read<PasswordProvider>().clear();
+    await context.read<CardProvider>().clear();
     await EncryptUtil.clearEncrypt();
     await AllpassApplication.sp.clear();
     Config.configClear();

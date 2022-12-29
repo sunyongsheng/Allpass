@@ -36,7 +36,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [];
-    Map<String, int> map = Provider.of<PasswordProvider>(context).letterCountIndex;
+    Map<String, int> map = context.watch<PasswordProvider>().letterCountIndex;
     var keys = map.keys;
     letters.forEach((item) {
       _children.add(SizedBox(
@@ -109,7 +109,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                color: Provider.of<ThemeProvider>(context).offsetColor,
+                color: context.watch<ThemeProvider>().offsetColor,
               ),
               width: 60,
               height: 60,

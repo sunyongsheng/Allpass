@@ -34,7 +34,7 @@ class AboutPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

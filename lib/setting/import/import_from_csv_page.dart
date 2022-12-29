@@ -70,23 +70,25 @@ class ImportFromCsvPage extends StatelessWidget {
     if (path != null) {
       try {
         if (type == AllpassType.password) {
+          var passwordProvider = context.read<PasswordProvider>();
           List<PasswordBean> passwordList = await CsvUtil.passwordImportFromCsv(path: path) ?? [];
           for (var bean in passwordList) {
-            await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
+            await passwordProvider.insertPassword(bean);
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
           ToastUtil.show(msg: "导入 ${passwordList.length}条记录");
-          await Provider.of<PasswordProvider>(context, listen: false).refresh();
+          await passwordProvider.refresh();
         } else {
+          var cardProvider = context.read<CardProvider>();
           List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
           for (var bean in cardList) {
-            await Provider.of<CardProvider>(context, listen: false).insertCard(bean);
+            await cardProvider.insertCard(bean);
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
           ToastUtil.show(msg: "导入 ${cardList.length}条记录");
-          await Provider.of<CardProvider>(context, listen: false).refresh();
+          await cardProvider.refresh();
         }
       } catch (assertError) {
         ToastUtil.showError(msg: "导入失败，请确保csv文件为标准Allpass导出文件");

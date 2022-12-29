@@ -39,7 +39,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
   Widget build(BuildContext context) {
     if (deleted) return Container();
 
-    PasswordProvider provider = Provider.of<PasswordProvider>(context);
+    PasswordProvider provider = context.watch();
     PasswordBean bean = provider.currPassword;
     Color mainColor = Theme.of(context).primaryColor;
 
@@ -68,7 +68,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
             Padding(padding: AllpassEdgeInsets.smallLPadding,)
           ],
         ),
-        backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+        backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -67,9 +67,9 @@ class Allpass extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, child) => MaterialApp(
         title: 'Allpass',
-        theme: Provider.of<ThemeProvider>(context).lightTheme,
-        darkTheme: Provider.of<ThemeProvider>(context).darkTheme,
-        themeMode: Provider.of<ThemeProvider>(context).themeMode,
+        theme: context.watch<ThemeProvider>().lightTheme,
+        darkTheme: context.watch<ThemeProvider>().darkTheme,
+        themeMode: context.watch<ThemeProvider>().themeMode,
         home: child,
         onGenerateRoute: AllpassApplication.router.generator,
         navigatorKey: AllpassApplication.navigationKey,

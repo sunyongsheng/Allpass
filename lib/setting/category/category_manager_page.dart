@@ -200,16 +200,20 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   Future<bool> editLabelAndUpdate(int index, String newLabel) async {
     try {
       String oldLabel = RuntimeData.labelList[index];
-      for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
+
+      var passwordProvider = context.read<PasswordProvider>();
+      for (var bean in passwordProvider.passwordList) {
         if (bean.label?.contains(oldLabel) ?? false) {
           bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
-          await Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
+          await passwordProvider.updatePassword(bean);
         }
       }
-      for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
+
+      var cardProvider = context.read<CardProvider>();
+      for (var bean in cardProvider.cardList) {
         if (bean.label?.contains(oldLabel) ?? false) {
           bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
-          await Provider.of<CardProvider>(context, listen: false).updateCard(bean);
+          await cardProvider.updateCard(bean);
         }
       }
 
@@ -226,18 +230,23 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
   Future<bool> editFolderAndUpdate(int index, String newFolder) async {
     try {
       String oldFolder = RuntimeData.folderList[index];
-      for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
+
+      var passwordProvider = context.read<PasswordProvider>();
+      for (var bean in passwordProvider.passwordList) {
         if (bean.folder == oldFolder) {
           bean.folder = newFolder;
-          await Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
+          await passwordProvider.updatePassword(bean);
         }
       }
-      for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
+
+      var cardProvider = context.read<CardProvider>();
+      for (var bean in cardProvider.cardList) {
         if (bean.folder == oldFolder) {
           bean.folder = newFolder;
-          await Provider.of<CardProvider>(context, listen: false).updateCard(bean);
+          await cardProvider.updateCard(bean);
         }
       }
+
       setState(() {
         RuntimeData.folderList[index] = newFolder;
       });
@@ -250,18 +259,22 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   Future<bool> deleteLabelAndUpdate(String label) async {
     try {
-      for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
+      var passwordProvider = context.read<PasswordProvider>();
+      for (var bean in passwordProvider.passwordList) {
         if (bean.label?.contains(label) ?? false) {
           bean.label!.remove(label);
-          Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
+          passwordProvider.updatePassword(bean);
         }
       }
-      for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
+
+      var cardProvider = context.read<CardProvider>();
+      for (var bean in cardProvider.cardList) {
         if (bean.label?.contains(label) ?? false) {
           bean.label!.remove(label);
-          Provider.of<CardProvider>(context, listen: false).updateCard(bean);
+          cardProvider.updateCard(bean);
         }
       }
+
       setState(() {
         RuntimeData.labelList.remove(label);
       });
@@ -274,16 +287,19 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   Future<bool> deleteFolderAndUpdate(String folder) async {
     try {
-      for (var bean in Provider.of<PasswordProvider>(context, listen: false).passwordList) {
+      var passwordProvider = context.read<PasswordProvider>();
+      for (var bean in passwordProvider.passwordList) {
         if (folder == bean.folder) {
           bean.folder = defaultFolderName;
-          Provider.of<PasswordProvider>(context, listen: false).updatePassword(bean);
+          passwordProvider.updatePassword(bean);
         }
       }
-      for (var bean in Provider.of<CardProvider>(context, listen: false).cardList) {
+
+      var cardProvider = context.read<CardProvider>();
+      for (var bean in cardProvider.cardList) {
         if (folder == bean.folder) {
           bean.folder = defaultFolderName;
-          Provider.of<CardProvider>(context, listen: false).updateCard(bean);
+          cardProvider.updateCard(bean);
         }
       }
 

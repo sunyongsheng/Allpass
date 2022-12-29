@@ -162,7 +162,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("查看"),
           onTap: () {
             Navigator.pop(context);
-            Provider.of<PasswordProvider>(context, listen: false).previewPassword(bean: data);
+            context.read<PasswordProvider>().previewPassword(bean: data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewPasswordPage())
             );
@@ -205,7 +205,7 @@ class _SearchPage extends State<SearchPage> {
                 context: context,
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？", danger: true,));
             if (delete) {
-              await Provider.of<PasswordProvider>(context).deletePassword(data);
+              await context.read<PasswordProvider>().deletePassword(data);
               ToastUtil.show(msg: "删除成功");
               Navigator.pop(context);
             }
@@ -225,7 +225,7 @@ class _SearchPage extends State<SearchPage> {
           title: Text("查看"),
           onTap: () {
             Navigator.pop(context);
-            Provider.of<CardProvider>(context, listen: false).previewCard(bean: data);
+            context.read<CardProvider>().previewCard(bean: data);
             Navigator.push(context, CupertinoPageRoute(
                 builder: (context) => ViewCardPage())
             );
@@ -265,7 +265,7 @@ class _SearchPage extends State<SearchPage> {
                 context: context,
                 builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？", danger: true,));
             if (delete) {
-              await Provider.of<CardProvider>(context, listen: false).deleteCard(data);
+              await context.read<CardProvider>().deleteCard(data);
               ToastUtil.show(msg: "删除成功");
               Navigator.pop(context);
             }

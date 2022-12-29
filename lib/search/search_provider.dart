@@ -22,12 +22,12 @@ class SearchProvider with ChangeNotifier {
     if (type == AllpassType.password) {
       _passwordList = [];
       passwordSearch = [];
-      _passwordList.addAll(Provider.of<PasswordProvider>(context).passwordList);
+      _passwordList.addAll(context.read<PasswordProvider>().passwordList);
       passwordSearch.addAll(_passwordList);
     } else if (type == AllpassType.card) {
       _cardList = [];
       cardSearch = [];
-      _cardList.addAll(Provider.of<CardProvider>(context).cardList);
+      _cardList.addAll(context.read<CardProvider>().cardList);
       cardSearch.addAll(_cardList);
     }
   }

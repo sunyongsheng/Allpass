@@ -55,7 +55,7 @@ class _PasswordPageState extends State<PasswordPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    PasswordProvider model = Provider.of<PasswordProvider>(context);
+    PasswordProvider model = context.watch();
 
     List<Widget> appbarActions = [
       IconButton(

@@ -35,7 +35,7 @@ class ClassificationDetailsPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: _getListView(context, _controller),
     );
   }

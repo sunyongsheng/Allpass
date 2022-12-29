@@ -105,7 +105,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    PasswordProvider provider = Provider.of<PasswordProvider>(context);
+    PasswordProvider provider = context.watch<PasswordProvider>();
     Color mainColor = Theme.of(context).primaryColor;
     EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
 
@@ -223,7 +223,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: _getMostUsedUsername(),
+                        children: _getMostUsedUsername(provider),
                       ),
                     )
                   ],
@@ -434,9 +434,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     );
   }
 
-  List<Widget> _getMostUsedUsername() {
+  List<Widget> _getMostUsedUsername(PasswordProvider passwordProvider) {
     List<Widget> usernameChips = [];
-    Provider.of<PasswordProvider>(context).mostUsedUsername.forEach((element) {
+    passwordProvider.mostUsedUsername.forEach((element) {
       usernameChips.add(Container(
         padding: EdgeInsets.only(right: 8),
         child: LabelChip(

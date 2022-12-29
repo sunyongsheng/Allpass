@@ -235,7 +235,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: Column(
         children: <Widget>[
           Expanded(

@@ -184,6 +184,9 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     String backup1 = Config.password;
     String? backup2 = Config.webDavPassword;
 
+    var passwordProvider = context.read<PasswordProvider>();
+    var cardProvider = context.read<CardProvider>();
+
     await EncryptUtil.initEncryptByKey(_latestKey!);
     try {
       Config.setPassword(EncryptUtil.encrypt(encryptHolder.decrypt(Config.password)));
@@ -200,8 +203,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateById(bean);
       }
-      await Provider.of<PasswordProvider>(context, listen: false).refresh();
-      await Provider.of<CardProvider>(context, listen: false).refresh();
+      await passwordProvider.refresh();
+      await cardProvider.refresh();
       ToastUtil.show(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
       return true;
     } catch (e) {
@@ -218,8 +221,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardDao.updateById(bean);
       }
-      await Provider.of<PasswordProvider>(context, listen: false).refresh();
-      await Provider.of<CardProvider>(context, listen: false).refresh();
+      await passwordProvider.refresh();
+      await cardProvider.refresh();
       ToastUtil.show(msg: "升级失败：$e");
       return false;
     }

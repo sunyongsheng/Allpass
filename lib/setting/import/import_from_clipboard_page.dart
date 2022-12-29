@@ -232,7 +232,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                       try {
                         List<PasswordBean> list = await parseText(_groupValue);
                         for (var bean in list) {
-                          await Provider.of<PasswordProvider>(context, listen: false).insertPassword(bean);
+                          await context.read<PasswordProvider>().insertPassword(bean);
                         }
                         ToastUtil.show(msg: "导入了${list.length}条记录");
                       } catch (e) {

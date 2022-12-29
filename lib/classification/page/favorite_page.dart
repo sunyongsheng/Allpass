@@ -32,7 +32,7 @@ class FavoritePage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: _getFavWidgetListView(context, _controller),
     );
   }
@@ -42,7 +42,7 @@ class FavoritePage extends StatelessWidget {
     List<Widget> list2 = [];
     List<Widget> all = [];
     var itemColor = Theme.of(context).cardTheme.color;
-    PasswordProvider provider1 = Provider.of<PasswordProvider>(context);
+    PasswordProvider provider1 = context.read();
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].fav == 1) {
@@ -57,7 +57,7 @@ class FavoritePage extends StatelessWidget {
       } catch (e) {
       }
     }
-    CardProvider provider2 = Provider.of<CardProvider>(context);
+    CardProvider provider2 = context.read();
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (provider2.cardList[index].fav == 1) {

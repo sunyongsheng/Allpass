@@ -102,7 +102,7 @@ class _EditCardPage extends State<EditCardPage> {
 
   @override
   Widget build(BuildContext context) {
-    CardProvider provider = Provider.of<CardProvider>(context);
+    CardProvider provider = context.watch<CardProvider>();
     Color mainColor = Theme.of(context).primaryColor;
     EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
 
@@ -224,7 +224,7 @@ class _EditCardPage extends State<EditCardPage> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: _getMostUsedOwnerName(),
+                        children: _getMostUsedOwnerName(provider),
                       ),
                     )
                   ],
@@ -418,9 +418,9 @@ class _EditCardPage extends State<EditCardPage> {
         ));
   }
 
-  List<Widget> _getMostUsedOwnerName() {
+  List<Widget> _getMostUsedOwnerName(CardProvider cardProvider) {
     List<Widget> chips = [];
-    Provider.of<CardProvider>(context).mostUsedOwnerName.forEach((element) {
+    cardProvider.mostUsedOwnerName.forEach((element) {
       chips.add(Container(
         padding: EdgeInsets.only(right: 8),
         child: LabelChip(

@@ -36,7 +36,7 @@ class _ViewCardPage extends State<ViewCardPage> {
     if (deleted) return Container();
 
     Color mainColor = Theme.of(context).primaryColor;
-    CardProvider provider = Provider.of<CardProvider>(context);
+    CardProvider provider = context.watch();
     CardBean bean = provider.currCard;
 
     if (bean == CardBean.empty) {
@@ -64,7 +64,7 @@ class _ViewCardPage extends State<ViewCardPage> {
             Padding(padding: AllpassEdgeInsets.smallLPadding,)
           ],
         ),
-        backgroundColor: Provider.of<ThemeProvider>(context).specialBackgroundColor,
+        backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
