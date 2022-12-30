@@ -83,28 +83,29 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                       return DefaultSelectItemDialog<String>(
                         list: ["7天", "10天", "15天", "30天", "永不"],
                         selector: (data) => data == initial,
+                        onSelected: (days) {
+                          if (days == "永不") {
+                            showDialog<bool>(
+                                context: context,
+                                builder: (context) => ConfirmDialog("确认选择", "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码")
+                            ).then((yes) {
+                              if (yes ?? false) {
+                                Config.setTimingInMainPassDays(36500);
+                              }
+                            });
+                          } else if (days == "7天") {
+                            Config.setTimingInMainPassDays(7);
+                          } else if (days == "10天") {
+                            Config.setTimingInMainPassDays(10);
+                          } else if (days == "15天") {
+                            Config.setTimingInMainPassDays(15);
+                          } else if (days == "30天") {
+                            Config.setTimingInMainPassDays(30);
+                          }
+                        },
                       );
                     }
-                ).then((days) {
-                  if (days == "永不") {
-                    showDialog<bool>(
-                        context: context,
-                      builder: (context) => ConfirmDialog("确认选择", "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码")
-                    ).then((yes) {
-                      if (yes ?? false) {
-                        Config.setTimingInMainPassDays(36500);
-                      }
-                    });
-                  } else if (days == "7天") {
-                    Config.setTimingInMainPassDays(7);
-                  } else if (days == "10天") {
-                    Config.setTimingInMainPassDays(10);
-                  } else if (days == "15天") {
-                    Config.setTimingInMainPassDays(15);
-                  } else if (days == "30天") {
-                    Config.setTimingInMainPassDays(30);
-                  }
-                });
+                );
               },
             ),
           ),

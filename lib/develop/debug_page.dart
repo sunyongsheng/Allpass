@@ -63,20 +63,19 @@ class _DebugPage extends State<DebugPage> {
                       context: context,
                       builder: (context) => DefaultSelectItemDialog<String>(
                         list: ["init_encrypt", "webdav_sync"],
+                        onSelected: (value) {
+                          if (value == "init_encrypt") {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => InitEncryptPage()
+                            ));
+                          } else if (value == "webdav_sync") {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => WebDavSyncPage()
+                            ));
+                          }
+                        },
                       )
-                  ).then((value) {
-                    if (value != null) {
-                      if (value == "init_encrypt") {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => InitEncryptPage()
-                        ));
-                      } else if (value == "webdav_sync") {
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => WebDavSyncPage()
-                        ));
-                      }
-                    }
-                  });
+                  );
                 },
               ),
             ),

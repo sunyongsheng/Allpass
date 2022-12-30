@@ -9,16 +9,15 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
 
   final bool Function(T) defaultSelector = (data) => false;
 
-  SelectItemDialog({required this.list, this.key, this.selector}): super(key: key);
+  SelectItemDialog({required this.list, this.key, this.selector})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("请选择"),
       content: SingleChildScrollView(
-        child: Column(
-            children: _getList(context)
-        ),
+        child: Column(children: _getList(context)),
       ),
       actions: buildActions(context),
     );
@@ -40,39 +39,43 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
 }
 
 class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
-
   final WidgetBuilder<T>? itemBuilder;
 
-  final WidgetBuilder<T> defaultItemBuilder = (_, data) => Text(data.toString());
+  final String Function(T)? titleBuilder;
+  final void Function(T) onSelected;
 
-  DefaultSelectItemDialog({required List<T> list, this.itemBuilder, Key? key, bool Function(T)? selector}) : super(
-    list: list,
-    key: key,
-    selector: selector
-  );
+  final Widget Function(T, String Function(T)?) defaultItemBuilder =
+      (data, titleBuilder) => Text(titleBuilder?.call(data) ?? data.toString());
 
+  DefaultSelectItemDialog(
+      {required List<T> list,
+      required this.onSelected,
+      this.itemBuilder,
+      this.titleBuilder,
+      Key? key,
+      bool Function(T)? selector})
+      : super(list: list, key: key, selector: selector);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("请选择"),
-      content: SingleChildScrollView(
-        child: Column(
-          children: _getList(context)
-        ),
-      )
-    );
+        title: Text("请选择"),
+        content: SingleChildScrollView(
+          child: Column(children: _getList(context)),
+        ));
   }
 
   @override
   Widget buildItem(BuildContext context, T data) {
     return ListTile(
-      title: itemBuilder?.call(context, data) ?? defaultItemBuilder(context, data),
-      trailing: selector?.call(data) ?? defaultSelector(data)
-          ? Icon(Icons.check, color: Colors.grey,)
-          : null,
-      onTap: () => Navigator.pop<T>(context, data),
-    );
+        title: itemBuilder?.call(context, data) ??
+            defaultItemBuilder(data, titleBuilder),
+        trailing: selector?.call(data) ?? defaultSelector(data)
+            ? Icon(Icons.check, color: Colors.grey)
+            : null,
+        onTap: () {
+          onSelected.call(data);
+          Navigator.pop<T>(context, data);
+        });
   }
-
 }

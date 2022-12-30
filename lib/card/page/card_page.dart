@@ -243,20 +243,19 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       showDialog(
           context: context,
           builder: (context) => DefaultSelectItemDialog<String>(
-              list: RuntimeData.folderList,
+            list: RuntimeData.folderList,
+            onSelected: (value) async {
+              for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
+                RuntimeData.multiCardList[i].folder = value;
+                await model.updateCard(RuntimeData.multiCardList[i]);
+              }
+              ToastUtil.show(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
+              setState(() {
+                RuntimeData.multiCardList.clear();
+              });
+            },
           )
-      ).then((value) async {
-        if (value != null) {
-          for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
-            RuntimeData.multiCardList[i].folder = value;
-            await model.updateCard(RuntimeData.multiCardList[i]);
-          }
-          ToastUtil.show(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
-          setState(() {
-            RuntimeData.multiCardList.clear();
-          });
-        }
-      });
+      );
     }
   }
 }
