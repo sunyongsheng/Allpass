@@ -25,8 +25,6 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   late bool _pressDownload;
   late WebDavSyncService _syncService;
 
-  List<String> levels = ["不加密", "仅加密密码字段", "全部加密"];
-
   @override
   void initState() {
     super.initState();
@@ -187,15 +185,14 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => DefaultSelectItemDialog<String>(
-                      list: levels,
-                      selector: (data) => data == EncryptLevels.getEncryptLevelName(Config.webDavEncryptLevel),
+                    builder: (context) => DefaultSelectItemDialog<EncryptItem>(
+                      list: encryptLevels,
+                      selector: (data) => data.level == Config.webDavEncryptLevel,
+                      onSelected: (item) {
+                        Config.setWevDavEncryptLevel(item.level.index);
+                      },
                     )
-                ).then((value) {
-                  if (value != null) {
-                    Config.setWevDavEncryptLevel(EncryptLevels.getEncryptLevelCode(value));
-                  }
-                });
+                );
               },
             ),
             padding: AllpassEdgeInsets.listInset,
@@ -203,11 +200,14 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("退出账号"),
-              leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[3],),
+              leading: Icon(
+                Icons.exit_to_app,
+                color: AllpassColorUI.allColor[3],
+              ),
               onTap: () {
                 showDialog<bool>(
                     context: context,
-                  builder: (context) => ConfirmDialog("确认退出", "退出账号后需要重新登录，是否继续？")
+                    builder: (context) => ConfirmDialog("确认退出", "退出账号后需要重新登录，是否继续？")
                 ).then((yes) {
                   if (yes ?? false) {
                     Config.setWebDavAuthSuccess(false);

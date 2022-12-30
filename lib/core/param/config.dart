@@ -46,7 +46,7 @@ class Config {
     webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
     webDavPasswordName = sp.getString(SPKeys.webDavPasswordName) ?? "allpass_password";
     webDavCardName = sp.getString(SPKeys.webDavCardName) ?? "allpass_card";
-    webDavEncryptLevel = EncryptLevels.getEncryptLevel(sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
+    webDavEncryptLevel = EncryptLevels.parse(sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
@@ -161,7 +161,7 @@ class Config {
   }
 
   static void setWevDavEncryptLevel(int value) {
-    webDavEncryptLevel = EncryptLevels.getEncryptLevel(value);
+    webDavEncryptLevel = EncryptLevels.parse(value);
     AllpassApplication.sp.setInt(SPKeys.webDavEncryptLevel, value);
   }
 
