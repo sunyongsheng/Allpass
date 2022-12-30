@@ -54,8 +54,8 @@ class CardBean extends BaseModel {
     } else {
       this.name = name!;
     } //name
-    if (notes == BaseModel.noneData) this.notes = "";
-    if (telephone == BaseModel.noneData) this.telephone = "";
+    if (notes == noneData) this.notes = "";
+    if (telephone == noneData) this.telephone = "";
     this.label = label ?? [];
   }
 
@@ -96,10 +96,11 @@ class CardBean extends BaseModel {
             key: map["uniqueKey"],
             name: map["name"],
             telephone: map["telephone"],
-            password: EncryptUtil.encrypt(map['password']),
+            password: map['password'],
             label: newLabel,
             createTime: map['createTime'],
             sortNumber: map['sortNumber']);
+
       case EncryptLevel.All:
         List<String> newLabel = [];
         if (map['label'] != null) {
@@ -120,6 +121,7 @@ class CardBean extends BaseModel {
             label: newLabel,
             createTime: EncryptUtil.decrypt(map['createTime']),
             sortNumber: map['sortNumber']);
+
       default:
         List<String> newLabel = [];
         if (map['label'] != null) {
@@ -134,7 +136,7 @@ class CardBean extends BaseModel {
             key: map["uniqueKey"],
             name: map["name"],
             telephone: map["telephone"],
-            password: map['password'],
+            password: EncryptUtil.decrypt(map['password']),
             label: newLabel,
             createTime: map['createTime'],
             sortNumber: map['sortNumber']
@@ -179,69 +181,6 @@ class CardBean extends BaseModel {
         "${bean.createTime},"
         "${bean.sortNumber}\n";
     return csv;
-  }
-
-  /// 将一个普通的CardBean转为加密的CardBean
-  static CardBean fromBean(CardBean pureBean, {EncryptLevel encryptLevel = EncryptLevel.OnlyPassword}) {
-    switch (encryptLevel) {
-      case EncryptLevel.None:
-        return CardBean(
-            key: pureBean.uniqueKey,
-            name: pureBean.name,
-            ownerName: pureBean.ownerName,
-            cardId: pureBean.cardId,
-            password: pureBean.password,
-            telephone: pureBean.telephone,
-            folder: pureBean.folder,
-            notes: pureBean.notes,
-            label: List.from(pureBean.label ?? []),
-            fav: pureBean.fav,
-            createTime: pureBean.createTime,
-            sortNumber: pureBean.sortNumber,
-            color: pureBean.color);
-      case EncryptLevel.All:
-        String name = EncryptUtil.encrypt(pureBean.name);
-        String ownerName = EncryptUtil.encrypt(pureBean.ownerName);
-        String cardId = EncryptUtil.encrypt(pureBean.cardId);
-        String telephone = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.telephone));
-        String folder = EncryptUtil.encrypt(pureBean.folder);
-        String notes = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.notes));
-        String createTime = EncryptUtil.encrypt(pureBean.createTime);
-        List<String> label = [];
-        for (String l in pureBean.label ?? []) {
-          label.add(EncryptUtil.encrypt(l));
-        }
-        return CardBean(
-            key: pureBean.uniqueKey,
-            name: name,
-            ownerName: ownerName,
-            cardId: cardId,
-            password: pureBean.password,
-            telephone: telephone,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: pureBean.fav,
-            createTime: createTime,
-            sortNumber: pureBean.sortNumber,
-            color: pureBean.color);
-      default:
-        String password = EncryptUtil.decrypt(pureBean.password);
-        return CardBean(
-            key: pureBean.uniqueKey,
-            name: pureBean.name,
-            ownerName: pureBean.ownerName,
-            cardId: pureBean.cardId,
-            password: password,
-            telephone: pureBean.telephone,
-            folder: pureBean.folder,
-            notes: pureBean.notes,
-            label: List.from(pureBean.label ?? []),
-            fav: pureBean.fav,
-            createTime: pureBean.createTime,
-            sortNumber: pureBean.sortNumber,
-            color: pureBean.color);
-    }
   }
 
   @override

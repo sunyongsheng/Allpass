@@ -54,8 +54,8 @@ class PasswordBean extends BaseModel {
     this.appId = appId;
     this.appName = appName;
 
-    if (url == BaseModel.noneData) this.url = "";
-    if (notes == BaseModel.noneData) this.notes = "";
+    if (url == noneData) this.url = "";
+    if (notes == noneData) this.notes = "";
   }
 
   @override
@@ -70,6 +70,8 @@ class PasswordBean extends BaseModel {
         this.password +
         ", url:" +
         this.url.toString() +
+        ", createTime:" +
+        this.createTime +
         ", folder:" +
         this.folder +
         ", label:" +
@@ -191,76 +193,6 @@ class PasswordBean extends BaseModel {
         "${bean.appId},"
         "${bean.appName}\n";
     return csv;
-  }
-
-  /// 将一个普通的PasswordBean转为加密的PasswordBean
-  static PasswordBean fromBean(PasswordBean pureBean, {EncryptLevel encryptLevel = EncryptLevel.None}) {
-    switch (encryptLevel) {
-      case EncryptLevel.OnlyPassword:
-        String _password = EncryptUtil.decrypt(pureBean.password);
-        return PasswordBean(
-            key: pureBean.uniqueKey,
-            name: pureBean.name,
-            username: pureBean.username,
-            password: _password,
-            url: pureBean.url,
-            folder: pureBean.folder,
-            notes: pureBean.notes,
-            label: List.from(pureBean.label ?? []),
-            fav: pureBean.fav,
-            createTime: pureBean.createTime,
-            color: pureBean.color,
-            sortNumber: pureBean.sortNumber,
-            appId: pureBean.appId,
-            appName: pureBean.appName
-        );
-      case EncryptLevel.All:
-        String name = EncryptUtil.encrypt(pureBean.name);
-        String username = EncryptUtil.encrypt(pureBean.username);
-        String url = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.url));
-        String folder = EncryptUtil.encrypt(pureBean.folder);
-        String notes = EncryptUtil.encrypt(BaseModel.isNoneDataOrItSelf(pureBean.notes));
-        List<String> label = [];
-        for (String l in pureBean.label ?? []) {
-          label.add(EncryptUtil.encrypt(l));
-        }
-        String createTime = EncryptUtil.encrypt(pureBean.createTime);
-        String? appId = pureBean.appId == null ? null : EncryptUtil.encrypt(pureBean.appId!);
-        String? appName = pureBean.appName == null ? null : EncryptUtil.encrypt(pureBean.appName!);
-        return PasswordBean(
-            key: pureBean.uniqueKey,
-            name: name,
-            username: username,
-            password: pureBean.password,
-            url: url,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: pureBean.fav,
-            createTime: createTime,
-            sortNumber: pureBean.sortNumber,
-            color: pureBean.color,
-            appId: appId,
-            appName: appName
-        );
-      default:
-        return PasswordBean(
-            key: pureBean.uniqueKey,
-            name: pureBean.name,
-            username: pureBean.username,
-            password: pureBean.password,
-            url: pureBean.url,
-            folder: pureBean.folder,
-            notes: pureBean.notes,
-            label: List.from(pureBean.label ?? []),
-            fav: pureBean.fav,
-            createTime: pureBean.createTime,
-            sortNumber: pureBean.sortNumber,
-            color: pureBean.color,
-            appId: pureBean.appId,
-            appName: pureBean.appName
-        );
-    }
   }
 
   @override
