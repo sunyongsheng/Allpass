@@ -35,21 +35,24 @@ class ExportTypeSelectPage extends StatelessWidget {
               title: Text("密码"),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () {
-                showDialog<bool>(
+                showDialog(
                     context: context,
-                    builder: (context) => ConfirmDialog("导出确认", "导出后的密码将被所有人可见，确认吗？")).then((confirm) {
-                  if (confirm != null && confirm) {
-                    showDialog<bool>(
-                        context: context,
-                        builder: (context) => InputMainPasswordDialog()
-                    ).then((right) async {
-                      if (right ?? false) {
-                        var directory = await getApplicationDocumentsDirectory();
-                        exportActual(context, Directory(directory.path), type: AllpassType.password);
-                      }
-                    });
-                  }
-                });
+                    builder: (context) => ConfirmDialog(
+                      "导出确认",
+                      "导出后的密码将被所有人可见，确认吗？",
+                      onConfirm: () {
+                        showDialog<bool>(
+                            context: context,
+                            builder: (context) => InputMainPasswordDialog()
+                        ).then((right) async {
+                          if (right ?? false) {
+                            var directory = await getApplicationDocumentsDirectory();
+                            exportActual(context, Directory(directory.path), type: AllpassType.password);
+                          }
+                        });
+                      },
+                    )
+                );
               },
             ),
           ),
@@ -58,23 +61,24 @@ class ExportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("卡片"),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
-              onTap: () {
-                showDialog<bool>(
-                    context: context,
-                    builder: (context) => ConfirmDialog("导出确认", "导出后的卡片将被所有人可见，确认吗？")).then((confirm) {
-                  if (confirm != null && confirm) {
-                    showDialog<bool>(
-                        context: context,
-                        builder: (context) => InputMainPasswordDialog()
-                    ).then((right) async{
-                      if (right ?? false) {
-                        var directory = await getApplicationDocumentsDirectory();
-                        exportActual(context, Directory(directory.path), type: AllpassType.card);
-                      }
-                    });
-                  }
-                });
-              },
+              onTap: () => showDialog<bool>(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    "导出确认",
+                    "导出后的卡片将被所有人可见，确认吗？",
+                    onConfirm: () {
+                      showDialog<bool>(
+                          context: context,
+                          builder: (context) => InputMainPasswordDialog()
+                      ).then((right) async{
+                        if (right ?? false) {
+                          var directory = await getApplicationDocumentsDirectory();
+                          exportActual(context, Directory(directory.path), type: AllpassType.card);
+                        }
+                      });
+                    },
+                  )
+              ),
             ),
           ),
           Container(
@@ -82,23 +86,24 @@ class ExportTypeSelectPage extends StatelessWidget {
             child: ListTile(
               title: Text("所有"),
               leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
-              onTap: () {
-                showDialog<bool>(
-                    context: context,
-                    builder: (context) => ConfirmDialog("导出确认", "导出后的数据将被所有人可见，确认吗？")).then((confirm) {
-                  if (confirm != null && confirm) {
-                    showDialog<bool>(
-                        context: context,
-                        builder: (context) => InputMainPasswordDialog()
-                    ).then((right) async{
-                      if (right ?? false) {
-                        var directory = await getApplicationDocumentsDirectory();
-                        exportActual(context, Directory(directory.path));
-                      }
-                    });
-                  }
-                });
-              },
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    "导出确认",
+                    "导出后的数据将被所有人可见，确认吗？",
+                    onConfirm: () {
+                      showDialog<bool>(
+                          context: context,
+                          builder: (context) => InputMainPasswordDialog()
+                      ).then((right) async{
+                        if (right ?? false) {
+                          var directory = await getApplicationDocumentsDirectory();
+                          exportActual(context, Directory(directory.path));
+                        }
+                      });
+                    },
+                  )
+              ),
             ),
           ),
         ],

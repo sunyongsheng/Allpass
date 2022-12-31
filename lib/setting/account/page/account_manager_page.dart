@@ -85,14 +85,16 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                         selector: (data) => data == initial,
                         onSelected: (days) {
                           if (days == "永不") {
-                            showDialog<bool>(
+                            showDialog(
                                 context: context,
-                                builder: (context) => ConfirmDialog("确认选择", "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码")
-                            ).then((yes) {
-                              if (yes ?? false) {
-                                Config.setTimingInMainPassDays(36500);
-                              }
-                            });
+                                builder: (context) => ConfirmDialog(
+                                  "确认选择",
+                                  "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码",
+                                  onConfirm: () {
+                                    Config.setTimingInMainPassDays(36500);
+                                  },
+                                )
+                            );
                           } else if (days == "7天") {
                             Config.setTimingInMainPassDays(7);
                           } else if (days == "10天") {
@@ -129,22 +131,25 @@ class _AccountManagerPage extends State<AccountManagerPage> {
               onTap: () {
                 showDialog(
                     context: context,
-                    builder: (context) => ConfirmDialog("确认删除", "此操作将删除所有数据，继续吗？", danger: true,)
-                ).then((confirm) {
-                  if (confirm) {
-                    // 二次确认
-                    showDialog(
-                      context: context,
-                      builder: (context) => InputMainPasswordDialog(),
-                    ).then((right) async {
-                      if (right) {
-                        await AllpassApplication.clearAll(context);
-                        ToastUtil.show(msg: "已删除所有数据");
-                        NavigationUtil.goLoginPage(context);
-                      }
-                    });
-                  }
-                });
+                    builder: (context) => ConfirmDialog(
+                      "确认删除",
+                      "此操作将删除所有数据，继续吗？",
+                      danger: true,
+                      onConfirm: () {
+                        // 二次确认
+                        showDialog(
+                          context: context,
+                          builder: (context) => InputMainPasswordDialog(),
+                        ).then((right) async {
+                          if (right) {
+                            await AllpassApplication.clearAll(context);
+                            ToastUtil.show(msg: "已删除所有数据");
+                            NavigationUtil.goLoginPage(context);
+                          }
+                        });
+                      },
+                    )
+                );
               },
             ),
           ),

@@ -222,17 +222,18 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     } else {
       showDialog<bool>(
           context: context,
-          builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
-            danger: true)
-      ).then((confirm) async {
-        if (confirm ?? false) {
-          for (var item in RuntimeData.multiCardList) {
-            await model.deleteCard(item);
-          }
-          RuntimeData.multiCardList.clear();
-        }
-      });
+          builder: (context) => ConfirmDialog(
+            "确认删除",
+            "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
+            danger: true,
+            onConfirm: () async {
+              for (var item in RuntimeData.multiCardList) {
+                await model.deleteCard(item);
+              }
+              RuntimeData.multiCardList.clear();
+            },
+          )
+      );
     }
   }
 

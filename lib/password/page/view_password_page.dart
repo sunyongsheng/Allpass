@@ -354,17 +354,20 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                     heroTag: "delete",
                     elevation: 0,
                     backgroundColor: Colors.redAccent,
-                    onPressed: () async {
-                      bool delete = await showDialog(
-                          context: context,
-                          builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？", danger: true,));
-                      if (delete) {
-                        deleted = true;
-                        await provider.deletePassword(bean);
-                        ToastUtil.show(msg: "删除成功");
-                        Navigator.pop(context);
-                      }
-                    },
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) => ConfirmDialog(
+                          "确认删除",
+                          "你将删除此密码，确认吗？",
+                          danger: true,
+                          onConfirm: () async {
+                            deleted = true;
+                            await provider.deletePassword(bean);
+                            ToastUtil.show(msg: "删除成功");
+                            Navigator.pop(context);
+                          },
+                        )
+                    ),
                     child: Icon(Icons.delete),
                   ),
                 ],

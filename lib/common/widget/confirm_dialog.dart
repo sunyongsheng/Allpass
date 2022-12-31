@@ -5,8 +5,13 @@ class ConfirmDialog extends StatelessWidget {
   final bool danger;
   final String _dialogMessage;
   final String _dialogTitle;
+  final void Function(bool)? onClick;
+  final void Function()? onConfirm;
 
-  ConfirmDialog(this._dialogTitle, this._dialogMessage, {this.key, this.danger = false}) : super(key: key);
+  ConfirmDialog(
+      this._dialogTitle,
+      this._dialogMessage,
+      {this.key, this.danger = false, this.onClick, this.onConfirm}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +29,15 @@ class ConfirmDialog extends StatelessWidget {
           child: Text("确认", style: TextStyle(color: mainColor),),
           onPressed: () async {
             Navigator.pop<bool>(context, true);
+            onClick?.call(true);
+            onConfirm?.call();
           },
         ),
         TextButton(
           child: Text("取消", style: TextStyle(color: Colors.grey)),
           onPressed: () {
             Navigator.pop<bool>(context, false);
+            onClick?.call(false);
           },
         )
       ],

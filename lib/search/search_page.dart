@@ -200,16 +200,19 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除密码"),
-          onTap: () async {
-            bool delete = await showDialog(
-                context: context,
-                builder: (context) => ConfirmDialog("确认删除", "你将删除此密码，确认吗？", danger: true,));
-            if (delete) {
-              await context.read<PasswordProvider>().deletePassword(data);
-              ToastUtil.show(msg: "删除成功");
-              Navigator.pop(context);
-            }
-          },
+          onTap: () => showDialog(
+              context: context,
+              builder: (context) => ConfirmDialog(
+                "确认删除",
+                "你将删除此密码，确认吗？",
+                danger: true,
+                onConfirm: () async {
+                  await context.read<PasswordProvider>().deletePassword(data);
+                  ToastUtil.show(msg: "删除成功");
+                  Navigator.pop(context);
+                },
+              )
+          ),
         )
       ],
     );
@@ -260,16 +263,19 @@ class _SearchPage extends State<SearchPage> {
         ListTile(
           leading: Icon(Icons.delete_outline, color: Colors.red,),
           title: Text("删除卡片"),
-          onTap: () async {
-            bool delete = await showDialog(
-                context: context,
-                builder: (context) => ConfirmDialog("确认删除", "你将删除此卡片，确认吗？", danger: true,));
-            if (delete) {
-              await context.read<CardProvider>().deleteCard(data);
-              ToastUtil.show(msg: "删除成功");
-              Navigator.pop(context);
-            }
-          }
+          onTap: () => showDialog(
+              context: context,
+              builder: (context) => ConfirmDialog(
+                "确认删除",
+                "你将删除此卡片，确认吗？",
+                danger: true,
+                onConfirm: () async {
+                  await context.read<CardProvider>().deleteCard(data);
+                  ToastUtil.show(msg: "删除成功");
+                  Navigator.pop(context);
+                },
+              )
+          )
         )
       ],
     );

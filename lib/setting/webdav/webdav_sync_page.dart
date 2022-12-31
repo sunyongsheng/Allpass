@@ -204,21 +204,21 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 Icons.exit_to_app,
                 color: AllpassColorUI.allColor[3],
               ),
-              onTap: () {
-                showDialog<bool>(
-                    context: context,
-                    builder: (context) => ConfirmDialog("确认退出", "退出账号后需要重新登录，是否继续？")
-                ).then((yes) {
-                  if (yes ?? false) {
-                    Config.setWebDavAuthSuccess(false);
-                    Config.setWebDavUsername(null);
-                    Config.setWebDavPassword(null);
-                    Config.setWebDavUrl(null);
-                    Config.setWebDavPort(null);
-                    Navigator.pop(context);
-                  }
-                });
-              },
+              onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    "确认退出",
+                    "退出账号后需要重新登录，是否继续？",
+                    onConfirm: () {
+                      Config.setWebDavAuthSuccess(false);
+                      Config.setWebDavUsername(null);
+                      Config.setWebDavPassword(null);
+                      Config.setWebDavUrl(null);
+                      Config.setWebDavPort(null);
+                      Navigator.pop(context);
+                    },
+                  )
+              ),
             ),
             padding: AllpassEdgeInsets.listInset,
           ),

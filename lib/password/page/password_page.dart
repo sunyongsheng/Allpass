@@ -223,16 +223,18 @@ class _PasswordPageState extends State<PasswordPage>
     } else {
       showDialog<bool>(
           context: context,
-          builder: (context) => ConfirmDialog("确认删除",
-              "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？", danger: true,)
-      ).then((confirm) async {
-        if (confirm ?? false) {
-          for (var item in RuntimeData.multiPasswordList) {
-            await model.deletePassword(item);
-          }
-          RuntimeData.multiPasswordList.clear();
-        }
-      });
+          builder: (context) => ConfirmDialog(
+            "确认删除",
+            "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？",
+            danger: true,
+            onConfirm: () async {
+              for (var item in RuntimeData.multiPasswordList) {
+                await model.deletePassword(item);
+              }
+              RuntimeData.multiPasswordList.clear();
+            },
+          )
+      );
     }
   }
 

@@ -175,13 +175,17 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             };
                           }
                           Navigator.pop(context);
-                          bool? res = await showDialog(
+                          showDialog(
                               context: context,
-                              builder: (context) => ConfirmDialog("确认删除", hintText, danger: true,)
+                              builder: (context) => ConfirmDialog(
+                                "确认删除",
+                                hintText,
+                                danger: true,
+                                onConfirm: () async {
+                                  await deleteCallback?.call();
+                                },
+                              )
                           );
-                          if (res != null && res) {
-                            await deleteCallback?.call();
-                          }
                         },
                       ),
                     )
