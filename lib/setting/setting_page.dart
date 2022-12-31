@@ -78,26 +78,26 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           onChanged: (sw) async {
             if (await _localAuthService.canAuthenticate()) {
               showDialog(context: context,
-                builder: (context) => InputMainPasswordDialog(),
-              ).then((right) async {
-                if (right) {
-                  var authResult = await _localAuthService.authenticate();
-                  switch (authResult) {
-                    case AuthResult.Success:
-                      await _localAuthService.stopAuthenticate();
-                      setState(() {
-                        Config.setEnabledBiometrics(sw);
-                      });
-                      ToastUtil.show(msg: "已开启生物识别");
-                      break;
-                    case AuthResult.NotAvailable:
-                      ToastUtil.show(msg: "生物识别不可用，请确保设备支持并已启用");
-                      break;
-                    default:
-                      ToastUtil.show(msg: "授权失败");
-                  }
-                }
-              });
+                builder: (context) => InputMainPasswordDialog(
+                  onVerified: () async {
+                    var authResult = await _localAuthService.authenticate();
+                    switch (authResult) {
+                      case AuthResult.Success:
+                        await _localAuthService.stopAuthenticate();
+                        setState(() {
+                          Config.setEnabledBiometrics(sw);
+                        });
+                        ToastUtil.show(msg: "已开启生物识别");
+                        break;
+                      case AuthResult.NotAvailable:
+                        ToastUtil.show(msg: "生物识别不可用，请确保设备支持并已启用");
+                        break;
+                      default:
+                        ToastUtil.show(msg: "授权失败");
+                    }
+                  },
+                ),
+              );
             } else {
               Config.setEnabledBiometrics(false);
               ToastUtil.show(msg: "您的设备似乎不支持生物识别");

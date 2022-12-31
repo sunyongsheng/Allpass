@@ -43,13 +43,13 @@ class ExportTypeSelectPage extends StatelessWidget {
                       onConfirm: () {
                         showDialog<bool>(
                             context: context,
-                            builder: (context) => InputMainPasswordDialog()
-                        ).then((right) async {
-                          if (right ?? false) {
-                            var directory = await getApplicationDocumentsDirectory();
-                            exportActual(context, Directory(directory.path), type: AllpassType.password);
-                          }
-                        });
+                            builder: (context) => InputMainPasswordDialog(
+                              onVerified: () async {
+                                var directory = await getApplicationDocumentsDirectory();
+                                exportActual(context, Directory(directory.path), type: AllpassType.password);
+                              },
+                            )
+                        );
                       },
                     )
                 );
@@ -69,13 +69,13 @@ class ExportTypeSelectPage extends StatelessWidget {
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,
-                          builder: (context) => InputMainPasswordDialog()
-                      ).then((right) async{
-                        if (right ?? false) {
-                          var directory = await getApplicationDocumentsDirectory();
-                          exportActual(context, Directory(directory.path), type: AllpassType.card);
-                        }
-                      });
+                          builder: (context) => InputMainPasswordDialog(
+                            onVerified: () async {
+                              var directory = await getApplicationDocumentsDirectory();
+                              exportActual(context, Directory(directory.path), type: AllpassType.card);
+                            },
+                          )
+                      );
                     },
                   )
               ),
@@ -94,13 +94,13 @@ class ExportTypeSelectPage extends StatelessWidget {
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,
-                          builder: (context) => InputMainPasswordDialog()
-                      ).then((right) async{
-                        if (right ?? false) {
-                          var directory = await getApplicationDocumentsDirectory();
-                          exportActual(context, Directory(directory.path));
-                        }
-                      });
+                          builder: (context) => InputMainPasswordDialog(
+                            onVerified: () async {
+                              var directory = await getApplicationDocumentsDirectory();
+                              exportActual(context, Directory(directory.path));
+                            },
+                          )
+                      );
                     },
                   )
               ),

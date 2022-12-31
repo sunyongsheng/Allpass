@@ -10,9 +10,12 @@ class InputMainPasswordDialog extends StatelessWidget {
   final Key? key;
   final String? helperText;
 
+  final void Function(bool)? onVerifyResult;
+  final void Function()? onVerified;
+
   final TextEditingController _passwordController = TextEditingController();
 
-  InputMainPasswordDialog({this.helperText, this.key}) : super(key: key);
+  InputMainPasswordDialog({this.helperText, this.onVerified, this.onVerifyResult, this.key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,22 +28,25 @@ class InputMainPasswordDialog extends StatelessWidget {
         autoFocus: true,
         helperText: helperText,
         obscureText: true,
-        onEditingComplete: () => submit(context),
+        onEditingComplete: () => _submit(context),
       ),
       actions: <Widget>[
         TextButton(
           child: Text("确认", style: TextStyle(color: mainColor)),
-          onPressed: () => submit(context),
+          onPressed: () => _submit(context),
         ),
         TextButton(
           child: Text("取消", style: TextStyle(color: mainColor)),
-          onPressed: () => Navigator.pop<bool>(context, false),
+          onPressed: () {
+            Navigator.pop<bool>(context, false);
+            onVerifyResult?.call(false);
+          },
         )
       ],
     );
   }
 
-  void submit(BuildContext context) {
+  void _submit(BuildContext context) {
     if (_passwordController.text.isEmpty) {
       ToastUtil.showError(msg: "请输入密码");
       return;
@@ -49,10 +55,13 @@ class InputMainPasswordDialog extends StatelessWidget {
       _passwordController.clear();
       Config.updateLatestUsePasswordTime();
       Navigator.pop<bool>(context, true);
+      onVerifyResult?.call(true);
+      onVerified?.call();
     } else {
       ToastUtil.show(msg: "密码错误");
       _passwordController.clear();
       Navigator.pop<bool>(context, false);
+      onVerifyResult?.call(false);
     }
   }
 

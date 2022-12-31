@@ -139,14 +139,14 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                         // 二次确认
                         showDialog(
                           context: context,
-                          builder: (context) => InputMainPasswordDialog(),
-                        ).then((right) async {
-                          if (right) {
-                            await AllpassApplication.clearAll(context);
-                            ToastUtil.show(msg: "已删除所有数据");
-                            NavigationUtil.goLoginPage(context);
-                          }
-                        });
+                          builder: (context) => InputMainPasswordDialog(
+                            onVerified: () async {
+                              await AllpassApplication.clearAll(context);
+                              ToastUtil.show(msg: "已删除所有数据");
+                              NavigationUtil.goLoginPage(context);
+                            },
+                          ),
+                        );
                       },
                     )
                 );
