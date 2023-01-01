@@ -1,3 +1,4 @@
+import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_apps/device_apps.dart';
@@ -8,7 +9,7 @@ import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/login/page/init_encrypt_page.dart';
-import 'package:allpass/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/password/widget/select_app_dialog.dart';
 
@@ -70,7 +71,10 @@ class _DebugPage extends State<DebugPage> {
                             ));
                           } else if (value == "webdav_sync") {
                             Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => WebDavSyncPage()
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (context) => WebDavSyncProvider(),
+                                  child: WebDavSyncPage(),
+                                )
                             ));
                           }
                         },

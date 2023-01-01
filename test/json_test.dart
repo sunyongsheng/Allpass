@@ -1,21 +1,26 @@
-import 'package:allpass/core/model/data/base_model.dart';
-import 'package:allpass/password/model/password_bean.dart';
+import 'dart:convert';
+
 import 'package:allpass/core/enums/allpass_type.dart';
+import 'package:allpass/core/enums/encrypt_level.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/model/password_extension.dart';
 import 'package:allpass/util/allpass_file_util.dart';
+import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  List<BaseModel> testData1 = [PasswordBean(
-    key: 1,
-    username: "test",
-    password: "121321321",
-    url: "https://www.aengus.top",
-    folder: "默认",
-    name: "test1",
-    fav: 1,
-    notes: "hhhhhh",
-    label: ["aaa", "bbb"]
-  ), PasswordBean(
+  List<PasswordBean> testData1 = [
+    PasswordBean(
+        key: 1,
+        username: "test",
+        password: "121321321",
+        url: "https://www.aengus.top",
+        folder: "默认",
+        name: "test1",
+        fav: 1,
+        notes: "hhhhhh",
+        label: ["aaa", "bbb"]),
+    PasswordBean(
         key: 2,
         username: "testtest",
         password: "121321321",
@@ -24,24 +29,20 @@ void main() {
         name: "test1",
         fav: 1,
         notes: "hhhhhh",
-        label: []
-    )];
-  String test1;
-  test("编码测试", () {
-    test1 = AllpassFileUtil.encodeList(testData1)!;
-    print(test1);
-  });
+        label: [])
+  ];
 
-  test("译码测试", () {
-    test1 = AllpassFileUtil.encodeList(testData1)!;
-    print(AllpassFileUtil.decodeList(test1, AllpassType.password));
-  });
+  test("新备份数据结构测试", () {
+    var encryptLevel = EncryptLevel.OnlyPassword;
+    BackupFile file = BackupFile(
+        metaData: FileMetaData(
+            type: AllpassType.password,
+            appVersion: "2.0.0",
+            encryptLevel: encryptLevel),
+        data: jsonEncode(testData1.encrypt(encryptLevel)));
+    var fileContent = jsonEncode(file);
 
-  test("文件夹与标签测试", () {
-    List<String> folderList = ["aaa", "bbb", "ccc"];
-    var labelList = ["AAA", "BBB", 'CCC'];
-    test1 = AllpassFileUtil.encodeFolderAndLabel(folderList, labelList);
-    print(test1);
-    print(AllpassFileUtil.decodeFolderAndLabel(test1));
+    BackupFile recoveryFile = BackupFile.fromJson(json.decode(fileContent));
+    assert(file.data == recoveryFile.data);
   });
 }

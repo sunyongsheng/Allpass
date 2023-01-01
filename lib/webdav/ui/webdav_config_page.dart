@@ -1,3 +1,5 @@
+import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
+import 'package:allpass/webdav/service/webdav_requester.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,11 +8,11 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/webdav_util.dart';
-import 'package:allpass/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/common/widget/loading_text_button.dart';
+import 'package:provider/provider.dart';
 
 class WebDavConfigPage extends StatefulWidget {
   @override
@@ -25,7 +27,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   late TextEditingController _portController;
-  late WebDavUtil _utils;
+  late WebDavRequester _utils;
 
   bool _pressNext = false;
   bool _passwordVisible = false;
@@ -40,7 +42,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _frameDone = true;
     });
-    _utils = WebDavUtil();
+    _utils = WebDavRequester();
     super.initState();
   }
 
@@ -203,7 +205,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         });
         return;
       }
-      bool auth = await _utils.authConfirm();
+      bool auth = await _utils.authorityCheck();
       if (auth) {
         Config.setWebDavUrl(_utils.urlPath);
         Config.setWebDavUsername(_utils.username);
@@ -211,7 +213,12 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         Config.setWebDavPort(_utils.port);
         Config.setWebDavAuthSuccess(true);
         ToastUtil.show(msg: "账号验证成功");
-        Navigator.pushReplacement(context, CupertinoPageRoute(builder: (context) => WebDavSyncPage()));
+        Navigator.pushReplacement(context, CupertinoPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+              create: (context) => WebDavSyncProvider(),
+              child: WebDavSyncPage(),
+            )
+        ));
       } else {
         Config.setWebDavAuthSuccess(false);
         ToastUtil.show(msg: "验证失败，请重试");

@@ -57,4 +57,11 @@ class StringUtil {
     }
     return "";
   }
+
+  static String ensureEndsWith(String text, String end) {
+    if (text.endsWith(end)) {
+      return text;
+    }
+    return text + end;
+  }
 }

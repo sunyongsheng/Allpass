@@ -1,31 +1,29 @@
 import 'dart:convert';
 
+import 'package:allpass/card/data/card_dao.dart';
+import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/core/param/config.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/core/route/routes.dart';
+import 'package:allpass/core/service/allpass_service.dart';
+import 'package:allpass/core/service/auth_service.dart';
+import 'package:allpass/password/data/password_dao.dart';
+import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/data/password_repository.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/model/simple_user.dart';
+import 'package:allpass/util/csv_util.dart';
+import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/webdav/service/webdav_sync_service.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:fluro/fluro.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:allpass/core/route/routes.dart';
-import 'package:allpass/core/param/config.dart';
-import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/util/csv_util.dart';
-import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/password/data/password_dao.dart';
-import 'package:allpass/card/data/card_dao.dart';
-import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/password/model/simple_user.dart';
-import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/core/service/auth_service.dart';
-import 'package:allpass/core/service/allpass_service.dart';
-import 'package:allpass/core/service/webdav_sync_service.dart';
-
 class AllpassApplication {
-
   AllpassApplication._();
 
   static GlobalKey<NavigatorState> navigationKey = GlobalKey();
@@ -51,6 +49,8 @@ class AllpassApplication {
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
     getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
+
+    getIt.registerSingleton(PasswordRepository());
 
     getIt.registerSingleton(PasswordDao());
     getIt.registerSingleton(CardDao());

@@ -18,9 +18,7 @@ class Config {
   static late String? webDavUsername; // WebDAV用户名
   static late String? webDavPassword; // WebDAV密码
   static late int? webDavPort; // WebDAV端口号
-  static late String webDavPasswordName; // WebDAV备份密码文件名
-  static late String webDavCardName; // WebDAV备份卡片文件名
-  static late EncryptLevel webDavEncryptLevel; // WebDAV备份加密等级 0：不加密；1：密码字段；2：全加密
+  static late EncryptLevel webDavEncryptLevel; // WebDAV备份加密等级 EncryptLevel.index
   static late String? webDavUploadTime; // WebDAV上次上传时间
   static late String? webDavDownloadTime; // WebDAV上次下载时间
   static late int timingInMainPassword; // 定期输入主密码天数
@@ -44,8 +42,6 @@ class Config {
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
     webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
-    webDavPasswordName = sp.getString(SPKeys.webDavPasswordName) ?? "allpass_password";
-    webDavCardName = sp.getString(SPKeys.webDavCardName) ?? "allpass_card";
     webDavEncryptLevel = EncryptLevels.parse(sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
@@ -67,8 +63,6 @@ class Config {
     webDavUsername = "";
     webDavPassword = "";
     webDavPort = 443;
-    webDavPasswordName = "allpass_password";
-    webDavCardName = "allpass_card";
     webDavEncryptLevel = EncryptLevel.OnlyPassword;
     timingInMainPassword = 10;
     RuntimeData.clearData();
@@ -148,16 +142,6 @@ class Config {
     } else {
       AllpassApplication.sp.setInt(SPKeys.webDavPort, value);
     }
-  }
-
-  static void setPasswordFileName(String value) {
-    webDavPasswordName = value;
-    AllpassApplication.sp.setString(SPKeys.webDavPasswordName, value);
-  }
-
-  static void setCardFileName(String value) {
-    webDavCardName = value;
-    AllpassApplication.sp.setString(SPKeys.webDavCardName, value);
   }
 
   static void setWevDavEncryptLevel(int value) {

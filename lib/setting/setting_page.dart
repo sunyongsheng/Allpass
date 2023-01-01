@@ -1,3 +1,4 @@
+import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share/share.dart';
@@ -20,8 +21,8 @@ import 'package:allpass/setting/theme/theme_select_page.dart';
 import 'package:allpass/setting/account/page/account_manager_page.dart';
 import 'package:allpass/setting/category/category_manager_page.dart';
 import 'package:allpass/setting/import/import_export_page.dart';
-import 'package:allpass/setting/webdav/webdav_config_page.dart';
-import 'package:allpass/setting/webdav/webdav_sync_page.dart';
+import 'package:allpass/webdav/ui/webdav_config_page.dart';
+import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
 
@@ -156,7 +157,10 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         onTap: () {
           if (Config.webDavAuthSuccess) {
             Navigator.push(context, CupertinoPageRoute(
-              builder: (context) => WebDavSyncPage(),
+              builder: (context) => ChangeNotifierProvider(
+                create: (context) => WebDavSyncProvider(),
+                child: WebDavSyncPage(),
+              ),
             ));
           } else {
             Navigator.push(context, CupertinoPageRoute(
