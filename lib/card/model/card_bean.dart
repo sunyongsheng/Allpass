@@ -1,14 +1,12 @@
-import 'package:allpass/core/enums/encrypt_level.dart';
-import 'package:flutter/material.dart';
-
 import 'package:allpass/core/model/data/base_model.dart';
-import 'package:allpass/util/string_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/string_util.dart';
+import 'package:flutter/material.dart';
 
 /// 保存“卡片”数据
 class CardBean extends BaseModel {
-
-  static CardBean empty = CardBean(key: -1, name: "", ownerName: "", cardId: "");
+  static CardBean empty =
+      CardBean(key: -1, name: "", ownerName: "", cardId: "");
 
   late int? uniqueKey; // 1 ID
   late String name; // 2 卡片名称
@@ -21,7 +19,7 @@ class CardBean extends BaseModel {
   late List<String>? label; // 9 标签
   late int fav; // 10 是否标心
   late String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
-  late int sortNumber;  // 12 排序号
+  late int sortNumber; // 12 排序号
 
   CardBean(
       {int? key,
@@ -72,7 +70,7 @@ class CardBean extends BaseModel {
   }
 
   /// 将Map转化为普通的CardBean
-  static CardBean fromJson(Map<String, dynamic> map, {EncryptLevel encryptLevel = EncryptLevel.OnlyPassword}) {
+  static CardBean fromJson(Map<String, dynamic> map) {
     assert(map["name"] != null);
     assert(map["ownerName"] != null);
     assert(map["cardId"] != null);
@@ -81,67 +79,24 @@ class CardBean extends BaseModel {
     assert(map["fav"] != null);
     assert(map["password"] != null);
     assert(map['notes'] != null);
-    switch (encryptLevel) {
-      case EncryptLevel.None:
-        List<String> newLabel = [];
-        if (map['label'] != null) {
-          newLabel = StringUtil.waveLineSegStr2List(map['label']);
-        }
-        return CardBean(
-            ownerName: map['ownerName'],
-            cardId: map["cardId"],
-            folder: map["folder"],
-            notes: map["notes"],
-            fav: map["fav"],
-            key: map["uniqueKey"],
-            name: map["name"],
-            telephone: map["telephone"],
-            password: map['password'],
-            label: newLabel,
-            createTime: map['createTime'],
-            sortNumber: map['sortNumber']);
 
-      case EncryptLevel.All:
-        List<String> newLabel = [];
-        if (map['label'] != null) {
-          for (String str in StringUtil.waveLineSegStr2List(map['label'])) {
-            newLabel.add(EncryptUtil.decrypt(str));
-          }
-        }
-        return CardBean(
-            ownerName: EncryptUtil.decrypt(map['ownerName']),
-            cardId: EncryptUtil.decrypt(map['cardId']),
-            folder: EncryptUtil.decrypt(map["folder"]),
-            notes: EncryptUtil.decrypt(map["notes"]),
-            fav: map["fav"],
-            key: map["uniqueKey"],
-            name: EncryptUtil.decrypt(map["name"]),
-            telephone: EncryptUtil.decrypt(map["telephone"]),
-            password: map['password'],
-            label: newLabel,
-            createTime: EncryptUtil.decrypt(map['createTime']),
-            sortNumber: map['sortNumber']);
-
-      default:
-        List<String> newLabel = [];
-        if (map['label'] != null) {
-          newLabel = StringUtil.waveLineSegStr2List(map['label']);
-        }
-        return CardBean(
-            ownerName: map['ownerName'],
-            cardId: map["cardId"],
-            folder: map["folder"],
-            notes: map["notes"],
-            fav: map["fav"],
-            key: map["uniqueKey"],
-            name: map["name"],
-            telephone: map["telephone"],
-            password: EncryptUtil.decrypt(map['password']),
-            label: newLabel,
-            createTime: map['createTime'],
-            sortNumber: map['sortNumber']
-        );
+    List<String> newLabel = [];
+    if (map['label'] != null) {
+      newLabel = StringUtil.waveLineSegStr2List(map['label']);
     }
+    return CardBean(
+        ownerName: map['ownerName'],
+        cardId: map["cardId"],
+        folder: map["folder"],
+        notes: map["notes"],
+        fav: map["fav"],
+        key: map["uniqueKey"],
+        name: map["name"],
+        telephone: map["telephone"],
+        password: map['password'],
+        label: newLabel,
+        createTime: map['createTime'],
+        sortNumber: map['sortNumber']);
   }
 
   /// 将CardBean转化为Map
@@ -198,5 +153,4 @@ class CardBean extends BaseModel {
     }
     return false;
   }
-
 }

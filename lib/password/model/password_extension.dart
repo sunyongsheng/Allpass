@@ -3,10 +3,14 @@ import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';
 
-extension PasswordEncrypter on PasswordBean {
-  PasswordBean encrypt(EncryptLevel level) {
-    switch (level) {
-      case EncryptLevel.OnlyPassword:
+extension PasswordEncrypt on PasswordBean {
+  /// 内存中的PasswordBean password字段始终都是加密的
+  ///
+  /// 将内存的PasswordBean转为通用的PasswordBean
+  PasswordBean encrypt(EncryptLevel targetLevel) {
+    switch (targetLevel) {
+      // 若目标加密等级为None，则需将password字段进行解密
+      case EncryptLevel.None:
         String _password = EncryptUtil.decrypt(this.password);
         return PasswordBean(
             key: this.uniqueKey,
@@ -23,7 +27,7 @@ extension PasswordEncrypter on PasswordBean {
             sortNumber: this.sortNumber,
             appId: this.appId,
             appName: this.appName);
-
+      // 若目标加密等级为All，则需除password字段字段全部加密
       case EncryptLevel.All:
         String name = EncryptUtil.encrypt(this.name);
         String username = EncryptUtil.encrypt(this.username);
@@ -35,8 +39,10 @@ extension PasswordEncrypter on PasswordBean {
           label.add(EncryptUtil.encrypt(l));
         }
         String createTime = EncryptUtil.encrypt(this.createTime);
-        String? appId = this.appId == null ? null : EncryptUtil.encrypt(this.appId!);
-        String? appName = this.appName == null ? null : EncryptUtil.encrypt(this.appName!);
+        String? appId =
+            this.appId == null ? null : EncryptUtil.encrypt(this.appId!);
+        String? appName =
+            this.appName == null ? null : EncryptUtil.encrypt(this.appName!);
         return PasswordBean(
             key: this.uniqueKey,
             name: name,
@@ -52,8 +58,8 @@ extension PasswordEncrypter on PasswordBean {
             color: this.color,
             appId: appId,
             appName: appName);
-
-      default:
+      // 若目标加密等级为OnlyPassword，则不需做任何操作
+      case EncryptLevel.OnlyPassword:
         return PasswordBean(
             key: this.uniqueKey,
             name: this.name,
@@ -71,13 +77,94 @@ extension PasswordEncrypter on PasswordBean {
             appName: this.appName);
     }
   }
+
+  /// 将通用的PasswordBean转为内存中的PasswordBean
+  PasswordBean decrypt(EncryptLevel currentLevel) {
+    switch (currentLevel) {
+      // 若当前加密等级为OnlyPassword，则与内存中PasswordBean相同
+      case EncryptLevel.OnlyPassword:
+        return PasswordBean(
+            key: this.uniqueKey,
+            name: this.name,
+            username: this.username,
+            password: this.password,
+            url: this.url,
+            folder: this.folder,
+            notes: this.notes,
+            label: List.from(this.label ?? []),
+            fav: this.fav,
+            createTime: this.createTime,
+            sortNumber: this.sortNumber,
+            color: this.color,
+            appId: this.appId,
+            appName: this.appName);
+
+      // 若当前加密等级为All，则需将除password以外的字段全部解密
+      case EncryptLevel.All:
+        String name = EncryptUtil.decrypt(this.name);
+        String username = EncryptUtil.decrypt(this.username);
+        String url = EncryptUtil.decrypt(this.url.noneDataOrNot());
+        String folder = EncryptUtil.decrypt(this.folder);
+        String notes = EncryptUtil.decrypt(this.notes.noneDataOrNot());
+        List<String> label = [];
+        for (String l in this.label ?? []) {
+          label.add(EncryptUtil.decrypt(l));
+        }
+        String createTime = EncryptUtil.decrypt(this.createTime);
+        String? appId =
+            this.appId == null ? null : EncryptUtil.decrypt(this.appId!);
+        String? appName =
+            this.appName == null ? null : EncryptUtil.decrypt(this.appName!);
+        return PasswordBean(
+            key: this.uniqueKey,
+            name: name,
+            username: username,
+            password: this.password,
+            url: url,
+            folder: folder,
+            notes: notes,
+            label: label,
+            fav: this.fav,
+            createTime: createTime,
+            sortNumber: this.sortNumber,
+            color: this.color,
+            appId: appId,
+            appName: appName);
+      // 若当前加密等级为None，则需将password字段进行加密
+      case EncryptLevel.None:
+        String _password = EncryptUtil.encrypt(this.password);
+        return PasswordBean(
+            key: this.uniqueKey,
+            name: this.name,
+            username: this.username,
+            password: _password,
+            url: this.url,
+            folder: this.folder,
+            notes: this.notes,
+            label: List.from(this.label ?? []),
+            fav: this.fav,
+            createTime: this.createTime,
+            color: this.color,
+            sortNumber: this.sortNumber,
+            appId: this.appId,
+            appName: this.appName);
+    }
+  }
 }
 
 extension PassowrdList on List<PasswordBean> {
-  List<PasswordBean> encrypt(EncryptLevel level) {
+  List<PasswordBean> encrypt(EncryptLevel targetLevel) {
     List<PasswordBean> passwords = [];
     for (var bean in this) {
-      passwords.add(bean.encrypt(level));
+      passwords.add(bean.encrypt(targetLevel));
+    }
+    return passwords;
+  }
+
+  List<PasswordBean> decrypt(EncryptLevel currentLevel) {
+    List<PasswordBean> passwords = [];
+    for (var bean in this) {
+      passwords.add(bean.decrypt(currentLevel));
     }
     return passwords;
   }
