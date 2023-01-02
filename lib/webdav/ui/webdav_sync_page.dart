@@ -97,6 +97,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("数据恢复方式"),
+              subtitle: Text("${Config.webDavMergeMethod.name}"),
               leading: Icon(
                 Icons.merge_type_rounded,
                 color: AllpassColorUI.allColor[2],
@@ -110,7 +111,9 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                       itemTitleBuilder: (data) => data.method.name,
                       itemSubtitleBuilder: (data) => data.desc,
                       onSelected: (item) {
-                        Config.setWebDavMergeMethod(item.method);
+                        setState(() {
+                          Config.setWebDavMergeMethod(item.method);
+                        });
                       },
                     ));
               },
@@ -120,6 +123,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("加密等级"),
+              subtitle: Text("${Config.webDavEncryptLevel.name}"),
               leading: Icon(
                 Icons.enhanced_encryption,
                 color: AllpassColorUI.allColor[5],
@@ -156,7 +160,9 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                           itemTitleBuilder: (data) => data.level.name,
                           itemSubtitleBuilder: (data) => data.desc,
                           onSelected: (item) {
-                            Config.setWevDavEncryptLevel(item.level);
+                            setState(() {
+                              Config.setWevDavEncryptLevel(item.level);
+                            });
                           },
                         ));
               },
@@ -166,6 +172,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Container(
             child: ListTile(
               title: Text("退出账号"),
+              subtitle: Text("${Config.webDavUsername}"),
               leading: Icon(
                 Icons.exit_to_app,
                 color: AllpassColorUI.allColor[3],
