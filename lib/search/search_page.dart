@@ -81,8 +81,7 @@ class _SearchPage extends State<SearchPage> {
           focusNode.unfocus();
           showModalBottomSheet(
               context: context,
-              builder: (context) => createPassBottomSheet(context, item)
-          );
+              builder: (context) => createPassBottomSheet(context, item));
         },
       );
     } else if (type == AllpassType.card) {
@@ -93,8 +92,7 @@ class _SearchPage extends State<SearchPage> {
           focusNode.unfocus();
           showModalBottomSheet(
               context: context,
-              builder: (context) => createCardBottomSheet(context, item)
-          );
+              builder: (context) => createCardBottomSheet(context, item));
         },
       );
     }
@@ -108,8 +106,8 @@ class _SearchPage extends State<SearchPage> {
         child: Row(
           children: <Widget>[
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
+                child: Container(
+                  decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
                   color: Theme.of(context).inputDecorationTheme.fillColor,
                 ),
@@ -153,28 +151,38 @@ class _SearchPage extends State<SearchPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
+          leading: Icon(
+            Icons.remove_red_eye,
+            color: Colors.lightGreen,
+          ),
           title: Text("查看"),
           onTap: () {
             Navigator.pop(context);
             context.read<PasswordProvider>().previewPassword(bean: data);
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewPasswordPage())
-            );
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => ViewPasswordPage()));
           },
         ),
         ListTile(
-          leading: Icon(Icons.edit, color: Colors.blue,),
+          leading: Icon(
+            Icons.edit,
+            color: Colors.blue,
+          ),
           title: Text("编辑"),
           onTap: () {
             Navigator.pop(context);
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => EditPasswordPage(data, DataOperation.update))
-            );
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) =>
+                        EditPasswordPage(data, DataOperation.update)));
           },
         ),
         ListTile(
-          leading: Icon(Icons.person, color: Colors.teal,),
+          leading: Icon(
+            Icons.person,
+            color: Colors.teal,
+          ),
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.username));
@@ -183,7 +191,10 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.content_copy, color: Colors.orange,),
+          leading: Icon(
+            Icons.content_copy,
+            color: Colors.orange,
+          ),
           title: Text("复制密码"),
           onTap: () async {
             String pw = EncryptUtil.decrypt(data.password);
@@ -193,21 +204,25 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.delete_outline, color: Colors.red,),
+          leading: Icon(
+            Icons.delete_outline,
+            color: Colors.red,
+          ),
           title: Text("删除密码"),
           onTap: () => showDialog(
               context: context,
               builder: (context) => ConfirmDialog(
-                "确认删除",
-                "你将删除此密码，确认吗？",
-                danger: true,
-                onConfirm: () async {
-                  await context.read<PasswordProvider>().deletePassword(data);
-                  ToastUtil.show(msg: "删除成功");
-                  Navigator.pop(context);
-                },
-              )
-          ),
+                    "确认删除",
+                    "你将删除此密码，确认吗？",
+                    danger: true,
+                    onConfirm: () async {
+                      await context
+                          .read<PasswordProvider>()
+                          .deletePassword(data);
+                      ToastUtil.show(msg: "删除成功");
+                      Navigator.pop(context);
+                    },
+                  )),
         )
       ],
     );
@@ -219,26 +234,36 @@ class _SearchPage extends State<SearchPage> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: Icon(Icons.remove_red_eye, color: Colors.lightGreen,),
-          title: Text("查看"),
-          onTap: () {
-            Navigator.pop(context);
-            context.read<CardProvider>().previewCard(bean: data);
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => ViewCardPage())
-            );
-          }),
+            leading: Icon(
+              Icons.remove_red_eye,
+              color: Colors.lightGreen,
+            ),
+            title: Text("查看"),
+            onTap: () {
+              Navigator.pop(context);
+              context.read<CardProvider>().previewCard(bean: data);
+              Navigator.push(context,
+                  CupertinoPageRoute(builder: (context) => ViewCardPage()));
+            }),
         ListTile(
-          leading: Icon(Icons.edit, color: Colors.blue,),
-          title: Text("编辑"),
-          onTap: () {
-            Navigator.pop(context);
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => EditCardPage(data, DataOperation.update))
-            );
-          }),
+            leading: Icon(
+              Icons.edit,
+              color: Colors.blue,
+            ),
+            title: Text("编辑"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) =>
+                          EditCardPage(data, DataOperation.update)));
+            }),
         ListTile(
-          leading: Icon(Icons.person, color: Colors.teal,),
+          leading: Icon(
+            Icons.person,
+            color: Colors.teal,
+          ),
           title: Text("复制用户名"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.ownerName));
@@ -247,7 +272,10 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.content_copy, color: Colors.orange,),
+          leading: Icon(
+            Icons.content_copy,
+            color: Colors.orange,
+          ),
           title: Text("复制卡号"),
           onTap: () {
             Clipboard.setData(ClipboardData(text: data.cardId));
@@ -256,22 +284,23 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.delete_outline, color: Colors.red,),
-          title: Text("删除卡片"),
-          onTap: () => showDialog(
-              context: context,
-              builder: (context) => ConfirmDialog(
-                "确认删除",
-                "你将删除此卡片，确认吗？",
-                danger: true,
-                onConfirm: () async {
-                  await context.read<CardProvider>().deleteCard(data);
-                  ToastUtil.show(msg: "删除成功");
-                  Navigator.pop(context);
-                },
-              )
-          )
-        )
+            leading: Icon(
+              Icons.delete_outline,
+              color: Colors.red,
+            ),
+            title: Text("删除卡片"),
+            onTap: () => showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog(
+                      "确认删除",
+                      "你将删除此卡片，确认吗？",
+                      danger: true,
+                      onConfirm: () async {
+                        await context.read<CardProvider>().deleteCard(data);
+                        ToastUtil.show(msg: "删除成功");
+                        Navigator.pop(context);
+                      },
+                    )))
       ],
     );
   }

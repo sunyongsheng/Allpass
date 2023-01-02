@@ -1,64 +1,107 @@
+import 'dart:io';
+
+import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/core/param/config.dart';
+import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/util/toast_util.dart';
+import 'package:animations/animations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:animations/animations.dart';
 
-import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/core/param/config.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
+class PlatformCardWidget extends StatelessWidget {
+  final CardBean data;
 
-class MaterialCardWidget extends StatelessWidget {
+  final WidgetBuilder pageCreator;
 
+  final VoidCallback? onCardClicked;
+
+  const PlatformCardWidget(
+      {Key? key,
+      required this.data,
+      required this.pageCreator,
+      this.onCardClicked})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return _CardWidgetItem(
+        key: key,
+        data: data,
+        onCardClicked: () {
+          onCardClicked?.call();
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => pageCreator.call(context)));
+        },
+      );
+    } else {
+      return _MaterialCardWidget(
+          data: data,
+          pageCreator: pageCreator,
+          key: key,
+          onCardClicked: onCardClicked);
+    }
+  }
+}
+
+class _MaterialCardWidget extends StatelessWidget {
   final Key? key;
 
   final CardBean data;
 
-  final Widget Function() pageCreator;
+  final WidgetBuilder pageCreator;
 
   final VoidCallback? onCardClicked;
 
-  MaterialCardWidget({
-    this.key,
-    required this.data,
-    required this.pageCreator,
-    this.onCardClicked
-  }) : super(key: key);
+  const _MaterialCardWidget(
+      {this.key,
+      required this.data,
+      required this.pageCreator,
+      this.onCardClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return OpenContainer(
       openBuilder: (context, closedContainer) {
-        return pageCreator.call();
+        return pageCreator.call(context);
       },
       openColor: data.color ?? backgroundColor,
       closedColor: data.color ?? backgroundColor,
       closedShape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+        borderRadius:
+            BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
       ),
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
-        return CardWidgetItem(key: key, data: data, onCardClicked: () {
-          onCardClicked?.call();
-          openContainer();
-        });
+        return _CardWidgetItem(
+            key: key,
+            data: data,
+            onCardClicked: () {
+              onCardClicked?.call();
+              openContainer();
+            });
       },
     );
   }
 }
 
-class CardWidgetItem extends StatelessWidget {
-
+class _CardWidgetItem extends StatelessWidget {
   final Key? key;
 
   final CardBean data;
 
   final VoidCallback? onCardClicked;
 
-  CardWidgetItem({this.key, required this.data, this.onCardClicked}) : super(key: key);
+  const _CardWidgetItem({this.key, required this.data, this.onCardClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +118,8 @@ class CardWidgetItem extends StatelessWidget {
           }
         },
         child: ListTile(
-          title: Text(data.name,
+          title: Text(
+            data.name,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -84,8 +128,10 @@ class CardWidgetItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text("ID: ${data.cardId}",
-            style: TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+          subtitle: Text(
+            "ID: ${data.cardId}",
+            style:
+                TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -96,13 +142,10 @@ class CardWidgetItem extends StatelessWidget {
   }
 }
 
-class MaterialSimpleCardWidget extends StatelessWidget {
-
-  final Key? key;
-
+class PlatformSimpleCardWidget extends StatelessWidget {
   final CardBean data;
 
-  final Widget Function() pageCreator;
+  final WidgetBuilder pageCreator;
 
   final VoidCallback? onCardClicked;
 
@@ -110,21 +153,64 @@ class MaterialSimpleCardWidget extends StatelessWidget {
 
   final Color? itemColor;
 
-  MaterialSimpleCardWidget({
-    this.key,
+  const PlatformSimpleCardWidget(
+      {Key? key,
+      required this.data,
+      required this.pageCreator,
+      this.onCardClicked,
+      required this.containerShape,
+      this.itemColor})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return SimpleCardWidgetItem(
+          key: key,
+          data: data,
+          onCardClicked: () {
+            onCardClicked?.call();
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)));
+          });
+    } else {
+      return _MaterialSimpleCardWidget(
+          data: data,
+          pageCreator: pageCreator,
+          onCardClicked: onCardClicked,
+          containerShape: containerShape,
+          itemColor: itemColor,
+          key: key);
+    }
+  }
+}
+
+class _MaterialSimpleCardWidget extends StatelessWidget {
+  final CardBean data;
+
+  final WidgetBuilder pageCreator;
+
+  final VoidCallback? onCardClicked;
+
+  final double containerShape;
+
+  final Color? itemColor;
+
+  const _MaterialSimpleCardWidget({
+    Key? key,
     required this.data,
     required this.pageCreator,
     required this.containerShape,
     this.onCardClicked,
     this.itemColor,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return OpenContainer(
       openBuilder: (context, closedContainer) {
-        return pageCreator.call();
+        return pageCreator.call(context);
       },
       openColor: backgroundColor,
       closedColor: itemColor ?? backgroundColor,
@@ -133,22 +219,24 @@ class MaterialSimpleCardWidget extends StatelessWidget {
       ),
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
-        return SimpleCardWidgetItem(key: key, data: data, onCardClicked: () {
-          onCardClicked?.call();
-          openContainer();
-        });
+        return SimpleCardWidgetItem(
+            key: key,
+            data: data,
+            onCardClicked: () {
+              onCardClicked?.call();
+              openContainer();
+            });
       },
     );
   }
 }
 
 class SimpleCardWidgetItem extends StatelessWidget {
-
-  final Key? key;
   final CardBean data;
   final VoidCallback? onCardClicked;
 
-  SimpleCardWidgetItem({this.key, required this.data, this.onCardClicked}): super(key: key);
+  SimpleCardWidgetItem({Key? key, required this.data, this.onCardClicked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -160,9 +248,9 @@ class SimpleCardWidgetItem extends StatelessWidget {
             child: ListTile(
               leading: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                    color: data.color
-                ),
+                    borderRadius:
+                        BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    color: data.color),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   child: Text(
@@ -183,11 +271,9 @@ class SimpleCardWidgetItem extends StatelessWidget {
 }
 
 class MultiCardWidgetItem extends StatefulWidget {
-  final Key? key;
-
   final CardBean data;
 
-  MultiCardWidgetItem({this.key, required this.data}) : super(key: key);
+  MultiCardWidgetItem({Key? key, required this.data}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -196,7 +282,6 @@ class MultiCardWidgetItem extends StatefulWidget {
 }
 
 class _MultiCardWidgetItem extends State<StatefulWidget> {
-
   final CardBean data;
 
   _MultiCardWidgetItem(this.data);
@@ -219,8 +304,7 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
         secondary: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-              color: data.color
-          ),
+              color: data.color),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             child: Text(
@@ -229,8 +313,14 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
             ),
           ),
         ),
-        title: Text(data.name, overflow: TextOverflow.ellipsis,),
-        subtitle: Text(data.cardId, overflow: TextOverflow.ellipsis,),
+        title: Text(
+          data.name,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          data.cardId,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

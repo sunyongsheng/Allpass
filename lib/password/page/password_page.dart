@@ -61,7 +61,9 @@ class _PasswordPageState extends State<PasswordPage>
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
-        icon: RuntimeData.multiPasswordSelected ? Icon(Icons.clear) :Icon(Icons.sort),
+        icon: RuntimeData.multiPasswordSelected
+            ? Icon(Icons.clear)
+            : Icon(Icons.sort),
         onPressed: () {
           setState(() {
             RuntimeData.multiSelectClear(AllpassType.password);
@@ -74,27 +76,20 @@ class _PasswordPageState extends State<PasswordPage>
     if (RuntimeData.multiPasswordSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case "删除":
-                _deletePassword(context, model);
-                break;
-              case "移动":
-                _movePassword(context, model);
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-                value: "移动",
-                child: Text("移动")
-            ),
-            PopupMenuItem(
-                value: "删除",
-                child: Text("删除")
-            ),
-          ]
-        ),
+            onSelected: (value) {
+              switch (value) {
+                case "删除":
+                  _deletePassword(context, model);
+                  break;
+                case "移动":
+                  _movePassword(context, model);
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+                  PopupMenuItem(value: "移动", child: Text("移动")),
+                  PopupMenuItem(value: "删除", child: Text("删除")),
+                ]),
         IconButton(
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
@@ -113,9 +108,19 @@ class _PasswordPageState extends State<PasswordPage>
         )
       ]);
     } else {
-      Color mainColor = Theme.of(context).primaryColor;
-      var circleFabBorder = CircleBorder();
-      floatingButton = OpenContainer(
+      if (Platform.isIOS) {
+        floatingButton = FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () => Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (_) => EditPasswordPage(null, DataOperation.add))),
+          heroTag: "password",
+        );
+      } else {
+        Color mainColor = Theme.of(context).primaryColor;
+        var circleFabBorder = CircleBorder();
+        floatingButton = OpenContainer(
           closedBuilder: (context, openContainer) {
             return Tooltip(
               message: "添加密码项目",
@@ -126,7 +131,10 @@ class _PasswordPageState extends State<PasswordPage>
                   height: 56,
                   width: 56,
                   child: Center(
-                    child: Icon(Icons.add, color: Colors.white,),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -139,7 +147,8 @@ class _PasswordPageState extends State<PasswordPage>
           openBuilder: (context, closedContainer) {
             return EditPasswordPage(null, DataOperation.add);
           },
-      );
+        );
+      }
     }
 
     Widget listView;
@@ -157,12 +166,11 @@ class _PasswordPageState extends State<PasswordPage>
             ListView.builder(
               controller: _controller,
               itemBuilder: (context, index) {
-                return MaterialPasswordWidget(
+                return PlatformPasswordWidget(
                     data: model.passwordList[index],
                     containerShape: 0,
-                    pageCreator: () => ViewPasswordPage(),
-                    onPasswordClicked: () => model.previewPassword(index: index)
-                );
+                    pageCreator: (_) => ViewPasswordPage(),
+                    onPasswordClicked: () => model.previewPassword(index: index));
               },
               itemCount: model.count,
               physics: const AlwaysScrollableScrollPhysics(),
@@ -181,7 +189,10 @@ class _PasswordPageState extends State<PasswordPage>
             padding: AllpassEdgeInsets.smallLPadding,
             child: InkWell(
               splashColor: Colors.transparent,
-              child: Text("密码", style: AllpassTextUI.titleBarStyle,),
+              child: Text(
+                "密码",
+                style: AllpassTextUI.titleBarStyle,
+              ),
               onTap: () {
                 _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
               },
@@ -204,8 +215,7 @@ class _PasswordPageState extends State<PasswordPage>
             )
           ],
         ),
-        floatingActionButton: floatingButton
-    );
+        floatingActionButton: floatingButton);
   }
 
   void _searchPress() {

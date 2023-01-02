@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class FavoritePage extends StatelessWidget {
-
   final ScrollController _controller = ScrollController();
 
   @override
@@ -45,27 +44,26 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].fav == 1) {
-          list1.add(MaterialPasswordWidget(
-              data: provider1.passwordList[index],
-              containerShape: 4,
-              pageCreator: () => ViewPasswordPage(),
-              itemColor: itemColor,
-              onPasswordClicked: () => provider1.previewPassword(index: index),
+          list1.add(PlatformPasswordWidget(
+            data: provider1.passwordList[index],
+            containerShape: 4,
+            pageCreator: (_) => ViewPasswordPage(),
+            itemColor: itemColor,
+            onPasswordClicked: () => provider1.previewPassword(index: index),
           ));
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     CardProvider provider2 = context.read();
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (provider2.cardList[index].fav == 1) {
-          list2.add(MaterialSimpleCardWidget(
-              data: provider2.cardList[index],
-              pageCreator: () => ViewCardPage(),
-              containerShape: 4,
-              itemColor: itemColor,
-              onCardClicked: () => provider2.previewCard(index: index),
+          list2.add(PlatformSimpleCardWidget(
+            data: provider2.cardList[index],
+            pageCreator: (_) => ViewCardPage(),
+            containerShape: 4,
+            itemColor: itemColor,
+            onCardClicked: () => provider2.previewCard(index: index),
           ));
         }
       } catch (e) {
@@ -100,5 +98,4 @@ class FavoritePage extends StatelessWidget {
       children: all,
     );
   }
-
 }

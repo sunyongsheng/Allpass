@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
@@ -14,6 +16,7 @@ import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:animations/animations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +47,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   @override
   bool get wantKeepAlive => true;
 
-
   // 查询
   Future<Null> _query(CardProvider model) async {
     await model.refresh();
@@ -59,7 +61,9 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
-        icon: RuntimeData.multiCardSelected ? Icon(Icons.clear) :Icon(Icons.sort),
+        icon: RuntimeData.multiCardSelected
+            ? Icon(Icons.clear)
+            : Icon(Icons.sort),
         onPressed: () {
           setState(() {
             RuntimeData.multiSelectClear(AllpassType.card);
@@ -72,27 +76,20 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     if (RuntimeData.multiCardSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case "删除":
-                _deleteCard(context, model);
-                break;
-              case "移动":
-                _moveCard(context, model);
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(
-                value: "移动",
-                child: Text("移动")
-            ),
-            PopupMenuItem(
-                value: "删除",
-                child: Text("删除")
-            ),
-          ]
-        ),
+            onSelected: (value) {
+              switch (value) {
+                case "删除":
+                  _deleteCard(context, model);
+                  break;
+                case "移动":
+                  _moveCard(context, model);
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+                  PopupMenuItem(value: "移动", child: Text("移动")),
+                  PopupMenuItem(value: "删除", child: Text("删除")),
+                ]),
         IconButton(
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
@@ -111,9 +108,20 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         )
       ]);
     } else {
-      Color mainColor = Theme.of(context).primaryColor;
-      var circleFabBorder = CircleBorder();
-      floatingButton = OpenContainer(
+      if (Platform.isIOS) {
+        floatingButton = FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (_) => EditCardPage(null, DataOperation.add)
+            ));
+          },
+          heroTag: "card",
+        );
+      } else {
+        Color mainColor = Theme.of(context).primaryColor;
+        var circleFabBorder = CircleBorder();
+        floatingButton = OpenContainer(
           closedBuilder: (context, openContainer) {
             return Tooltip(
               message: "添加卡片项目",
@@ -124,7 +132,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
                   height: 56,
                   width: 56,
                   child: Center(
-                    child: Icon(Icons.add, color: Colors.white,),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -137,7 +148,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           openBuilder: (context, closedContainer) {
             return EditCardPage(null, DataOperation.add);
           },
-      );
+        );
+      }
     }
 
     Widget listView;
@@ -154,11 +166,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           controller: _controller,
           padding: AllpassEdgeInsets.forCardInset,
           itemBuilder: (context, index) {
-            return MaterialCardWidget(
+            return PlatformCardWidget(
                 data: model.cardList[index],
-                pageCreator: () => ViewCardPage(),
-                onCardClicked: () => model.previewCard(index: index)
-            );
+                pageCreator: (_) => ViewCardPage(),
+                onCardClicked: () => model.previewCard(index: index));
           },
           itemCount: model.count,
           physics: const AlwaysScrollableScrollPhysics(),

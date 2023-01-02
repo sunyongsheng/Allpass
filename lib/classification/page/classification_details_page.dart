@@ -48,31 +48,28 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].folder == type) {
-          list1.add(MaterialPasswordWidget(
-              data: provider1.passwordList[index],
-              containerShape: 4,
-              itemColor: itemColor,
-              pageCreator: () => ViewPasswordPage(),
-              onPasswordClicked: () => provider1.previewPassword(index: index),
+          list1.add(PlatformPasswordWidget(
+            data: provider1.passwordList[index],
+            containerShape: 4,
+            itemColor: itemColor,
+            pageCreator: (_) => ViewPasswordPage(),
+            onPasswordClicked: () => provider1.previewPassword(index: index),
           ));
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     CardProvider provider2 = Provider.of<CardProvider>(context);
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (type == provider2.cardList[index].folder) {
-          list2.add(MaterialSimpleCardWidget(
+          list2.add(PlatformSimpleCardWidget(
               data: provider2.cardList[index],
-              pageCreator: () => ViewCardPage(),
+              pageCreator: (_) => ViewCardPage(),
               containerShape: 4,
               itemColor: itemColor,
-              onCardClicked: () => provider2.previewCard(index: index)
-          ));
+              onCardClicked: () => provider2.previewCard(index: index)));
         }
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     if (list1.length == 0 && list2.length == 0) {
       return EmptyDataWidget();

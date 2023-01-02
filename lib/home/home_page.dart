@@ -53,6 +53,11 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
