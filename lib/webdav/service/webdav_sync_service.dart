@@ -104,13 +104,18 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   String _generateFilename(AllpassType type) {
     var now = DateFormatter.formatToFilename(DateTime.now());
+    var isDebug = !bool.fromEnvironment("dart.vm.product");
+    String suffix = "";
+    if (isDebug) {
+      suffix = "_debug";
+    }
     switch (type) {
       case AllpassType.password:
-        return "${now}_allpass_password.json";
+        return "${now}_allpass_password$suffix.json";
       case AllpassType.card:
-        return "${now}_allpass_card.json";
+        return "${now}_allpass_card$suffix.json";
       case AllpassType.other:
-        return "${now}_allpass_extra.json";
+        return "${now}_allpass_extra$suffix.json";
     }
   }
 
