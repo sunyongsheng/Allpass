@@ -1,22 +1,21 @@
-import 'package:animations/animations.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
+import 'package:allpass/card/widget/card_widget_item.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/common/widget/select_item_dialog.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
-import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/common/widget/select_item_dialog.dart';
-import 'package:allpass/common/widget/nodata_widget.dart';
 import 'package:allpass/util/toast_util.dart';
+import 'package:animations/animations.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// 卡片页面
 class CardPage extends StatefulWidget {
@@ -169,7 +168,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         );
       }
     } else {
-      listView = NoDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
+      listView = EmptyDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
     }
 
     return Scaffold(

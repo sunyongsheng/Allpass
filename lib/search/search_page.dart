@@ -1,27 +1,26 @@
+import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/card/page/edit_card_page.dart';
+import 'package:allpass/card/page/view_card_page.dart';
+import 'package:allpass/card/widget/card_widget_item.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/core/enums/allpass_type.dart';
+import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/page/edit_password_page.dart';
+import 'package:allpass/password/page/view_password_page.dart';
+import 'package:allpass/password/widget/password_widget_item.dart';
+import 'package:allpass/search/search_provider.dart';
+import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/password/widget/password_widget_item.dart';
-import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/card/widget/card_widget_item.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/common/widget/nodata_widget.dart';
-import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/card/page/view_card_page.dart';
-import 'package:allpass/card/page/edit_card_page.dart';
-import 'package:allpass/password/page/edit_password_page.dart';
-import 'package:allpass/password/page/view_password_page.dart';
-import 'package:allpass/search/search_provider.dart';
 
 class SearchPage extends StatefulWidget {
   final AllpassType type;
@@ -33,7 +32,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPage extends State<SearchPage> {
-
   final AllpassType type;
 
   late TextEditingController searchController;
@@ -60,21 +58,18 @@ class _SearchPage extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SearchProvider>(
-      builder: (_, provider, __) {
-        return Scaffold(
-            appBar: AppBar(
-              title: searchWidget(provider),
-              automaticallyImplyLeading: false,
-            ),
-            body: provider.empty()
-                ? Center(child: NoDataWidget(title: "无结果，换个关键词试试吧"))
-                : ListView.builder(
-              itemBuilder: (_, index) => buildSearchResultItem(provider, index),
-              itemCount: provider.length())
-        );
-      }
-    );
+    return Consumer<SearchProvider>(builder: (_, provider, __) {
+      return Scaffold(
+          appBar: AppBar(
+            title: searchWidget(provider),
+            automaticallyImplyLeading: false,
+          ),
+          body: provider.empty()
+              ? Center(child: EmptyDataWidget(title: "无结果，换个关键词试试吧"))
+              : ListView.builder(
+                  itemBuilder: (_, index) => buildSearchResultItem(provider, index),
+                  itemCount: provider.length()));
+    });
   }
 
   Widget buildSearchResultItem(SearchProvider provider, int index) {

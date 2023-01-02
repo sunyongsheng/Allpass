@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/view_card_page.dart';
-import 'package:allpass/password/page/view_password_page.dart';
-import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
-import 'package:allpass/common/widget/nodata_widget.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
+import 'package:allpass/util/screen_util.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoritePage extends StatelessWidget {
 
@@ -74,7 +73,7 @@ class FavoritePage extends StatelessWidget {
       }
     }
     if (list1.length == 0 && list2.length == 0) {
-      return NoDataWidget();
+      return EmptyDataWidget();
     }
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),

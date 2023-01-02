@@ -4,13 +4,11 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/ui/icon_resource.dart';
 import 'package:allpass/util/screen_util.dart';
 
-class NoDataWidget extends StatelessWidget {
-
-  final Key? key;
+class EmptyDataWidget extends StatelessWidget {
   final String? title;
   final String? subtitle;
 
-  NoDataWidget({this.title, this.subtitle, this.key}) : super(key: key);
+  const EmptyDataWidget({this.title, this.subtitle, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
