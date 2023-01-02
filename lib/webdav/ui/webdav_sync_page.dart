@@ -42,161 +42,152 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            child: Consumer<WebDavSyncProvider>(
-              builder: (context, provider, child) {
-                return ListTile(
-                  title: Text("上传到云端"),
-                  subtitle: uploadTime == null ? null : Text(uploadTime),
-                  leading: Icon(
-                    Icons.cloud_upload,
-                    color: AllpassColorUI.allColor[0],
-                  ),
-                  trailing: provider.uploading ? child : null,
-                  onTap: () => _handleBackup(provider),
-                );
-              },
-              child: SizedBox(
-                child: CircularProgressIndicator(strokeWidth: 2),
-                width: 15,
-                height: 15,
-              ),
+          _createItem(Consumer<WebDavSyncProvider>(
+            builder: (context, provider, child) {
+              return ListTile(
+                title: Text("上传到云端"),
+                subtitle: uploadTime == null ? null : Text(uploadTime),
+                leading: Icon(
+                  Icons.cloud_upload,
+                  color: AllpassColorUI.allColor[0],
+                ),
+                trailing: provider.uploading ? child : null,
+                onTap: () => _handleBackup(provider),
+              );
+            },
+            child: SizedBox(
+              child: CircularProgressIndicator(strokeWidth: 2),
+              width: 15,
+              height: 15,
             ),
-            padding: AllpassEdgeInsets.listInset,
-          ),
-          Container(
-            child: Consumer<WebDavSyncProvider>(
-              builder: (context, provider, child) {
-                return ListTile(
-                  title: Text("恢复到本地"),
-                  subtitle: downloadTime == null ? null : Text(downloadTime),
-                  leading: Icon(
-                    Icons.cloud_download,
-                    color: AllpassColorUI.allColor[1],
-                  ),
-                  trailing: provider.downloading ? child : null,
-                  onTap: () => showDialog(
-                      context: context,
-                      builder: (context) => ChangeNotifierProvider.value(
-                            value: provider,
-                            child: SelectBackupFileDialog(
-                              onSelect: (filename) =>
-                                  _handleRecovery(provider, filename),
-                            ),
-                          )),
-                );
-              },
-              child: SizedBox(
-                child: CircularProgressIndicator(strokeWidth: 2),
-                width: 15,
-                height: 15,
-              ),
+          )),
+          _createItem(Consumer<WebDavSyncProvider>(
+            builder: (context, provider, child) {
+              return ListTile(
+                title: Text("恢复到本地"),
+                subtitle: downloadTime == null ? null : Text(downloadTime),
+                leading: Icon(
+                  Icons.cloud_download,
+                  color: AllpassColorUI.allColor[1],
+                ),
+                trailing: provider.downloading ? child : null,
+                onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => ChangeNotifierProvider.value(
+                      value: provider,
+                      child: SelectBackupFileDialog(
+                        onSelect: (filename) => _handleRecovery(provider, filename),
+                      ),
+                    )),
+              );
+            },
+            child: SizedBox(
+              child: CircularProgressIndicator(strokeWidth: 2),
+              width: 15,
+              height: 15,
             ),
-            padding: AllpassEdgeInsets.listInset,
-          ),
-          Container(
-            child: ListTile(
-              title: Text("数据恢复方式"),
-              subtitle: Text("${Config.webDavMergeMethod.name}"),
-              leading: Icon(
-                Icons.merge_type_rounded,
-                color: AllpassColorUI.allColor[2],
+          )),
+          _createItem(ListTile(
+            title: Text("数据恢复方式"),
+            subtitle: Text("${Config.webDavMergeMethod.name}"),
+            leading: Icon(
+              Icons.merge_type_rounded,
+              color: AllpassColorUI.allColor[2],
+            ),
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => DefaultSelectItemDialog<MergeMethodItem>(
+                    list: mergeMethods,
+                    selector: (data) => data.method == Config.webDavMergeMethod,
+                    itemTitleBuilder: (data) => data.method.name,
+                    itemSubtitleBuilder: (data) => data.desc,
+                    onSelected: (item) {
+                      setState(() {
+                        Config.setWebDavMergeMethod(item.method);
+                      });
+                    },
+                  ));
+            },
+          )),
+          _createItem(ListTile(
+            title: Text("加密等级"),
+            subtitle: Text("${Config.webDavEncryptLevel.name}"),
+            leading: Icon(
+              Icons.enhanced_encryption,
+              color: AllpassColorUI.allColor[5],
+            ),
+            trailing: IconButton(
+              icon: Icon(
+                Icons.help_outline,
+                color: Colors.grey,
               ),
-              onTap: () {
+              onPressed: () {
                 showDialog(
                     context: context,
-                    builder: (context) => DefaultSelectItemDialog<MergeMethodItem>(
-                      list: mergeMethods,
-                      selector: (data) => data.method == Config.webDavMergeMethod,
-                      itemTitleBuilder: (data) => data.method.name,
-                      itemSubtitleBuilder: (data) => data.desc,
-                      onSelected: (item) {
-                        setState(() {
-                          Config.setWebDavMergeMethod(item.method);
-                        });
-                      },
+                    builder: (context) => InformationHelpDialog(
+                      content: <Widget>[
+                        Text("加密等级是指备份到WebDAV的文件的加密方式，对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，请确保上传与恢复的加密等级相同\n"),
+                        Text(
+                            "不加密：数据直接以明文的方式备份，密码字段可见；最不安全但通用性高，可以直接打开备份文件查看密码\n"),
+                        Text(
+                            "仅加密密码字段：默认选项，仅将密码与卡片记录中的“密码”字段进行加密，而名称、用户名、标签之类的字段不加密\n"),
+                        Text(
+                            "全部加密：所有字段全部进行加密，加密后的数据完全不可读，最安全但是如果丢失了密钥则有可能无法找回文件\n"),
+                        Text(
+                            "后两种加密方式严格依赖本机Allpass使用的密钥，在丢失密钥的情况下，一旦进行卸载或者数据清除操作则数据将无法恢复！！！"),
+                      ],
                     ));
               },
             ),
-            padding: AllpassEdgeInsets.listInset,
-          ),
-          Container(
-            child: ListTile(
-              title: Text("加密等级"),
-              subtitle: Text("${Config.webDavEncryptLevel.name}"),
-              leading: Icon(
-                Icons.enhanced_encryption,
-                color: AllpassColorUI.allColor[5],
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.help_outline,
-                  color: Colors.grey,
-                ),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => InformationHelpDialog(
-                            content: <Widget>[
-                              Text("加密等级是指备份到WebDAV的文件的加密方式，对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，请确保上传与恢复的加密等级相同\n"),
-                              Text(
-                                  "不加密：数据直接以明文的方式备份，密码字段可见；最不安全但通用性高，可以直接打开备份文件查看密码\n"),
-                              Text(
-                                  "仅加密密码字段：默认选项，仅将密码与卡片记录中的“密码”字段进行加密，而名称、用户名、标签之类的字段不加密\n"),
-                              Text(
-                                  "全部加密：所有字段全部进行加密，加密后的数据完全不可读，最安全但是如果丢失了密钥则有可能无法找回文件\n"),
-                              Text(
-                                  "后两种加密方式严格依赖本机Allpass使用的密钥，在丢失密钥的情况下，一旦进行卸载或者数据清除操作则数据将无法恢复！！！"),
-                            ],
-                          ));
-                },
-              ),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => DefaultSelectItemDialog<EncryptItem>(
-                          list: encryptLevels,
-                          selector: (data) => data.level == Config.webDavEncryptLevel,
-                          itemTitleBuilder: (data) => data.level.name,
-                          itemSubtitleBuilder: (data) => data.desc,
-                          onSelected: (item) {
-                            setState(() {
-                              Config.setWevDavEncryptLevel(item.level);
-                            });
-                          },
-                        ));
-              },
-            ),
-            padding: AllpassEdgeInsets.listInset,
-          ),
-          Container(
-            child: ListTile(
-              title: Text("退出账号"),
-              subtitle: Text("${Config.webDavUsername}"),
-              leading: Icon(
-                Icons.exit_to_app,
-                color: AllpassColorUI.allColor[3],
-              ),
-              onTap: () => showDialog(
+            onTap: () {
+              showDialog(
                   context: context,
-                  builder: (context) => ConfirmDialog(
-                        "确认退出",
-                        "退出账号后需要重新登录，是否继续？",
-                        danger: true,
-                        onConfirm: () {
-                          Config.setWebDavAuthSuccess(false);
-                          Config.setWebDavUsername(null);
-                          Config.setWebDavPassword(null);
-                          Config.setWebDavUrl(null);
-                          Config.setWebDavPort(null);
-                          Navigator.pop(context);
-                        },
-                      )),
+                  builder: (context) => DefaultSelectItemDialog<EncryptItem>(
+                    list: encryptLevels,
+                    selector: (data) => data.level == Config.webDavEncryptLevel,
+                    itemTitleBuilder: (data) => data.level.name,
+                    itemSubtitleBuilder: (data) => data.desc,
+                    onSelected: (item) {
+                      setState(() {
+                        Config.setWevDavEncryptLevel(item.level);
+                      });
+                    },
+                  ));
+            },
+          )),
+          _createItem(ListTile(
+            title: Text("退出账号"),
+            subtitle: Text("${Config.webDavUsername}"),
+            leading: Icon(
+              Icons.exit_to_app,
+              color: AllpassColorUI.allColor[3],
             ),
-            padding: AllpassEdgeInsets.listInset,
-          ),
+            onTap: () => showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog(
+                  "确认退出",
+                  "退出账号后需要重新登录，是否继续？",
+                  danger: true,
+                  onConfirm: () {
+                    Config.setWebDavAuthSuccess(false);
+                    Config.setWebDavUsername(null);
+                    Config.setWebDavPassword(null);
+                    Config.setWebDavUrl(null);
+                    Config.setWebDavPort(null);
+                    Navigator.pop(context);
+                  },
+                )),
+          )),
         ],
       ),
+    );
+  }
+
+  Widget _createItem(Widget child) {
+    return Container(
+      child: child,
+      padding: AllpassEdgeInsets.listInset,
     );
   }
 
