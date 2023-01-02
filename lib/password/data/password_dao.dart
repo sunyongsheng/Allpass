@@ -75,7 +75,7 @@ class PasswordDao extends BaseDBProvider {
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
     Map<String, dynamic> map = bean.toJson();
-    return await db.insert(name, map);
+    return await db.insert(name, map, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<int> insertUserData(SimpleUser user) async {

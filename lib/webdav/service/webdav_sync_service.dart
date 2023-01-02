@@ -17,6 +17,7 @@ import 'package:allpass/util/allpass_file_util.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/webdav/error/sync_error.dart';
+import 'package:allpass/webdav/merge/merge_executors.dart';
 import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:allpass/webdav/model/webdav_file.dart';
 import 'package:allpass/webdav/service/webdav_requester.dart';
@@ -46,6 +47,8 @@ abstract class WebDavSyncService {
 }
 
 class WebDavSyncServiceImpl implements WebDavSyncService {
+  final String _tag = "WebDavSyncServiceImpl";
+
   final String remoteWorkspace = "Allpass";
   final String localWorkspace = "webdav_backup";
 
@@ -224,59 +227,49 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   Future<int> recoverPassword(BuildContext context, List<PasswordBean> remoteList) async {
     var passwordProvider = context.read<PasswordProvider>();
-    List<PasswordBean> backup = List.from(passwordProvider.passwordList);
+    List<PasswordBean> localList = List.from(passwordProvider.passwordList);
+    var mergeExecutor = Config.webDavMergeMethod.createExecutor<PasswordBean>();
     try {
-      try {
-        // 正常执行
-        await passwordProvider.clear();
-        for (var bean in remoteList) {
-          await passwordProvider.insertPassword(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
-        }
-        return 0;
-      } catch (e1) {
-        // 插入云端数据出错，恢复数据
-        for (var bean in backup) {
-          await passwordProvider.insertPassword(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
-        }
-        return 1;
-      }
+      var result = mergeExecutor.merge(localList, remoteList);
+      result.apply(add: (bean) {
+        debugPrint("$_tag recoverCard insertPassword $bean");
+
+        passwordProvider.insertPassword(bean);
+        RuntimeData.labelListAdd(bean.label);
+        RuntimeData.folderListAdd(bean.folder);
+      }, delete: (bean) {
+        debugPrint("$_tag recoverCard deletePassword $bean");
+
+        passwordProvider.deletePassword(bean);
+      });
+      return result.length;
     } catch (e2) {
-      // 解析json出错
       print(e2);
-      return 2;
+      return -1;
     }
   }
 
   Future<int> recoverCard(BuildContext context, List<CardBean> remoteList) async {
     var cardProvider = context.read<CardProvider>();
-    List<CardBean> backup = List.from(cardProvider.cardList);
+    List<CardBean> localList = List.from(cardProvider.cardList);
+    var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();
     try {
-      try {
-        // 正常执行
-        await cardProvider.clear();
-        for (var bean in remoteList) {
-          await cardProvider.insertCard(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
-        }
-        return 0;
-      } catch (e1) {
-        // 插入云端数据出错，恢复数据
-        for (var bean in backup) {
-          await cardProvider.insertCard(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
-        }
-        return 1;
-      }
+      var result = mergeExecutor.merge(localList, remoteList);
+      result.apply(add: (bean) {
+        debugPrint("$_tag recoverCard insertCard $bean");
+
+        cardProvider.insertCard(bean);
+        RuntimeData.labelListAdd(bean.label);
+        RuntimeData.folderListAdd(bean.folder);
+      }, delete: (bean) {
+        debugPrint("$_tag recoverCard deleteCard $bean");
+
+        cardProvider.deleteCard(bean);
+      });
+      return result.length;
     } catch (e2) {
-      // 解析json出错
       print(e2);
-      return 2;
+      return -1;
     }
   }
 
@@ -306,7 +299,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   @override
-  Future<void> recoveryOld(BuildContext context, List<dynamic> list, AllpassType type) async {
+  Future<void> recoveryOld(
+      BuildContext context, List<dynamic> list, AllpassType type) async {
     switch (type) {
       case AllpassType.password:
         var result = _decodeList<PasswordBean>(list, Config.webDavEncryptLevel);

@@ -7,6 +7,7 @@ import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/model/encrypt_item.dart';
+import 'package:allpass/webdav/merge/merge_method.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:allpass/webdav/ui/widget/select_backup_file_dialog.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,29 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 width: 15,
                 height: 15,
               ),
+            ),
+            padding: AllpassEdgeInsets.listInset,
+          ),
+          Container(
+            child: ListTile(
+              title: Text("数据恢复方式"),
+              leading: Icon(
+                Icons.merge_type_rounded,
+                color: AllpassColorUI.allColor[2],
+              ),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => DefaultSelectItemDialog<MergeMethodItem>(
+                      list: mergeMethods,
+                      selector: (data) => data.method == Config.webDavMergeMethod,
+                      itemTitleBuilder: (data) => data.method.name,
+                      itemSubtitleBuilder: (data) => data.desc,
+                      onSelected: (item) {
+                        Config.setWebDavMergeMethod(item.method);
+                      },
+                    ));
+              },
             ),
             padding: AllpassEdgeInsets.listInset,
           ),
@@ -193,7 +217,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
         context: context,
         builder: (_) => ConfirmDialog(
               "确认恢复",
-              "恢复数据将覆盖本地所有数据，是否继续？",
+              "当前恢复数据合并方式为「${Config.webDavMergeMethod.name}」，是否继续？",
               onConfirm: () async {
                 var syncResult = await provider.syncToLocal(context, filename);
                 if (syncResult is SyncSuccess) {
@@ -218,7 +242,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             list: ["密码", "卡片"],
             helpText: "检测到正在恢复旧版备份文件，请选择文件种类，"
                 "文件种类将影响到最终恢复结果，请确保选择正确\n\n"
-                "加密等级: ${Config.webDavEncryptLevel.desc}  文件名: $filename",
+                "加密等级: ${Config.webDavEncryptLevel.name}  文件名: $filename",
             onSelected: (name) async {
               AllpassType type;
               if (name == "卡片") {
@@ -226,8 +250,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
               } else {
                 type = AllpassType.password;
               }
-              var syncResult =
-                  await provider.syncToLocalOld(context, data, type);
+              var syncResult = await provider.syncToLocalOld(context, data, type);
               if (syncResult is SyncSuccess) {
                 ToastUtil.show(msg: syncResult.message);
               } else {

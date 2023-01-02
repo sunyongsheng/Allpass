@@ -2,6 +2,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/webdav/merge/merge_method.dart';
 
 /// 存储系统参数
 class Config {
@@ -19,6 +20,7 @@ class Config {
   static late String? webDavPassword; // WebDAV密码
   static late int? webDavPort; // WebDAV端口号
   static late EncryptLevel webDavEncryptLevel; // WebDAV备份加密等级 EncryptLevel.index
+  static late MergeMethod webDavMergeMethod; // WebDAV恢复数据合并方式
   static late String? webDavUploadTime; // WebDAV上次上传时间
   static late String? webDavDownloadTime; // WebDAV上次下载时间
   static late int timingInMainPassword; // 定期输入主密码天数
@@ -42,7 +44,8 @@ class Config {
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
     webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
-    webDavEncryptLevel = EncryptLevels.parse(sp.getInt(SPKeys.webDavEncryptLevel) ?? 1);
+    webDavEncryptLevel = EncryptLevels.parse(sp.getInt(SPKeys.webDavEncryptLevel) ?? EncryptLevel.OnlyPassword.index);
+    webDavMergeMethod = MergeMethods.parse(sp.getInt(SPKeys.webDavMergeMethod) ?? MergeMethod.localFirst.index);
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
@@ -64,6 +67,7 @@ class Config {
     webDavPassword = "";
     webDavPort = 443;
     webDavEncryptLevel = EncryptLevel.OnlyPassword;
+    webDavMergeMethod = MergeMethod.localFirst;
     timingInMainPassword = 10;
     RuntimeData.clearData();
   }
@@ -144,9 +148,14 @@ class Config {
     }
   }
 
-  static void setWevDavEncryptLevel(int value) {
-    webDavEncryptLevel = EncryptLevels.parse(value);
-    AllpassApplication.sp.setInt(SPKeys.webDavEncryptLevel, value);
+  static void setWevDavEncryptLevel(EncryptLevel level) {
+    webDavEncryptLevel = level;
+    AllpassApplication.sp.setInt(SPKeys.webDavEncryptLevel, level.index);
+  }
+
+  static void setWebDavMergeMethod(MergeMethod method) {
+    webDavMergeMethod = method;
+    AllpassApplication.sp.setInt(SPKeys.webDavMergeMethod, method.index);
   }
 
   static void setWebDavUploadTime(String value) {
