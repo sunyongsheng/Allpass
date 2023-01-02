@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -106,9 +108,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   @override
   Widget build(BuildContext context) {
     PasswordProvider provider = context.watch<PasswordProvider>();
-    Color mainColor = Theme.of(context).primaryColor;
-    EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -176,261 +175,302 @@ class _EditPasswordPage extends State<EditPasswordPage> {
       ),
       body: SingleChildScrollView(
           child: Column(
+            children: _createContent(context, provider),
+          ))
+    );
+  }
+
+  List<Widget> _createContent(BuildContext context, PasswordProvider provider) {
+    Color mainColor = Theme.of(context).primaryColor;
+    EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
+    var list = <Widget>[
+      _createNameWidget(marginInset, mainColor),
+      _createUsernameWidget(marginInset, mainColor, provider),
+      _createPasswordWidget(marginInset, mainColor),
+      _createUrlWidget(marginInset, mainColor),
+      _createFolderWidget(marginInset, mainColor)
+    ];
+    if (Platform.isAndroid) {
+      list.add(_createOwnerAppWidget(marginInset, mainColor));
+    }
+    list.add(_createLabelWidget(mainColor));
+    list.add(_createNoteWidget(marginInset, mainColor));
+    return list;
+  }
+
+  Widget _createNameWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: marginInset,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "名称",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          NoneBorderCircularTextField(
+            editingController: nameController,
+            trailing: InkWell(
+              child: Icon(Icons.cancel, size: 20,),
+              onTap: () {
+                // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+                if (frameDone) nameController.clear();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createUsernameWidget(EdgeInsets marginInset, Color mainColor, PasswordProvider provider) {
+    return Container(
+      margin: marginInset,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "账号",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          NoneBorderCircularTextField(
+            editingController: usernameController,
+            trailing: InkWell(
+              child: Icon(
+                Icons.cancel,
+                size: 20,
+              ),
+              onTap: () {
+                if (frameDone) usernameController.clear();
+              },
+            ),
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: _getMostUsedUsername(provider),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createPasswordWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: marginInset,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "密码",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          Row(
             children: <Widget>[
-              Container(
-                margin: marginInset,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "名称",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    NoneBorderCircularTextField(
-                      editingController: nameController,
-                      trailing: InkWell(
-                        child: Icon(Icons.cancel, size: 20,),
-                        onTap: () {
-                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                          if (frameDone) nameController.clear();
-                        },
-                      ),
-                    )
-                  ],
+              Expanded(
+                child: NoneBorderCircularTextField(
+                  editingController: passwordController,
+                  trailing: InkWell(
+                    child: Icon(
+                        Icons.cancel,
+                        size: 20),
+                    onTap: () {
+                      if (frameDone) passwordController.clear();
+                    },
+                  ),
+                  obscureText: !_passwordVisible,
                 ),
               ),
-              Container(
-                margin: marginInset,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "账号",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    NoneBorderCircularTextField(
-                      editingController: usernameController,
-                      trailing: InkWell(
-                        child: Icon(
-                          Icons.cancel,
-                          size: 20,
-                        ),
-                        onTap: () {
-                          if (frameDone) usernameController.clear();
-                        },
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: _getMostUsedUsername(provider),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: marginInset,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "密码",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: NoneBorderCircularTextField(
-                            editingController: passwordController,
-                            trailing: InkWell(
-                              child: Icon(
-                                  Icons.cancel,
-                                  size: 20),
-                              onTap: () {
-                                if (frameDone) passwordController.clear();
-                              },
-                            ),
-                            obscureText: !_passwordVisible,
-                          ),
-                        ),
-                        IconButton(
-                          icon: _passwordVisible == true
-                              ? Icon(Icons.visibility)
-                              : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            this.setState(() {
-                              if (_passwordVisible == false)
-                                _passwordVisible = true;
-                              else
-                                _passwordVisible = false;
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: marginInset,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "链接",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    NoneBorderCircularTextField(
-                      editingController: urlController,
-                      trailing: InkWell(
-                        child: Icon(
-                          Icons.cancel,
-                          size: 20,
-                        ),
-                        onTap: () {
-                          if (frameDone) urlController.clear();
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "文件夹",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    DropdownButton(
-                      onChanged: (newValue) {
-                        setState(() {
-                          folder = newValue.toString();
-                        });
-                      },
-                      items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
-                        return DropdownMenuItem<String>(
-                          value: item,
-                          child: Text(item, style: TextStyle(
-                              color: ThemeUtil.isInDarkTheme(context)
-                                  ? Colors.white
-                                  : Colors.black
-                          ),),
-                        );
-                      }).toList(),
-                      style: AllpassTextUI.firstTitleStyle,
-                      elevation: 8,
-                      iconSize: 30,
-                      value: folder,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: marginInset,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "所属App",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    TextButton(
-                      child: Text(appId?.isEmpty ?? true ? "无" : appName!),
-                      onPressed: () async {
-                        showDialog(
-                          context: context,
-                          builder: (_) => FutureBuilder<List<Application>>(
-                            future: DeviceAppsHolder.getInstalledApps(),
-                            builder: (context, snapshot) {
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.done:
-                                  return SelectAppDialog(
-                                    list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
-                                    selectedApp: appId,
-                                    onSelected: (app) {
-                                      setState(() {
-                                        appName = app.appName;
-                                        appId = app.packageName;
-                                      });
-                                    },
-                                    onCancel: () {
-                                      setState(() {
-                                        appName = null;
-                                        appId = null;
-                                      });
-                                    },
-                                  );
-                                default:
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                              }
-                          },
-                        ));
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        "标签",
-                        style: TextStyle(fontSize: 16, color: mainColor),
-                      ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.start,
-                              spacing: 8.0,
-                              runSpacing: 10.0,
-                              children: _getTag()),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: marginInset,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "备注",
-                      style: TextStyle(fontSize: 16, color: mainColor),
-                    ),
-                    NoneBorderCircularTextField(
-                      editingController: notesController,
-                      maxLines: null,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage("备注", notesController.text, true),
-                        )).then((newValue) {
-                          setState(() {
-                            notesController.text = newValue;
-                          });
-                        });
-                      },
-                    ),
-                  ],
-                ),
+              IconButton(
+                icon: _passwordVisible == true
+                    ? Icon(Icons.visibility)
+                    : Icon(Icons.visibility_off),
+                onPressed: () {
+                  this.setState(() {
+                    if (_passwordVisible == false)
+                      _passwordVisible = true;
+                    else
+                      _passwordVisible = false;
+                  });
+                },
               )
             ],
-          ))
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createUrlWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: marginInset,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "链接",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          NoneBorderCircularTextField(
+            editingController: urlController,
+            trailing: InkWell(
+              child: Icon(
+                Icons.cancel,
+                size: 20,
+              ),
+              onTap: () {
+                if (frameDone) urlController.clear();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createFolderWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "文件夹",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          DropdownButton(
+            onChanged: (newValue) {
+              setState(() {
+                folder = newValue.toString();
+              });
+            },
+            items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
+              return DropdownMenuItem<String>(
+                value: item,
+                child: Text(item, style: TextStyle(
+                    color: ThemeUtil.isInDarkTheme(context)
+                        ? Colors.white
+                        : Colors.black
+                ),),
+              );
+            }).toList(),
+            style: AllpassTextUI.firstTitleStyle,
+            elevation: 8,
+            iconSize: 30,
+            value: folder,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createOwnerAppWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: marginInset,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "所属App",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          TextButton(
+            child: Text(appId?.isEmpty ?? true ? "无" : appName!),
+            onPressed: () async {
+              showDialog(
+                  context: context,
+                  builder: (_) => FutureBuilder<List<Application>>(
+                    future: DeviceAppsHolder.getInstalledApps(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.done:
+                          return SelectAppDialog(
+                            list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
+                            selectedApp: appId,
+                            onSelected: (app) {
+                              setState(() {
+                                appName = app.appName;
+                                appId = app.packageName;
+                              });
+                            },
+                            onCancel: () {
+                              setState(() {
+                                appName = null;
+                                appId = null;
+                              });
+                            },
+                          );
+                        default:
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                      }
+                    },
+                  ));
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createLabelWidget(Color mainColor) {
+    return Container(
+      margin: EdgeInsets.only(left: 30, right: 30, bottom: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: Text(
+              "标签",
+              style: TextStyle(fontSize: 16, color: mainColor),
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    spacing: 8.0,
+                    runSpacing: 10.0,
+                    children: _getTag()),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _createNoteWidget(EdgeInsets marginInset, Color mainColor) {
+    return Container(
+      margin: marginInset,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "备注",
+            style: TextStyle(fontSize: 16, color: mainColor),
+          ),
+          NoneBorderCircularTextField(
+            editingController: notesController,
+            maxLines: null,
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => DetailTextPage("备注", notesController.text, true),
+              )).then((newValue) {
+                setState(() {
+                  notesController.text = newValue;
+                });
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 
