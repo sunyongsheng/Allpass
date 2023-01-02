@@ -26,6 +26,7 @@ class _InformationHelpDialog extends State<InformationHelpDialog> {
     return AlertDialog(
       key: widget.key,
       title: widget.title,
+      scrollable: true,
       content: SingleChildScrollView(
           child: ListBody(
             children: widget.content

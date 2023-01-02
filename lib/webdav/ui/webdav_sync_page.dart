@@ -110,11 +110,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                       context: context,
                       builder: (context) => InformationHelpDialog(
                             content: <Widget>[
-                              Text("加密等级是指备份到WebDAV的文件的加密方式，请确保上传与恢复的加密等级相同\n"),
+                              Text("加密等级是指备份到WebDAV的文件的加密方式，对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，请确保上传与恢复的加密等级相同\n"),
                               Text(
-                                  "不加密：数据直接以明文的方式备份，密码字段可见；最不安全但是可以在任意设备上查找密码\n"),
+                                  "不加密：数据直接以明文的方式备份，密码字段可见；最不安全但通用性高，可以直接打开备份文件查看密码\n"),
                               Text(
-                                  "仅加密密码字段：仅将密码与卡片记录中的“密码”字段进行加密，而名称、标签之类的字段不加密\n"),
+                                  "仅加密密码字段：默认选项，仅将密码与卡片记录中的“密码”字段进行加密，而名称、用户名、标签之类的字段不加密\n"),
                               Text(
                                   "全部加密：所有字段全部进行加密，加密后的数据完全不可读，最安全但是如果丢失了密钥则有可能无法找回文件\n"),
                               Text(
@@ -128,11 +128,11 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                     context: context,
                     builder: (context) => DefaultSelectItemDialog<EncryptItem>(
                           list: encryptLevels,
-                          selector: (data) =>
-                              data.level == Config.webDavEncryptLevel,
-                          itemTitleBuilder: (data) => data.desc,
+                          selector: (data) => data.level == Config.webDavEncryptLevel,
+                          itemTitleBuilder: (data) => data.level.name,
+                          itemSubtitleBuilder: (data) => data.desc,
                           onSelected: (item) {
-                            Config.setWevDavEncryptLevel(item.level.index);
+                            Config.setWevDavEncryptLevel(item.level);
                           },
                         ));
               },
@@ -151,6 +151,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   builder: (context) => ConfirmDialog(
                         "确认退出",
                         "退出账号后需要重新登录，是否继续？",
+                        danger: true,
                         onConfirm: () {
                           Config.setWebDavAuthSuccess(false);
                           Config.setWebDavUsername(null);
@@ -173,7 +174,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
         context: context,
         builder: (_) => ConfirmDialog(
               "确认上传",
-              "当前加密等级为「${Config.webDavEncryptLevel.desc}」，是否继续？",
+              "当前加密等级为「${Config.webDavEncryptLevel.name}」，是否继续？",
               onConfirm: () async {
                 var syncResult = await provider.syncToRemote(context);
                 if (syncResult is SyncSuccess) {

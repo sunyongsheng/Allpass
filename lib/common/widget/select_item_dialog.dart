@@ -53,20 +53,19 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
 
 class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
   final StringBuilder? titleBuilder;
-  final WidgetBuilder<T>? itemBuilder;
   final StringGetter<T>? itemTitleBuilder;
+  final StringGetter<T>? itemSubtitleBuilder;
   final void Function(T) onSelected;
 
-  final Widget Function(T, StringGetter<T>?) _defaultItemBuilder =
-      (data, titleBuilder) => Text(titleBuilder?.call(data) ?? data.toString());
+  final StringGetter<T> _defaultItemTileBuilder = (data) => data.toString();
   final StringBuilder _defaultTitleBuilder = () => "请选择";
 
   DefaultSelectItemDialog({
     required List<T> list,
     required this.onSelected,
     this.titleBuilder,
-    this.itemBuilder,
     this.itemTitleBuilder,
+    this.itemSubtitleBuilder,
     bool Function(T)? selector,
     String? helpText,
     Key? key,
@@ -84,10 +83,21 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
 
   @override
   Widget buildItem(BuildContext context, T data) {
-    var itemTitle = itemBuilder?.call(context, data);
+    var title = itemTitleBuilder?.call(data) ?? _defaultItemTileBuilder(data);
+    var subtitle = itemSubtitleBuilder?.call(data);
+
     var selected = selector?.call(data) ?? defaultSelector(data);
     return ListTile(
-        title: itemTitle ?? _defaultItemBuilder(data, itemTitleBuilder),
+        title: Text(title),
+        subtitle: subtitle == null
+            ? null
+            : Text(
+                subtitle,
+                style: Theme.of(context)
+                    .textTheme
+                    .caption
+                    ?.copyWith(fontSize: 12),
+              ),
         trailing: selected ? Icon(Icons.check, color: Colors.grey) : null,
         onTap: () {
           Navigator.pop<T>(context, data);

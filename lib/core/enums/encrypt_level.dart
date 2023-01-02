@@ -15,7 +15,7 @@ class EncryptLevels {
 }
 
 extension EncryptLevelExt on EncryptLevel {
-  String get desc {
+  String get name {
     switch (this) {
       case EncryptLevel.None:
         return "不加密";
