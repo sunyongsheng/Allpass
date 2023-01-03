@@ -183,7 +183,7 @@ class WebDavSyncProvider extends ChangeNotifier {
         return SyncFailed("备份文件数据损坏");
       } else if (e is DioError) {
         if (e.response?.statusCode == 404) {
-          return SyncFailed("备份文件已被删除，请再次打开对话框重试");
+          return SyncFailed("备份文件已被删除，请再次打开对话框刷新后重试");
         }
 
         return SyncFailed("网络错误，请稍后重试");

@@ -25,8 +25,15 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 abstract class WebDavSyncService {
+  void updateConfig(
+      {String? urlPath, int? port, String? username, String? password});
+
+  void configPersistence();
+
   /// 权限检查
   Future<bool> authCheck();
+
+  void cancelAuthCheck();
 
   /// 备份密码到指定的目录中
   Future<void> backupPassword(BuildContext context);
@@ -69,7 +76,27 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   @override
+  void updateConfig(
+      {String? urlPath, int? port, String? username, String? password}) {
+    _requester.updateConfig(
+        urlPath: urlPath, port: port, username: username, password: password);
+  }
+
+  @override
+  void configPersistence() {
+    Config.setWebDavUrl(_requester.urlPath);
+    Config.setWebDavUsername(_requester.username);
+    Config.setWebDavPassword(EncryptUtil.encrypt(_requester.password));
+    Config.setWebDavPort(_requester.port);
+  }
+
+  @override
   Future<bool> authCheck() async => await _requester.authorityCheck();
+
+  @override
+  void cancelAuthCheck() {
+    _requester.cancelConfirmAuth();
+  }
 
   @override
   Future<void> backupPassword(BuildContext context) async {
@@ -230,7 +257,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     }
   }
 
-  Future<int> recoverPassword(BuildContext context, List<PasswordBean> remoteList) async {
+  Future<int> recoverPassword(
+      BuildContext context, List<PasswordBean> remoteList) async {
     var passwordProvider = context.read<PasswordProvider>();
     List<PasswordBean> localList = List.from(passwordProvider.passwordList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<PasswordBean>();
@@ -254,7 +282,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     }
   }
 
-  Future<int> recoverCard(BuildContext context, List<CardBean> remoteList) async {
+  Future<int> recoverCard(
+      BuildContext context, List<CardBean> remoteList) async {
     var cardProvider = context.read<CardProvider>();
     List<CardBean> localList = List.from(cardProvider.cardList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();

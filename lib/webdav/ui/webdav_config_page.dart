@@ -1,17 +1,16 @@
+import 'package:allpass/application.dart';
+import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/information_help_dialog.dart';
+import 'package:allpass/common/widget/loading_text_button.dart';
+import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/core/param/config.dart';
+import 'package:allpass/util/toast_util.dart';
+import 'package:allpass/webdav/service/webdav_sync_service.dart';
+import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
-import 'package:allpass/webdav/service/webdav_requester.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:allpass/core/param/config.dart';
-import 'package:allpass/util/encrypt_util.dart';
-import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/webdav/ui/webdav_sync_page.dart';
-import 'package:allpass/common/widget/information_help_dialog.dart';
-import 'package:allpass/common/widget/none_border_circular_textfield.dart';
-import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:provider/provider.dart';
 
 class WebDavConfigPage extends StatefulWidget {
@@ -22,12 +21,11 @@ class WebDavConfigPage extends StatefulWidget {
 }
 
 class _WebDavConfigPage extends State<StatefulWidget> {
-
   late TextEditingController _urlController;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   late TextEditingController _portController;
-  late WebDavRequester _utils;
+  late WebDavSyncService _syncService;
 
   bool _pressNext = false;
   bool _passwordVisible = false;
@@ -35,15 +33,15 @@ class _WebDavConfigPage extends State<StatefulWidget> {
 
   @override
   void initState() {
+    super.initState();
     _urlController = TextEditingController();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _portController = TextEditingController();
+    _syncService = AllpassApplication.getIt.get();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _frameDone = true;
     });
-    _utils = WebDavRequester();
-    super.initState();
   }
 
   @override
@@ -152,7 +150,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                           size: 20,
                         ),
                         onTap: () {
-                          if (_frameDone)_passwordController.clear();
+                          if (_frameDone) _passwordController.clear();
                         },
                       ),
                     ),
@@ -166,7 +164,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                       onTap: () => showPassword(),
                     ),
                   )
-
                 ],
               ),
               Padding(
@@ -192,7 +189,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     });
     if (_pressNext) {
       try {
-        _utils.updateConfig(
+        _syncService.updateConfig(
           urlPath: _urlController.text,
           username: _usernameController.text,
           password: _passwordController.text,
@@ -205,20 +202,18 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         });
         return;
       }
-      bool auth = await _utils.authorityCheck();
+      bool auth = await _syncService.authCheck();
       if (auth) {
-        Config.setWebDavUrl(_utils.urlPath);
-        Config.setWebDavUsername(_utils.username);
-        Config.setWebDavPassword(EncryptUtil.encrypt(_utils.password));
-        Config.setWebDavPort(_utils.port);
+        _syncService.configPersistence();
         Config.setWebDavAuthSuccess(true);
         ToastUtil.show(msg: "账号验证成功");
-        Navigator.pushReplacement(context, CupertinoPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-              create: (context) => WebDavSyncProvider(),
-              child: WebDavSyncPage(),
-            )
-        ));
+        Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                      create: (context) => WebDavSyncProvider(),
+                      child: WebDavSyncPage(),
+                    )));
       } else {
         Config.setWebDavAuthSuccess(false);
         ToastUtil.show(msg: "验证失败，请重试");
@@ -227,14 +222,14 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         _pressNext = false;
       });
     } else {
-      _utils.cancelConfirmAuth();
+      _syncService.cancelAuthCheck();
     }
   }
 
   void _setPortAuto() {
     if (_urlController.text.startsWith("https://")) {
       _portController.text = "443";
-    } else if (_urlController.text.startsWith("http://")){
+    } else if (_urlController.text.startsWith("http://")) {
       _portController.text = "80";
     }
   }
@@ -247,5 +242,4 @@ class _WebDavConfigPage extends State<StatefulWidget> {
         _passwordVisible = false;
     });
   }
-
 }
