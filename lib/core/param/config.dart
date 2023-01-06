@@ -1,29 +1,60 @@
 import 'package:allpass/application.dart';
-import 'package:allpass/core/enums/encrypt_level.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
 
 /// 存储系统参数
 class Config {
   Config._();
 
-  static late String username; // 当前使用者用户名
-  static late String password; // 使用者密码
-  static late bool enabledBiometrics; // 是否启用生物识别
-  static late bool longPressCopy; // 是否开启长按复制，否则为长按多选
-  static late String lightTheme; // 浅色主题名
-  static late String themeMode; // 主题模式
-  static late bool webDavAuthSuccess; // WebDAV是否验证成功
-  static late String? webDavUrl; // WebDAV地址
-  static late String? webDavUsername; // WebDAV用户名
-  static late String? webDavPassword; // WebDAV密码
-  static late int? webDavPort; // WebDAV端口号
-  static late EncryptLevel webDavEncryptLevel; // WebDAV备份加密等级 EncryptLevel.index
-  static late MergeMethod webDavMergeMethod; // WebDAV恢复数据合并方式
-  static late String? webDavUploadTime; // WebDAV上次上传时间
-  static late String? webDavDownloadTime; // WebDAV上次下载时间
-  static late int timingInMainPassword; // 定期输入主密码天数
+  /// 当前使用者用户名
+  static late String username;
+
+  /// 使用者密码
+  static late String password;
+
+  /// 是否启用生物识别
+  static late bool enabledBiometrics;
+
+  /// 是否开启长按复制，否则为长按多选
+  static late bool longPressCopy;
+
+  /// 浅色主题名
+  static late String lightTheme;
+
+  /// 主题模式
+  static late String themeMode;
+
+  /// WebDAV是否验证成功
+  static late bool webDavAuthSuccess;
+
+  /// WebDAV地址
+  static late String? webDavUrl;
+
+  /// WebDAV用户名
+  static late String? webDavUsername;
+
+  /// WebDAV密码
+  static late String? webDavPassword;
+
+  /// WebDAV端口号
+  static late int? webDavPort;
+
+  /// WebDAV备份加密等级 EncryptLevel.index
+  static late EncryptLevel webDavEncryptLevel;
+
+  /// WebDAV恢复数据合并方式
+  static late MergeMethod webDavMergeMethod;
+
+  /// WebDAV上次上传时间
+  static late String? webDavUploadTime;
+
+  /// WebDAV上次下载时间
+  static late String? webDavDownloadTime;
+
+  /// 定期输入主密码天数
+  static late int timingInMainPassword;
 
   /// 参数初始化
   static void initConfig() {

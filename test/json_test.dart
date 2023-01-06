@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/core/enums/encrypt_level.dart';
+import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/password/model/password_extension.dart';
-import 'package:allpass/util/allpass_file_util.dart';
+import 'package:allpass/webdav/encrypt/password_extension.dart';
 import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:flutter_test/flutter_test.dart';
 

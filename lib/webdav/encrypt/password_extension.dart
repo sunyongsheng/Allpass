@@ -1,4 +1,4 @@
-import 'package:allpass/core/enums/encrypt_level.dart';
+import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';

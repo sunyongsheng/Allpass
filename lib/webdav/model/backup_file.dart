@@ -1,5 +1,5 @@
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/core/enums/encrypt_level.dart';
+import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 
 class FileMetaData {
   final AllpassType type;
