@@ -6,21 +6,32 @@ extension MergeSupport on Object {
     if (this is PasswordBean) {
       if (another is PasswordBean) {
         var bean = this as PasswordBean;
-        return bean.name == another.name &&
-            bean.username == another.username &&
-            bean.url == another.url;
+        return bean.identify(another);
       }
     }
 
     if (this is CardBean) {
       if (another is CardBean) {
         var bean = this as CardBean;
-        return bean.name == another.name &&
-            bean.ownerName == another.ownerName &&
-            bean.cardId == another.cardId &&
-            bean.telephone == another.telephone;
+        return bean.identify(another);
       }
     }
     return false;
+  }
+}
+
+extension CardBeanMergeSupport on CardBean {
+  bool identify(CardBean another) {
+    return this.name == another.name &&
+        this.ownerName == another.ownerName &&
+        this.cardId == another.cardId;
+  }
+}
+
+extension PasswordBeanMergeSupport on PasswordBean {
+  bool identify(PasswordBean another) {
+    return this.name == another.name &&
+        this.username == another.username &&
+        this.url == another.url;
   }
 }
