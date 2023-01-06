@@ -108,8 +108,8 @@ class _LetterIndexBar extends State<LetterIndexBar> {
           child: Center(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
-                color: context.watch<ThemeProvider>().offsetColor,
+                borderRadius: AllpassUI.smallBorderRadius,
+                color: context.watch<ThemeProvider>().offstageColor,
               ),
               width: 60,
               height: 60,

@@ -81,7 +81,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                             padding: EdgeInsets.symmetric(vertical: 23, horizontal: 0),
                             child: Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+                                borderRadius: AllpassUI.smallBorderRadius,
                                 color: bean.color,
                               ),
                               child: CircleAvatar(

@@ -55,8 +55,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
         helperMaxLines: 3,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(
-              Radius.circular(AllpassUI.smallBorderRadius)),
+          borderRadius: AllpassUI.smallBorderRadius,
         ),
         labelText: labelText,
         errorText: errorText

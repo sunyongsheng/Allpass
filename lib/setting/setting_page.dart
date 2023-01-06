@@ -247,7 +247,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
               controller: _controller,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(15)),
+                  padding: AllpassEdgeInsets.smallTopInsets,
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,

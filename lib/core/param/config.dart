@@ -1,8 +1,10 @@
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
+import 'package:flutter/material.dart';
 
 /// 存储系统参数
 class Config {
@@ -24,7 +26,7 @@ class Config {
   static late String lightTheme;
 
   /// 主题模式
-  static late String themeMode;
+  static late ThemeMode themeMode;
 
   /// WebDAV是否验证成功
   static late bool webDavAuthSuccess;
@@ -67,8 +69,8 @@ class Config {
     // 判断长按功能
     longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
     // 初始化主题
-    lightTheme = sp.getString(SPKeys.lightTheme) ?? "blue";
-    themeMode = sp.getString(SPKeys.themeMode) ?? "system";
+    lightTheme = sp.getString(SPKeys.lightTheme) ?? PrimaryColor.blue.name;
+    themeMode = ThemeModes.parse(sp.getString(SPKeys.themeMode) ?? ThemeMode.system.name);
     // 初始化WebDAV
     webDavAuthSuccess = sp.getBool(SPKeys.webDavAuthSuccess) ?? false;
     webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
@@ -90,8 +92,8 @@ class Config {
     password = "";
     enabledBiometrics = false;
     longPressCopy = true;
-    lightTheme = "blue";
-    themeMode = "system";
+    lightTheme = PrimaryColor.blue.name;
+    themeMode = ThemeMode.system;
     webDavAuthSuccess = false;
     webDavUrl = "";
     webDavUsername = "";
@@ -133,9 +135,9 @@ class Config {
     AllpassApplication.sp.setString(SPKeys.lightTheme, value);
   }
 
-  static void setThemeMode(String value) {
-    themeMode = value;
-    AllpassApplication.sp.setString(SPKeys.themeMode, value);
+  static void setThemeMode(ThemeMode mode) {
+    themeMode = mode;
+    AllpassApplication.sp.setString(SPKeys.themeMode, mode.name);
   }
 
   static void setWebDavAuthSuccess(bool value) {

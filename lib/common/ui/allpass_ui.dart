@@ -81,6 +81,9 @@ class AllpassEdgeInsets {
     left: AllpassScreenUtil.setWidth(50),
   );
 
+  static EdgeInsets smallTopInsets = EdgeInsets.only(
+    top: AllpassScreenUtil.setHeight(15)
+  );
 
   static EdgeInsets bottom10Inset = EdgeInsets.only(
       left: AllpassScreenUtil.setWidth(100),
@@ -101,7 +104,8 @@ class AllpassEdgeInsets {
 /// 其他样式
 class AllpassUI {
   AllpassUI._();
-  static const double smallBorderRadius = 8.0;
+  static const Radius smallRadius = const Radius.circular(8.0);
+  static const BorderRadius smallBorderRadius = const BorderRadius.all(smallRadius);
 }
 
 Color getRandomColor({int? seed}) {

@@ -108,7 +108,7 @@ class _SearchPage extends State<SearchPage> {
             Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+                  borderRadius: AllpassUI.smallBorderRadius,
                   color: Theme.of(context).inputDecorationTheme.fillColor,
                 ),
                 height: 35,

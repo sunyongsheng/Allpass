@@ -114,7 +114,7 @@ class _LoginPage extends State<LoginPage> {
               Container(
                 child: MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius)
+                      borderRadius: AllpassUI.smallBorderRadius
                   ),
                   color: Theme.of(context).primaryColor,
                   child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),

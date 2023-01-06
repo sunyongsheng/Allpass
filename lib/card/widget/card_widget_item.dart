@@ -76,8 +76,7 @@ class _MaterialCardWidget extends StatelessWidget {
       openColor: data.color ?? backgroundColor,
       closedColor: data.color ?? backgroundColor,
       closedShape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius)),
+        borderRadius: AllpassUI.smallBorderRadius,
       ),
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
@@ -248,8 +247,7 @@ class SimpleCardWidgetItem extends StatelessWidget {
             child: ListTile(
               leading: Container(
                 decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(AllpassUI.smallBorderRadius),
+                    borderRadius: AllpassUI.smallBorderRadius,
                     color: data.color),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
@@ -303,7 +301,7 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
         },
         secondary: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+              borderRadius: AllpassUI.smallBorderRadius,
               color: data.color),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,

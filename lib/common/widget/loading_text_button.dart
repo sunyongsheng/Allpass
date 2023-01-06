@@ -39,7 +39,7 @@ class LoadingTextButton extends StatelessWidget {
       color: color,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AllpassUI.smallBorderRadius),
+        borderRadius: AllpassUI.smallBorderRadius,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

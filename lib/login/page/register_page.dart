@@ -68,7 +68,7 @@ class _RegisterPage extends State<RegisterPage> {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: MaterialButton(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(AllpassUI.smallBorderRadius))
+                      borderRadius: AllpassUI.smallBorderRadius
                   ),
                   color: Theme.of(context).primaryColor,
                   minWidth: double.infinity,
