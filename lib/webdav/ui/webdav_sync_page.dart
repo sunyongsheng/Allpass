@@ -239,17 +239,48 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   }
 
   void _onClickEncryptHelp() {
+    var boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
+    var textStyle = TextStyle(fontSize: 14);
     showDialog(
         context: context,
         builder: (context) => InformationHelpDialog(
               content: <Widget>[
                 Text(
-                    "加密等级是指备份到WebDAV的文件的加密方式，对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，请确保上传与恢复的加密等级相同\n"),
-                Text("不加密：数据直接以明文的方式备份，密码字段可见；最不安全但通用性高，可以直接打开备份文件查看密码\n"),
-                Text("仅加密密码字段：默认选项，仅将密码与卡片记录中的“密码”字段进行加密，而名称、用户名、标签之类的字段不加密\n"),
-                Text("全部加密：所有字段全部进行加密，加密后的数据完全不可读，最安全但是如果丢失了密钥则有可能无法找回文件\n"),
+                  "加密等级是指备份到WebDAV的文件的加密方式，"
+                  "对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，"
+                  "请确保上传与恢复的加密等级相同\n",
+                  style: textStyle,
+                ),
+                Text.rich(TextSpan(children: [
+                  TextSpan(text: "不加密：", style: boldTextStyle),
+                  TextSpan(
+                    text: "数据直接以明文的方式备份，密码字段可见；"
+                        "最不安全但通用性高，可以直接打开备份文件查看密码\n",
+                    style: textStyle,
+                  )
+                ])),
+                Text.rich(TextSpan(children: [
+                  TextSpan(text: "仅加密密码字段：", style: boldTextStyle),
+                  TextSpan(
+                    text: "默认选项，仅将密码与卡片记录中的“密码”字段进行加密，"
+                        "而名称、用户名、标签之类的字段不加密\n",
+                    style: textStyle,
+                  )
+                ])),
+                Text.rich(TextSpan(children: [
+                  TextSpan(text: "全部加密：", style: boldTextStyle),
+                  TextSpan(
+                    text: "所有字段全部进行加密，加密后的数据完全不可读，"
+                        "最安全但是如果丢失了密钥则有可能无法找回文件\n",
+                    style: textStyle,
+                  )
+                ])),
                 Text(
-                    "后两种加密方式严格依赖本机Allpass使用的密钥，在丢失密钥的情况下，一旦进行卸载或者数据清除操作则数据将无法恢复！！！"),
+                  "后两种加密方式严格依赖本机Allpass使用的密钥，"
+                  "在丢失密钥的情况下，"
+                  "一旦进行卸载或者数据清除操作则数据将无法恢复！！！",
+                  style: textStyle,
+                ),
               ],
             ));
   }
