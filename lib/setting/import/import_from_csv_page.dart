@@ -1,3 +1,4 @@
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
@@ -29,10 +30,16 @@ class ImportFromCsvPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Column(
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
+      body: ListView(
         children: <Widget>[
-          Container(
-            padding: AllpassEdgeInsets.listInset,
+          Padding(
+            padding: AllpassEdgeInsets.smallTopInsets,
+          ),
+
+          Card(
+            margin: AllpassEdgeInsets.settingCardInset,
+            elevation: 0,
             child: ListTile(
                 title: Text("密码"),
                 leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
@@ -46,8 +53,10 @@ class ImportFromCsvPage extends StatelessWidget {
                 }
             ),
           ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
+
+          Card(
+            margin: AllpassEdgeInsets.settingCardInset,
+            elevation: 0,
             child: ListTile(
                 title: Text("卡片"),
                 leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),

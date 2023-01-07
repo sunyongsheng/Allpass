@@ -1,3 +1,4 @@
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import 'package:allpass/setting/import/import_from_chrome_page.dart';
 import 'package:allpass/setting/import/import_from_clipboard_page.dart';
 import 'package:allpass/setting/import/import_from_csv_page.dart';
 import 'package:allpass/setting/import/export_to_csv_page.dart';
+import 'package:provider/provider.dart';
 
 /// 导入导出页面
 class ImportExportPage extends StatelessWidget {
@@ -20,52 +22,57 @@ class ImportExportPage extends StatelessWidget {
           ),
           centerTitle: true,
         ),
-        body: Column(
+        backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
+        body: ListView(
           children: <Widget>[
-            Container(
-              padding: AllpassEdgeInsets.listInset,
-              child: ListTile(
-                title: Text("从Chrome中导入"),
-                leading: Icon(CustomIcons.chrome, color: AllpassColorUI.allColor[6]),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ImportFromChromePage(),
-                      ));
-                },
+            Padding(
+              padding: AllpassEdgeInsets.smallTopInsets,
+            ),
+
+            Card(
+              margin: AllpassEdgeInsets.settingCardInset,
+              elevation: 0,
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text("从Chrome中导入"),
+                    leading: Icon(CustomIcons.chrome, color: AllpassColorUI.allColor[6]),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ImportFromChromePage(),
+                          ));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("从CSV文件中导入"),
+                    leading: Icon(Icons.import_contacts, color: AllpassColorUI.allColor[4]),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ImportFromCsvPage(),
+                          ));
+                    },
+                  ),
+                  ListTile(
+                    title: Text("从剪贴板中导入"),
+                    leading: Icon(Icons.content_paste, color: AllpassColorUI.allColor[1]),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (context) => ImportFromClipboardPage(),
+                          ));
+                    },
+                  )
+                ],
               ),
             ),
-            Container(
-              padding: AllpassEdgeInsets.listInset,
-              child: ListTile(
-                title: Text("从CSV文件中导入"),
-                leading: Icon(Icons.import_contacts, color: AllpassColorUI.allColor[4]),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ImportFromCsvPage(),
-                      ));
-                },
-              ),
-            ),
-            Container(
-              padding: AllpassEdgeInsets.listInset,
-              child: ListTile(
-                title: Text("从剪贴板中导入"),
-                leading: Icon(Icons.content_paste, color: AllpassColorUI.allColor[1]),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ImportFromClipboardPage(),
-                      ));
-                },
-              ),
-            ),
-            Container(
-              padding: AllpassEdgeInsets.listInset,
+            Card(
+              margin: AllpassEdgeInsets.settingCardInset,
+              elevation: 0,
               child: ListTile(
                 title: Text("导出为CSV文件"),
                 leading: Icon(Icons.call_missed_outgoing, color: AllpassColorUI.allColor[3]),
@@ -77,7 +84,7 @@ class ImportExportPage extends StatelessWidget {
                       ));
                 },
               ),
-            )
+            ),
           ],
         ));
   }
