@@ -33,7 +33,7 @@ class AllpassApplication {
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
 
-  static String version = "1.6.4";
+  static String version = "1.7.0";
 
   static int systemSdkInt = -1;
   static bool isAndroid = true;
