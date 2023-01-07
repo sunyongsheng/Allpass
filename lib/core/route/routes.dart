@@ -10,7 +10,6 @@ class Routes {
   static String home = "/home";
   static String login = "/login";
   static String authLogin = "/authlogin";
-  static String initEncrypt = "/initEncrypt";
 
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(
@@ -22,6 +21,5 @@ class Routes {
     router.define(login, handler: loginHandler);
     router.define(home, handler: homeHandler);
     router.define(authLogin, handler: authLoginHandler);
-    router.define(initEncrypt, handler: initEncryptHandler);
   }
 }

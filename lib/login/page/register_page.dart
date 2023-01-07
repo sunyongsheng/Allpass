@@ -10,7 +10,6 @@ import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
-import 'package:allpass/login/page/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -84,9 +83,7 @@ class _RegisterPage extends State<RegisterPage> {
                 children: <Widget>[
                   TextButton(
                     child: Text("已有账号？登录"),
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => LoginPage()
-                    )),
+                    onPressed: () => NavigationUtil.goLoginPage(context),
                   ),
                 ],
               ),
@@ -125,6 +122,6 @@ class _RegisterPage extends State<RegisterPage> {
     Config.setUsername(_usernameController.text);
     Config.setPassword(_password);
     Config.setEnabledBiometrics(false);
-    NavigationUtil.goInitEncryptPage(context);
+    NavigationUtil.goLoginPage(context);
   }
 }

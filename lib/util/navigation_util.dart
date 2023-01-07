@@ -31,8 +31,4 @@ class NavigationUtil {
   static void goHomePage(BuildContext context) {
     _navigateTo(context, Routes.home, clearStack: true);
   }
-
-  static void goInitEncryptPage(BuildContext context) {
-    _navigateTo(context, Routes.initEncrypt, clearStack: true);
-  }
 }

@@ -3,7 +3,6 @@ import 'package:fluro/fluro.dart';
 import 'package:allpass/home/home_page.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/auth_login_page.dart';
-import 'package:allpass/login/page/init_encrypt_page.dart';
 
 /// 登录页
 var loginHandler = Handler(
@@ -20,7 +19,3 @@ var homeHandler = Handler(
   handlerFunc: (BuildContext? context, Map<String, List<Object>> params) => HomePage()
 );
 
-/// 密钥初始化页
-var initEncryptHandler = Handler(
-  handlerFunc: (BuildContext? context, Map<String, List<Object>> params) => InitEncryptPage()
-);

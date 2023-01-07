@@ -8,7 +8,6 @@ import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/login/page/init_encrypt_page.dart';
 import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/password/widget/select_app_dialog.dart';
@@ -63,13 +62,9 @@ class _DebugPage extends State<DebugPage> {
                   showDialog<String>(
                       context: context,
                       builder: (context) => DefaultSelectItemDialog<String>(
-                        list: ["init_encrypt", "webdav_sync"],
+                        list: ["webdav_sync"],
                         onSelected: (value) {
-                          if (value == "init_encrypt") {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => InitEncryptPage()
-                            ));
-                          } else if (value == "webdav_sync") {
+                          if (value == "webdav_sync") {
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => ChangeNotifierProvider(
                                   create: (context) => WebDavSyncProvider(),
