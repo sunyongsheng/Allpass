@@ -13,6 +13,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/model/simple_user.dart';
+import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
@@ -155,8 +156,8 @@ Future<Null> initAppFirstRun() async {
   AllpassApplication.sp.setBool(SPKeys.biometrics, false);
   AllpassApplication.sp.setBool(SPKeys.longPressCopy, true);
   AllpassApplication.sp.setBool(SPKeys.webDavAuthSuccess, false);
-  AllpassApplication.sp.setString(SPKeys.lightTheme, "blue");
-  AllpassApplication.sp.setString(SPKeys.themeMode, "system");
+  AllpassApplication.sp.setString(SPKeys.primaryColor, PrimaryColor.blue.name);
+  AllpassApplication.sp.setString(SPKeys.themeMode, ThemeMode.system.name);
   AllpassApplication.sp.setString(SPKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
   Config.initConfig();
 }

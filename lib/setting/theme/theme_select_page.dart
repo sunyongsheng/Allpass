@@ -51,7 +51,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
 
   Widget _createPrimaryColorItem(PrimaryColorItem item) {
     var mode = item.primaryColor;
-    bool selected = Config.lightTheme == mode.name;
+    bool selected = Config.primaryColor == mode;
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: item.color,
@@ -62,7 +62,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
       onTap: () {
         var provider = context.read<ThemeProvider>();
         setState(() {
-          provider.changeLightTheme(mode, context: context);
+          provider.changePrimaryColor(mode, context: context);
         });
       },
     );

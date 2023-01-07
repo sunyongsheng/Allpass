@@ -18,8 +18,8 @@ class ThemeProvider with ChangeNotifier {
   init() {
     _allpassTheme = AllpassTheme();
     themeMode = Config.themeMode;
-    lightTheme = _string2Theme(Config.lightTheme, false);
-    darkTheme = _string2Theme(Config.lightTheme, true);
+    lightTheme = _convertTheme(Config.primaryColor, false);
+    darkTheme = _convertTheme(Config.primaryColor, true);
   }
 
   void changeThemeMode(ThemeMode targetMode, {required BuildContext context}) {
@@ -28,28 +28,28 @@ class ThemeProvider with ChangeNotifier {
     setExtraColor(context: context);
   }
 
-  void changeLightTheme(PrimaryColor theme, {required BuildContext context}) {
-    lightTheme = _string2Theme(theme.name, false);
-    darkTheme = _string2Theme(theme.name, true);
-    Config.setLightTheme(theme.name);
+  void changePrimaryColor(PrimaryColor color, {required BuildContext context}) {
+    lightTheme = _convertTheme(color, false);
+    darkTheme = _convertTheme(color, true);
+    Config.setPrimaryColor(color);
     setExtraColor(context: context);
   }
 
-  ThemeData _string2Theme(String themeName, bool dark) {
-    switch (themeName) {
-      case "blue":
+  ThemeData _convertTheme(PrimaryColor color, bool dark) {
+    switch (color) {
+      case PrimaryColor.blue:
         return _allpassTheme.blueTheme(dark);
-      case "red":
+      case PrimaryColor.red:
         return _allpassTheme.redTheme(dark);
-      case "teal":
+      case PrimaryColor.teal:
         return _allpassTheme.tealTheme(dark);
-      case "deepPurple":
+      case PrimaryColor.deepPurple:
         return _allpassTheme.deepPurpleTheme(dark);
-      case "orange":
+      case PrimaryColor.orange:
         return _allpassTheme.orangeTheme(dark);
-      case "pink":
+      case PrimaryColor.pink:
         return _allpassTheme.pinkTheme(dark);
-      case "blueGrey":
+      case PrimaryColor.blueGrey:
         return _allpassTheme.blueGreyTheme(dark);
       default:
         return _allpassTheme.blueTheme(dark);

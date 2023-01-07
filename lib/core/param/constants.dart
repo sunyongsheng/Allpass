@@ -9,7 +9,7 @@ class SPKeys {
   static const String password = "password";
   static const String biometrics = "biometrics";
   static const String longPressCopy = "longPressCopy";
-  static const String lightTheme = "theme";
+  static const String primaryColor = "theme";
   static const String themeMode = "themeMode";
   static const String folder = "folder";
   static const String label = "label";

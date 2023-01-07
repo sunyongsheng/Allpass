@@ -28,17 +28,26 @@ class MergeMethods {
     }
     throw UnsupportedArgumentException("Unsupported value=$value");
   }
+
+  static MergeMethod? tryParse(int? value) {
+    if (value == null) return null;
+    try {
+      return parse(value);
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 class MergeMethodItem {
   final MergeMethod method;
   final String desc;
 
-  MergeMethodItem(this.method, this.desc);
+  const MergeMethodItem(this.method, this.desc);
 }
 
 var mergeMethods = [
-  MergeMethodItem(MergeMethod.localFirst, "当本地记录和云端记录名称、用户名和链接相同时，保留本地记录"),
-  MergeMethodItem(MergeMethod.remoteFirst, "当本地记录和云端记录名称、用户名和链接相同时，使用云端记录"),
-  MergeMethodItem(MergeMethod.onlyRemote, "清空本地所有数据，只使用云端数据"),
+  const MergeMethodItem(MergeMethod.localFirst, "当本地记录和云端记录名称、用户名和链接相同时，保留本地记录"),
+  const MergeMethodItem(MergeMethod.remoteFirst, "当本地记录和云端记录名称、用户名和链接相同时，使用云端记录"),
+  const MergeMethodItem(MergeMethod.onlyRemote, "清空本地所有数据，只使用云端数据"),
 ];

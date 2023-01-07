@@ -23,7 +23,7 @@ class Config {
   static late bool longPressCopy;
 
   /// 浅色主题名
-  static late String lightTheme;
+  static late PrimaryColor primaryColor;
 
   /// 主题模式
   static late ThemeMode themeMode;
@@ -69,16 +69,16 @@ class Config {
     // 判断长按功能
     longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
     // 初始化主题
-    lightTheme = sp.getString(SPKeys.lightTheme) ?? PrimaryColor.blue.name;
-    themeMode = ThemeModes.parse(sp.getString(SPKeys.themeMode) ?? ThemeMode.system.name);
+    primaryColor = PrimaryColors.tryParse(sp.getString(SPKeys.primaryColor)) ?? PrimaryColor.blue;
+    themeMode = ThemeModes.tryParse(sp.getString(SPKeys.themeMode)) ?? ThemeMode.system;
     // 初始化WebDAV
     webDavAuthSuccess = sp.getBool(SPKeys.webDavAuthSuccess) ?? false;
     webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
     webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
-    webDavEncryptLevel = EncryptLevels.parse(sp.getInt(SPKeys.webDavEncryptLevel) ?? EncryptLevel.OnlyPassword.index);
-    webDavMergeMethod = MergeMethods.parse(sp.getInt(SPKeys.webDavMergeMethod) ?? MergeMethod.localFirst.index);
+    webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.OnlyPassword;
+    webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
@@ -92,7 +92,7 @@ class Config {
     password = "";
     enabledBiometrics = false;
     longPressCopy = true;
-    lightTheme = PrimaryColor.blue.name;
+    primaryColor = PrimaryColor.blue;
     themeMode = ThemeMode.system;
     webDavAuthSuccess = false;
     webDavUrl = "";
@@ -130,9 +130,9 @@ class Config {
     AllpassApplication.sp.setBool(SPKeys.longPressCopy, value);
   }
 
-  static void setLightTheme(String value) {
-    lightTheme = value;
-    AllpassApplication.sp.setString(SPKeys.lightTheme, value);
+  static void setPrimaryColor(PrimaryColor color) {
+    primaryColor = color;
+    AllpassApplication.sp.setString(SPKeys.primaryColor, color.name);
   }
 
   static void setThemeMode(ThemeMode mode) {

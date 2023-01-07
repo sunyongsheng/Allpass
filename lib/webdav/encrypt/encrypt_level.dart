@@ -12,6 +12,16 @@ class EncryptLevels {
     }
     throw UnsupportedArgumentException("Unsupported EncryptLevel code=$levelCode");
   }
+
+  static EncryptLevel? tryParse(int? levelCode) {
+    if (levelCode == null) return null;
+
+    try {
+      return parse(levelCode);
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 extension EncryptLevelExt on EncryptLevel {
@@ -31,11 +41,11 @@ class EncryptItem {
   final EncryptLevel level;
   final String desc;
 
-  EncryptItem(this.level, this.desc);
+  const EncryptItem(this.level, this.desc);
 }
 
 List<EncryptItem> encryptLevels = [
-  EncryptItem(EncryptLevel.None, "备份文件中的密码将以明文状态进行展示"),
-  EncryptItem(EncryptLevel.OnlyPassword, "默认选项，只加密密码字段"),
-  EncryptItem(EncryptLevel.All, "所有字段均进行加密，无法直接从备份文件中获取信息")
+  const EncryptItem(EncryptLevel.None, "备份文件中的密码将以明文状态进行展示"),
+  const EncryptItem(EncryptLevel.OnlyPassword, "默认选项，只加密密码字段"),
+  const EncryptItem(EncryptLevel.All, "所有字段均进行加密，无法直接从备份文件中获取信息")
 ];
