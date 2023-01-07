@@ -12,7 +12,7 @@ class WebDavRequester {
 
   late Dio _dio;
   late String _basicAuth;
-  late Map<String, String> _baseHeaders;
+  late Map<String, dynamic> _baseHeaders;
 
   late String urlPath;
   late String username;
@@ -21,40 +21,30 @@ class WebDavRequester {
 
   bool _authChecked = false;
 
-  bool _canceled = false;
-
   CancelToken _authCancelToken = CancelToken();
 
   Map<String, List<WebDavFile>> _dirFilesCache = Map();
 
   WebDavRequester(
       {String? urlPath, int? port, String? username, String? password}) {
-    _dio = Dio(BaseOptions(receiveTimeout: 5000));
-    _dio.interceptors.add(QueuedInterceptorsWrapper(onRequest: (
-      RequestOptions requestOptions,
-      RequestInterceptorHandler handler,
-    ) {
-      if (_canceled) {
-        handler.reject(DioError(
-            requestOptions: requestOptions, type: DioErrorType.cancel));
-      } else {
-        handler.next(requestOptions);
-      }
-    }));
+    _dio = Dio(BaseOptions(receiveTimeout: 30000));
 
-    _baseHeaders = Map();
+    _baseHeaders = {"Depth": 1};
     this.urlPath = "https://";
     this.username = "";
     this.password = "";
     this.port = 443;
 
     updateConfig(
-        urlPath: urlPath, port: port, username: username, password: password);
+      urlPath: urlPath,
+      port: port,
+      username: username,
+      password: password,
+    );
   }
 
   void updateConfig(
       {String? urlPath, int? port, String? username, String? password}) {
-    _canceled = false;
     _authChecked = false;
 
     if (port != null) {
@@ -92,18 +82,18 @@ class WebDavRequester {
       return true;
     }
 
-    _canceled = false;
-
     try {
-      Response response = await _dio.request(urlPath,
-          options: Options(
-            method: WebDAVMethods.propFind,
-            headers: _baseHeaders,
-          ),
-          cancelToken: _authCancelToken);
+      Response response = await _dio.request(
+        urlPath,
+        options: Options(
+          method: WebDAVMethods.propFind,
+          headers: _baseHeaders,
+        ),
+        cancelToken: _authCancelToken,
+      );
       if (_checkResponse(response.statusCode)) {
         List<WebDavFile> fileNames = [];
-        XmlDocument.parse(response.data)
+        XmlDocument.parse(response.data.toString().toLowerCase())
             .findAllElements("d:response")
             .map((e) => WebDavFile.parse(e))
             .forEach((file) {
@@ -115,16 +105,15 @@ class WebDavRequester {
         _authChecked = true;
         return true;
       } else if (response.statusCode == 401) return false;
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
+      print(e.response?.data);
+      print(e.stackTrace);
     }
     return false;
   }
 
   /// 创建目录，名为[dirName]，创建路径在根目录下
   Future<bool> createDir(String dirName) async {
-    _canceled = false;
-
     try {
       String newPath = urlPath + dirName;
       Response response = await _dio.request(
@@ -139,28 +128,29 @@ class WebDavRequester {
       } else {
         return false;
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
+      print(e.response?.data);
+      print(e.stackTrace);
     }
     return false;
   }
 
   /// 列出文件夹[dirName]中的所有文件名，若目录为空返回[null]
   Future<List<WebDavFile>?> listFiles(String dirName) async {
-    _canceled = false;
-
     try {
       String fullPath = urlPath + dirName;
-      Response<String> response = await _dio.request(fullPath,
-          options: Options(
-            method: WebDAVMethods.propFind,
-            headers: _baseHeaders,
-          ));
+      Response<String> response = await _dio.request(
+        fullPath,
+        options: Options(
+          method: WebDAVMethods.propFind,
+          headers: _baseHeaders,
+        ),
+      );
       List<WebDavFile> allFiles = [];
       if (_checkResponse(response.statusCode)) {
         var data = response.data;
         if (data == null) return null;
-        XmlDocument.parse(data)
+        XmlDocument.parse(data.toString().toLowerCase())
             .findAllElements("d:response")
             .map((e) => WebDavFile.parse(e))
             .forEach((file) {
@@ -175,8 +165,9 @@ class WebDavRequester {
       } else {
         return null;
       }
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
+      print(e.response?.data);
+      print(e.stackTrace);
       return null;
     }
   }
@@ -201,8 +192,6 @@ class WebDavRequester {
       {String dirName = root,
       required String fileName,
       required String filePath}) async {
-    _canceled = false;
-
     String uploadPath = _concatPath(dirName, fileName);
     File file = File(filePath);
     if (!await file.exists()) {
@@ -227,8 +216,6 @@ class WebDavRequester {
       {String dirName = root,
       required String fileName,
       String? savePath}) async {
-    _canceled = false;
-
     String downloadUrl = _concatPath(dirName, fileName);
     String _savePath;
     if (savePath == null) {
@@ -237,17 +224,16 @@ class WebDavRequester {
     } else {
       _savePath = savePath;
     }
-    Response response = await _dio.download(downloadUrl, _savePath,
-        options: Options(headers: _baseHeaders));
+    Response response = await _dio.download(
+      downloadUrl,
+      _savePath,
+      options: Options(headers: _baseHeaders),
+    );
     if (_checkResponse(response.statusCode)) {
       return _savePath;
     }
 
     throw UnknownException(response.statusMessage);
-  }
-
-  void cancel() {
-    _canceled = true;
   }
 
   void cancelConfirmAuth() {

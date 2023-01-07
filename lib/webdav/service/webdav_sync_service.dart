@@ -66,9 +66,9 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       _requesterImpl = WebDavRequester(
         urlPath: Config.webDavUrl,
         username: Config.webDavUsername,
-        password: Config.webDavPassword == null
-            ? null
-            : EncryptUtil.decrypt(Config.webDavPassword!),
+        password: Config.webDavPassword?.isNotEmpty == true
+            ? EncryptUtil.decrypt(Config.webDavPassword!)
+            : null,
         port: Config.webDavPort,
       );
     }
@@ -79,7 +79,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   void updateConfig(
       {String? urlPath, int? port, String? username, String? password}) {
     _requester.updateConfig(
-        urlPath: urlPath, port: port, username: username, password: password);
+      urlPath: urlPath,
+      port: port,
+      username: username,
+      password: password,
+    );
   }
 
   @override
@@ -125,7 +129,10 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
 
     await _requester.uploadFile(
-        fileName: fileName, dirName: remoteWorkspace, filePath: filePath);
+      fileName: fileName,
+      dirName: remoteWorkspace,
+      filePath: filePath,
+    );
     await AllpassFileUtil.deleteFile(filePath);
   }
 
@@ -175,7 +182,9 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   @override
   Future<AllpassType> recovery(BuildContext context, String filename) async {
     String filePath = await _requester.downloadFile(
-        fileName: filename, dirName: remoteWorkspace);
+      fileName: filename,
+      dirName: remoteWorkspace,
+    );
 
     String string = AllpassFileUtil.readFile(filePath);
     var decodeResult = jsonDecode(string);
