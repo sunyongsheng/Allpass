@@ -1,3 +1,4 @@
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -50,8 +51,10 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         title: Text("$categoryName管理", style: AllpassTextUI.titleBarStyle,),
         centerTitle: true,
       ),
+      backgroundColor: context.read<ThemeProvider>().specialBackgroundColor,
       body: Column(
         children: <Widget>[
+          Padding(padding: AllpassEdgeInsets.smallTopInsets),
           Expanded(
             child: ReorderableListView(
               children: _getAllWidget(),
@@ -102,7 +105,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     List<Widget> widgets = [];
     for (int currIndex = 0; currIndex < data.length; currIndex++) {
       String currCategoryName = data[currIndex];
-      widgets.add(Container(
+      widgets.add(Card(
         key: ValueKey(data[currIndex]),
         child: ListTile(
           // TODO 增加trailing属性显示有多少个密码账号含有此标签
@@ -195,7 +198,8 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
             );
           },
         ),
-        padding: EdgeInsets.only(right: 20, left: 20),
+        margin: AllpassEdgeInsets.settingCardInset,
+        elevation: 0,
       ));
     }
     return widgets;
