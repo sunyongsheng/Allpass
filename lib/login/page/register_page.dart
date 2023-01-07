@@ -1,3 +1,4 @@
+import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -65,13 +66,9 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               Container(
                 padding: AllpassEdgeInsets.smallTBPadding,
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: AllpassUI.smallBorderRadius
-                  ),
+                child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  minWidth: double.infinity,
-                  child: Text("注册", style: TextStyle(color: Colors.white, fontSize: 15),),
+                  title: "注册",
                   onPressed: () async => await register(context),
                 ),
               ),
@@ -83,7 +80,7 @@ class _RegisterPage extends State<RegisterPage> {
                 children: <Widget>[
                   TextButton(
                     child: Text("已有账号？登录"),
-                    onPressed: () => NavigationUtil.goLoginPage(context),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ],
               ),

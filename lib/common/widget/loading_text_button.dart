@@ -38,6 +38,10 @@ class LoadingTextButton extends StatelessWidget {
       minWidth: double.infinity,
       color: color,
       onPressed: onPressed,
+      elevation: 0,
+      height: 40,
+      focusElevation: 0,
+      highlightElevation: 4,
       shape: RoundedRectangleBorder(
         borderRadius: AllpassUI.smallBorderRadius,
       ),

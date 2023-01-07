@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -112,13 +113,9 @@ class _LoginPage extends State<LoginPage> {
                   textAlign: TextAlign.center,
               ),
               Container(
-                child: MaterialButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: AllpassUI.smallBorderRadius
-                  ),
+                child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  child: Text("登录", style: TextStyle(color: Colors.white, fontSize: 16)),
-                  minWidth: double.infinity,
+                  title: "登录",
                   onPressed: () => login(),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,
