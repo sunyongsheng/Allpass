@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
-import 'package:local_auth/auth_strings.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+import 'package:local_auth_android/local_auth_android.dart';
+import 'package:local_auth_ios/local_auth_ios.dart';
 
 enum AuthResult { Success, Failed, Exception, NotAvailable }
 
@@ -22,7 +24,7 @@ class AuthServiceImpl implements AuthService {
   Future<AuthResult> authenticate() async {
     try {
       var availableBiometrics = await _auth.getAvailableBiometrics();
-
+      print(availableBiometrics);
       BiometricType? type;
       if (availableBiometrics.contains(BiometricType.face)) {
         type = BiometricType.face;
@@ -32,12 +34,17 @@ class AuthServiceImpl implements AuthService {
         type = BiometricType.iris;
       }
       var isAuthenticated = await _auth.authenticate(
-          localizedReason: '授权以访问账号',
-          useErrorDialogs: true,
-          stickyAuth: true,
-          biometricOnly: true,
-          androidAuthStrings: _androidAuthMessages(type),
-          iOSAuthStrings: _iosAuthMessages(type));
+          localizedReason: '授权以解锁Allpass',
+          authMessages: [
+            _iosAuthMessages(type),
+            _androidAuthMessages()
+          ],
+          options: AuthenticationOptions(
+            useErrorDialogs: true,
+            stickyAuth: true,
+            biometricOnly: true,
+          ),
+      );
       if (isAuthenticated) {
         return AuthResult.Success;
       } else {
@@ -45,7 +52,7 @@ class AuthServiceImpl implements AuthService {
       }
     } on PlatformException catch (e) {
       print(e);
-      if (e.code == "NotAvailable") {
+      if (e.code == auth_error.notAvailable) {
         return AuthResult.NotAvailable;
       } else {
         return AuthResult.Exception;
@@ -70,47 +77,27 @@ class AuthServiceImpl implements AuthService {
         lockOut = "生物识别被禁用，请锁屏后再解锁以启用";
         break;
       default:
+        goToSettingsDescription = "生物识别授权暂未启用，请去设置中开启Touch ID或Face ID后重试";
         break;
     }
     return IOSAuthMessages(
         cancelButton: "取消",
         goToSettingsButton: "去设置",
         goToSettingsDescription: goToSettingsDescription,
-        lockOut: lockOut);
+        lockOut: lockOut,
+    );
   }
 
-  AndroidAuthMessages _androidAuthMessages(BiometricType? type) {
-    String? goToSettingsDescription;
-    String? title;
-    String? notRecognized;
-    switch (type) {
-      // Android设备中优先考虑指纹解锁
-      case BiometricType.fingerprint:
-        title = "请验证指纹";
-        notRecognized = "指纹识别失败，请重试";
-        goToSettingsDescription = "指纹解锁暂未启用，请去设置中开启指纹解锁后重试";
-        break;
-      case BiometricType.face:
-        title = "请验证面部";
-        notRecognized = "面部识别失败，请重试";
-        goToSettingsDescription = "面部解锁暂未启用，请去设置中开启面部解锁后重试";
-        break;
-      case BiometricType.iris:
-        title = "请验证";
-        notRecognized = "生物识别失败，请重试";
-        goToSettingsDescription = "生物识别暂未启用，请去设置中开启后重试";
-        break;
-      default:
-        break;
-    }
+  AndroidAuthMessages _androidAuthMessages() {
     return AndroidAuthMessages(
         cancelButton: "取消",
         goToSettingsButton: "去设置",
         biometricRequiredTitle: "暂未开启生物识别",
-        goToSettingsDescription: goToSettingsDescription,
-        signInTitle: title,
-        biometricHint: "验证以解锁Allpass",
-        biometricNotRecognized: notRecognized);
+        goToSettingsDescription: "指纹解锁暂未启用，请去设置中开启指纹解锁后重试",
+        signInTitle: "请验证",
+        biometricHint: "使用指纹解锁",
+        biometricNotRecognized: "识别失败，请重试",
+    );
   }
 
   @override

@@ -1,12 +1,12 @@
 buildscript {
-    ext.kotlin_version = '1.5.30'
+    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -24,17 +24,6 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(':app')
-}
-
-subprojects {
-    project.configurations.all {
-        resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'androidx.core' &&
-                    !details.requested.name.contains('androidx')) {
-                details.useVersion "1.5.0"
-            }
-        }
-    }
 }
 
 task clean(type: Delete) {
