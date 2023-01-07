@@ -77,7 +77,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         trailing: Switch(
           value: Config.enabledBiometrics,
           onChanged: (sw) async {
-            if (await _localAuthService.canAuthenticate()) {
+            if (await _localAuthService.supportBiometric()) {
               showDialog(context: context,
                 builder: (context) => InputMainPasswordDialog(
                   onVerified: () async {
