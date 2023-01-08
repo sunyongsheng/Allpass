@@ -2,12 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:allpass/core/error/app_error.dart';
+import 'package:allpass/util/path_util.dart';
+import 'package:allpass/util/string_util.dart';
 import 'package:allpass/webdav/model/webdav_file.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:xml/xml.dart';
 
 class WebDavRequester {
+  final Logger _logger = Logger();
+
   static const String root = "/";
 
   late Dio _dio;
@@ -17,7 +22,6 @@ class WebDavRequester {
   late String urlPath;
   late String username;
   late String password;
-  late int port;
 
   bool _authChecked = false;
 
@@ -48,18 +52,11 @@ class WebDavRequester {
 
     // 若端口号比较特殊，则将其设置为 url:port 的形式，否则设置为 url 的形式
     if (urlPath != null) {
-      if (!urlPath.endsWith("/")) {
-        if (port != null && port != 443 && port != 80) {
-          urlPath += ":$port/";
-        } else {
-          urlPath += "/";
-        }
+      var urlWithoutSuffix = StringUtil.ensureNotEndsWith(urlPath, "/");
+      if (port == null || port == 80 || port == 443) {
+        this.urlPath = urlWithoutSuffix;
       } else {
-        if (port != null) {
-          if (port != 443 && port != 80) {
-            urlPath = urlPath.substring(0, urlPath.length - 1) + ":$port/";
-          }
-        }
+        this.urlPath = "$urlWithoutSuffix:$port";
       }
     }
 
@@ -84,7 +81,7 @@ class WebDavRequester {
 
     try {
       Response response = await _dio.request(
-        urlPath,
+        urlPath + root,
         options: Options(
           method: WebDAVMethods.propFind,
           headers: _baseHeaders,
@@ -93,29 +90,29 @@ class WebDavRequester {
       );
       if (_checkResponse(response.statusCode)) {
         List<WebDavFile> fileNames = [];
-        XmlDocument.parse(response.data.toString().toLowerCase())
-            .findAllElements("d:response")
+        obtainResponseNodes(response.data)
             .map((e) => WebDavFile.parse(e))
             .forEach((file) {
           if (file != null) {
             fileNames.add(file);
           }
         });
-        _dirFilesCache[root] = fileNames.sublist(1);
+        if (fileNames.isNotEmpty) {
+          _dirFilesCache[root] = fileNames.sublist(1);
+        }
         _authChecked = true;
         return true;
       } else if (response.statusCode == 401) return false;
     } on DioError catch (e) {
-      print(e.response?.data);
-      print(e.stackTrace);
+      _logger.e("authorityCheck data: ${e.response?.data}", e);
     }
     return false;
   }
 
-  /// 创建目录，名为[dirName]，创建路径在根目录下
+  /// 创建目录，名为[dirName]
   Future<bool> createDir(String dirName) async {
     try {
-      String newPath = urlPath + dirName;
+      String newPath = urlPath + PathUtil.formatRelativePath(dirName);
       Response response = await _dio.request(
         newPath,
         options: Options(
@@ -124,21 +121,67 @@ class WebDavRequester {
         ),
       );
       if (response.statusCode == 201) {
+        _dirFilesCache[dirName] = [];
         return true;
       } else {
         return false;
       }
     } on DioError catch (e) {
-      print(e.response?.data);
-      print(e.stackTrace);
+      _logger.e("createDir error\n${e.response?.data}", e);
     }
     return false;
   }
 
   /// 列出文件夹[dirName]中的所有文件名，若目录为空返回[null]
   Future<List<WebDavFile>?> listFiles(String dirName) async {
+    String fullPath = urlPath + PathUtil.formatRelativePath(dirName);
+    Response<String> response = await _dio.request(
+      fullPath,
+      options: Options(
+        method: WebDAVMethods.propFind,
+        headers: _baseHeaders,
+      ),
+    );
+    List<WebDavFile> allFiles = [];
+    if (_checkResponse(response.statusCode)) {
+      var data = response.data;
+      if (data == null) return null;
+      obtainResponseNodes(data)
+          .map((e) => WebDavFile.parse(e))
+          .forEach((file) {
+        if (file != null) {
+          allFiles.add(file);
+        }
+      });
+      // 第一个元素为当前文件夹
+      if (allFiles.isNotEmpty) {
+        var files = allFiles.sublist(1);
+        _dirFilesCache[dirName] = files;
+        return files;
+      } else {
+        return [];
+      }
+    } else {
+      return null;
+    }
+  }
+
+  Iterable<XmlElement> obtainResponseNodes(String input) {
+    var document = XmlDocument.parse(input);
+    var dNodes = document.findAllElements("d:response");
+    if (dNodes.isEmpty) {
+      return document.findAllElements("D:response");
+    }
+    return dNodes;
+  }
+  
+  Future<bool> exists(String path) async {
+    if (_dirFilesCache.containsKey(path)) {
+      return true;
+    }
+
+    String fullPath = urlPath + PathUtil.formatRelativePath(path);
     try {
-      String fullPath = urlPath + dirName;
       Response<String> response = await _dio.request(
         fullPath,
         options: Options(
@@ -146,30 +189,16 @@ class WebDavRequester {
           headers: _baseHeaders,
         ),
       );
-      List<WebDavFile> allFiles = [];
       if (_checkResponse(response.statusCode)) {
-        var data = response.data;
-        if (data == null) return null;
-        XmlDocument.parse(data.toString().toLowerCase())
-            .findAllElements("d:response")
-            .map((e) => WebDavFile.parse(e))
-            .forEach((file) {
-          if (file != null) {
-            allFiles.add(file);
-          }
-        });
-        // 第一个元素为当前文件夹
-        var files = allFiles.sublist(1);
-        _dirFilesCache[dirName] = files;
-        return files;
-      } else {
-        return null;
+        // 由于此函数调用比较频繁，故此处不进行解析
+        _dirFilesCache[path] = [];
+        return true;
       }
     } on DioError catch (e) {
-      print(e.response?.data);
-      print(e.stackTrace);
-      return null;
+      _logger.e("exists error\n${e.response?.data}", e);
+      return false;
     }
+    return false;
   }
 
   /// [dirName]目录下是否含有[fileName]文件
@@ -179,10 +208,15 @@ class WebDavRequester {
     if (allFiles != null) {
       return allFiles.map((e) => e.filename).contains(fileName);
     } else {
-      return (await listFiles(dirName))
-              ?.map((e) => e.filename)
-              .contains(fileName) ??
-          false;
+      try {
+        return (await listFiles(dirName))
+            ?.map((e) => e.filename)
+            .contains(fileName) ??
+            false;
+      } on DioError catch (e) {
+        _logger.e("containsFile data: ${e.response?.data}", e, e.stackTrace);
+        return false;
+      }
     }
   }
 
@@ -191,16 +225,19 @@ class WebDavRequester {
   Future<String> uploadFile(
       {String dirName = root,
       required String fileName,
-      required String filePath}) async {
+      required String localFilePath}) async {
     String uploadPath = _concatPath(dirName, fileName);
-    File file = File(filePath);
+    File file = File(localFilePath);
     if (!await file.exists()) {
-      throw FileSystemException("上传文件出错！文件不存在！", filePath);
+      throw FileSystemException("上传文件出错！文件不存在！", localFilePath);
     }
 
     var content = await file.readAsString();
-    Response response = await _dio.put(uploadPath,
-        data: content, options: Options(headers: _baseHeaders));
+    Response response = await _dio.put(
+      uploadPath,
+      data: content,
+      options: Options(headers: _baseHeaders),
+    );
     if (_checkResponse(response.statusCode)) {
       return fileName;
     }
@@ -246,9 +283,11 @@ class WebDavRequester {
 
   String _concatPath(String? dirName, String fileName) {
     if (dirName == null || dirName == root) {
-      return this.urlPath + fileName;
+      return this.urlPath + PathUtil.formatRelativePath(fileName);
     } else {
-      return this.urlPath + "$dirName/$fileName";
+      String validDirname = PathUtil.formatRelativePath(dirName);
+      String validFilename = PathUtil.formatRelativePath(fileName);
+      return this.urlPath + validDirname + validFilename;
     }
   }
 }

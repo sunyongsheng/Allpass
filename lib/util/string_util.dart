@@ -59,9 +59,54 @@ class StringUtil {
   }
 
   static String ensureEndsWith(String text, String end) {
-    if (text.endsWith(end)) {
-      return text;
+    final length = end.length;
+    if (text.length <= length) {
+      if (end.endsWith(text)) {
+        return end;
+      } else {
+        return text + end;
+      }
     }
-    return text + end;
+
+    // 把所有的[end]都移除完后，最后再将[end]加回来
+    var result = text;
+    while (result.endsWith(end)) {
+      result = result.substring(0, result.length - length);
+    }
+    return result + end;
+  }
+
+  static String ensureNotEndsWith(String text, String end) {
+    final length = end.length;
+    if (text.length <= length) {
+      if (end.endsWith(text)) {
+        return "";
+      } else {
+        return text;
+      }
+    }
+
+    var result = text;
+    while (result.endsWith(end)) {
+      result = result.substring(0, result.length - length);
+    }
+    return result;
+  }
+
+  static String ensureStartWith(String text, String start) {
+    final length = start.length;
+    if (text.length <= length) {
+      if (start.startsWith(text)) {
+        return start;
+      } else {
+        return start + text;
+      }
+    }
+
+    var result = text;
+    while (result.startsWith(start)) {
+      result = result.substring(length);
+    }
+    return start + result;
   }
 }

@@ -22,6 +22,7 @@ import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:allpass/webdav/model/webdav_file.dart';
 import 'package:allpass/webdav/service/webdav_requester.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 abstract class WebDavSyncService {
@@ -55,8 +56,10 @@ abstract class WebDavSyncService {
 
 class WebDavSyncServiceImpl implements WebDavSyncService {
   final String _tag = "WebDavSyncServiceImpl";
+  final Logger _logger = Logger();
 
-  final String remoteWorkspace = "Allpass";
+  String get remoteWorkspace => Config.webDavBackupDirectory;
+
   final String localWorkspace = "webdav_backup";
 
   WebDavRequester? _requesterImpl;
@@ -129,7 +132,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     await _requester.uploadFile(
       fileName: fileName,
       dirName: remoteWorkspace,
-      filePath: filePath,
+      localFilePath: filePath,
     );
     await AllpassFileUtil.deleteFile(filePath);
   }
@@ -259,7 +262,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       }
 
       return ExtraModel(folderList, labelList);
-    } on FormatException {
+    } on FormatException catch (e) {
+      _logger.e("$_tag _decodeFolderAndLabel error", e);
       return null;
     }
   }
@@ -272,19 +276,19 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     try {
       var result = mergeExecutor.merge(localList, remoteList);
       result.apply(add: (bean) {
-        debugPrint("$_tag recoverCard insertPassword $bean");
+        _logger.d("$_tag recoverCard insertPassword $bean");
 
         passwordProvider.insertPassword(bean);
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }, delete: (bean) {
-        debugPrint("$_tag recoverCard deletePassword $bean");
+        _logger.d("$_tag recoverCard deletePassword $bean");
 
         passwordProvider.deletePassword(bean);
       });
       return result.length;
     } catch (e2) {
-      print(e2);
+      _logger.e("$_tag recoverPassword", e2);
       return -1;
     }
   }
@@ -297,19 +301,19 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     try {
       var result = mergeExecutor.merge(localList, remoteList);
       result.apply(add: (bean) {
-        debugPrint("$_tag recoverCard insertCard $bean");
+        _logger.d("$_tag recoverCard insertCard $bean");
 
         cardProvider.insertCard(bean);
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }, delete: (bean) {
-        debugPrint("$_tag recoverCard deleteCard $bean");
+        _logger.d("$_tag recoverCard deleteCard $bean");
 
         cardProvider.deleteCard(bean);
       });
       return result.length;
     } catch (e2) {
-      print(e2);
+      _logger.e("$_tag recoverCard", e2);
       return -1;
     }
   }
@@ -324,17 +328,20 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       RuntimeData.labelParamsPersistence();
       return true;
     } catch (e) {
+      _logger.e("$_tag recoverFolderAndLabel", e);
       return false;
     }
   }
 
   @override
   Future<List<WebDavFile>> getAllBackupFiles() async {
+    await ensureRemoteWorkspace();
+    
     return await _requester.listFiles(remoteWorkspace) ?? [];
   }
 
-  Future<Null> ensureRemoteWorkspace() async {
-    if (!(await _requester.containsFile(fileName: remoteWorkspace))) {
+  Future<void> ensureRemoteWorkspace() async {
+    if (!(await _requester.exists(remoteWorkspace))) {
       await _requester.createDir(remoteWorkspace);
     }
   }

@@ -10,6 +10,7 @@ import 'package:allpass/webdav/error/sync_error.dart';
 import 'package:allpass/webdav/model/webdav_file.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logger/logger.dart';
 
 abstract class SyncResult {
   String? message;
@@ -45,12 +46,31 @@ class Syncing extends SyncResult {
   final String? message = "同步中，请稍后";
 }
 
+
+abstract class GetBackupFileState {}
+
+class GettingBackupFile implements GetBackupFileState {}
+
+class GetBackupFileSuccess implements GetBackupFileState {
+  final List<WebDavFile> backupFiles;
+
+  GetBackupFileSuccess(this.backupFiles);
+}
+
+class GetBackupFileFail implements GetBackupFileState {
+  final String message;
+
+  GetBackupFileFail(this.message);
+}
+
 class WebDavSyncProvider extends ChangeNotifier {
+  final Logger _logger = Logger();
+
   var _uploading = false;
   var _downloading = false;
 
   var _backupFiles = <WebDavFile>[];
-  var _backupFilesRefreshing = false;
+  GetBackupFileState _getBackupFileState = GettingBackupFile();
 
   late final WebDavSyncService _syncService;
 
@@ -61,18 +81,36 @@ class WebDavSyncProvider extends ChangeNotifier {
   bool get uploading => _uploading;
   bool get downloading => _downloading;
   List<WebDavFile> get backupFiles => _backupFiles;
-  bool get backupFilesRefreshing => _backupFilesRefreshing;
+  GetBackupFileState get getBackupFileState => _getBackupFileState;
 
   void refreshFiles() async {
-    _backupFilesRefreshing = true;
+    _getBackupFileState = GettingBackupFile();
     notifyListeners();
 
-    var files = await _syncService.getAllBackupFiles();
-    _backupFiles.clear();
-    _backupFiles.addAll(files);
+    try {
+      if (!await _preAuthorizationCheck()) {
+        _getBackupFileState = GetBackupFileFail("账号权限失效，请重新登录");
+        notifyListeners();
+        return;
+      }
 
-    _backupFilesRefreshing = false;
-    notifyListeners();
+      var files = await _syncService.getAllBackupFiles();
+      _backupFiles.clear();
+      _backupFiles.addAll(files);
+
+      _getBackupFileState = GetBackupFileSuccess(files);
+      notifyListeners();
+    } on DioError catch (e) {
+      _logger.e("refreshFiles DioError", e, e.stackTrace);
+
+      if (e.response?.statusCode == 405) {
+        _backupFiles.clear();
+        _getBackupFileState = GetBackupFileFail("获取文件列表失败，请尝试将备份目录改为子文件夹后重试");
+      } else {
+        _getBackupFileState = GetBackupFileFail("获取文件列表失败，请检查网络");
+      }
+      notifyListeners();
+    }
   }
 
   Future<bool> _preAuthorizationCheck() async {
@@ -104,13 +142,15 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       return SyncSuccess("上传成功");
     } on Exception catch (e, s) {
-      print("syncToRemote Exception: ${e.runtimeType}");
-      print(s);
+      _logger.e("syncToRemote Exception: ${e.runtimeType}", e, s);
 
       _uploading = false;
       notifyListeners();
 
       if (e is DioError) {
+        if (e.response?.statusCode == 405) {
+          return SyncFailed("上传失败，请尝试将备份目录改为子文件夹后重试");
+        }
         return SyncFailed("上传失败，请检查网络");
       } else if (e is FileSystemException){
         return SyncFailed(e.message);
@@ -162,17 +202,15 @@ class WebDavSyncProvider extends ChangeNotifier {
       notifyListeners();
 
       return SyncFallbackOld(e.data);
-    } on AssertionError catch (e, s) {
-      print("syncToLocal AssertionError: ${e.message}");
-      print(s);
+    } on AssertionError catch (e) {
+      _logger.e("syncToLocal AssertionError: ${e.message}", e);
 
       _downloading = false;
       notifyListeners();
 
       return SyncFailed("备份文件数据损坏");
     } on Exception catch (e, s) {
-      print("syncToLocal Exception: ${e.runtimeType} $e");
-      print(s);
+      _logger.e("syncToLocal Exception: ${e.runtimeType}", e, s);
 
       _downloading = false;
       notifyListeners();
@@ -200,17 +238,15 @@ class WebDavSyncProvider extends ChangeNotifier {
       await _syncService.recoveryOld(context, data, type);
       Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
       return SyncSuccess("恢复成功");
-    } on AssertionError catch (e, s) {
-      print("syncToLocalOld AssertionError: ${e.message}");
-      print(s);
+    } on AssertionError catch (e) {
+      _logger.e("syncToLocalOld AssertionError: ${e.message}", e);
 
       _downloading = false;
       notifyListeners();
 
       return SyncFailed("备份文件数据损坏");
     } on Exception catch (e, s) {
-      print("syncToLocalOld Exception: ${e.runtimeType} $e");
-      print(s);
+      _logger.e("syncToLocalOld Exception: ${e.runtimeType}", e, s);
 
       _downloading = false;
       notifyListeners();

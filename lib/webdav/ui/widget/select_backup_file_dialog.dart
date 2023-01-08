@@ -1,3 +1,4 @@
+import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +34,43 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
       content: Consumer<WebDavSyncProvider>(
         builder: (context, provider, child) {
           var children = <Widget>[];
-          if (provider.backupFilesRefreshing) {
-            children.add(child!);
+          children.add(child!);
+
+          var state = provider.getBackupFileState;
+          if (state is GettingBackupFile) {
+            children.add(Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "获取备份文件中，请稍后...",
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  )
+                ],
+              ),
+            ));
+          } else if (state is GetBackupFileFail) {
+            children.add(Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Text(
+                state.message,
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ));
           }
 
           provider.backupFiles.forEach((file) {
-            IconData icon;
-            if (file.isFile) {
-              icon = Icons.file_present_rounded;
-            } else {
-              icon = Icons.folder_open_rounded;
-            }
             children.add(ListTile(
-              leading: Icon(icon),
               title: Text(file.filename),
               subtitle: Text(DateFormatter.format(file.lastModified)),
               onTap: () {
@@ -55,32 +80,24 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
             ));
           });
 
-          if (children.length == 1) {
-
+          if (state is GetBackupFileSuccess && provider.backupFiles.isEmpty) {
+            children.add(Center(
+              child: Text(
+                "当前目录下无文件，请确保备份目录正确",
+              ),
+            ));
           }
+
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: children,
           );
         },
         child: Padding(
           padding: EdgeInsets.only(bottom: 12),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
-                  "获取备份文件中，请稍后...",
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              )
-            ],
+          child: Text(
+            "当前目录：${Config.webDavBackupDirectory}",
+            style: Theme.of(context).textTheme.caption,
           ),
         ),
       ),

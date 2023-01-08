@@ -1,10 +1,12 @@
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/common/widget/edit_text_dialog.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
+import 'package:allpass/util/path_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
@@ -98,6 +100,15 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             elevation: 0,
             child: Column(
               children: [
+                ListTile(
+                  title: Text("备份目录"),
+                  subtitle: Text("${Config.webDavBackupDirectory}"),
+                  leading: Icon(
+                    Icons.drive_folder_upload,
+                    color: AllpassColorUI.allColor[4],
+                  ),
+                  onTap: () => _onClickBackupDirectory(),
+                ),
                 ListTile(
                   title: Text("数据恢复方式"),
                   subtitle: Text("${Config.webDavMergeMethod.name}"),
@@ -222,6 +233,22 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             }));
   }
 
+  void _onClickBackupDirectory() {
+    showDialog(
+      context: context,
+      builder: (context) => EditTextDialog(
+        dialogTitle: '请输入备份目录路径',
+        initialText: Config.webDavBackupDirectory,
+        onConfirm: (value) {
+          setState(() {
+            print(PathUtil.formatRelativePath(value));
+            Config.setWebDavBackupDirectory(PathUtil.formatRelativePath(value));
+          });
+        },
+      ),
+    );
+  }
+
   void _onClickMergeMethod() {
     showDialog(
         context: context,
@@ -247,7 +274,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
               content: <Widget>[
                 Text(
                   "加密等级是指备份到WebDAV的文件的加密方式，"
-                  "对于旧版备份文件(Allpass 2.0以下版本生成的备份文件)，"
+                  "对于旧版备份文件(Allpass 1.7.0以下版本生成的备份文件)，"
                   "请确保上传与恢复的加密等级相同\n",
                   style: textStyle,
                 ),
@@ -313,7 +340,6 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                 Config.setWebDavUsername(null);
                 Config.setWebDavPassword(null);
                 Config.setWebDavUrl(null);
-                Config.setWebDavPort(null);
                 Navigator.pop(context);
               },
             ));

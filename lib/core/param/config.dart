@@ -46,6 +46,9 @@ class Config {
   /// WebDAV恢复数据合并方式
   static late MergeMethod webDavMergeMethod;
 
+  /// WebDAV备份目录，以 / 开头
+  static late String webDavBackupDirectory;
+
   /// WebDAV上次上传时间
   static late String? webDavUploadTime;
 
@@ -75,6 +78,7 @@ class Config {
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
     webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.OnlyPassword;
     webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
+    webDavBackupDirectory = sp.getString(SPKeys.webDavBackupDirectory) ?? "/Allpass";
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
@@ -175,6 +179,11 @@ class Config {
   static void setWebDavMergeMethod(MergeMethod method) {
     webDavMergeMethod = method;
     AllpassApplication.sp.setInt(SPKeys.webDavMergeMethod, method.index);
+  }
+
+  static void setWebDavBackupDirectory(String directory) {
+    webDavBackupDirectory = directory;
+    AllpassApplication.sp.setString(SPKeys.webDavBackupDirectory, directory);
   }
 
   static void setWebDavUploadTime(String value) {
