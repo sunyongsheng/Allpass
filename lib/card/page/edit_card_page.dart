@@ -400,6 +400,7 @@ class _EditCardPage extends State<EditCardPage> {
                     ),
                     NoneBorderCircularTextField(
                       editingController: notesController,
+                      readOnly: true,
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(

@@ -19,6 +19,8 @@ class NoneBorderCircularTextField extends StatelessWidget {
   final int? maxLines;
   final bool autoFocus;
   final FocusNode? focusNode;
+  final bool? enable;
+  final bool readOnly;
 
   final bool needPadding;
 
@@ -40,11 +42,15 @@ class NoneBorderCircularTextField extends StatelessWidget {
     this.inputType,
     this.onChanged,
     this.onTap,
-    this.needPadding: true}) : super(key: key);
+    this.enable,
+    this.readOnly = false,
+    this.needPadding = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     TextField common = TextField(
+      enabled: enable,
+      readOnly: readOnly,
       decoration: InputDecoration(
         prefixIcon: prefixIcon,
         hintText: hintText,

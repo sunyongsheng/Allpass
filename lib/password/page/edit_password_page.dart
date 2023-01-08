@@ -458,6 +458,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
           ),
           NoneBorderCircularTextField(
             editingController: notesController,
+            readOnly: true,
             maxLines: null,
             onTap: () {
               Navigator.push(context, CupertinoPageRoute(
