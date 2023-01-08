@@ -52,6 +52,8 @@ dependencies:
   xml: ^5.4.0
   # 已安装App
   device_apps: ^2.2.0
+  # Logger
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:
