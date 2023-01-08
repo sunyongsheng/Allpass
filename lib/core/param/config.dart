@@ -31,7 +31,7 @@ class Config {
   /// WebDAV是否验证成功
   static late bool webDavAuthSuccess;
 
-  /// WebDAV地址
+  /// WebDAV地址，包含端口号
   static late String? webDavUrl;
 
   /// WebDAV用户名
@@ -39,9 +39,6 @@ class Config {
 
   /// WebDAV密码
   static late String? webDavPassword;
-
-  /// WebDAV端口号
-  static late int? webDavPort;
 
   /// WebDAV备份加密等级 EncryptLevel.index
   static late EncryptLevel webDavEncryptLevel;
@@ -76,7 +73,6 @@ class Config {
     webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
-    webDavPort = sp.getInt(SPKeys.webDavPort) ?? 443;
     webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.OnlyPassword;
     webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
@@ -98,7 +94,6 @@ class Config {
     webDavUrl = "";
     webDavUsername = "";
     webDavPassword = "";
-    webDavPort = 443;
     webDavEncryptLevel = EncryptLevel.OnlyPassword;
     webDavMergeMethod = MergeMethod.localFirst;
     timingInMainPassword = 10;
@@ -169,15 +164,6 @@ class Config {
       AllpassApplication.sp.remove(SPKeys.webDavPassword);
     } else {
       AllpassApplication.sp.setString(SPKeys.webDavPassword, encryptedValue);
-    }
-  }
-
-  static void setWebDavPort(int? value) {
-    webDavPort = value;
-    if (value == null) {
-      AllpassApplication.sp.remove(SPKeys.webDavPort);
-    } else {
-      AllpassApplication.sp.setInt(SPKeys.webDavPort, value);
     }
   }
 

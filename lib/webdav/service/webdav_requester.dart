@@ -30,10 +30,9 @@ class WebDavRequester {
     _dio = Dio(BaseOptions(receiveTimeout: 30000));
 
     _baseHeaders = {"Depth": 1};
-    this.urlPath = "https://";
+    this.urlPath = "";
     this.username = "";
     this.password = "";
-    this.port = 443;
 
     updateConfig(
       urlPath: urlPath,
@@ -47,30 +46,31 @@ class WebDavRequester {
       {String? urlPath, int? port, String? username, String? password}) {
     _authChecked = false;
 
-    if (port != null) {
-      this.port = port;
-    }
-    // 若端口号比较特殊，则将其设置为 url:port/ 的形式，否则设置为 url/ 的形式
+    // 若端口号比较特殊，则将其设置为 url:port 的形式，否则设置为 url 的形式
     if (urlPath != null) {
       if (!urlPath.endsWith("/")) {
-        if (this.port != 443 && this.port != 80) {
+        if (port != null && port != 443 && port != 80) {
           urlPath += ":$port/";
         } else {
           urlPath += "/";
         }
       } else {
-        if (this.port != 443 && this.port != 80) {
-          urlPath = urlPath.substring(0, urlPath.length - 1) + ":$port/";
+        if (port != null) {
+          if (port != 443 && port != 80) {
+            urlPath = urlPath.substring(0, urlPath.length - 1) + ":$port/";
+          }
         }
       }
-      this.urlPath = urlPath;
     }
+
     if (username != null) {
       this.username = username;
     }
+
     if (password != null) {
       this.password = password;
     }
+
     var listInt = utf8.encode("${this.username}:${this.password}");
     _basicAuth = base64Encode(listInt);
     _baseHeaders["Authorization"] = "Basic $_basicAuth";

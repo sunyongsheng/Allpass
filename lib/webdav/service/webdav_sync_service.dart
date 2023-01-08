@@ -69,7 +69,6 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         password: Config.webDavPassword?.isNotEmpty == true
             ? EncryptUtil.decrypt(Config.webDavPassword!)
             : null,
-        port: Config.webDavPort,
       );
     }
     return _requesterImpl!;
@@ -91,7 +90,6 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     Config.setWebDavUrl(_requester.urlPath);
     Config.setWebDavUsername(_requester.username);
     Config.setWebDavPassword(EncryptUtil.encrypt(_requester.password));
-    Config.setWebDavPort(_requester.port);
   }
 
   @override

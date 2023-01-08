@@ -18,7 +18,6 @@ class SPKeys {
   static const String webDavUrl = "webDavUrl";
   static const String webDavUsername = "webDavUsername";
   static const String webDavPassword = "webDavPassword";
-  static const String webDavPort = "webDavPort";
   static const String webDavCardName = "webDavCardName";
   static const String webDavEncryptLevel = "webDavEncryptLevel";
   static const String webDavMergeMethod = "webDavMergeMethod";
