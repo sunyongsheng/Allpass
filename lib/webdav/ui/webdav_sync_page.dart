@@ -25,15 +25,6 @@ class WebDavSyncPage extends StatefulWidget {
 class _WebDavSyncPage extends State<WebDavSyncPage> {
   @override
   Widget build(BuildContext context) {
-    String? uploadTime;
-    String? downloadTime;
-    if (Config.webDavUploadTime != null) {
-      uploadTime = "最近上传于${Config.webDavUploadTime}";
-    }
-    if (Config.webDavDownloadTime != null) {
-      downloadTime = "最近恢复于${Config.webDavDownloadTime}";
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,7 +45,8 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             child: Column(
               children: [
                 Consumer<WebDavSyncProvider>(
-                  builder: (context, provider, child) {
+                  builder: (context, provider, loadingChild) {
+                    var uploadTime = provider.uploadTime;
                     return ListTile(
                       title: Text("上传到云端"),
                       subtitle: uploadTime == null ? null : Text(uploadTime),
@@ -62,7 +54,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                         Icons.cloud_upload,
                         color: AllpassColorUI.allColor[0],
                       ),
-                      trailing: provider.uploading ? child : null,
+                      trailing: provider.uploading ? loadingChild : null,
                       onTap: () => _onClickBackup(provider),
                     );
                   },
@@ -73,16 +65,16 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   ),
                 ),
                 Consumer<WebDavSyncProvider>(
-                  builder: (context, provider, child) {
+                  builder: (context, provider, loadingChild) {
+                    var downloadTime = provider.downloadTime;
                     return ListTile(
                       title: Text("恢复到本地"),
-                      subtitle:
-                          downloadTime == null ? null : Text(downloadTime),
+                      subtitle: downloadTime == null ? null : Text(downloadTime),
                       leading: Icon(
                         Icons.cloud_download,
                         color: AllpassColorUI.allColor[1],
                       ),
-                      trailing: provider.downloading ? child : null,
+                      trailing: provider.downloading ? loadingChild : null,
                       onTap: () => _onClickRecovery(provider),
                     );
                   },
@@ -241,7 +233,6 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
         initialText: Config.webDavBackupDirectory,
         onConfirm: (value) {
           setState(() {
-            print(PathUtil.formatRelativePath(value));
             Config.setWebDavBackupDirectory(PathUtil.formatRelativePath(value));
           });
         },

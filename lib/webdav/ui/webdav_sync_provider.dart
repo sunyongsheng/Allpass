@@ -83,6 +83,20 @@ class WebDavSyncProvider extends ChangeNotifier {
   List<WebDavFile> get backupFiles => _backupFiles;
   GetBackupFileState get getBackupFileState => _getBackupFileState;
 
+  String? get uploadTime {
+    if (Config.webDavUploadTime != null) {
+      return "最近上传于${Config.webDavUploadTime}";
+    }
+    return null;
+  }
+
+  String? get downloadTime {
+    if (Config.webDavDownloadTime != null) {
+      return "最近恢复于${Config.webDavDownloadTime}";
+    }
+    return null;
+  }
+
   void refreshFiles() async {
     _getBackupFileState = GettingBackupFile();
     notifyListeners();
