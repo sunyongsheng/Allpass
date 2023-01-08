@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,10 +34,14 @@ class _LoginPage extends State<LoginPage> {
 
   @override
   void initState() {
+    super.initState();
+
     _usernameController = TextEditingController(text: Config.username);
     _passwordController = TextEditingController();
+
+    var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      context.read<ThemeProvider>().setExtraColor(context: context);
+      themeProvider.setExtraColor(window.platformBrightness);
       if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
         showDialog(
             context: context,
@@ -66,7 +71,10 @@ class _LoginPage extends State<LoginPage> {
             ));
       }
     });
-    super.initState();
+
+    window.onPlatformBrightnessChanged = () {
+      themeProvider.setExtraColor(window.platformBrightness);
+    };
   }
   @override
   void dispose() {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,11 +30,17 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
   @override
   void initState() {
+    super.initState();
+
+    var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      context.read<ThemeProvider>().setExtraColor(context: context);
+      themeProvider.setExtraColor(window.platformBrightness);
       askAuth(context);
     });
-    super.initState();
+
+    window.onPlatformBrightnessChanged = () {
+      themeProvider.setExtraColor(window.platformBrightness);
+    };
   }
 
   @override

@@ -22,17 +22,17 @@ class ThemeProvider with ChangeNotifier {
     darkTheme = _convertTheme(Config.primaryColor, true);
   }
 
-  void changeThemeMode(ThemeMode targetMode, {required BuildContext context}) {
+  void changeThemeMode(ThemeMode targetMode, Brightness platformBrightness) {
     themeMode = targetMode;
     Config.setThemeMode(targetMode);
-    setExtraColor(context: context);
+    setExtraColor(platformBrightness);
   }
 
-  void changePrimaryColor(PrimaryColor color, {required BuildContext context}) {
+  void changePrimaryColor(PrimaryColor color, Brightness platformBrightness) {
     lightTheme = _convertTheme(color, false);
     darkTheme = _convertTheme(color, true);
     Config.setPrimaryColor(color);
-    setExtraColor(context: context);
+    setExtraColor(platformBrightness);
   }
 
   ThemeData _convertTheme(PrimaryColor color, bool dark) {
@@ -56,9 +56,9 @@ class ThemeProvider with ChangeNotifier {
     }
   }
 
-  void setExtraColor({required BuildContext context, bool needReverse = false}) {
+  void setExtraColor(Brightness platformBrightness) {
     if (themeMode == ThemeMode.system) {
-      _setExtraColorAuto(context, reverse: needReverse);
+      _setExtraColorAuto(platformBrightness);
     } else if (themeMode == ThemeMode.dark) {
       _setExtraColorDarkMode();
     } else {
@@ -77,12 +77,8 @@ class ThemeProvider with ChangeNotifier {
     offstageColor = Colors.grey[600]!;
   }
 
-  void _setExtraColorAuto(BuildContext context, {bool reverse = false}) {
-    Brightness reference = Brightness.dark;
-    if (reverse) {
-      reference = Brightness.light;
-    }
-    if (MediaQuery.platformBrightnessOf(context) == reference) {
+  void _setExtraColorAuto(Brightness platformBrightness) {
+    if (platformBrightness == Brightness.dark) {
       _setExtraColorDarkMode();
     } else {
       _setExtraColorLightMode();

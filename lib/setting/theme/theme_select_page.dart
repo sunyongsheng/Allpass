@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
@@ -62,7 +64,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
       onTap: () {
         var provider = context.read<ThemeProvider>();
         setState(() {
-          provider.changePrimaryColor(mode, context: context);
+          provider.changePrimaryColor(mode, window.platformBrightness);
         });
       },
     );
@@ -77,7 +79,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
       onTap: () {
         var provider = context.read<ThemeProvider>();
         setState(() {
-          provider.changeThemeMode(item.mode, context: context);
+          provider.changeThemeMode(item.mode, window.platformBrightness);
         });
       },
     );
