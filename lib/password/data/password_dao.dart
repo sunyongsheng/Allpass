@@ -74,6 +74,7 @@ class PasswordDao extends BaseDBProvider {
   /// 插入密码
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
+    _assignColor(bean);
     Map<String, dynamic> map = bean.toJson();
     return await db.insert(name, map, conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -101,13 +102,14 @@ class PasswordDao extends BaseDBProvider {
   /// 根据uniqueKey查询记录
   Future<PasswordBean?> findById(String id) async {
     Database db = await getDataBase();
-    List<Map<String, dynamic>> maps = await db.query(name,
+    List<Map<String, dynamic>> maps = await db.query(
+      name,
       where: "$columnId=?",
-      whereArgs: [id]
+      whereArgs: [id],
     );
     if (maps.length > 0) {
       PasswordBean bean = PasswordBean.fromJson(maps.first);
-      bean.color = getRandomColor(seed: bean.uniqueKey);
+      _assignColor(bean);
       return bean;
     }
     return null;
@@ -121,7 +123,7 @@ class PasswordDao extends BaseDBProvider {
       List<PasswordBean> res = [];
       for (var map in list) {
         PasswordBean bean = PasswordBean.fromJson(map);
-        bean.color = getRandomColor(seed: bean.uniqueKey);
+        _assignColor(bean);
         res.add(bean);
       }
       return res;
@@ -138,7 +140,13 @@ class PasswordDao extends BaseDBProvider {
         where: "$columnAppId=? AND $columnUsername=?",
         whereArgs: [appId, username]
     );
-    return list.map((e) => PasswordBean.fromJson(e)).toList();
+    return list
+        .map((e) {
+          var bean = PasswordBean.fromJson(e);
+          _assignColor(bean);
+          return bean;
+        })
+        .toList();
   }
 
   Future<List<PasswordBean>> findByAppIdOrAppName(String appId, String? appName,
@@ -154,13 +162,25 @@ class PasswordDao extends BaseDBProvider {
         limit: pageSize
       );
     } else {
-      list = await db.query(name,
+      list = await db.query(
+        name,
         where: "$columnAppId LIKE ? OR $columnAppName=? OR $columnName LIKE ?",
         whereArgs: ["%$appId%", appName, "%$appName%"],
-
       );
     }
-    return list.map((e) => PasswordBean.fromJson(e)).toList(growable: false);
+    return list
+        .map((e) {
+          var bean = PasswordBean.fromJson(e);
+          _assignColor(bean);
+          return bean;
+        })
+        .toList(growable: false);
+  }
+
+  void _assignColor(PasswordBean bean) {
+    if (bean.color == null) {
+      bean.color = getRandomColor(seed: bean.uniqueKey);
+    }
   }
 
   /// 删除指定uniqueKey的密码

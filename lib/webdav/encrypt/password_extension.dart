@@ -13,20 +13,21 @@ extension PasswordEncrypt on PasswordBean {
       case EncryptLevel.None:
         String _password = EncryptUtil.decrypt(this.password);
         return PasswordBean(
-            key: this.uniqueKey,
-            name: this.name,
-            username: this.username,
-            password: _password,
-            url: this.url,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            color: this.color,
-            sortNumber: this.sortNumber,
-            appId: this.appId,
-            appName: this.appName);
+          key: this.uniqueKey,
+          name: this.name,
+          username: this.username,
+          password: _password,
+          url: this.url,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          color: this.color,
+          sortNumber: this.sortNumber,
+          appId: this.appId,
+          appName: this.appName,
+        );
       // 若目标加密等级为All，则需除password字段字段全部加密
       case EncryptLevel.All:
         String name = EncryptUtil.encrypt(this.name);
@@ -44,37 +45,39 @@ extension PasswordEncrypt on PasswordBean {
         String? appName =
             this.appName == null ? null : EncryptUtil.encrypt(this.appName!);
         return PasswordBean(
-            key: this.uniqueKey,
-            name: name,
-            username: username,
-            password: this.password,
-            url: url,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: this.fav,
-            createTime: createTime,
-            sortNumber: this.sortNumber,
-            color: this.color,
-            appId: appId,
-            appName: appName);
+          key: this.uniqueKey,
+          name: name,
+          username: username,
+          password: this.password,
+          url: url,
+          folder: folder,
+          notes: notes,
+          label: label,
+          fav: this.fav,
+          createTime: createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+          appId: appId,
+          appName: appName,
+        );
       // 若目标加密等级为OnlyPassword，则不需做任何操作
       case EncryptLevel.OnlyPassword:
         return PasswordBean(
-            key: this.uniqueKey,
-            name: this.name,
-            username: this.username,
-            password: this.password,
-            url: this.url,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color,
-            appId: this.appId,
-            appName: this.appName);
+          key: this.uniqueKey,
+          name: this.name,
+          username: this.username,
+          password: this.password,
+          url: this.url,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+          appId: this.appId,
+          appName: this.appName,
+        );
     }
   }
 
@@ -84,20 +87,21 @@ extension PasswordEncrypt on PasswordBean {
       // 若当前加密等级为OnlyPassword，则与内存中PasswordBean相同
       case EncryptLevel.OnlyPassword:
         return PasswordBean(
-            key: this.uniqueKey,
-            name: this.name,
-            username: this.username,
-            password: this.password,
-            url: this.url,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color,
-            appId: this.appId,
-            appName: this.appName);
+          key: this.uniqueKey,
+          name: this.name,
+          username: this.username,
+          password: this.password,
+          url: this.url,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+          appId: this.appId,
+          appName: this.appName,
+        );
 
       // 若当前加密等级为All，则需将除password以外的字段全部解密
       case EncryptLevel.All:
@@ -116,38 +120,40 @@ extension PasswordEncrypt on PasswordBean {
         String? appName =
             this.appName == null ? null : EncryptUtil.decrypt(this.appName!);
         return PasswordBean(
-            key: this.uniqueKey,
-            name: name,
-            username: username,
-            password: this.password,
-            url: url,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: this.fav,
-            createTime: createTime,
-            sortNumber: this.sortNumber,
-            color: this.color,
-            appId: appId,
-            appName: appName);
+          key: this.uniqueKey,
+          name: name,
+          username: username,
+          password: this.password,
+          url: url,
+          folder: folder,
+          notes: notes,
+          label: label,
+          fav: this.fav,
+          createTime: createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+          appId: appId,
+          appName: appName,
+        );
       // 若当前加密等级为None，则需将password字段进行加密
       case EncryptLevel.None:
         String _password = EncryptUtil.encrypt(this.password);
         return PasswordBean(
-            key: this.uniqueKey,
-            name: this.name,
-            username: this.username,
-            password: _password,
-            url: this.url,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            color: this.color,
-            sortNumber: this.sortNumber,
-            appId: this.appId,
-            appName: this.appName);
+          key: this.uniqueKey,
+          name: this.name,
+          username: this.username,
+          password: _password,
+          url: this.url,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          color: this.color,
+          sortNumber: this.sortNumber,
+          appId: this.appId,
+          appName: this.appName,
+        );
     }
   }
 }

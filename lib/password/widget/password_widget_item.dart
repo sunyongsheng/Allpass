@@ -86,6 +86,16 @@ class PasswordWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   GestureLongPressCallback? longPressCallback;
+    if (Config.longPressCopy) {
+      longPressCallback = () {
+        Clipboard.setData(ClipboardData(
+          text: EncryptUtil.decrypt(data.password),
+        ));
+        ToastUtil.show(msg: "已复制密码");
+      };
+    }
+
     return Container(
       margin: AllpassEdgeInsets.listInset,
       child: GestureDetector(
@@ -106,13 +116,7 @@ class PasswordWidgetItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           onTap: () => onPasswordClicked?.call(),
-          onLongPress: () {
-            if (Config.longPressCopy) {
-              Clipboard.setData(
-                  ClipboardData(text: EncryptUtil.decrypt(data.password)));
-              ToastUtil.show(msg: "已复制密码");
-            }
-          },
+          onLongPress: longPressCallback,
         ),
       ),
     );

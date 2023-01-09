@@ -5,7 +5,6 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
 
 final List<PasswordBean> emptyList = [];
 
@@ -96,7 +95,6 @@ class PasswordProvider with ChangeNotifier {
   Future<Null> insertPassword(PasswordBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
-    bean.color = getRandomColor(seed: key);
     _passwordList.add(bean);
     _sortByAlphabeticalOrder();
     _refreshLetterCountIndex();

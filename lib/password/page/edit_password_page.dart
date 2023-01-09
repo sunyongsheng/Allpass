@@ -152,7 +152,7 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                   label: labels,
                   notes: notesController.text,
                   fav: fav,
-                  color: editingData?.color ?? getRandomColor(),
+                  color: editingData?.color,
                   createTime: createTime,
                   appId: appId,
                   appName: appName
