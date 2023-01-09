@@ -12,15 +12,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class PlatformCardWidget extends StatelessWidget {
+class MaterialCardWidget extends StatelessWidget {
+  final Key? key;
+
   final CardBean data;
 
   final WidgetBuilder pageCreator;
 
   final VoidCallback? onCardClicked;
 
-  const PlatformCardWidget(
-      {Key? key,
+  const MaterialCardWidget(
+      {this.key,
       required this.data,
       required this.pageCreator,
       this.onCardClicked})
@@ -35,39 +37,13 @@ class PlatformCardWidget extends StatelessWidget {
         onCardClicked: () {
           onCardClicked?.call();
           Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (context) => pageCreator.call(context)));
+            context,
+            CupertinoPageRoute(builder: (context) => pageCreator.call(context)),
+          );
         },
       );
-    } else {
-      return _MaterialCardWidget(
-          data: data,
-          pageCreator: pageCreator,
-          key: key,
-          onCardClicked: onCardClicked);
     }
-  }
-}
 
-class _MaterialCardWidget extends StatelessWidget {
-  final Key? key;
-
-  final CardBean data;
-
-  final WidgetBuilder pageCreator;
-
-  final VoidCallback? onCardClicked;
-
-  const _MaterialCardWidget(
-      {this.key,
-      required this.data,
-      required this.pageCreator,
-      this.onCardClicked})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return OpenContainer(
       openBuilder: (context, closedContainer) {
@@ -81,12 +57,13 @@ class _MaterialCardWidget extends StatelessWidget {
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
         return _CardWidgetItem(
-            key: key,
-            data: data,
-            onCardClicked: () {
-              onCardClicked?.call();
-              openContainer();
-            });
+          key: key,
+          data: data,
+          onCardClicked: () {
+            onCardClicked?.call();
+            openContainer();
+          },
+        );
       },
     );
   }
@@ -129,8 +106,11 @@ class _CardWidgetItem extends StatelessWidget {
           ),
           subtitle: Text(
             "ID: ${data.cardId}",
-            style:
-                TextStyle(color: Colors.white, letterSpacing: 1, height: 1.7),
+            style: TextStyle(
+              color: Colors.white,
+              letterSpacing: 1,
+              height: 1.7,
+            ),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -141,7 +121,7 @@ class _CardWidgetItem extends StatelessWidget {
   }
 }
 
-class PlatformSimpleCardWidget extends StatelessWidget {
+class MaterialSimpleCardWidget extends StatelessWidget {
   final CardBean data;
 
   final WidgetBuilder pageCreator;
@@ -152,50 +132,7 @@ class PlatformSimpleCardWidget extends StatelessWidget {
 
   final Color? itemColor;
 
-  const PlatformSimpleCardWidget(
-      {Key? key,
-      required this.data,
-      required this.pageCreator,
-      this.onCardClicked,
-      required this.containerShape,
-      this.itemColor})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      return SimpleCardWidgetItem(
-          key: key,
-          data: data,
-          onCardClicked: () {
-            onCardClicked?.call();
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)));
-          });
-    } else {
-      return _MaterialSimpleCardWidget(
-          data: data,
-          pageCreator: pageCreator,
-          onCardClicked: onCardClicked,
-          containerShape: containerShape,
-          itemColor: itemColor,
-          key: key);
-    }
-  }
-}
-
-class _MaterialSimpleCardWidget extends StatelessWidget {
-  final CardBean data;
-
-  final WidgetBuilder pageCreator;
-
-  final VoidCallback? onCardClicked;
-
-  final double containerShape;
-
-  final Color? itemColor;
-
-  const _MaterialSimpleCardWidget({
+  const MaterialSimpleCardWidget({
     Key? key,
     required this.data,
     required this.pageCreator,
@@ -206,6 +143,20 @@ class _MaterialSimpleCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return SimpleCardWidgetItem(
+        key: key,
+        data: data,
+        onCardClicked: () {
+          onCardClicked?.call();
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)),
+          );
+        },
+      );
+    }
+
     var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return OpenContainer(
       openBuilder: (context, closedContainer) {
@@ -219,12 +170,13 @@ class _MaterialSimpleCardWidget extends StatelessWidget {
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
         return SimpleCardWidgetItem(
-            key: key,
-            data: data,
-            onCardClicked: () {
-              onCardClicked?.call();
-              openContainer();
-            });
+          key: key,
+          data: data,
+          onCardClicked: () {
+            onCardClicked?.call();
+            openContainer();
+          },
+        );
       },
     );
   }
@@ -247,8 +199,9 @@ class SimpleCardWidgetItem extends StatelessWidget {
             child: ListTile(
               leading: Container(
                 decoration: BoxDecoration(
-                    borderRadius: AllpassUI.smallBorderRadius,
-                    color: data.color),
+                  borderRadius: AllpassUI.smallBorderRadius,
+                  color: data.color,
+                ),
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   child: Text(
@@ -301,8 +254,9 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
         },
         secondary: Container(
           decoration: BoxDecoration(
-              borderRadius: AllpassUI.smallBorderRadius,
-              color: data.color),
+            borderRadius: AllpassUI.smallBorderRadius,
+            color: data.color,
+          ),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             child: Text(

@@ -166,7 +166,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           controller: _controller,
           padding: AllpassEdgeInsets.forCardInset,
           itemBuilder: (context, index) {
-            return PlatformCardWidget(
+            return MaterialCardWidget(
                 data: model.cardList[index],
                 pageCreator: (_) => ViewCardPage(),
                 onCardClicked: () => model.previewCard(index: index));

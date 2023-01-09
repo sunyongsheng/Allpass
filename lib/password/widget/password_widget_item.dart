@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class PlatformPasswordWidget extends StatelessWidget {
+class MaterialPasswordWidget extends StatelessWidget {
   final PasswordBean data;
 
   final WidgetBuilder pageCreator;
@@ -24,12 +24,12 @@ class PlatformPasswordWidget extends StatelessWidget {
 
   final Color? itemColor;
 
-  const PlatformPasswordWidget(
+  const MaterialPasswordWidget(
       {Key? key,
       required this.data,
+      required this.containerShape,
       required this.pageCreator,
       this.onPasswordClicked,
-      required this.containerShape,
       this.itemColor})
       : super(key: key);
 
@@ -37,48 +37,18 @@ class PlatformPasswordWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
       return PasswordWidgetItem(
-          key: key,
-          data: data,
-          onPasswordClicked: () {
-            onPasswordClicked?.call();
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)));
-          });
-    } else {
-      return _MaterialPasswordWidget(
-        data: data,
-        containerShape: containerShape,
-        pageCreator: pageCreator,
-        onPasswordClicked: onPasswordClicked,
-        itemColor: itemColor,
         key: key,
+        data: data,
+        onPasswordClicked: () {
+          onPasswordClicked?.call();
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)),
+          );
+        },
       );
     }
-  }
-}
 
-class _MaterialPasswordWidget extends StatelessWidget {
-  final PasswordBean data;
-
-  final WidgetBuilder pageCreator;
-
-  final VoidCallback? onPasswordClicked;
-
-  final double containerShape;
-
-  final Color? itemColor;
-
-  const _MaterialPasswordWidget(
-      {Key? key,
-      required this.data,
-      required this.containerShape,
-      required this.pageCreator,
-      this.onPasswordClicked,
-      this.itemColor})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     var backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return OpenContainer(
       openBuilder: (context, closedContainer) {
@@ -92,12 +62,13 @@ class _MaterialPasswordWidget extends StatelessWidget {
       closedElevation: 0,
       closedBuilder: (context, openContainer) {
         return PasswordWidgetItem(
-            key: key,
-            data: data,
-            onPasswordClicked: () {
-              onPasswordClicked?.call();
-              openContainer();
-            });
+          key: key,
+          data: data,
+          onPasswordClicked: () {
+            onPasswordClicked?.call();
+            openContainer();
+          },
+        );
       },
     );
   }
@@ -156,47 +127,42 @@ class MultiPasswordWidgetItem extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _MultiPasswordWidgetItem(this.index);
+    return _MultiPasswordWidgetItem();
   }
 }
 
-class _MultiPasswordWidgetItem extends State<StatefulWidget> {
-  final int index;
-
-  _MultiPasswordWidgetItem(this.index);
-
+class _MultiPasswordWidgetItem extends State<MultiPasswordWidgetItem> {
   @override
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
       builder: (context, model, child) {
+        var data = model.passwordList[widget.index];
         return Container(
           margin: AllpassEdgeInsets.listInset,
           child: CheckboxListTile(
-            value: RuntimeData.multiPasswordList
-                .contains(model.passwordList[index]),
+            value: RuntimeData.multiPasswordList.contains(data),
             onChanged: (value) {
               setState(() {
                 if (value ?? false) {
-                  RuntimeData.multiPasswordList.add(model.passwordList[index]);
+                  RuntimeData.multiPasswordList.add(data);
                 } else {
-                  RuntimeData.multiPasswordList
-                      .remove(model.passwordList[index]);
+                  RuntimeData.multiPasswordList.remove(data);
                 }
               });
             },
             secondary: CircleAvatar(
-              backgroundColor: model.passwordList[index].color,
+              backgroundColor: data.color,
               child: Text(
-                model.passwordList[index].name.substring(0, 1),
+                data.name.substring(0, 1),
                 style: TextStyle(color: Colors.white),
               ),
             ),
             title: Text(
-              model.passwordList[index].name,
+              data.name,
               overflow: TextOverflow.ellipsis,
             ),
             subtitle: Text(
-              model.passwordList[index].username,
+              data.username,
               overflow: TextOverflow.ellipsis,
             ),
           ),

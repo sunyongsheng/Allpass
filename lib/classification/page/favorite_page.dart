@@ -44,7 +44,7 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].fav == 1) {
-          list1.add(PlatformPasswordWidget(
+          list1.add(MaterialPasswordWidget(
             data: provider1.passwordList[index],
             containerShape: 4,
             pageCreator: (_) => ViewPasswordPage(),
@@ -58,7 +58,7 @@ class FavoritePage extends StatelessWidget {
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (provider2.cardList[index].fav == 1) {
-          list2.add(PlatformSimpleCardWidget(
+          list2.add(MaterialSimpleCardWidget(
             data: provider2.cardList[index],
             pageCreator: (_) => ViewCardPage(),
             containerShape: 4,

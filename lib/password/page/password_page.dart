@@ -166,7 +166,7 @@ class _PasswordPageState extends State<PasswordPage>
             ListView.builder(
               controller: _controller,
               itemBuilder: (context, index) {
-                return PlatformPasswordWidget(
+                return MaterialPasswordWidget(
                     data: model.passwordList[index],
                     containerShape: 0,
                     pageCreator: (_) => ViewPasswordPage(),

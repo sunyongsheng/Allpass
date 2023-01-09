@@ -48,7 +48,7 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < provider1.count; index++) {
       try {
         if (provider1.passwordList[index].folder == type) {
-          list1.add(PlatformPasswordWidget(
+          list1.add(MaterialPasswordWidget(
             data: provider1.passwordList[index],
             containerShape: 4,
             itemColor: itemColor,
@@ -62,7 +62,7 @@ class ClassificationDetailsPage extends StatelessWidget {
     for (int index = 0; index < provider2.count; index++) {
       try {
         if (type == provider2.cardList[index].folder) {
-          list2.add(PlatformSimpleCardWidget(
+          list2.add(MaterialSimpleCardWidget(
               data: provider2.cardList[index],
               pageCreator: (_) => ViewCardPage(),
               containerShape: 4,
