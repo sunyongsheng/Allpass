@@ -9,19 +9,20 @@ extension CardEncrypt on CardBean {
     switch (targetLevel) {
       case EncryptLevel.OnlyPassword:
         return CardBean(
-            key: this.uniqueKey,
-            name: this.name,
-            ownerName: this.ownerName,
-            cardId: this.cardId,
-            password: this.password,
-            telephone: this.telephone,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: this.name,
+          ownerName: this.ownerName,
+          cardId: this.cardId,
+          password: this.password,
+          telephone: this.telephone,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
 
       case EncryptLevel.All:
         String name = EncryptUtil.encrypt(this.name);
@@ -36,36 +37,38 @@ extension CardEncrypt on CardBean {
           label.add(EncryptUtil.encrypt(l));
         }
         return CardBean(
-            key: this.uniqueKey,
-            name: name,
-            ownerName: ownerName,
-            cardId: cardId,
-            password: this.password,
-            telephone: telephone,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: this.fav,
-            createTime: createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: name,
+          ownerName: ownerName,
+          cardId: cardId,
+          password: this.password,
+          telephone: telephone,
+          folder: folder,
+          notes: notes,
+          label: label,
+          fav: this.fav,
+          createTime: createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
 
       case EncryptLevel.None:
         String password = EncryptUtil.decrypt(this.password);
         return CardBean(
-            key: this.uniqueKey,
-            name: this.name,
-            ownerName: this.ownerName,
-            cardId: this.cardId,
-            password: password,
-            telephone: this.telephone,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: this.name,
+          ownerName: this.ownerName,
+          cardId: this.cardId,
+          password: password,
+          telephone: this.telephone,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
     }
   }
 
@@ -73,19 +76,20 @@ extension CardEncrypt on CardBean {
     switch (currentLevel) {
       case EncryptLevel.OnlyPassword:
         return CardBean(
-            key: this.uniqueKey,
-            name: this.name,
-            ownerName: this.ownerName,
-            cardId: this.cardId,
-            password: this.password,
-            telephone: this.telephone,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: this.name,
+          ownerName: this.ownerName,
+          cardId: this.cardId,
+          password: this.password,
+          telephone: this.telephone,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
 
       case EncryptLevel.All:
         String name = EncryptUtil.decrypt(this.name);
@@ -100,36 +104,38 @@ extension CardEncrypt on CardBean {
           label.add(EncryptUtil.decrypt(l));
         }
         return CardBean(
-            key: this.uniqueKey,
-            name: name,
-            ownerName: ownerName,
-            cardId: cardId,
-            password: this.password,
-            telephone: telephone,
-            folder: folder,
-            notes: notes,
-            label: label,
-            fav: this.fav,
-            createTime: createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: name,
+          ownerName: ownerName,
+          cardId: cardId,
+          password: this.password,
+          telephone: telephone,
+          folder: folder,
+          notes: notes,
+          label: label,
+          fav: this.fav,
+          createTime: createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
 
       case EncryptLevel.None:
         String password = EncryptUtil.encrypt(this.password);
         return CardBean(
-            key: this.uniqueKey,
-            name: this.name,
-            ownerName: this.ownerName,
-            cardId: this.cardId,
-            password: password,
-            telephone: this.telephone,
-            folder: this.folder,
-            notes: this.notes,
-            label: List.from(this.label ?? []),
-            fav: this.fav,
-            createTime: this.createTime,
-            sortNumber: this.sortNumber,
-            color: this.color);
+          key: this.uniqueKey,
+          name: this.name,
+          ownerName: this.ownerName,
+          cardId: this.cardId,
+          password: password,
+          telephone: this.telephone,
+          folder: this.folder,
+          notes: this.notes,
+          label: List.from(this.label ?? []),
+          fav: this.fav,
+          createTime: this.createTime,
+          sortNumber: this.sortNumber,
+          color: this.color,
+        );
     }
   }
 }

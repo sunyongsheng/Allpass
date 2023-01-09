@@ -66,6 +66,7 @@ class CardDao extends BaseDBProvider {
   /// 插入卡片
   Future<int> insert(CardBean bean) async {
     Database db = await getDataBase();
+    _assignColor(bean);
     return await db.insert(name, bean.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -78,7 +79,7 @@ class CardDao extends BaseDBProvider {
     );
     if (maps.length > 0) {
       CardBean bean = CardBean.fromJson(maps.first);
-      bean.color = getRandomColor(seed: bean.uniqueKey);
+      _assignColor(bean);
       return bean;
     }
     return null;
@@ -91,12 +92,20 @@ class CardDao extends BaseDBProvider {
     if (maps.length > 0) {
       List<CardBean> res = maps.map((item) {
         CardBean bean = CardBean.fromJson(item);
-        bean.color = getRandomColor(seed: bean.uniqueKey);
+        _assignColor(bean);
         return bean;
       }).toList();
       return res;
     }
     return [];
+  }
+
+  void _assignColor(CardBean bean) {
+    if (bean.gradientColor == null) {
+      var gradient = getNextGradient();
+      bean.color = getCenterColor(gradient.colors);
+      bean.gradientColor = gradient;
+    }
   }
 
   /// 删除指定uniqueKey的密码

@@ -5,7 +5,6 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
 
 final List<CardBean> emptyList = [];
 
@@ -70,7 +69,6 @@ class CardProvider with ChangeNotifier {
   Future<Null> insertCard(CardBean bean) async {
     int key = await _dao.insert(bean);
     bean.uniqueKey = key;
-    bean.color = getRandomColor(seed: key);
     _cardList.add(bean);
     _sortByAlphabeticalOrder();
     _refreshMostUsedOwnerName();

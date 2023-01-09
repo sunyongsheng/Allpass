@@ -20,6 +20,7 @@ class CardBean extends BaseModel {
   late int fav; // 10 是否标心
   late String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
   late int sortNumber; // 12 排序号
+  Gradient? gradientColor;
 
   CardBean(
       {int? key,
@@ -34,7 +35,8 @@ class CardBean extends BaseModel {
       int fav: 0,
       String? createTime,
       int sortNumber: -1,
-      Color? color}) {
+      Color? color,
+      Gradient? gradientColor,}) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;
@@ -44,6 +46,7 @@ class CardBean extends BaseModel {
     this.uniqueKey = key;
     this.password = password;
     this.color = color;
+    this.gradientColor = gradientColor;
     this.createTime = createTime ?? DateTime.now().toIso8601String();
     this.sortNumber = sortNumber;
 

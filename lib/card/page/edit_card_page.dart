@@ -151,7 +151,8 @@ class _EditCardPage extends State<EditCardPage> {
                     fav: fav,
                     notes: notesController.text,
                     password: pwd,
-                    color: editingData?.color ?? getRandomColor(),
+                    color: editingData?.color,
+                    gradientColor: editingData?.gradientColor,
                     createTime: createTime
                   );
                   if (passwordController.text.length < 1) {

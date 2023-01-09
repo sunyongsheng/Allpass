@@ -34,6 +34,59 @@ class AllpassColorUI {
     Color.fromRGBO(52, 184, 105, 1),
     Color.fromRGBO(255, 86, 85, 1),
   ]);
+
+  static final List<Gradient> allGradients = [
+    LinearGradient(
+      colors: [Color(0xFFa3bded), Color(0xFF6991c7)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFF74ebd5), Color(0xFF9face6)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFFe0c3fc), Color(0xFF8ec5fc)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFF0ba360), Color(0xFF3cba92)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFF6a85b6), Color(0xFFbac8e0)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFF13547a), Color(0xFF80d0c7)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFFff758c), Color(0xFFff7eb3)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFFc79081), Color(0xFFdfa579)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFFdcb0ed), Color(0xFF99c99c)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+    LinearGradient(
+      colors: [Color(0xFF96deda), Color(0xFF50c9c3)],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    ),
+  ];
 }
 
 /// 缩进样式
@@ -113,4 +166,23 @@ Color getRandomColor({int? seed}) {
   Random random = Random(seed);
   int i = random.nextInt(AllpassColorUI.allColor.length - 1);
   return AllpassColorUI.allColor[i];
+}
+
+var index = 0;
+Gradient getNextGradient() {
+  if (index == AllpassColorUI.allGradients.length) {
+    index = 0;
+  }
+  var gradient = AllpassColorUI.allGradients[index];
+  index++;
+  return gradient;
+}
+
+Color getCenterColor(List<Color> colors) {
+  var start = colors.first;
+  var end = colors.last;
+  var red = (start.red + end.red) / 2;
+  var blue = (start.blue + end.blue) / 2;
+  var green = (start.green + end.green) / 2;
+  return Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt());
 }

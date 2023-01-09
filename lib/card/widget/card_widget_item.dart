@@ -81,25 +81,29 @@ class _CardWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GestureLongPressCallback? longPressCallback;
+    if (Config.longPressCopy) {
+      longPressCallback = () {
+        Clipboard.setData(ClipboardData(text: data.cardId));
+        ToastUtil.show(msg: "已复制卡号");
+      };
+    }
+
     return Card(
       elevation: 0,
-      color: data.color,
       margin: EdgeInsets.all(0),
-      child: GestureDetector(
-        onTap: () => onCardClicked?.call(),
-        onLongPress: () async {
-          if (Config.longPressCopy) {
-            Clipboard.setData(ClipboardData(text: data.cardId));
-            ToastUtil.show(msg: "已复制卡号");
-          }
-        },
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: data.gradientColor,
+        ),
         child: ListTile(
           title: Text(
             data.name,
             style: TextStyle(
               color: Colors.white,
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.3
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -114,6 +118,8 @@ class _CardWidgetItem extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
+          onTap: () => onCardClicked?.call(),
+          onLongPress: longPressCallback,
           contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         ),
       ),
