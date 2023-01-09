@@ -10,7 +10,6 @@ import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
@@ -50,8 +49,6 @@ class AllpassApplication {
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
     getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
-
-    getIt.registerSingleton(PasswordRepository());
 
     getIt.registerSingleton(PasswordDao());
     getIt.registerSingleton(CardDao());
