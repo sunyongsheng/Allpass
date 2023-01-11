@@ -1,8 +1,7 @@
+import 'package:allpass/autofill/autofill_save_request.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/dao/db_provider.dart';
 import 'package:allpass/util/string_util.dart';
 
@@ -40,15 +39,16 @@ class PasswordDao extends BaseDBProvider {
   /// 删除表
   Future<Null> deleteTable() async {
     Database db = await getDataBase();
-    db.rawDelete("DROP TABLE $name");
+    await db.rawDelete("DROP TABLE $name");
   }
 
   /// 删除表中所有内容
-  Future<Null> deleteContent() async {
+  Future<int> deleteContent() async {
     Database db = await getDataBase();
-    db.delete(name);
+    var count = await db.delete(name);
     // 清除表的Key自增值
-    db.delete("sqlite_sequence", where: "name=?", whereArgs: [name]);
+    await db.delete("sqlite_sequence", where: "name=?", whereArgs: [name]);
+    return count;
   }
 
   /// 创建表的sql
@@ -74,29 +74,17 @@ class PasswordDao extends BaseDBProvider {
   /// 插入密码
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDataBase();
-    _assignColor(bean);
     Map<String, dynamic> map = bean.toJson();
     return await db.insert(name, map, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<int> insertUserData(SimpleUser user) async {
-    Database db = await getDataBase();
-    Map<String, dynamic> map = user.toJson();
-    map[columnUrl] = "";
-    map[columnCreateTime] = DateTime.now().toIso8601String();
-    map[columnNotes] = "";
-    map[columnFolder] = "默认";
-    map[columnLabel] = "";
-    return await db.insert(name, map);
-  }
-
-  Future<int> updateUserData(SimpleUser user) async {
+  Future<int> updateUserData(AutofillSaveRequest request) async {
     Database db = await getDataBase();
     return await db.rawUpdate("UPDATE $name SET "
         "$columnName=?,"
         "$columnPassword=?,"
-        "$columnAppName=? WHERE $columnUsername=${user.username!} AND $columnAppId=${user.appId}",
-        [user.name, user.password, user.appName]);
+        "$columnAppName=? WHERE $columnUsername=${request.username} AND $columnAppId=${request.appId}",
+        [request.name, request.password, request.appName]);
   }
 
   /// 根据uniqueKey查询记录
@@ -108,9 +96,7 @@ class PasswordDao extends BaseDBProvider {
       whereArgs: [id],
     );
     if (maps.length > 0) {
-      PasswordBean bean = PasswordBean.fromJson(maps.first);
-      _assignColor(bean);
-      return bean;
+      return PasswordBean.fromJson(maps.first);
     }
     return null;
   }
@@ -123,7 +109,6 @@ class PasswordDao extends BaseDBProvider {
       List<PasswordBean> res = [];
       for (var map in list) {
         PasswordBean bean = PasswordBean.fromJson(map);
-        _assignColor(bean);
         res.add(bean);
       }
       return res;
@@ -141,11 +126,7 @@ class PasswordDao extends BaseDBProvider {
         whereArgs: [appId, username]
     );
     return list
-        .map((e) {
-          var bean = PasswordBean.fromJson(e);
-          _assignColor(bean);
-          return bean;
-        })
+        .map((e) => PasswordBean.fromJson(e))
         .toList();
   }
 
@@ -169,18 +150,8 @@ class PasswordDao extends BaseDBProvider {
       );
     }
     return list
-        .map((e) {
-          var bean = PasswordBean.fromJson(e);
-          _assignColor(bean);
-          return bean;
-        })
+        .map((e) => PasswordBean.fromJson(e))
         .toList(growable: false);
-  }
-
-  void _assignColor(PasswordBean bean) {
-    if (bean.color == null) {
-      bean.color = getRandomColor(seed: bean.uniqueKey);
-    }
   }
 
   /// 删除指定uniqueKey的密码

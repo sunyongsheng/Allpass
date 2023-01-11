@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/route/routes.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/auth_service.dart';
-import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
@@ -50,8 +50,8 @@ class AllpassApplication {
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
     getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
 
-    getIt.registerSingleton(PasswordDao());
-    getIt.registerSingleton(CardDao());
+    getIt.registerSingleton(PasswordRepository());
+    getIt.registerSingleton(CardRepository());
   }
 
   static void initRouter() {
@@ -90,9 +90,9 @@ class AllpassApplication {
   static Future<String> _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
     List<PasswordBean>? passwordList = await list;
     if (passwordList != null) {
-      PasswordDao dao = getIt.get();
+      PasswordRepository repository = getIt.get();
       for (var bean in passwordList) {
-        await dao.insert(bean);
+        await repository.create(bean);
         RuntimeData.labelListAdd(bean.label);
         RuntimeData.folderListAdd(bean.folder);
       }
@@ -106,21 +106,22 @@ class AllpassApplication {
     SimpleUser userData = SimpleUser.fromJson(json.decode(jsonStr));
     if (userData.username != null && userData.password != null && userData.appId != null) {
       userData.password = EncryptUtil.encrypt(userData.password!);
-      PasswordDao passwordDao = getIt.get();
+      PasswordRepository repository = getIt.get();
       // 如果同AppId下有相同的username则更新；否则创建
-      var existList = await passwordDao.findByAppIdAndUsername(userData.appId!, userData.username!);
+      var existList = await repository.findByAppIdAndUsername(userData.appId!, userData.username!);
+      final request = userData.mapToRequest();
       if (existList.isEmpty) {
-        passwordDao.insertUserData(userData);
+        repository.createFromUser(request);
       } else {
-        passwordDao.updateUserData(userData);
+        repository.updateFromUser(request);
       }
     }
     return "";
   }
 
   static Future<String> _queryPasswordForAutofill(String appId, String? appName) async {
-    PasswordDao dao = getIt.get();
-    var passwordList = await dao.findByAppIdOrAppName(appId, appName);
+    PasswordRepository repository = getIt.get();
+    var passwordList = await repository.findByAppIdOrAppName(appId, appName);
     List<SimpleUser> list = passwordList.map((password) => SimpleUser(
         password.name,
         password.username,

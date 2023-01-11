@@ -3,22 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
-import 'package:allpass/application.dart';
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
 
 class ImportFromCsvPage extends StatelessWidget {
-  final CardDao cardDao = AllpassApplication.getIt.get();
-  final PasswordDao passwordDao = AllpassApplication.getIt.get();
 
   @override
   Widget build(BuildContext context) {

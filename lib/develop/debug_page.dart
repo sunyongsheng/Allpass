@@ -1,11 +1,11 @@
+import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/password/data/password_dao.dart';
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/webdav/ui/webdav_sync_page.dart';
@@ -23,8 +23,8 @@ class DebugPage extends StatefulWidget {
 
 class _DebugPage extends State<DebugPage> {
 
-  final PasswordDao _passwordDao = AllpassApplication.getIt.get();
-  final CardDao _cardDao = AllpassApplication.getIt.get();
+  final PasswordRepository _passwordRepository = AllpassApplication.getIt.get();
+  final CardRepository _cardRepository = AllpassApplication.getIt.get();
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +123,7 @@ class _DebugPage extends State<DebugPage> {
                 child: Text("删除密码数据库"),
                 onPressed: () async {
                   await context.read<PasswordProvider>().clear();
-                  await _passwordDao.deleteTable();
+                  await _passwordRepository.dropTable();
                   ToastUtil.show(msg: "已删除密码数据库");
                 },
               ),
@@ -133,7 +133,7 @@ class _DebugPage extends State<DebugPage> {
                 child: Text("删除卡片数据库"),
                 onPressed: () async {
                   await context.read<CardProvider>().clear();
-                  await _cardDao.deleteTable();
+                  await _cardRepository.dropTable();
                   ToastUtil.show(msg: "已删除卡片数据库");
                 },
               ),

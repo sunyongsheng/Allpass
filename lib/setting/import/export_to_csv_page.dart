@@ -1,14 +1,14 @@
 import 'dart:io';
+import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/password/data/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/util/csv_util.dart';
@@ -114,8 +114,8 @@ class ExportTypeSelectPage extends StatelessWidget {
   Future<Null> exportActual(BuildContext context, Directory newDir, {AllpassType? type}) async {
     switch (type) {
       case AllpassType.password:
-        PasswordDao passwordDao = AllpassApplication.getIt.get();
-        List<PasswordBean> list = await passwordDao.findAll();
+        PasswordRepository passwordRepository = AllpassApplication.getIt.get();
+        List<PasswordBean> list = await passwordRepository.requestAll();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -124,8 +124,8 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       case AllpassType.card:
-        CardDao cardDao = AllpassApplication.getIt.get();
-        List<CardBean> list = await cardDao.findAll();
+        CardRepository cardRepository = AllpassApplication.getIt.get();
+        List<CardBean> list = await cardRepository.requestAll();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -134,11 +134,11 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       default:
-        PasswordDao passwordDao = AllpassApplication.getIt.get();
-        List<PasswordBean> passwordList = await passwordDao.findAll();
+        PasswordRepository passwordRepository = AllpassApplication.getIt.get();
+        List<PasswordBean> passwordList = await passwordRepository.requestAll();
         ExportResult passwordResult = await CsvUtil.passwordExportCsv(passwordList, newDir);
-        CardDao cardDao = AllpassApplication.getIt.get();
-        List<CardBean> cardList = await cardDao.findAll();
+        CardRepository cardRepository = AllpassApplication.getIt.get();
+        List<CardBean> cardList = await cardRepository.requestAll();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {
           Share.shareFiles([passwordResult.path!, cardResult.path!], mimeTypes: ["text/*", "text/*"]);

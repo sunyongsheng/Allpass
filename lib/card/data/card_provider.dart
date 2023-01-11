@@ -1,9 +1,9 @@
+import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/model/card_bean.dart';
 
 final List<CardBean> emptyList = [];
@@ -12,7 +12,7 @@ final List<CardBean> emptyList = [];
 class CardProvider with ChangeNotifier {
 
   List<CardBean> _cardList = emptyList;
-  CardDao _dao = AllpassApplication.getIt.get();
+  CardRepository _repository = AllpassApplication.getIt.get();
   CardBean _currCard = CardBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 3);
   List<String> _mostUsedOwnerName = [];
@@ -27,7 +27,7 @@ class CardProvider with ChangeNotifier {
   Future<Null> init() async {
     if (_haveInit) return;
     _cardList = [];
-    var res = await _dao.findAll();
+    var res = await _repository.requestAll();
     if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
@@ -40,7 +40,7 @@ class CardProvider with ChangeNotifier {
   Future<Null> refresh() async {
     if (!_haveInit) return;
     _cardList.clear();
-    var res = await _dao.findAll();
+    var res = await _repository.requestAll();
     if (res.isNotEmpty) {
       _cardList.addAll(res);
     }
@@ -67,9 +67,8 @@ class CardProvider with ChangeNotifier {
   }
 
   Future<Null> insertCard(CardBean bean) async {
-    int key = await _dao.insert(bean);
-    bean.uniqueKey = key;
-    _cardList.add(bean);
+    var result = await _repository.create(bean);
+    _cardList.add(result);
     _sortByAlphabeticalOrder();
     _refreshMostUsedOwnerName();
     RuntimeData.newPasswordOrCardCount++;
@@ -78,7 +77,7 @@ class CardProvider with ChangeNotifier {
 
   Future<Null> deleteCard(CardBean bean) async {
     _cardList.remove(bean);
-    await _dao.deleteById(bean.uniqueKey!);
+    await _repository.deleteById(bean.uniqueKey!);
     notifyListeners();
   }
 
@@ -99,7 +98,7 @@ class CardProvider with ChangeNotifier {
     if (oldOwner != bean.ownerName) {
       _refreshMostUsedOwnerName();
     }
-    await _dao.updateById(bean);
+    await _repository.updateById(bean);
     _currCard = bean;
     notifyListeners();
   }
@@ -108,7 +107,7 @@ class CardProvider with ChangeNotifier {
     _cardList.clear();
     _mostUsedCache.clear();
     _mostUsedOwnerName.clear();
-    await _dao.deleteContent();
+    await _repository.deleteAll();
     notifyListeners();
   }
 

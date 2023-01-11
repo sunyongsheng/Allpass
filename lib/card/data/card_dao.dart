@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 
-import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/dao/db_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/util/string_util.dart';
@@ -56,17 +55,17 @@ class CardDao extends BaseDBProvider {
   }
 
   /// 删除表中所有数据
-  Future<Null> deleteContent() async {
+  Future<int> deleteContent() async {
     Database db = await getDataBase();
-    db.delete(name);
+    var count = db.delete(name);
     // 清除表的Key自增值
     db.delete("sqlite_sequence", where: "name=?", whereArgs: [name]);
+    return count;
   }
 
   /// 插入卡片
   Future<int> insert(CardBean bean) async {
     Database db = await getDataBase();
-    _assignColor(bean);
     return await db.insert(name, bean.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
@@ -78,9 +77,7 @@ class CardDao extends BaseDBProvider {
       whereArgs: [id]
     );
     if (maps.length > 0) {
-      CardBean bean = CardBean.fromJson(maps.first);
-      _assignColor(bean);
-      return bean;
+      return CardBean.fromJson(maps.first);
     }
     return null;
   }
@@ -90,22 +87,9 @@ class CardDao extends BaseDBProvider {
     Database db = await getDataBase();
     List<Map<String, dynamic>> maps = await db.query(name);
     if (maps.length > 0) {
-      List<CardBean> res = maps.map((item) {
-        CardBean bean = CardBean.fromJson(item);
-        _assignColor(bean);
-        return bean;
-      }).toList();
-      return res;
+      return maps.map((item) => CardBean.fromJson(item)).toList();
     }
     return [];
-  }
-
-  void _assignColor(CardBean bean) {
-    if (bean.gradientColor == null) {
-      var gradient = getNextGradient();
-      bean.color = getCenterColor(gradient.colors);
-      bean.gradientColor = gradient;
-    }
   }
 
   /// 删除指定uniqueKey的密码

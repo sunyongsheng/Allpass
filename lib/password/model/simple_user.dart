@@ -1,3 +1,5 @@
+import 'package:allpass/autofill/autofill_save_request.dart';
+
 class SimpleUser {
   String? name;
   String? username;
@@ -18,12 +20,13 @@ class SimpleUser {
   }
 
   static SimpleUser fromJson(Map<String, dynamic> map) {
-    return SimpleUser(
-        map['name'],
-        map['username'],
-        map['password'],
-        map['appName'],
-        map['appId']
-    );
+    return SimpleUser(map['name'], map['username'], map['password'],
+        map['appName'], map['appId']);
+  }
+}
+
+extension RequestMapper on SimpleUser {
+  AutofillSaveRequest mapToRequest() {
+    return AutofillSaveRequest(name, username!, password!, appName, appId!);
   }
 }

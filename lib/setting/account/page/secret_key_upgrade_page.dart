@@ -1,12 +1,12 @@
 import 'package:allpass/application.dart';
-import 'package:allpass/card/data/card_dao.dart';
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
@@ -21,8 +21,8 @@ class SecretKeyUpgradePage extends StatefulWidget {
 }
 
 class _SecretKeyUpgradePage extends State<StatefulWidget> {
-  PasswordDao passwordDao = AllpassApplication.getIt.get();
-  CardDao cardDao = AllpassApplication.getIt.get();
+  PasswordRepository passwordRepository = AllpassApplication.getIt.get();
+  CardRepository cardRepository = AllpassApplication.getIt.get();
   late EncryptHolder encryptHolder;
 
   TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
@@ -246,10 +246,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   Future<bool> updateData() async {
     String backupKey = (await EncryptUtil.getStoreKey())!;
     encryptHolder = EncryptHolder(backupKey);
-    List<PasswordBean> passwords = await passwordDao.findAll();
+    List<PasswordBean> passwords = await passwordRepository.requestAll();
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
-    List<CardBean> cards = await cardDao.findAll();
+    List<CardBean> cards = await cardRepository.requestAll();
     List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
@@ -270,12 +270,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         String password =
             EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        passwordDao.updateById(bean);
+        passwordRepository.updateById(bean);
       }
       for (CardBean bean in cards) {
         var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        cardDao.updateById(bean);
+        cardRepository.updateById(bean);
       }
       await passwordProvider.refresh();
       await cardProvider.refresh();
@@ -288,12 +288,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       for (PasswordBean bean in passwordsBackup) {
         var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        passwordDao.updateById(bean);
+        passwordRepository.updateById(bean);
       }
       for (CardBean bean in cardsBackup) {
         var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
         bean.password = password;
-        cardDao.updateById(bean);
+        cardRepository.updateById(bean);
       }
       await passwordProvider.refresh();
       await cardProvider.refresh();

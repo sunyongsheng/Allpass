@@ -1,9 +1,9 @@
 import 'package:allpass/common/arch/lru_cache.dart';
+import 'package:allpass/password/data/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/password/data/password_dao.dart';
 import 'package:allpass/password/model/password_bean.dart';
 
 final List<PasswordBean> emptyList = [];
@@ -11,7 +11,7 @@ final List<PasswordBean> emptyList = [];
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier {
   List<PasswordBean> _passwordList = emptyList;
-  PasswordDao _dao = AllpassApplication.getIt.get();
+  PasswordRepository _repository = AllpassApplication.getIt.get();
   /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0
   /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
   /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
@@ -34,7 +34,7 @@ class PasswordProvider with ChangeNotifier {
   Future<Null> init() async {
     if (_haveInit) return;
     _passwordList = [];
-    var res = await _dao.findAll();
+    var res = await _repository.requestAll();
     if (res.isNotEmpty) {
       _passwordList.addAll(res);
     }
@@ -48,7 +48,7 @@ class PasswordProvider with ChangeNotifier {
   Future<Null> refresh() async {
     if (!_haveInit) return;
     _passwordList.clear();
-    var res = await _dao.findAll();
+    var res = await _repository.requestAll();
     if (res.isNotEmpty) {
       _passwordList.addAll(res);
     }
@@ -93,9 +93,8 @@ class PasswordProvider with ChangeNotifier {
   }
 
   Future<Null> insertPassword(PasswordBean bean) async {
-    int key = await _dao.insert(bean);
-    bean.uniqueKey = key;
-    _passwordList.add(bean);
+    var result = await _repository.create(bean);
+    _passwordList.add(result);
     _sortByAlphabeticalOrder();
     _refreshLetterCountIndex();
     _refreshMostUsedUsername();
@@ -105,7 +104,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> deletePassword(PasswordBean bean) async {
     _passwordList.remove(bean);
-    await _dao.deleteById(bean.uniqueKey!);
+    await _repository.deleteById(bean.uniqueKey!);
     _refreshLetterCountIndex();
     _refreshMostUsedUsername();
     notifyListeners();
@@ -128,7 +127,7 @@ class PasswordProvider with ChangeNotifier {
     if (oldUsername != bean.username) {
       _refreshMostUsedUsername();
     }
-    await _dao.updateById(bean);
+    await _repository.updateById(bean);
     _currPassword = bean;
     notifyListeners();
   }
@@ -148,7 +147,7 @@ class PasswordProvider with ChangeNotifier {
     _letterCountIndex.clear();
     _mostUsedUsername.clear();
     _mostUsedCache.clear();
-    await _dao.deleteContent();
+    await _repository.deleteAll();
     notifyListeners();
   }
 }
