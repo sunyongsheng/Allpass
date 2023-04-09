@@ -1,3 +1,4 @@
+import 'package:allpass/common/widget/bottom_sheet.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -117,22 +118,19 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               return;
             }
             showModalBottomSheet(
-              context: context,
-              builder: (context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      padding: AllpassEdgeInsets.listInset,
-                      child: ListTile(
+                context: context,
+                builder: (context) => BaseBottomSheet(
+                    builder: (context) => [
+                      ListTile(
                         title: Text("编辑$categoryName"),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 24),
                         leading: Icon(Icons.edit_attributes, color: Colors.blue,),
                         onTap: () {
                           Navigator.pop(context);
                           showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => EditCategoryDialog(widget.type, data[currIndex])
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => EditCategoryDialog(widget.type, data[currIndex])
                           ).then((value) async {
                             if (value != null) {
                               if (this.type == CategoryType.label) {
@@ -153,11 +151,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                           });
                         },
                       ),
-                    ),
-                    Container(
-                      padding: AllpassEdgeInsets.listInset,
-                      child: ListTile(
+                      ListTile(
                         title: Text("删除$categoryName"),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 24),
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
                           String hintText = "";
@@ -190,11 +186,9 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                               )
                           );
                         },
-                      ),
-                    )
-                  ],
-                );
-              }
+                      )
+                    ]
+                ),
             );
           },
         ),

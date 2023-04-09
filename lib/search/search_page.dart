@@ -4,6 +4,7 @@ import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/bottom_sheet.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
@@ -67,7 +68,8 @@ class _SearchPage extends State<SearchPage> {
           body: provider.empty()
               ? Center(child: EmptyDataWidget(title: "无结果，换个关键词试试吧"))
               : ListView.builder(
-                  itemBuilder: (_, index) => buildSearchResultItem(provider, index),
+                  itemBuilder: (_, index) =>
+                      buildSearchResultItem(provider, index),
                   itemCount: provider.length()));
     });
   }
@@ -102,54 +104,55 @@ class _SearchPage extends State<SearchPage> {
   /// 搜索栏
   Widget searchWidget(SearchProvider provider) {
     return Container(
-        padding: EdgeInsets.only(left: 0, right: 0, bottom: 11, top: 11),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                  borderRadius: AllpassUI.smallBorderRadius,
-                  color: Theme.of(context).inputDecorationTheme.fillColor,
-                ),
-                height: 35,
-                child: TextField(
-                  style: TextStyle(fontSize: 14),
-                  controller: searchController,
-                  focusNode: focusNode,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 20, right: 20),
-                    hintText: "搜索名称、用户名、备注或标签",
-                    hintStyle: TextStyle(
-                      fontSize: 14,
-                      color: ThemeUtil.isInDarkTheme(context)
-                          ? Colors.grey
-                          : Colors.grey[900],),
-                  ),
-                  onChanged: (_) {
-                    provider.search(searchController.text.toLowerCase());
-                  },
-                  onEditingComplete: () {
-                    provider.search(searchController.text.toLowerCase());
-                  },
-                ),
-              )
-            ),
-            InkWell(
-              child: Padding(
-                padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                child: Text("取消", style: AllpassTextUI.secondTitleStyle),
+      padding: EdgeInsets.only(left: 0, right: 0, bottom: 11, top: 11),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: AllpassUI.smallBorderRadius,
+                color: Theme.of(context).inputDecorationTheme.fillColor,
               ),
-              onTap: () => Navigator.pop(context),
-            )
-          ],
-        ));
+              height: 35,
+              child: TextField(
+                style: TextStyle(fontSize: 14),
+                controller: searchController,
+                focusNode: focusNode,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 20, right: 20),
+                  hintText: "搜索名称、用户名、备注或标签",
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: ThemeUtil.isInDarkTheme(context)
+                        ? Colors.grey
+                        : Colors.grey[900],
+                  ),
+                ),
+                onChanged: (_) {
+                  provider.search(searchController.text.toLowerCase());
+                },
+                onEditingComplete: () {
+                  provider.search(searchController.text.toLowerCase());
+                },
+              ),
+            ),
+          ),
+          InkWell(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+              child: Text("取消", style: AllpassTextUI.secondTitleStyle),
+            ),
+            onTap: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
   }
 
   // 点击密码弹出模态菜单
   Widget createPassBottomSheet(BuildContext context, PasswordBean data) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+    return BaseBottomSheet(
+      builder: (context) => <Widget>[
         ListTile(
           leading: Icon(
             Icons.remove_red_eye,
@@ -159,8 +162,12 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             Navigator.pop(context);
             context.read<PasswordProvider>().previewPassword(bean: data);
-            Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => ViewPasswordPage()));
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => ViewPasswordPage(),
+              ),
+            );
           },
         ),
         ListTile(
@@ -172,10 +179,11 @@ class _SearchPage extends State<SearchPage> {
           onTap: () {
             Navigator.pop(context);
             Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) =>
-                        EditPasswordPage(data, DataOperation.update)));
+              context,
+              CupertinoPageRoute(
+                builder: (context) => EditPasswordPage(data, DataOperation.update),
+              ),
+            );
           },
         ),
         ListTile(
@@ -210,55 +218,56 @@ class _SearchPage extends State<SearchPage> {
           ),
           title: Text("删除密码"),
           onTap: () => showDialog(
-              context: context,
-              builder: (context) => ConfirmDialog(
-                    "确认删除",
-                    "你将删除此密码，确认吗？",
-                    danger: true,
-                    onConfirm: () async {
-                      await context
-                          .read<PasswordProvider>()
-                          .deletePassword(data);
-                      ToastUtil.show(msg: "删除成功");
-                      Navigator.pop(context);
-                    },
-                  )),
-        )
+            context: context,
+            builder: (context) => ConfirmDialog(
+              "确认删除",
+              "你将删除此密码，确认吗？",
+              danger: true,
+              onConfirm: () async {
+                await context.read<PasswordProvider>().deletePassword(data);
+                ToastUtil.show(msg: "删除成功");
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
 
   // 点击卡片弹出模态菜单
   Widget createCardBottomSheet(BuildContext context, CardBean data) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+    return BaseBottomSheet(
+      builder: (context) => <Widget>[
         ListTile(
-            leading: Icon(
-              Icons.remove_red_eye,
-              color: Colors.lightGreen,
-            ),
-            title: Text("查看"),
-            onTap: () {
-              Navigator.pop(context);
-              context.read<CardProvider>().previewCard(bean: data);
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => ViewCardPage()));
-            }),
+          leading: Icon(
+            Icons.remove_red_eye,
+            color: Colors.lightGreen,
+          ),
+          title: Text("查看"),
+          onTap: () {
+            Navigator.pop(context);
+            context.read<CardProvider>().previewCard(bean: data);
+            Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => ViewCardPage()));
+          },
+        ),
         ListTile(
-            leading: Icon(
-              Icons.edit,
-              color: Colors.blue,
-            ),
-            title: Text("编辑"),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) =>
-                          EditCardPage(data, DataOperation.update)));
-            }),
+          leading: Icon(
+            Icons.edit,
+            color: Colors.blue,
+          ),
+          title: Text("编辑"),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => EditCardPage(data, DataOperation.update),
+              ),
+            );
+          },
+        ),
         ListTile(
           leading: Icon(
             Icons.person,
@@ -284,23 +293,25 @@ class _SearchPage extends State<SearchPage> {
           },
         ),
         ListTile(
-            leading: Icon(
-              Icons.delete_outline,
-              color: Colors.red,
+          leading: Icon(
+            Icons.delete_outline,
+            color: Colors.red,
+          ),
+          title: Text("删除卡片"),
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => ConfirmDialog(
+              "确认删除",
+              "你将删除此卡片，确认吗？",
+              danger: true,
+              onConfirm: () async {
+                await context.read<CardProvider>().deleteCard(data);
+                ToastUtil.show(msg: "删除成功");
+                Navigator.pop(context);
+              },
             ),
-            title: Text("删除卡片"),
-            onTap: () => showDialog(
-                context: context,
-                builder: (context) => ConfirmDialog(
-                      "确认删除",
-                      "你将删除此卡片，确认吗？",
-                      danger: true,
-                      onConfirm: () async {
-                        await context.read<CardProvider>().deleteCard(data);
-                        ToastUtil.show(msg: "删除成功");
-                        Navigator.pop(context);
-                      },
-                    )))
+          ),
+        ),
       ],
     );
   }
