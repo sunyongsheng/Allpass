@@ -16,6 +16,7 @@ import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
+import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,6 +53,12 @@ class AllpassApplication {
 
     getIt.registerSingleton(PasswordRepository());
     getIt.registerSingleton(CardRepository());
+
+    getIt.registerFactory(() => Dio(BaseOptions(
+        receiveTimeout: Duration(seconds: 30),
+        connectTimeout: Duration(seconds: 10),
+        baseUrl: allpassUrl,
+    )));
   }
 
   static void initRouter() {

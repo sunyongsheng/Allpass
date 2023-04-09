@@ -41,7 +41,7 @@ dependencies:
   # 汉字转拼音
   lpinyin: ^2.0.3
   # 网络请求
-  dio: ^4.0.6
+  dio: ^5.1.1
   # 设备信息
   device_info: ^2.0.3
   # 分享功能
