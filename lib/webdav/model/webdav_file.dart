@@ -52,7 +52,7 @@ class WebDavFile {
     var isFile = contentType != "httpd/unix-directory";
 
     return WebDavFile(
-      filename: name,
+      filename: Uri.decodeComponent(name),
       lastModified: lastModified,
       byteSize: int.parse(size),
       isFile: isFile,
