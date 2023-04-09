@@ -10,6 +10,7 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/decrypt_error_widget.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -45,10 +46,17 @@ class _ViewCardPage extends State<ViewCardPage> {
       return Container();
     }
 
-    if (cache != bean.password) {
-      password = EncryptUtil.decrypt(bean.password);
-      cache = bean.password;
+    try {
+      if (cache != bean.password) {
+        password = EncryptUtil.decrypt(bean.password);
+        cache = bean.password;
+      }
+    } on ArgumentError {
+      return DecryptErrorWidget(
+        originalValue: bean.password,
+      );
     }
+
     return Scaffold(
         appBar: AppBar(
           title: Text(

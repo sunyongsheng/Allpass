@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/common/widget/decrypt_error_widget.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
@@ -48,9 +49,15 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       return Container();
     }
 
-    if (cache != bean.password) {
-      password = EncryptUtil.decrypt(bean.password);
-      cache = bean.password;
+    try {
+      if (cache != bean.password) {
+        password = EncryptUtil.decrypt(bean.password);
+        cache = bean.password;
+      }
+    } on ArgumentError {
+      return DecryptErrorWidget(
+        originalValue: bean.password,
+      );
     }
 
     var padding = Padding(
