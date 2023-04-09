@@ -231,6 +231,8 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       if (e is UnsupportedContentException) {
         return SyncFailed("不支持的备份文件");
+      } else if (e is PreDecryptException) {
+        return SyncFailed("备份文件所使用加密密钥与当前密钥不一致，请更换备份文件或更新密钥");
       } else if (e is UnsupportedArgumentException || e is DecodeException) {
         return SyncFailed("备份文件数据损坏");
       } else if (e is DioError) {
@@ -267,6 +269,8 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       if (e is UnsupportedArgumentException || e is DecodeException) {
         return SyncFailed("备份文件数据损坏");
+      } else if (e is PreDecryptException) {
+        return SyncFailed("备份文件所使用加密密钥与当前密钥不一致，请更换备份文件或更新密钥");
       } else {
         return SyncFailed("恢复失败 ${e.toString()}");
       }

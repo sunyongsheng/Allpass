@@ -13,6 +13,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/allpass_file_util.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/util/version_util.dart';
 import 'package:allpass/webdav/encrypt/card_extension.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/encrypt/password_extension.dart';
@@ -45,7 +46,7 @@ abstract class WebDavSyncService {
   /// 备份文件夹及标签
   Future<void> backupFolderAndLabel(BuildContext context);
 
-  /// May Throws [DioError]/[DecodeException]/[UnsupportedArgumentError]/[UnknownError]
+  /// May Throws [DioError]/[DecodeException]/[UnsupportedArgumentError]/[UnknownError]/[PreDecryptException]
   Future<AllpassType> recovery(BuildContext context, String filename);
 
   Future<void> recoveryOld(
@@ -139,7 +140,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   String _generateFilename(AllpassType type) {
     var now = DateFormatter.formatToFilename(DateTime.now());
-    var isDebug = !bool.fromEnvironment("dart.vm.product");
+    var isDebug = VersionUtil.isDebug();
     String suffix = "";
     if (isDebug) {
       suffix = "_debug";
@@ -230,6 +231,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   List<T>? _decodeList<T extends BaseModel>(
       List<dynamic> list, EncryptLevel encryptLevel) {
     if (T == PasswordBean) {
+      _preDecrypt(list, encryptLevel);
+
       List<PasswordBean> results = [];
       for (var temp in list) {
         var bean = PasswordBean.fromJson(temp);
@@ -237,6 +240,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       }
       return results as List<T>;
     } else if (T == CardBean) {
+      _preDecrypt(list, encryptLevel);
+
       List<CardBean> results = [];
       for (var temp in list) {
         var bean = CardBean.fromJson(temp);
@@ -245,6 +250,26 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       return results as List<T>;
     }
     return null;
+  }
+
+  void _preDecrypt(List<dynamic> list, EncryptLevel encryptLevel) {
+    if (list.isEmpty) {
+      return;
+    }
+
+    String password = list.first["password"];
+    switch (encryptLevel) {
+      case EncryptLevel.None:
+        break;
+      case EncryptLevel.OnlyPassword:
+      case EncryptLevel.All:
+        try {
+          EncryptUtil.decrypt(password);
+        } on ArgumentError {
+          _logger.w("$_tag _preDecrypt error password=$password");
+          throw PreDecryptException();
+        }
+    }
   }
 
   ExtraModel? _decodeFolderAndLabel(String string) {

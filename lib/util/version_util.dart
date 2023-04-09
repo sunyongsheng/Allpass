@@ -16,4 +16,8 @@ class VersionUtil {
     }
     return false;
   }
+
+  static bool isDebug() {
+    return !bool.fromEnvironment("dart.vm.product");
+  }
 }
