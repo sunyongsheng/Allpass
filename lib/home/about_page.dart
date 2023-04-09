@@ -1,3 +1,5 @@
+import 'package:allpass/core/common_logger.dart';
+import 'package:allpass/util/version_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -25,7 +27,6 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int longPressTimes = 0;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -65,13 +66,15 @@ class AboutPage extends StatelessWidget {
                             await launchUrl(Uri.parse("https://allpass.aengus.top"));
                           },
                           onLongPress: () {
-                            longPressTimes++;
-                            if (longPressTimes == 3) {
-                              ToastUtil.show(msg: "进入开发者模式");
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => DebugPage()
-                              ));
+                            if (!VersionUtil.isDebug()) {
+                              commonLogger.w("current isn't debug mode");
+                              return;
                             }
+
+                            ToastUtil.show(msg: "进入开发者模式");
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context) => DebugPage()
+                            ));
                           },
                         )),
                     Container(
