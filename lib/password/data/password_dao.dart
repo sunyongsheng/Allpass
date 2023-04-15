@@ -131,8 +131,8 @@ class PasswordDao extends BaseDBProvider {
   }
 
   Future<List<PasswordBean>> findByAppIdOrAppName(String appId, String? appName,
-      {int page: 0,
-      int pageSize: 10,}) async {
+      {int page = 0,
+      int pageSize = 10,}) async {
     Database db = await getDataBase();
     List<Map<String, dynamic>> list;
     if (appName == null) {
