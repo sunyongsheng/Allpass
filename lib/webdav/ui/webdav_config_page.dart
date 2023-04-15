@@ -100,7 +100,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
               NoneBorderCircularTextField(
                 editingController: _urlController,
                 hintText: "WebDAV服务器地址",
-                onChanged: (_) => _setPortAuto(),
+                onChanged: _setPortAutomatically,
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -161,7 +161,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                       child: _passwordVisible == true
                           ? Icon(Icons.visibility)
                           : Icon(Icons.visibility_off),
-                      onTap: () => showPassword(),
+                      onTap: showPassword,
                     ),
                   )
                 ],
@@ -184,13 +184,19 @@ class _WebDavConfigPage extends State<StatefulWidget> {
   }
 
   Future<Null> _nextStep() async {
+    var url = _urlController.text;
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      ToastUtil.showError(msg: "服务器地址需以http://或https://开头");
+      return;
+    }
+
     setState(() {
       _pressNext = !_pressNext;
     });
     if (_pressNext) {
       try {
         _syncService.updateConfig(
-          urlPath: _urlController.text,
+          urlPath: url,
           username: _usernameController.text,
           password: _passwordController.text,
           port: int.parse(_portController.text),
@@ -226,20 +232,24 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     }
   }
 
-  void _setPortAuto() {
-    if (_urlController.text.startsWith("https://")) {
+  void _setPortAutomatically(String urlText) {
+    if (_portController.text.isNotEmpty) {
+      return;
+    }
+
+    var uri = Uri.parse(urlText);
+    if (uri.hasPort) {
+      _portController.text = uri.port.toString();
+    } else if (uri.scheme == "https") {
       _portController.text = "443";
-    } else if (_urlController.text.startsWith("http://")) {
+    } else if (uri.scheme == "http") {
       _portController.text = "80";
     }
   }
 
   void showPassword() {
     setState(() {
-      if (_passwordVisible == false)
-        _passwordVisible = true;
-      else
-        _passwordVisible = false;
+      _passwordVisible = !_passwordVisible;
     });
   }
 }
