@@ -76,20 +76,21 @@ class _PasswordPageState extends State<PasswordPage>
     if (RuntimeData.multiPasswordSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
-            onSelected: (value) {
-              switch (value) {
-                case "删除":
-                  _deletePassword(context, model);
-                  break;
-                case "移动":
-                  _movePassword(context, model);
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-                  PopupMenuItem(value: "移动", child: Text("移动")),
-                  PopupMenuItem(value: "删除", child: Text("删除")),
-                ]),
+          onSelected: (value) {
+            switch (value) {
+              case "删除":
+                _deletePassword(context, model);
+                break;
+              case "移动":
+                _movePassword(context, model);
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(value: "移动", child: Text("移动")),
+            PopupMenuItem(value: "删除", child: Text("删除")),
+          ],
+        ),
         IconButton(
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
@@ -112,9 +113,11 @@ class _PasswordPageState extends State<PasswordPage>
         floatingButton = FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () => Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (_) => EditPasswordPage(null, DataOperation.add))),
+            context,
+            CupertinoPageRoute(
+              builder: (_) => EditPasswordPage(null, DataOperation.add),
+            ),
+          ),
           heroTag: "password",
         );
       } else {
@@ -167,10 +170,11 @@ class _PasswordPageState extends State<PasswordPage>
               controller: _controller,
               itemBuilder: (context, index) {
                 return MaterialPasswordWidget(
-                    data: model.passwordList[index],
-                    containerShape: 0,
-                    pageCreator: (_) => ViewPasswordPage(),
-                    onPasswordClicked: () => model.previewPassword(index: index));
+                  data: model.passwordList[index],
+                  containerShape: 0,
+                  pageCreator: (_) => ViewPasswordPage(),
+                  onPasswordClicked: () => model.previewPassword(index: index),
+                );
               },
               itemCount: model.count,
               physics: const AlwaysScrollableScrollPhysics(),
@@ -184,48 +188,56 @@ class _PasswordPageState extends State<PasswordPage>
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: AllpassEdgeInsets.smallLPadding,
-            child: InkWell(
-              splashColor: Colors.transparent,
-              child: Text(
-                "密码",
-                style: AllpassTextUI.titleBarStyle,
-              ),
-              onTap: () {
-                _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
-              },
+      appBar: AppBar(
+        title: Padding(
+          padding: AllpassEdgeInsets.smallLPadding,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            child: Text(
+              "密码",
+              style: AllpassTextUI.titleBarStyle,
             ),
+            onTap: () {
+              _controller.animateTo(
+                0,
+                duration: Duration(milliseconds: 200),
+                curve: Curves.decelerate,
+              );
+            },
           ),
-          automaticallyImplyLeading: false,
-          actions: appbarActions,
         ),
-        body: Column(
-          children: <Widget>[
-            // 搜索框 按钮
-            SearchButtonWidget(_searchPress, "密码"),
-            // 密码列表
-            Expanded(
-              child: RefreshIndicator(
-                  onRefresh: () => _query(model),
-                  child: Scrollbar(
-                    child: listView,
-                  )),
-            )
-          ],
-        ),
-        floatingActionButton: floatingButton);
+        automaticallyImplyLeading: false,
+        actions: appbarActions,
+      ),
+      body: Column(
+        children: <Widget>[
+          // 搜索框 按钮
+          SearchButtonWidget(_searchPress, "密码"),
+          // 密码列表
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () => _query(model),
+              child: Scrollbar(
+                child: listView,
+              ),
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: floatingButton,
+    );
   }
 
   void _searchPress() {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChangeNotifierProvider.value(
-              value: SearchProvider(AllpassType.password, context),
-              child: SearchPage(AllpassType.password),
-            )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider.value(
+          value: SearchProvider(AllpassType.password, context),
+          child: SearchPage(AllpassType.password),
+        ),
+      ),
+    );
   }
 
   void _deletePassword(BuildContext context, PasswordProvider model) {
@@ -233,18 +245,18 @@ class _PasswordPageState extends State<PasswordPage>
       ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog<bool>(
-          context: context,
-          builder: (context) => ConfirmDialog(
-            "确认删除",
-            "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？",
-            danger: true,
-            onConfirm: () async {
-              for (var item in RuntimeData.multiPasswordList) {
-                await model.deletePassword(item);
-              }
-              RuntimeData.multiPasswordList.clear();
-            },
-          )
+        context: context,
+        builder: (context) => ConfirmDialog(
+          "确认删除",
+          "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？",
+          danger: true,
+          onConfirm: () async {
+            for (var item in RuntimeData.multiPasswordList) {
+              await model.deletePassword(item);
+            }
+            RuntimeData.multiPasswordList.clear();
+          },
+        ),
       );
     }
   }
@@ -254,20 +266,24 @@ class _PasswordPageState extends State<PasswordPage>
       ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog(
-          context: context,
-          builder: (context) => DefaultSelectItemDialog<String>(
-            list: RuntimeData.folderList,
-            onSelected: (value) async {
-              for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
-                RuntimeData.multiPasswordList[i].folder = value;
-                await model.updatePassword(RuntimeData.multiPasswordList[i]);
-              }
-              ToastUtil.show(msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹");
-              setState(() {
+        context: context,
+        builder: (context) => DefaultSelectItemDialog<String>(
+          list: RuntimeData.folderList,
+          onSelected: (value) async {
+            for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
+              RuntimeData.multiPasswordList[i].folder = value;
+              await model.updatePassword(RuntimeData.multiPasswordList[i]);
+            }
+            ToastUtil.show(
+              msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹",
+            );
+            setState(
+              () {
                 RuntimeData.multiPasswordList.clear();
-              });
-            },
-          )
+              },
+            );
+          },
+        ),
       );
     }
   }

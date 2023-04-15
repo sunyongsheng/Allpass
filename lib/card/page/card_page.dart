@@ -76,20 +76,21 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     if (RuntimeData.multiCardSelected) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
-            onSelected: (value) {
-              switch (value) {
-                case "删除":
-                  _deleteCard(context, model);
-                  break;
-                case "移动":
-                  _moveCard(context, model);
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-                  PopupMenuItem(value: "移动", child: Text("移动")),
-                  PopupMenuItem(value: "删除", child: Text("删除")),
-                ]),
+          onSelected: (value) {
+            switch (value) {
+              case "删除":
+                _deleteCard(context, model);
+                break;
+              case "移动":
+                _moveCard(context, model);
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(value: "移动", child: Text("移动")),
+            PopupMenuItem(value: "删除", child: Text("删除")),
+          ],
+        ),
         IconButton(
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
@@ -112,9 +113,12 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         floatingButton = FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (_) => EditCardPage(null, DataOperation.add)
-            ));
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (_) => EditCardPage(null, DataOperation.add),
+              ),
+            );
           },
           heroTag: "card",
         );
@@ -193,12 +197,16 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: () {
-              _controller.animateTo(0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+              _controller.animateTo(
+                0,
+                duration: Duration(milliseconds: 200),
+                curve: Curves.decelerate,
+              );
             },
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: appbarActions
+        actions: appbarActions,
       ),
       body: Column(
         children: <Widget>[
@@ -207,10 +215,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           // 卡片列表
           Expanded(
             child: RefreshIndicator(
-                onRefresh: () => _query(model),
-                child: listView
+              onRefresh: () => _query(model),
+              child: listView,
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: floatingButton,
@@ -220,10 +228,13 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   void _searchPress() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(
-        value: SearchProvider(AllpassType.card, context),
-        child: SearchPage(AllpassType.card),
-      )));
+      MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider.value(
+          value: SearchProvider(AllpassType.card, context),
+          child: SearchPage(AllpassType.card),
+        ),
+      ),
+    );
   }
 
   void _deleteCard(BuildContext context, CardProvider model) {
@@ -231,18 +242,18 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog<bool>(
-          context: context,
-          builder: (context) => ConfirmDialog(
-            "确认删除",
-            "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
-            danger: true,
-            onConfirm: () async {
-              for (var item in RuntimeData.multiCardList) {
-                await model.deleteCard(item);
-              }
-              RuntimeData.multiCardList.clear();
-            },
-          )
+        context: context,
+        builder: (context) => ConfirmDialog(
+          "确认删除",
+          "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
+          danger: true,
+          onConfirm: () async {
+            for (var item in RuntimeData.multiCardList) {
+              await model.deleteCard(item);
+            }
+            RuntimeData.multiCardList.clear();
+          },
+        ),
       );
     }
   }
@@ -252,20 +263,22 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog(
-          context: context,
-          builder: (context) => DefaultSelectItemDialog<String>(
-            list: RuntimeData.folderList,
-            onSelected: (value) async {
-              for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
-                RuntimeData.multiCardList[i].folder = value;
-                await model.updateCard(RuntimeData.multiCardList[i]);
-              }
-              ToastUtil.show(msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹");
-              setState(() {
-                RuntimeData.multiCardList.clear();
-              });
-            },
-          )
+        context: context,
+        builder: (context) => DefaultSelectItemDialog<String>(
+          list: RuntimeData.folderList,
+          onSelected: (value) async {
+            for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
+              RuntimeData.multiCardList[i].folder = value;
+              await model.updateCard(RuntimeData.multiCardList[i]);
+            }
+            ToastUtil.show(
+              msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹",
+            );
+            setState(() {
+              RuntimeData.multiCardList.clear();
+            });
+          },
+        ),
       );
     }
   }
