@@ -42,6 +42,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSFaceIDUsageDescription</key>
-    <string>Why is my app authenticating using face id?</string>
+    <string>Allpass App contains private information such as user passwords</string>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>
