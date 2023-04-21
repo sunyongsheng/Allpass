@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:allpass/core/dao/table_definition.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:allpass/core/dao/db_manager.dart';
-
 
 /// 这个类定义创建数据库表的基础方法；
 /// 这个类是一个抽象类，把具体创建数据库表的sql暴露出去，让子类去具体实现；
@@ -9,34 +8,26 @@ import 'package:allpass/core/dao/db_manager.dart';
 abstract class BaseDBProvider {
   bool _isTableExists = false;
 
-  String tableSqlString();
-
   String tableName();
 
-  String tableBaseString(String name, String columnId) {
-    return '''
-      CREATE TABLE $name (
-      $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
-    ''';
+  List<ColumnDefinition> tableColumns();
+
+  Future<Database> getDatabase() async {
+    return await _open();
   }
 
-  Future<Database> getDataBase() async {
-    return await open();
-  }
-
-  @mustCallSuper
-  Future<void> prepare(name, String createSql) async {
+  Future<void> _prepare(name) async {
     _isTableExists = await DBManager.isTableExists(name);
     if (!_isTableExists) {
-      Database db = await DBManager.getCurrentDatabase();
-      return await db.execute(createSql);
+      final Database db = await DBManager.getCurrentDatabase();
+      final statement = CreateTableStatement(name, tableColumns());
+      return await db.execute(statement.create());
     }
   }
 
-  @mustCallSuper
-  Future<Database> open() async {
+  Future<Database> _open() async {
     if (!_isTableExists) {
-      await prepare(tableName(), tableSqlString());
+      await _prepare(tableName());
     }
     return await DBManager.getCurrentDatabase();
   }

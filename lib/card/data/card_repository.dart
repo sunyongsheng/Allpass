@@ -1,23 +1,23 @@
-import 'package:allpass/card/data/card_dao.dart';
+import 'package:allpass/card/data/card_data_source.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
 class CardRepository {
-  late final CardDao _cardDao;
+  late final CardDataSource _localDataSource;
 
-  CardRepository({CardDao? cardDao}) {
-    _cardDao = cardDao ?? CardDao();
+  CardRepository({CardDataSource? cardDao}) {
+    _localDataSource = cardDao ?? CardDataSource();
   }
 
   Future<CardBean> create(CardBean param) async {
-    var key = await _cardDao.insert(param);
+    var key = await _localDataSource.insert(param);
     param.uniqueKey = key;
     _assignColor(param);
     return param;
   }
 
   Future<CardBean?> findById(String id) async {
-    var result = await _cardDao.findById(id);
+    var result = await _localDataSource.findById(id);
     if (result != null) {
       _assignColor(result);
     }
@@ -25,7 +25,7 @@ class CardRepository {
   }
 
   Future<List<CardBean>> requestAll() async {
-    var result = await _cardDao.findAll();
+    var result = await _localDataSource.findAll();
     result.forEach((element) {
       _assignColor(element);
     });
@@ -33,19 +33,19 @@ class CardRepository {
   }
 
   Future<int> deleteById(int key) async {
-    return await _cardDao.deleteById(key);
+    return await _localDataSource.deleteById(key);
   }
 
   Future<int> updateById(CardBean bean) async {
-    return await _cardDao.updateById(bean);
+    return await _localDataSource.updateById(bean);
   }
 
   Future<int> deleteAll() async {
-    return await _cardDao.deleteContent();
+    return await _localDataSource.deleteContent();
   }
 
   Future<void> dropTable() async {
-    await _cardDao.deleteTable();
+    await _localDataSource.deleteTable();
   }
 
   void _assignColor(CardBean bean) {

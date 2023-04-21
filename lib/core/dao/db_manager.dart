@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:allpass/card/data/card_table.dart';
+import 'package:allpass/password/data/password_table.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:allpass/password/data/password_dao.dart';
-import 'package:allpass/card/data/card_dao.dart';
 
 class DBManager {
 
@@ -55,6 +55,7 @@ class DBManager {
   /// 数据库版本升级
   static FutureOr<void> onUpdate(Database database, int oldVersion, int newVersion) async {
     if (oldVersion < 1 || oldVersion >= newVersion) return;
+
     List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3, _upgrade3To4, _upgrade4To5];
     int startIndex = oldVersion - 1;
     int endIndex = newVersion - 1;
@@ -65,10 +66,10 @@ class DBManager {
 
   static Future<void> _upgrade1To2(Database database) async {
     _logger.i("数据库升级： 1 -> 2");
-    String renamePasswordSql = "ALTER TABLE ${PasswordDao.name} RENAME TO allpass_password1";
+    String renamePasswordSql = "ALTER TABLE ${PasswordTable.name} RENAME TO allpass_password1";
     await database.execute(renamePasswordSql);
     String createPasswordSql = '''
-        CREATE TABLE ${PasswordDao.name}(
+        CREATE TABLE ${PasswordTable.name}(
         uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         username TEXT NOT NULL,
@@ -81,18 +82,18 @@ class DBManager {
         createTime TEXT)
       ''';
     await database.execute(createPasswordSql);
-    String movePasswordSql = "INSERT INTO ${PasswordDao.name}(uniqueKey,name,username,password,url,folder,notes,label,fav) "
+    String movePasswordSql = "INSERT INTO ${PasswordTable.name}(uniqueKey,name,username,password,url,folder,notes,label,fav) "
         "SELECT uniqueKey,name,username,password,url,folder,notes,label,fav from allpass_password1";
     await database.execute(movePasswordSql);
     String dropPasswordSql = "DROP TABLE allpass_password1";
     await database.execute(dropPasswordSql);
-    String updatePasswordSql = "UPDATE ${PasswordDao.name} SET createTime=?";
+    String updatePasswordSql = "UPDATE ${PasswordTable.name} SET createTime=?";
     await database.execute(updatePasswordSql, [DateTime.now().toIso8601String()]);
 
-    String renameCardSql = "ALTER TABLE ${CardDao.name} RENAME TO allpass_card1";
+    String renameCardSql = "ALTER TABLE ${CardTable.name} RENAME TO allpass_card1";
     await database.execute(renameCardSql);
     String createCardSql = '''
-        CREATE TABLE ${CardDao.name}(
+        CREATE TABLE ${CardTable.name}(
         uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         ownerName TEXT,
@@ -106,12 +107,12 @@ class DBManager {
         createTime TEXT)
       ''';
     await database.execute(createCardSql);
-    String moveCardSql = "INSERT INTO ${CardDao.name}(uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav)"
+    String moveCardSql = "INSERT INTO ${CardTable.name}(uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav)"
         " SELECT uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav from allpass_card1";
     await database.execute(moveCardSql);
     String dropCardSql = "DROP TABLE allpass_card1";
     await database.execute(dropCardSql);
-    String updateCardSql = "UPDATE ${CardDao.name} SET createTime=?";
+    String updateCardSql = "UPDATE ${CardTable.name} SET createTime=?";
     await database.execute(updateCardSql, [DateTime.now().toIso8601String()]);
 
     _logger.i("数据库升级完成");
@@ -119,23 +120,23 @@ class DBManager {
 
   static Future<void> _upgrade2To3(Database database) async {
     _logger.i("数据库升级： 2 -> 3");
-    String addPasswordColumnSql = "ALTER TABLE ${PasswordDao.name} ADD COLUMN ${PasswordDao.columnSortNumber} INTEGER DEFAULT -1";
+    String addPasswordColumnSql = "ALTER TABLE ${PasswordTable.name} ADD COLUMN ${PasswordTable.columnSortNumber} INTEGER DEFAULT -1";
     await database.execute(addPasswordColumnSql);
-    String addCardColumnSql = "ALTER TABLE ${CardDao.name} ADD COLUMN ${CardDao.columnSortNumber} INTEGER DEFAULT -1";
+    String addCardColumnSql = "ALTER TABLE ${CardTable.name} ADD COLUMN ${CardTable.columnSortNumber} INTEGER DEFAULT -1";
     await database.execute(addCardColumnSql);
     _logger.i("数据库升级完成");
   }
 
   static Future<void> _upgrade3To4(Database database) async {
     _logger.i("数据库升级： 3 -> 4");
-    String addPasswordColumnSql = "ALTER TABLE ${PasswordDao.name} ADD COLUMN ${PasswordDao.columnAppId} TEXT DEFAULT ''";
+    String addPasswordColumnSql = "ALTER TABLE ${PasswordTable.name} ADD COLUMN ${PasswordTable.columnAppId} TEXT DEFAULT ''";
     await database.execute(addPasswordColumnSql);
     _logger.i("数据库升级完成");
   }
 
   static Future<void> _upgrade4To5(Database database) async {
     _logger.i("数据库升级： 4 -> 5");
-    String addPasswordColumnSql = "ALTER TABLE ${PasswordDao.name} ADD COLUMN ${PasswordDao.columnAppName} TEXT DEFAULT ''";
+    String addPasswordColumnSql = "ALTER TABLE ${PasswordTable.name} ADD COLUMN ${PasswordTable.columnAppName} TEXT DEFAULT ''";
     await database.execute(addPasswordColumnSql);
     _logger.i("数据库升级完成");
   }
