@@ -1,3 +1,4 @@
+import 'package:allpass/core/di/di.dart';
 import 'package:dio/dio.dart';
 
 import 'package:allpass/application.dart';
@@ -23,7 +24,7 @@ abstract class AllpassService {
 class AllpassServiceImpl implements AllpassService {
   Dio get dio {
     if (_dio == null) {
-      _dio = AllpassApplication.getIt.get();
+      _dio = inject();
     }
     return _dio!;
   }

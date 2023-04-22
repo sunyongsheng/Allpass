@@ -1,3 +1,4 @@
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
   @override
   void initState() {
-    _localAuthService = AllpassApplication.getIt<AuthService>();
+    _localAuthService = inject<AuthService>();
     _controller = ScrollController();
     super.initState();
   }
@@ -289,7 +290,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   void checkUpdate() {
-    var bean = AllpassApplication.getIt<AllpassService>().checkUpdate();
+    var bean = inject<AllpassService>().checkUpdate();
     showDialog(
         context: context,
         builder: (cx) => FutureBuilder<UpdateBean>(
@@ -309,7 +310,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   }
 
   Future<Null> doRecommend() async {
-    UpdateBean data = await AllpassApplication.getIt<AllpassService>().getLatestVersion();
+    UpdateBean data = await inject<AllpassService>().getLatestVersion();
     Share.share(
         "【Allpass】一款简洁好用的私密信息管理工具。【下载地址】${data.downloadUrl}",
         subject: "软件推荐——Allpass");

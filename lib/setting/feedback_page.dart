@@ -1,3 +1,4 @@
+import 'package:allpass/core/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -114,7 +115,7 @@ class _FeedbackPage extends State<StatefulWidget> {
       AllpassApplication.sp.setString(SPKeys.contact, _contactController.text);
     }
     FeedbackBean feedback = FeedbackBean(content: content, contact: contact, version: version, identification: id);
-    AllpassResponse response = await AllpassApplication.getIt<AllpassService>().sendFeedback(feedback);
+    AllpassResponse response = await inject<AllpassService>().sendFeedback(feedback);
     ToastUtil.show(msg: response.msg!);
     setState(() {
       submitting = false;

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -29,7 +30,6 @@ class AllpassApplication {
 
   static GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
-  static late GetIt getIt;
   static late FluroRouter router;
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
@@ -45,7 +45,7 @@ class AllpassApplication {
   }
 
   static void initLocator() {
-    getIt = GetIt.instance;
+    var getIt = GetIt.instance;
 
     getIt.registerSingleton<AuthService>(AuthServiceImpl());
     getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
@@ -97,7 +97,7 @@ class AllpassApplication {
   static Future<String> _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
     List<PasswordBean>? passwordList = await list;
     if (passwordList != null) {
-      PasswordRepository repository = getIt.get();
+      PasswordRepository repository = inject();
       for (var bean in passwordList) {
         await repository.create(bean);
         RuntimeData.labelListAdd(bean.label);
@@ -113,7 +113,7 @@ class AllpassApplication {
     SimpleUser userData = SimpleUser.fromJson(json.decode(jsonStr));
     if (userData.username != null && userData.password != null && userData.appId != null) {
       userData.password = EncryptUtil.encrypt(userData.password!);
-      PasswordRepository repository = getIt.get();
+      PasswordRepository repository = inject();
       // 如果同AppId下有相同的username则更新；否则创建
       var existList = await repository.findByAppIdAndUsername(userData.appId!, userData.username!);
       final request = userData.mapToRequest();
@@ -127,7 +127,7 @@ class AllpassApplication {
   }
 
   static Future<String> _queryPasswordForAutofill(String appId, String? appName) async {
-    PasswordRepository repository = getIt.get();
+    PasswordRepository repository = inject();
     var passwordList = await repository.findByAppIdOrAppName(appId, appName);
     List<SimpleUser> list = passwordList.map((password) => SimpleUser(
         password.name,

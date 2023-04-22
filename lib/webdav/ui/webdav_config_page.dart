@@ -1,8 +1,8 @@
-import 'package:allpass/application.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
@@ -38,7 +38,7 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
     _portController = TextEditingController();
-    _syncService = AllpassApplication.getIt.get();
+    _syncService = inject();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _frameDone = true;
     });

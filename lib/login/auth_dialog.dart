@@ -1,5 +1,5 @@
+import 'package:allpass/core/di/di.dart';
 import 'package:flutter/material.dart';
-import 'package:allpass/application.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/util/screen_util.dart';
 
@@ -11,7 +11,7 @@ class AuthDialog extends StatefulWidget {
 
 class _AuthDialogState extends State<AuthDialog> {
 
-  final AuthService _localAuthService = AllpassApplication.getIt<AuthService>();
+  final AuthService _localAuthService = inject();
 
   bool error = false;
 

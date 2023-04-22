@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:allpass/application.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/error/app_error.dart';
 import 'package:allpass/core/param/config.dart';
@@ -75,7 +75,7 @@ class WebDavSyncProvider extends ChangeNotifier {
   late final WebDavSyncService _syncService;
 
   WebDavSyncProvider({WebDavSyncService? syncService}) {
-    _syncService = syncService ?? AllpassApplication.getIt.get();
+    _syncService = syncService ?? inject();
   }
 
   bool get uploading => _uploading;

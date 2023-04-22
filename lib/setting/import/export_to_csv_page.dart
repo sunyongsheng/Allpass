@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
@@ -114,7 +114,7 @@ class ExportTypeSelectPage extends StatelessWidget {
   Future<Null> exportActual(BuildContext context, Directory newDir, {AllpassType? type}) async {
     switch (type) {
       case AllpassType.password:
-        PasswordRepository passwordRepository = AllpassApplication.getIt.get();
+        PasswordRepository passwordRepository = inject();
         List<PasswordBean> list = await passwordRepository.requestAll();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
@@ -124,7 +124,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       case AllpassType.card:
-        CardRepository cardRepository = AllpassApplication.getIt.get();
+        CardRepository cardRepository = inject();
         List<CardBean> list = await cardRepository.requestAll();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
@@ -134,10 +134,10 @@ class ExportTypeSelectPage extends StatelessWidget {
         }
         break;
       default:
-        PasswordRepository passwordRepository = AllpassApplication.getIt.get();
+        PasswordRepository passwordRepository = inject();
         List<PasswordBean> passwordList = await passwordRepository.requestAll();
         ExportResult passwordResult = await CsvUtil.passwordExportCsv(passwordList, newDir);
-        CardRepository cardRepository = AllpassApplication.getIt.get();
+        CardRepository cardRepository = inject();
         List<CardBean> cardList = await cardRepository.requestAll();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {

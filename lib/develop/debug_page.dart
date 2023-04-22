@@ -1,4 +1,5 @@
 import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,8 @@ class DebugPage extends StatefulWidget {
 
 class _DebugPage extends State<DebugPage> {
 
-  final PasswordRepository _passwordRepository = AllpassApplication.getIt.get();
-  final CardRepository _cardRepository = AllpassApplication.getIt.get();
+  final PasswordRepository _passwordRepository = inject();
+  final CardRepository _cardRepository = inject();
 
   @override
   Widget build(BuildContext context) {

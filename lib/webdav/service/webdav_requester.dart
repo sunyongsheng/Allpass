@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:allpass/application.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/error/app_error.dart';
 import 'package:allpass/util/path_util.dart';
 import 'package:allpass/util/string_util.dart';
@@ -32,7 +32,7 @@ class WebDavRequester {
 
   WebDavRequester(
       {String? urlPath, int? port, String? username, String? password}) {
-    _dio = AllpassApplication.getIt.get();
+    _dio = inject();
 
     _baseHeaders = {"Depth": 1};
     this.urlPath = "";

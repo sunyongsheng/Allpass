@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:allpass/core/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class AuthLoginPage extends StatefulWidget {
 
 class _AuthLoginPage extends State<StatefulWidget> {
 
-  final AuthService _localAuthService = AllpassApplication.getIt<AuthService>();
+  final AuthService _localAuthService = inject();
 
   @override
   void initState() {

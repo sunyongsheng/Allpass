@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/card/page/card_page.dart';
 import 'package:allpass/classification/page/classification_page.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/password/page/password_page.dart';
@@ -36,7 +36,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     _controller = PageController(initialPage: 0);
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      UpdateBean updateBean = await AllpassApplication.getIt<AllpassService>().checkUpdate();
+      UpdateBean updateBean = await inject<AllpassService>().checkUpdate();
       if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
         showDialog(
             context: context,

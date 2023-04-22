@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:allpass/core/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -100,8 +101,7 @@ void _registerUser() async {
           systemInfo: _systemInfo,
           version: AllpassApplication.version
       );
-      AllpassResponse response =
-          await AllpassApplication.getIt<AllpassService>().registerUser(user);
+      AllpassResponse response = await inject<AllpassService>().registerUser(user);
       if (response.success) {
         AllpassApplication.sp.setBool(SPKeys.needRegister, false);
       } else {

@@ -1,9 +1,9 @@
-import 'package:allpass/application.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/data/password_repository.dart';
@@ -21,8 +21,8 @@ class SecretKeyUpgradePage extends StatefulWidget {
 }
 
 class _SecretKeyUpgradePage extends State<StatefulWidget> {
-  PasswordRepository passwordRepository = AllpassApplication.getIt.get();
-  CardRepository cardRepository = AllpassApplication.getIt.get();
+  PasswordRepository passwordRepository = inject();
+  CardRepository cardRepository = inject();
   late EncryptHolder encryptHolder;
 
   TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
