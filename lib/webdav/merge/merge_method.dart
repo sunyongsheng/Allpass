@@ -26,7 +26,7 @@ class MergeMethods {
         return method;
       }
     }
-    throw UnsupportedArgumentException("Unsupported value=$value");
+    throw UnsupportedEnumException("Unsupported value=$value");
   }
 
   static MergeMethod? tryParse(int? value) {

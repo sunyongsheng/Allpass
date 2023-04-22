@@ -1,11 +1,12 @@
-class UnsupportedArgumentException implements Exception {
+/// 不支持的枚举类型
+class UnsupportedEnumException implements Exception {
   final String message;
 
-  UnsupportedArgumentException(this.message);
+  UnsupportedEnumException(this.message);
 
   @override
   String toString() {
-    return "UnsupportedArgumentError: $message";
+    return "UnsupportedEnumException: $message";
   }
 }
 

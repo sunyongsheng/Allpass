@@ -8,6 +8,7 @@ import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/core/model/data/extra_model.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/allpass_file_util.dart';
@@ -27,8 +28,12 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 abstract class WebDavSyncService {
-  void updateConfig(
-      {String? urlPath, int? port, String? username, String? password});
+  void updateConfig({
+    String? urlPath,
+    int? port,
+    String? username,
+    String? password,
+  });
 
   void configPersistence();
 
@@ -46,11 +51,31 @@ abstract class WebDavSyncService {
   /// 备份文件夹及标签
   Future<void> backupFolderAndLabel(BuildContext context);
 
-  /// May Throws [DioError]/[DecodeException]/[UnsupportedArgumentError]/[UnknownError]/[PreDecryptException]
-  Future<AllpassType> recovery(BuildContext context, String filename);
+  /// Throws
+  /// [DioError] 下载失败
+  /// [UnknownError] 下载异常
+  /// [FileSystemException] 下载的文件不存在
+  /// [UnsupportedEnumException] 解析枚举类型失败
+  /// [FallbackOldV1Exception] 下载为旧版恢复文件
+  /// [UnsupportedContentException] 文件内容不是json类型
+  Future<BackupFile> downloadFile(String filename);
 
-  Future<void> recoveryOld(
-      BuildContext context, List<dynamic> list, AllpassType type);
+  /// Throws
+  /// [PreDecryptException] 预解密失败
+  /// [DecodeException] 反序列化文件内容失败
+  /// [AssertionError] 反序列化文件内容时缺少字段
+  Future<AllpassType> recoveryV2(
+    BuildContext context,
+    BackupFile backupFile,
+    Encryption decryption,
+  );
+
+  Future<void> recoveryV1(
+    BuildContext context,
+    List<dynamic> list,
+    AllpassType type,
+    Encryption decryption,
+  );
 
   Future<List<WebDavFile>> getAllBackupFiles();
 }
@@ -79,8 +104,12 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   @override
-  void updateConfig(
-      {String? urlPath, int? port, String? username, String? password}) {
+  void updateConfig({
+    String? urlPath,
+    int? port,
+    String? username,
+    String? password,
+  }) {
     _requester.updateConfig(
       urlPath: urlPath,
       port: port,
@@ -174,15 +203,17 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         break;
     }
     return BackupFile(
-        metaData: FileMetaData(
-            type: type,
-            encryptLevel: level,
-            appVersion: AllpassApplication.version),
-        data: data);
+      metaData: FileMetaData(
+        type: type,
+        encryptLevel: level,
+        appVersion: AllpassApplication.version,
+      ),
+      data: data,
+    );
   }
 
   @override
-  Future<AllpassType> recovery(BuildContext context, String filename) async {
+  Future<BackupFile> downloadFile(String filename) async {
     String filePath = await _requester.downloadFile(
       fileName: filename,
       dirName: remoteWorkspace,
@@ -191,17 +222,26 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     String string = AllpassFileUtil.readFile(filePath);
     var decodeResult = jsonDecode(string);
     if (decodeResult is List<dynamic>) {
-      throw FallbackOldException(decodeResult);
+      throw FallbackOldV1Exception(decodeResult);
     } else if (!(decodeResult is Map<String, dynamic>)) {
       throw UnsupportedContentException();
     }
 
-    BackupFile file = BackupFile.fromJson(decodeResult);
-    var type = file.metaData.type;
-    var level = file.metaData.encryptLevel;
+    return BackupFile.fromJson(decodeResult);
+  }
+
+  @override
+  Future<AllpassType> recoveryV2(
+    BuildContext context,
+    BackupFile backupFile,
+    Encryption encryption,
+  ) async {
+    var type = backupFile.metaData.type;
+    var level = backupFile.metaData.encryptLevel;
+    var content = backupFile.data;
     switch (type) {
       case AllpassType.password:
-        var list = _decodeList<PasswordBean>(jsonDecode(file.data), level);
+        var list = _decodeList<PasswordBean>(jsonDecode(content), encryption, level);
         if (list == null) {
           throw DecodeException();
         }
@@ -209,7 +249,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         recoverPassword(context, list);
         break;
       case AllpassType.card:
-        var list = _decodeList<CardBean>(jsonDecode(file.data), level);
+        var list = _decodeList<CardBean>(jsonDecode(content), encryption, level);
         if (list == null) {
           throw DecodeException();
         }
@@ -217,7 +257,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         recoverCard(context, list);
         break;
       case AllpassType.other:
-        var model = _decodeFolderAndLabel(file.data);
+        var model = _decodeFolderAndLabel(content);
         if (model == null) {
           throw DecodeException();
         }
@@ -229,32 +269,43 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   List<T>? _decodeList<T extends BaseModel>(
-      List<dynamic> list, EncryptLevel encryptLevel) {
+    List<dynamic> list,
+    Encryption encryption,
+    EncryptLevel encryptLevel,
+  ) {
     if (T == PasswordBean) {
-      _preDecrypt(list, encryptLevel);
+      if (!_preDecrypt(list, encryption, encryptLevel)) {
+        throw PreDecryptException();
+      }
 
       List<PasswordBean> results = [];
       for (var temp in list) {
         var bean = PasswordBean.fromJson(temp);
-        results.add(bean.decrypt(encryptLevel));
+        results.add(bean.decrypt(encryption, encryptLevel));
       }
       return results as List<T>;
     } else if (T == CardBean) {
-      _preDecrypt(list, encryptLevel);
+      if (!_preDecrypt(list, encryption, encryptLevel)) {
+        throw PreDecryptException();
+      }
 
       List<CardBean> results = [];
       for (var temp in list) {
         var bean = CardBean.fromJson(temp);
-        results.add(bean.decrypt(encryptLevel));
+        results.add(bean.decrypt(encryption, encryptLevel));
       }
       return results as List<T>;
     }
     return null;
   }
 
-  void _preDecrypt(List<dynamic> list, EncryptLevel encryptLevel) {
+  bool _preDecrypt(
+    List<dynamic> list,
+    Encryption encryption,
+    EncryptLevel encryptLevel,
+  ) {
     if (list.isEmpty) {
-      return;
+      return true;
     }
 
     String password = list.first["password"];
@@ -264,12 +315,13 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       case EncryptLevel.OnlyPassword:
       case EncryptLevel.All:
         try {
-          EncryptUtil.decrypt(password);
+          encryption.decrypt(password);
         } on ArgumentError {
           _logger.w("$_tag _preDecrypt error password=$password");
-          throw PreDecryptException();
+          return false;
         }
     }
+    return true;
   }
 
   ExtraModel? _decodeFolderAndLabel(String string) {
@@ -319,7 +371,9 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   Future<int> recoverCard(
-      BuildContext context, List<CardBean> remoteList) async {
+    BuildContext context,
+    List<CardBean> remoteList,
+  ) async {
     var cardProvider = context.read<CardProvider>();
     List<CardBean> localList = List.from(cardProvider.cardList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();
@@ -372,11 +426,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   @override
-  Future<void> recoveryOld(
-      BuildContext context, List<dynamic> list, AllpassType type) async {
+  Future<void> recoveryV1(
+    BuildContext context,
+    List<dynamic> list,
+    AllpassType type,
+    Encryption encryption,
+  ) async {
     switch (type) {
       case AllpassType.password:
-        var result = _decodeList<PasswordBean>(list, Config.webDavEncryptLevel);
+        var result = _decodeList<PasswordBean>(list, encryption, Config.webDavEncryptLevel);
         if (result == null) {
           throw DecodeException();
         }
@@ -384,7 +442,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         recoverPassword(context, result);
         break;
       case AllpassType.card:
-        var result = _decodeList<CardBean>(list, Config.webDavEncryptLevel);
+        var result = _decodeList<CardBean>(list, encryption, Config.webDavEncryptLevel);
         if (result == null) {
           throw DecodeException();
         }

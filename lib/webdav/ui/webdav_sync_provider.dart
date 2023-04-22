@@ -4,6 +4,9 @@ import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/error/app_error.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
+import 'package:allpass/encrypt/encryption.dart';
+import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/webdav/error/sync_error.dart';
@@ -12,36 +15,39 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 
-abstract class SyncResult {
+abstract class SyncResult<T> {
   String? message;
 }
 
-class SyncSuccess extends SyncResult {
+class SyncSuccess<T extends Object> extends SyncResult<T> {
+  final T result;
   @override
   final String? message;
 
-  SyncSuccess(this.message);
+  SyncSuccess(this.result, this.message);
 }
 
-class SyncFailed extends SyncResult {
+class SyncFailed extends SyncResult<Never> {
   @override
   final String? message;
 
   SyncFailed(this.message);
 }
 
-class SyncFallbackOld extends SyncResult {
+class SyncFallbackV1 extends SyncResult<Never> {
   final List<dynamic> data;
 
-  SyncFallbackOld(this.data);
+  SyncFallbackV1(this.data);
 }
 
-class SyncAuthFailed extends SyncResult {
+class SyncPreDecryptFail extends SyncResult<Never> {}
+
+class SyncAuthFailed extends SyncResult<Never> {
   @override
   final String? message = "账号权限失效，请检查网络或退出账号并重新配置";
 }
 
-class Syncing extends SyncResult {
+class Syncing extends SyncResult<Never> {
   @override
   final String? message = "同步中，请稍后";
 }
@@ -131,7 +137,7 @@ class WebDavSyncProvider extends ChangeNotifier {
     return await _syncService.authCheck();
   }
 
-  Future<SyncResult> syncToRemote(BuildContext context) async {
+  Future<SyncResult<Object>> syncToRemote(BuildContext context) async {
     if (_uploading) {
       return Syncing();
     }
@@ -141,9 +147,6 @@ class WebDavSyncProvider extends ChangeNotifier {
 
     try {
       if (!await _preAuthorizationCheck()) {
-        _uploading = false;
-        notifyListeners();
-
         return SyncAuthFailed();
       }
 
@@ -151,15 +154,10 @@ class WebDavSyncProvider extends ChangeNotifier {
       await _syncService.backupPassword(context);
       await _syncService.backupCard(context);
       Config.setWebDavUploadTime(DateFormatter.format(DateTime.now()));
-      _uploading = false;
-      notifyListeners();
 
-      return SyncSuccess("上传成功");
+      return SyncSuccess(Null, "上传成功");
     } on Exception catch (e, s) {
       _logger.e("syncToRemote Exception: ${e.runtimeType}", e, s);
-
-      _uploading = false;
-      notifyListeners();
 
       if (e is DioError) {
         if (e.response?.statusCode == 405) {
@@ -173,10 +171,17 @@ class WebDavSyncProvider extends ChangeNotifier {
       } else {
         return SyncFailed("上传失败，${e.toString()}");
       }
+    } finally {
+      _uploading = false;
+      notifyListeners();
     }
   }
 
-  Future<SyncResult> syncToLocal(BuildContext context, String filename) async {
+
+  Future<SyncResult<BackupFile>> downloadFile(
+    BuildContext context,
+    String filename,
+  ) async {
     if (_downloading) {
       return Syncing();
     }
@@ -186,17 +191,53 @@ class WebDavSyncProvider extends ChangeNotifier {
 
     try {
       if (!await _preAuthorizationCheck()) {
-        _downloading = false;
-        notifyListeners();
-
         return SyncAuthFailed();
       }
 
-      var type = await _syncService.recovery(context, filename);
-      Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
+      var backupFile = await _syncService.downloadFile(filename);
+      return SyncSuccess(backupFile, "下载完成");
+    } on FallbackOldV1Exception catch (e) {
+      return SyncFallbackV1(e.data);
+    } on Exception catch (e, s) {
+      _logger.e("downloadFile Exception: ${e.runtimeType}", e, s);
 
+      if (e is UnsupportedContentException) {
+        return SyncFailed("不支持的备份文件");
+      } else if (e is UnsupportedEnumException) {
+        return SyncFailed("备份文件数据损坏");
+      } else if (e is DioError) {
+        if (e.response?.statusCode == 404) {
+          return SyncFailed("备份文件已被删除，请再次打开对话框刷新后重试");
+        }
+
+        return SyncFailed("网络错误，请稍后重试");
+      } else if (e is UnknownException) {
+        return SyncFailed("恢复失败，错误信息 ${e.message}");
+      } else {
+        return SyncFailed("恢复失败 ${e.toString()}");
+      }
+    } finally {
       _downloading = false;
       notifyListeners();
+    }
+  }
+
+  Future<SyncResult<Object>> syncToLocal(
+    BuildContext context,
+    BackupFile backupFile, {
+    Encryption? encryption,
+  }) async {
+    if (_downloading) {
+      return Syncing();
+    }
+
+    _downloading = true;
+    notifyListeners();
+
+    try {
+      var realDecryption = encryption ?? EncryptUtil.getEncryption();
+      var type = await _syncService.recoveryV2(context, backupFile, realDecryption);
+      Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
 
       var name;
       switch (type) {
@@ -210,70 +251,58 @@ class WebDavSyncProvider extends ChangeNotifier {
           name = "文件夹及标签";
           break;
       }
-      return SyncSuccess("恢复$name成功");
-    } on FallbackOldException catch (e) {
-      _downloading = false;
-      notifyListeners();
-
-      return SyncFallbackOld(e.data);
+      return SyncSuccess(Null, "恢复$name成功");
+    } on PreDecryptException {
+      return SyncPreDecryptFail();
     } on AssertionError catch (e) {
       _logger.e("syncToLocal AssertionError: ${e.message}", e);
-
-      _downloading = false;
-      notifyListeners();
 
       return SyncFailed("备份文件数据损坏");
     } on Exception catch (e, s) {
       _logger.e("syncToLocal Exception: ${e.runtimeType}", e, s);
 
-      _downloading = false;
-      notifyListeners();
-
-      if (e is UnsupportedContentException) {
-        return SyncFailed("不支持的备份文件");
-      } else if (e is PreDecryptException) {
-        return SyncFailed("备份文件所使用加密密钥与当前密钥不一致，请更换备份文件或更新密钥");
-      } else if (e is UnsupportedArgumentException || e is DecodeException) {
+      if (e is DecodeException) {
         return SyncFailed("备份文件数据损坏");
-      } else if (e is DioError) {
-        if (e.response?.statusCode == 404) {
-          return SyncFailed("备份文件已被删除，请再次打开对话框刷新后重试");
-        }
-
-        return SyncFailed("网络错误，请稍后重试");
-      } else if (e is UnknownException) {
-        return SyncFailed("恢复失败，错误信息 ${e.message}");
       } else {
         return SyncFailed("恢复失败 ${e.toString()}");
       }
+    } finally {
+      _downloading = false;
+      notifyListeners();
     }
   }
 
-  Future<SyncResult> syncToLocalOld(BuildContext context, List<dynamic> data, AllpassType type) async {
+  Future<SyncResult> syncToLocalV1(
+    BuildContext context,
+    List<dynamic> data,
+    AllpassType type, {
+    Encryption? decryption,
+  }) async {
     try {
-      await _syncService.recoveryOld(context, data, type);
+      var realEncryption = decryption ?? EncryptUtil.getEncryption();
+      await _syncService.recoveryV1(context, data, type, realEncryption);
       Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
-      return SyncSuccess("恢复成功");
+
+      return SyncSuccess(Null, "恢复成功");
+    } on PreDecryptException {
+      return SyncPreDecryptFail();
     } on AssertionError catch (e) {
       _logger.e("syncToLocalOld AssertionError: ${e.message}", e);
-
-      _downloading = false;
-      notifyListeners();
 
       return SyncFailed("备份文件数据损坏");
     } on Exception catch (e, s) {
       _logger.e("syncToLocalOld Exception: ${e.runtimeType}", e, s);
 
-      _downloading = false;
-      notifyListeners();
-
-      if (e is UnsupportedArgumentException || e is DecodeException) {
+      if (e is UnsupportedEnumException || e is DecodeException) {
         return SyncFailed("备份文件数据损坏");
       } else if (e is PreDecryptException) {
         return SyncFailed("备份文件所使用加密密钥与当前密钥不一致，请更换备份文件或更新密钥");
       } else {
         return SyncFailed("恢复失败 ${e.toString()}");
       }
+    } finally {
+      _downloading = false;
+      notifyListeners();
     }
   }
 

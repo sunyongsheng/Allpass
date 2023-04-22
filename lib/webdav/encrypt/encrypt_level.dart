@@ -10,7 +10,7 @@ class EncryptLevels {
         return level;
       }
     }
-    throw UnsupportedArgumentException("Unsupported EncryptLevel code=$levelCode");
+    throw UnsupportedEnumException("Unsupported EncryptLevel code=$levelCode");
   }
 
   static EncryptLevel? tryParse(int? levelCode) {

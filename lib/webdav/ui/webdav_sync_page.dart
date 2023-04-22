@@ -5,11 +5,13 @@ import 'package:allpass/common/widget/information_help_dialog.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/path_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
+import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:allpass/webdav/ui/widget/select_backup_file_dialog.dart';
 import 'package:flutter/material.dart';
@@ -149,80 +151,154 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   void _onClickBackup(WebDavSyncProvider provider) async {
     showDialog(
-        context: context,
-        builder: (_) => ConfirmDialog(
-              "确认上传",
-              "当前加密等级为「${Config.webDavEncryptLevel.name}」，是否继续？",
-              onConfirm: () async {
-                var syncResult = await provider.syncToRemote(context);
-                if (syncResult is SyncSuccess) {
-                  ToastUtil.show(msg: syncResult.message);
-                } else if (syncResult is Syncing) {
-                  ToastUtil.show(msg: "上传中，请等待完成后重试");
-                } else {
-                  ToastUtil.showError(msg: syncResult.message);
-                }
-              },
-            ));
+      context: context,
+      builder: (_) => ConfirmDialog(
+        "确认上传",
+        "当前加密等级为「${Config.webDavEncryptLevel.name}」，是否继续？",
+        onConfirm: () async {
+          var syncResult = await provider.syncToRemote(context);
+          if (syncResult is SyncSuccess) {
+            ToastUtil.show(msg: syncResult.message);
+          } else if (syncResult is Syncing) {
+            ToastUtil.show(msg: "上传中，请等待完成后重试");
+          } else {
+            ToastUtil.showError(msg: syncResult.message);
+          }
+        },
+      ),
+    );
   }
 
   void _onClickRecovery(WebDavSyncProvider provider) {
     showDialog(
-        context: context,
-        builder: (context) => ChangeNotifierProvider.value(
-              value: provider,
-              child: SelectBackupFileDialog(
-                onSelect: (filename) => _handleRecovery(provider, filename),
-              ),
-            ));
+      context: context,
+      builder: (context) => ChangeNotifierProvider.value(
+        value: provider,
+        child: SelectBackupFileDialog(
+          onSelect: (filename) => _handleRecovery(provider, filename),
+        ),
+      ),
+    );
   }
 
   void _handleRecovery(WebDavSyncProvider provider, String filename) {
     showDialog(
-        context: context,
-        builder: (_) => ConfirmDialog(
-              "确认恢复",
-              "当前恢复数据合并方式为「${Config.webDavMergeMethod.name}」，是否继续？",
-              onConfirm: () async {
-                var syncResult = await provider.syncToLocal(context, filename);
-                if (syncResult is SyncSuccess) {
-                  ToastUtil.show(msg: syncResult.message);
-                } else if (syncResult is Syncing) {
-                  ToastUtil.show(msg: "正在恢复中，请等待完成后重试");
-                } else if (syncResult is SyncFallbackOld) {
-                  _handleOldRecovery(provider, filename, syncResult.data);
-                } else {
-                  ToastUtil.showError(msg: syncResult.message);
-                }
-              },
-            ));
+      context: context,
+      builder: (_) => ConfirmDialog(
+        "确认恢复",
+        "当前恢复数据合并方式为「${Config.webDavMergeMethod.name}」，是否继续？",
+        onConfirm: () => _handleRecoveryFromFileActual(provider, filename),
+      ),
+    );
   }
 
-  void _handleOldRecovery(
-      WebDavSyncProvider provider, String filename, List<dynamic> data) {
+  void _handleRecoveryFromFileActual(WebDavSyncProvider provider, String filename) async {
+    var syncResult = await provider.downloadFile(context, filename);
+    if (syncResult is SyncSuccess<BackupFile>) {
+      _handleRecoveryActual(provider, syncResult.result);
+    } else if (syncResult is Syncing) {
+      ToastUtil.show(msg: "正在恢复中，请等待完成后重试");
+    } else if (syncResult is SyncFallbackV1) {
+      _handleV1Recovery(provider, filename, syncResult.data);
+    } else {
+      ToastUtil.showError(msg: syncResult.message);
+    }
+  }
+
+  void _handleRecoveryActual(
+    WebDavSyncProvider provider,
+    BackupFile file, {
+    Encryption? decryption,
+  }) async {
+    var syncResult = await provider.syncToLocal(
+      context,
+      file,
+      encryption: decryption,
+    );
+    if (syncResult is SyncSuccess) {
+      ToastUtil.show(msg: syncResult.message);
+    } else if (syncResult is Syncing) {
+      ToastUtil.show(msg: "正在恢复中，请等待完成后重试");
+    } else if (syncResult is SyncPreDecryptFail) {
+      ToastUtil.showError(msg: "解密备份文件失败");
+      _handlePreDecryptFail(
+        (customDecryption) => _handleRecoveryActual(
+          provider,
+          file,
+          decryption: customDecryption,
+        ),
+      );
+    } else {
+      ToastUtil.showError(msg: syncResult.message);
+    }
+  }
+
+  void _handleV1Recovery(
+    WebDavSyncProvider provider,
+    String filename,
+    List<dynamic> data,
+  ) {
     showDialog(
-        context: context,
-        builder: (_) => DefaultSelectItemDialog(
-            titleBuilder: () => null,
-            list: ["密码", "卡片"],
-            helpText: "检测到正在恢复旧版备份文件，请选择文件种类，"
-                "文件种类将影响到最终恢复结果，请确保选择正确\n\n"
-                "加密等级: ${Config.webDavEncryptLevel.name}  文件名: $filename",
-            onSelected: (name) async {
-              AllpassType type;
-              if (name == "卡片") {
-                type = AllpassType.card;
-              } else {
-                type = AllpassType.password;
-              }
-              var syncResult =
-                  await provider.syncToLocalOld(context, data, type);
-              if (syncResult is SyncSuccess) {
-                ToastUtil.show(msg: syncResult.message);
-              } else {
-                ToastUtil.showError(msg: syncResult.message);
-              }
-            }));
+      context: context,
+      builder: (_) => DefaultSelectItemDialog(
+        titleBuilder: () => null,
+        list: ["密码", "卡片"],
+        helpText: "检测到正在恢复旧版备份文件，请选择文件种类，"
+            "文件种类将影响到最终恢复结果，请确保选择正确\n\n"
+            "加密等级: ${Config.webDavEncryptLevel.name}  文件名: $filename",
+        onSelected: (name) async {
+          AllpassType type;
+          if (name == "卡片") {
+            type = AllpassType.card;
+          } else {
+            type = AllpassType.password;
+          }
+          await _handleV1RecoveryActual(provider, data, type);
+        },
+      ),
+    );
+  }
+
+  Future<void> _handleV1RecoveryActual(
+    WebDavSyncProvider provider,
+    List<dynamic> data,
+    AllpassType type,{
+    Encryption? decryption
+  }) async {
+    var syncResult = await provider.syncToLocalV1(
+      context,
+      data,
+      type,
+      decryption: decryption,
+    );
+    if (syncResult is SyncSuccess) {
+      ToastUtil.show(msg: syncResult.message);
+    } else if (syncResult is SyncPreDecryptFail) {
+      ToastUtil.showError(msg: "解密备份文件失败");
+      _handlePreDecryptFail(
+        (customDecryption) => _handleV1RecoveryActual(
+          provider,
+          data,
+          type,
+          decryption: customDecryption,
+        ),
+      );
+    } else {
+      ToastUtil.showError(msg: syncResult.message);
+    }
+  }
+
+  void _handlePreDecryptFail(void Function(Encryption customDecryption) continuation) {
+    showDialog(
+      context: context,
+      builder: (ctx) => EditTextDialog(
+        dialogTitle: "请输入自定义密钥(32位)",
+        initialText: "",
+        helpText: "备份文件所使用加密密钥与当前密钥不一致，请更换备份文件或更新密钥",
+        validator: (text) => text.length == 32,
+        onConfirm: (encryptKey) => continuation(Encryption(encryptKey)),
+      ),
+    );
   }
 
   void _onClickBackupDirectory() {
@@ -242,97 +318,101 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   void _onClickMergeMethod() {
     showDialog(
-        context: context,
-        builder: (context) => DefaultSelectItemDialog<MergeMethodItem>(
-              list: mergeMethods,
-              selector: (data) => data.method == Config.webDavMergeMethod,
-              itemTitleBuilder: (data) => data.method.name,
-              itemSubtitleBuilder: (data) => data.desc,
-              onSelected: (item) {
-                setState(() {
-                  Config.setWebDavMergeMethod(item.method);
-                });
-              },
-            ));
+      context: context,
+      builder: (context) => DefaultSelectItemDialog<MergeMethodItem>(
+        list: mergeMethods,
+        selector: (data) => data.method == Config.webDavMergeMethod,
+        itemTitleBuilder: (data) => data.method.name,
+        itemSubtitleBuilder: (data) => data.desc,
+        onSelected: (item) {
+          setState(() {
+            Config.setWebDavMergeMethod(item.method);
+          });
+        },
+      ),
+    );
   }
 
   void _onClickEncryptHelp() {
     var boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
     var textStyle = TextStyle(fontSize: 14);
     showDialog(
-        context: context,
-        builder: (context) => InformationHelpDialog(
-              content: <Widget>[
-                Text(
-                  "加密等级是指备份到WebDAV的文件的加密方式，"
-                  "对于旧版备份文件(Allpass 1.7.0以下版本生成的备份文件)，"
-                  "请确保上传与恢复的加密等级相同\n",
-                  style: textStyle,
-                ),
-                Text.rich(TextSpan(children: [
-                  TextSpan(text: "不加密：", style: boldTextStyle),
-                  TextSpan(
-                    text: "数据直接以明文的方式备份，密码字段可见；"
-                        "最不安全但通用性高，可以直接打开备份文件查看密码\n",
-                    style: textStyle,
-                  )
-                ])),
-                Text.rich(TextSpan(children: [
-                  TextSpan(text: "仅加密密码字段：", style: boldTextStyle),
-                  TextSpan(
-                    text: "默认选项，仅将密码与卡片记录中的“密码”字段进行加密，"
-                        "而名称、用户名、标签之类的字段不加密\n",
-                    style: textStyle,
-                  )
-                ])),
-                Text.rich(TextSpan(children: [
-                  TextSpan(text: "全部加密：", style: boldTextStyle),
-                  TextSpan(
-                    text: "所有字段全部进行加密，加密后的数据完全不可读，"
-                        "最安全但是如果丢失了密钥则有可能无法找回文件\n",
-                    style: textStyle,
-                  )
-                ])),
-                Text(
-                  "后两种加密方式严格依赖本机Allpass使用的密钥，"
-                  "在丢失密钥的情况下，"
-                  "一旦进行卸载或者数据清除操作则数据将无法恢复！！！",
-                  style: textStyle,
-                ),
-              ],
-            ));
+      context: context,
+      builder: (context) => InformationHelpDialog(
+        content: <Widget>[
+          Text(
+            "加密等级是指备份到WebDAV的文件的加密方式，"
+            "对于旧版备份文件(Allpass 1.7.0以下版本生成的备份文件)，"
+            "请确保上传与恢复的加密等级相同\n",
+            style: textStyle,
+          ),
+          Text.rich(TextSpan(children: [
+            TextSpan(text: "不加密：", style: boldTextStyle),
+            TextSpan(
+              text: "数据直接以明文的方式备份，密码字段可见；"
+                  "最不安全但通用性高，可以直接打开备份文件查看密码\n",
+              style: textStyle,
+            )
+          ])),
+          Text.rich(TextSpan(children: [
+            TextSpan(text: "仅加密密码字段：", style: boldTextStyle),
+            TextSpan(
+              text: "默认选项，仅将密码与卡片记录中的“密码”字段进行加密，"
+                  "而名称、用户名、标签之类的字段不加密\n",
+              style: textStyle,
+            )
+          ])),
+          Text.rich(TextSpan(children: [
+            TextSpan(text: "全部加密：", style: boldTextStyle),
+            TextSpan(
+              text: "所有字段全部进行加密，加密后的数据完全不可读，"
+                  "最安全但是如果丢失了密钥则有可能无法找回文件\n",
+              style: textStyle,
+            )
+          ])),
+          Text(
+            "后两种加密方式严格依赖本机Allpass使用的密钥，"
+            "在丢失密钥的情况下，"
+            "一旦进行卸载或者数据清除操作则数据将无法恢复！！！",
+            style: textStyle,
+          ),
+        ],
+      ),
+    );
   }
 
   void _onClickEncrypt() {
     showDialog(
-        context: context,
-        builder: (context) => DefaultSelectItemDialog<EncryptItem>(
-              list: encryptLevels,
-              selector: (data) => data.level == Config.webDavEncryptLevel,
-              itemTitleBuilder: (data) => data.level.name,
-              itemSubtitleBuilder: (data) => data.desc,
-              onSelected: (item) {
-                setState(() {
-                  Config.setWevDavEncryptLevel(item.level);
-                });
-              },
-            ));
+      context: context,
+      builder: (context) => DefaultSelectItemDialog<EncryptItem>(
+        list: encryptLevels,
+        selector: (data) => data.level == Config.webDavEncryptLevel,
+        itemTitleBuilder: (data) => data.level.name,
+        itemSubtitleBuilder: (data) => data.desc,
+        onSelected: (item) {
+          setState(() {
+            Config.setWevDavEncryptLevel(item.level);
+          });
+        },
+      ),
+    );
   }
 
   void _onClickLogout() {
     showDialog(
-        context: context,
-        builder: (context) => ConfirmDialog(
-              "确认退出",
-              "退出账号后需要重新登录，是否继续？",
-              danger: true,
-              onConfirm: () {
-                Config.setWebDavAuthSuccess(false);
-                Config.setWebDavUsername(null);
-                Config.setWebDavPassword(null);
-                Config.setWebDavUrl(null);
-                Navigator.pop(context);
-              },
-            ));
+      context: context,
+      builder: (context) => ConfirmDialog(
+        "确认退出",
+        "退出账号后需要重新登录，是否继续？",
+        danger: true,
+        onConfirm: () {
+          Config.setWebDavAuthSuccess(false);
+          Config.setWebDavUsername(null);
+          Config.setWebDavPassword(null);
+          Config.setWebDavUrl(null);
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 }

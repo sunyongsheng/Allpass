@@ -1,4 +1,5 @@
 import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
@@ -72,15 +73,17 @@ extension CardEncrypt on CardBean {
     }
   }
 
-  CardBean decrypt(EncryptLevel currentLevel) {
+  CardBean decrypt(Encryption customDecryption, EncryptLevel currentLevel) {
     switch (currentLevel) {
       case EncryptLevel.OnlyPassword:
+        // 先使用自定义加密工具解密，再使用当前加密类进行加密
+        var password = customDecryption.decrypt(this.password);
         return CardBean(
           key: this.uniqueKey,
           name: this.name,
           ownerName: this.ownerName,
           cardId: this.cardId,
-          password: this.password,
+          password: EncryptUtil.encrypt(password),
           telephone: this.telephone,
           folder: this.folder,
           notes: this.notes,
@@ -92,16 +95,16 @@ extension CardEncrypt on CardBean {
         );
 
       case EncryptLevel.All:
-        String name = EncryptUtil.decrypt(this.name);
-        String ownerName = EncryptUtil.decrypt(this.ownerName);
-        String cardId = EncryptUtil.decrypt(this.cardId);
-        String telephone = EncryptUtil.decrypt(this.telephone.noneDataOrNot());
-        String folder = EncryptUtil.decrypt(this.folder);
-        String notes = EncryptUtil.decrypt(this.notes.noneDataOrNot());
-        String createTime = EncryptUtil.decrypt(this.createTime);
+        String name = customDecryption.decrypt(this.name);
+        String ownerName = customDecryption.decrypt(this.ownerName);
+        String cardId = customDecryption.decrypt(this.cardId);
+        String telephone = customDecryption.decrypt(this.telephone.noneDataOrNot());
+        String folder = customDecryption.decrypt(this.folder);
+        String notes = customDecryption.decrypt(this.notes.noneDataOrNot());
+        String createTime = customDecryption.decrypt(this.createTime);
         List<String> label = [];
         for (String l in this.label ?? []) {
-          label.add(EncryptUtil.decrypt(l));
+          label.add(customDecryption.decrypt(l));
         }
         return CardBean(
           key: this.uniqueKey,
@@ -120,6 +123,7 @@ extension CardEncrypt on CardBean {
         );
 
       case EncryptLevel.None:
+        // 由于此处加密是为了存储，因此使用EncryptUtil
         String password = EncryptUtil.encrypt(this.password);
         return CardBean(
           key: this.uniqueKey,
@@ -149,10 +153,10 @@ extension CardList on List<CardBean> {
     return cards;
   }
 
-  List<CardBean> decrypt(EncryptLevel currentLevel) {
+  List<CardBean> decrypt(Encryption encryption, EncryptLevel currentLevel) {
     List<CardBean> cards = [];
     for (var bean in this) {
-      cards.add(bean.decrypt(currentLevel));
+      cards.add(bean.decrypt(encryption, currentLevel));
     }
     return cards;
   }

@@ -12,7 +12,7 @@ class AllpassTypes {
     } else if (type == AllpassType.other.name) {
       return AllpassType.other;
     } else {
-      throw UnsupportedArgumentException("Unsupported type=$type");
+      throw UnsupportedEnumException("Unsupported type=$type");
     }
   }
 }
