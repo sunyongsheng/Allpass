@@ -58,4 +58,5 @@ class DataOperation {
   static const int delete = -1;
   static const int update = 0;
   static const int query = 2;
+  static const int skipped = 3;
 }

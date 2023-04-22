@@ -352,17 +352,23 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<PasswordBean>();
     try {
       var result = mergeExecutor.merge(localList, remoteList);
-      result.apply(add: (bean) {
-        _logger.d("$_tag recoverCard insertPassword $bean");
+      result.apply(
+        onAdd: (bean, source) {
+          _logger.d("$_tag recoverPassword insert dataSource=$source $bean");
 
-        passwordProvider.insertPassword(bean);
-        RuntimeData.labelListAdd(bean.label);
-        RuntimeData.folderListAdd(bean.folder);
-      }, delete: (bean) {
-        _logger.d("$_tag recoverCard deletePassword $bean");
+          passwordProvider.insertPassword(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
+        },
+        onDelete: (bean, source) {
+          _logger.d("$_tag recoverPassword delete dataSource=$source $bean");
 
-        passwordProvider.deletePassword(bean);
-      });
+          passwordProvider.deletePassword(bean);
+        },
+        onSkip: (bean, source) {
+          _logger.d("$_tag recoverPassword skip   dataSource=$source $bean");
+        }
+      );
       return result.length;
     } catch (e2) {
       _logger.e("$_tag recoverPassword", e2);
@@ -379,17 +385,23 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();
     try {
       var result = mergeExecutor.merge(localList, remoteList);
-      result.apply(add: (bean) {
-        _logger.d("$_tag recoverCard insertCard $bean");
+      result.apply(
+        onAdd: (bean, source) {
+          _logger.d("$_tag recoverCard insert dataSource=$source $bean");
 
-        cardProvider.insertCard(bean);
-        RuntimeData.labelListAdd(bean.label);
-        RuntimeData.folderListAdd(bean.folder);
-      }, delete: (bean) {
-        _logger.d("$_tag recoverCard deleteCard $bean");
+          cardProvider.insertCard(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
+        },
+        onDelete: (bean, source) {
+          _logger.d("$_tag recoverCard delete dataSource=$source $bean");
 
-        cardProvider.deleteCard(bean);
-      });
+          cardProvider.deleteCard(bean);
+        },
+        onSkip: (bean, source) {
+          _logger.d("$_tag recoverCard skip   dataSource=$source $bean");
+        },
+      );
       return result.length;
     } catch (e2) {
       _logger.e("$_tag recoverCard", e2);

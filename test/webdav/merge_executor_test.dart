@@ -45,10 +45,10 @@ void main() {
     ];
 
     var finalResult = List.from(localList);
-    var addFunction = (PasswordBean bean) {
+    var addFunction = (PasswordBean bean, DataSource source) {
       finalResult.add(bean);
     };
-    var deleteFunction = (PasswordBean bean) {
+    var deleteFunction = (PasswordBean bean, DataSource source) {
       finalResult.remove(bean);
     };
 
@@ -60,7 +60,7 @@ void main() {
         MergeMethod.onlyRemote.createExecutor<PasswordBean>();
 
     var localFirstResult = localFirstExecutor.merge(localList, remoteList);
-    localFirstResult.apply(add: addFunction, delete: deleteFunction);
+    localFirstResult.apply(onAdd: addFunction, onDelete: deleteFunction);
     assert(finalResult.contains(password1));
     assert(finalResult.contains(password2));
     assert(finalResult.contains(password3));
@@ -73,7 +73,7 @@ void main() {
 
     finalResult = List.from(localList);
     var remoteFirstResult = remoteFirstExecutor.merge(localList, remoteList);
-    remoteFirstResult.apply(add: addFunction, delete: deleteFunction);
+    remoteFirstResult.apply(onAdd: addFunction, onDelete: deleteFunction);
     assert(finalResult.contains(password1));
     assert(finalResult.contains(password2));
     assert(finalResult.contains(password8));
@@ -86,7 +86,7 @@ void main() {
 
     finalResult = List.from(localList);
     var onlyRemoteResult = onlyRemoteExecutor.merge(localList, remoteList);
-    onlyRemoteResult.apply(add: addFunction, delete: deleteFunction);
+    onlyRemoteResult.apply(onAdd: addFunction, onDelete: deleteFunction);
     assert(finalResult.contains(password1));
     assert(finalResult.contains(password7));
     assert(finalResult.contains(password3));
