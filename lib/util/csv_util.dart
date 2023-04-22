@@ -3,7 +3,7 @@ import 'dart:io' show File, Directory;
 
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 

@@ -12,7 +12,7 @@ import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/decrypt_error_widget.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';

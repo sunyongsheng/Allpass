@@ -17,7 +17,7 @@ import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/auth_login_page.dart';
 import 'package:allpass/core/service/allpass_service.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 import 'package:allpass/core/model/api/user_bean.dart';
 

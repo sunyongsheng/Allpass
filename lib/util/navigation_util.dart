@@ -7,11 +7,14 @@ class NavigationUtil {
 
   NavigationUtil._();
 
-  static _navigateTo(BuildContext context, String path,
-      {bool replace: false,
-      bool clearStack: false,
-      Duration transitionDuration: const Duration(milliseconds: 250),
-      RouteTransitionsBuilder? transitionBuilder}) {
+  static _navigateTo(
+    BuildContext context,
+    String path, {
+    bool replace = false,
+    bool clearStack = false,
+    Duration transitionDuration = const Duration(milliseconds: 250),
+    RouteTransitionsBuilder? transitionBuilder,
+  }) {
     AllpassApplication.router.navigateTo(context, path,
         replace: replace,
         clearStack: clearStack,

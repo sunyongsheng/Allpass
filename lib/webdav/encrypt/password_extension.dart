@@ -1,7 +1,7 @@
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 
 extension PasswordEncrypt on PasswordBean {
   /// 内存中的PasswordBean password字段始终都是加密的

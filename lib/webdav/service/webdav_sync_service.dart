@@ -12,7 +12,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/allpass_file_util.dart';
 import 'package:allpass/util/date_formatter.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
 import 'package:allpass/webdav/encrypt/card_extension.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';

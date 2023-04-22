@@ -15,7 +15,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/util/csv_util.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
 import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';

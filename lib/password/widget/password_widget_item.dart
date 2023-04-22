@@ -5,7 +5,7 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';

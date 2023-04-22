@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:encrypt/encrypt.dart';
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:allpass/core/param/constants.dart';
 
@@ -12,9 +12,7 @@ class EncryptUtil {
 
   static bool _haveInit = false;
   static final FlutterSecureStorage _storage = FlutterSecureStorage();
-  static late Key? _key;
-  static late IV? _iv;
-  static late Encrypter? _encrypt;
+  static late Encryption? _encryption;
 
   static Future<String?> initEncrypt({bool needFresh = false}) async {
     String? keyStored = await _getStoreKey();
@@ -29,9 +27,7 @@ class EncryptUtil {
         initialKey = keyStored;
       }
     }
-    _key = Key.fromUtf8(keyStored);
-    _iv = IV.fromLength(16);
-    _encrypt = Encrypter(AES(_key!));
+    _encryption = Encryption(keyStored);
     _haveInit = true;
     if (needFresh) return keyStored;
     return null;
@@ -40,9 +36,7 @@ class EncryptUtil {
   static Future<Null> initEncryptByKey(String key) async {
     assert(key.length == 32);
     await _setStoreKey(key);
-    _key = Key.fromUtf8(key);
-    _iv = IV.fromLength(16);
-    _encrypt = Encrypter(AES(_key!));
+    _encryption = Encryption(key);
     _haveInit = true;
   }
 
@@ -53,20 +47,22 @@ class EncryptUtil {
   static Future<Null> clearEncrypt() async {
     final storage = _getSecureStorage();
     await storage.deleteAll();
-    _key = null;
-    _iv = null;
-    _encrypt = null;
+    _encryption = null;
     _haveInit = false;
+  }
+
+  static Encryption getEncryption() {
+    return _encryption!;
   }
 
   static String encrypt(String password) {
     if (!_haveInit) throw ArgumentError("请先调用initEncrypt函数");
-    return _encrypt!.encrypt(password, iv: _iv).base64;
+    return _encryption!.encrypt(password);
   }
 
   static String decrypt(String encryptTxt) {
     if (!_haveInit) throw ArgumentError("请先调用initEncrypt函数");
-    return _encrypt!.decrypt(Encrypted.fromBase64(encryptTxt), iv: _iv);
+    return _encryption!.decrypt(encryptTxt);
   }
 
   static String generateRandomKey(int len, {bool cap = true, bool low = true, bool number = true, bool sym = true}) {
@@ -151,21 +147,4 @@ class EncryptUtil {
     await storage.write(key: ExtraKeys.storeKey, value: keyValue);
   }
 
-}
-
-class EncryptHolder {
-
-  late Key key;
-  late IV iv;
-  late Encrypter encrypt;
-
-  EncryptHolder(String specialKey) {
-    key = Key.fromUtf8(specialKey);
-    iv = IV.fromLength(16);
-    encrypt = Encrypter(AES(key));
-  }
-
-  String decrypt(String encryptTxt) {
-    return encrypt.decrypt(Encrypted.fromBase64(encryptTxt), iv: iv);
-  }
 }

@@ -5,10 +5,11 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,6 @@ class SecretKeyUpgradePage extends StatefulWidget {
 class _SecretKeyUpgradePage extends State<StatefulWidget> {
   PasswordRepository passwordRepository = inject();
   CardRepository cardRepository = inject();
-  late EncryptHolder encryptHolder;
 
   TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
   bool haveGen = false;
@@ -194,7 +194,8 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     TextButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) => haveGen ? primaryColor : Colors.grey),
+                          (states) => haveGen ? primaryColor : Colors.grey,
+                        ),
                       ),
                       child: haveUpgrade
                           ? Text(
@@ -245,7 +246,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
 
   Future<bool> updateData() async {
     String backupKey = (await EncryptUtil.getStoreKey())!;
-    encryptHolder = EncryptHolder(backupKey);
+    var encryption = Encryption(backupKey);
     List<PasswordBean> passwords = await passwordRepository.requestAll();
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
@@ -261,19 +262,19 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     await EncryptUtil.initEncryptByKey(_latestKey!);
     try {
       Config.setPassword(
-          EncryptUtil.encrypt(encryptHolder.decrypt(Config.password)));
+          EncryptUtil.encrypt(encryption.decrypt(Config.password)));
       if ((Config.webDavPassword?.length ?? 0) > 6) {
         Config.setWebDavPassword(
-            EncryptUtil.encrypt(encryptHolder.decrypt(Config.webDavPassword!)));
+            EncryptUtil.encrypt(encryption.decrypt(Config.webDavPassword!)));
       }
       for (PasswordBean bean in passwords) {
         String password =
-            EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
+            EncryptUtil.encrypt(encryption.decrypt(bean.password));
         bean.password = password;
         passwordRepository.updateById(bean);
       }
       for (CardBean bean in cards) {
-        var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
+        var password = EncryptUtil.encrypt(encryption.decrypt(bean.password));
         bean.password = password;
         cardRepository.updateById(bean);
       }
@@ -286,12 +287,12 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       Config.setPassword(backup1);
       Config.setWebDavPassword(backup2);
       for (PasswordBean bean in passwordsBackup) {
-        var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
+        var password = EncryptUtil.encrypt(encryption.decrypt(bean.password));
         bean.password = password;
         passwordRepository.updateById(bean);
       }
       for (CardBean bean in cardsBackup) {
-        var password = EncryptUtil.encrypt(encryptHolder.decrypt(bean.password));
+        var password = EncryptUtil.encrypt(encryption.decrypt(bean.password));
         bean.password = password;
         cardRepository.updateById(bean);
       }

@@ -11,7 +11,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/widget/select_app_dialog.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/util/device_apps_holder.dart';

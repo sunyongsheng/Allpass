@@ -6,7 +6,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';

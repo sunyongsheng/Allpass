@@ -15,7 +15,7 @@ import 'package:allpass/password/page/edit_password_page.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/search/search_provider.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/cupertino.dart';

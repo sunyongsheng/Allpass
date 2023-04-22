@@ -11,7 +11,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/home/about_page.dart';

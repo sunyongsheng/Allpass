@@ -1,8 +1,9 @@
+import 'package:allpass/encrypt/encryption.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/navigation_util.dart';
 
 
@@ -116,8 +117,8 @@ class _InitEncryptPage extends State<InitEncryptPage> {
                         if (!haveGen) {
                           ToastUtil.show(msg: "请先生成密钥");
                         } else {
-                          EncryptHolder holder = EncryptHolder(EncryptUtil.initialKey);
-                          Config.setPassword(EncryptUtil.encrypt(holder.decrypt(Config.password)));
+                          Encryption encryption = Encryption(EncryptUtil.initialKey);
+                          Config.setPassword(EncryptUtil.encrypt(encryption.decrypt(Config.password)));
                           NavigationUtil.goLoginPage(context);
                         }
                       },

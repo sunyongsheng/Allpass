@@ -1,5 +1,5 @@
 import 'package:allpass/core/model/data/base_model.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:flutter/material.dart';
 

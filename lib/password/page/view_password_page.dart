@@ -10,7 +10,7 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
-import 'package:allpass/util/encrypt_util.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:device_apps/device_apps.dart';
