@@ -34,13 +34,10 @@ class SyncFailed extends SyncResult<Never> {
   SyncFailed(this.message);
 }
 
-class SyncFallbackV1 extends SyncResult<Never> {
-  final List<dynamic> data;
-
-  SyncFallbackV1(this.data);
+class SyncPreDecryptFail extends SyncResult<Never> {
+  @override
+  final String? message = "解密备份文件失败";
 }
-
-class SyncPreDecryptFail extends SyncResult<Never> {}
 
 class SyncAuthFailed extends SyncResult<Never> {
   @override
@@ -196,8 +193,6 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       var backupFile = await _syncService.downloadFile(filename);
       return SyncSuccess(backupFile, "下载完成");
-    } on FallbackOldV1Exception catch (e) {
-      return SyncFallbackV1(e.data);
     } on Exception catch (e, s) {
       _logger.e("downloadFile Exception: ${e.runtimeType}", e, s);
 
@@ -222,9 +217,9 @@ class WebDavSyncProvider extends ChangeNotifier {
     }
   }
 
-  Future<SyncResult<Object>> syncToLocal(
+  Future<SyncResult<Object>> syncToLocalV2(
     BuildContext context,
-    BackupFile backupFile, {
+    BackupFileV2 backupFile, {
     Encryption? encryption,
   }) async {
     if (_downloading) {
@@ -236,11 +231,11 @@ class WebDavSyncProvider extends ChangeNotifier {
 
     try {
       var realDecryption = encryption ?? EncryptUtil.getEncryption();
-      var type = await _syncService.recoveryV2(context, backupFile, realDecryption);
+      await _syncService.recoveryV2(context, backupFile, realDecryption);
       Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
 
       var name;
-      switch (type) {
+      switch (backupFile.metadata.type) {
         case AllpassType.password:
           name = "密码";
           break;
@@ -274,13 +269,12 @@ class WebDavSyncProvider extends ChangeNotifier {
 
   Future<SyncResult> syncToLocalV1(
     BuildContext context,
-    List<dynamic> data,
-    AllpassType type, {
+    BackupFileV1 backupFile, {
     Encryption? decryption,
   }) async {
     try {
       var realEncryption = decryption ?? EncryptUtil.getEncryption();
-      await _syncService.recoveryV1(context, data, type, realEncryption);
+      await _syncService.recoveryV1(context, backupFile, realEncryption);
       Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
 
       return SyncSuccess(Null, "恢复成功");

@@ -1,40 +1,44 @@
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/webdav/encrypt/encrypt_level.dart';
+import 'package:allpass/webdav/model/file_metadata.dart';
 
-class FileMetaData {
-  final AllpassType type;
-  final EncryptLevel encryptLevel;
-  final String appVersion;
+abstract class BackupFile {}
 
-  FileMetaData({required this.type, required this.encryptLevel, required this.appVersion});
+/// V1备份文件，内容格式
+/// "${bean数组}"
+class BackupFileV1 implements BackupFile {
+  late AllpassType type;
+  final List<dynamic> list;
 
-  FileMetaData.fromJson(Map<String, dynamic> json)
-      : type = AllpassTypes.parse(json["type"]),
-        encryptLevel = EncryptLevels.parse(json["encrypt_level"]),
-        appVersion = json["app_version"];
-
-  Map<String, dynamic> toJson() => {
-    'type': type.name,
-    'app_version': appVersion,
-    'encrypt_level': encryptLevel.index
-  };
+  BackupFileV1(this.list);
 }
 
-class BackupFile {
-  final FileMetaData metaData;
+/// V2备份文件，内容格式为
+/// {
+///   "meta_data": {
+///     "type": "password",
+///     "app_version": "1.7.0",
+///     "encrypt_level": 1
+///   },
+///   "data": "${bean数组}"
+/// }
+class BackupFileV2 implements BackupFile {
+  final FileMetadata metadata;
   final String data;
 
-  BackupFile({required this.metaData, required this.data});
+  BackupFileV2({
+    required this.metadata,
+    required this.data,
+  });
 
-  static BackupFile fromJson(Map<String, dynamic> json) {
-    return BackupFile(
-        metaData: FileMetaData.fromJson(json["meta_data"]),
-        data: json["data"]
+  static BackupFileV2 fromJson(Map<String, dynamic> json) {
+    return BackupFileV2(
+      metadata: FileMetadata.fromJson(json["meta_data"]),
+      data: json["data"],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'meta_data': metaData,
+    'meta_data': metadata,
     'data': data,
   };
 }

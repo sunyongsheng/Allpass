@@ -195,22 +195,25 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   void _handleRecoveryFromFileActual(WebDavSyncProvider provider, String filename) async {
     var syncResult = await provider.downloadFile(context, filename);
     if (syncResult is SyncSuccess<BackupFile>) {
-      _handleRecoveryActual(provider, syncResult.result);
+      var backupFile = syncResult.result;
+      if (backupFile is BackupFileV1) {
+        _handleV1Recovery(provider, filename, backupFile);
+      } else if (backupFile is BackupFileV2) {
+        _handleV2RecoveryActual(provider, backupFile);
+      }
     } else if (syncResult is Syncing) {
       ToastUtil.show(msg: "正在恢复中，请等待完成后重试");
-    } else if (syncResult is SyncFallbackV1) {
-      _handleV1Recovery(provider, filename, syncResult.data);
     } else {
       ToastUtil.showError(msg: syncResult.message);
     }
   }
 
-  void _handleRecoveryActual(
+  void _handleV2RecoveryActual(
     WebDavSyncProvider provider,
-    BackupFile file, {
+    BackupFileV2 file, {
     Encryption? decryption,
   }) async {
-    var syncResult = await provider.syncToLocal(
+    var syncResult = await provider.syncToLocalV2(
       context,
       file,
       encryption: decryption,
@@ -220,9 +223,9 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     } else if (syncResult is Syncing) {
       ToastUtil.show(msg: "正在恢复中，请等待完成后重试");
     } else if (syncResult is SyncPreDecryptFail) {
-      ToastUtil.showError(msg: "解密备份文件失败");
+      ToastUtil.showError(msg: syncResult.message);
       _handlePreDecryptFail(
-        (customDecryption) => _handleRecoveryActual(
+        (customDecryption) => _handleV2RecoveryActual(
           provider,
           file,
           decryption: customDecryption,
@@ -236,7 +239,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   void _handleV1Recovery(
     WebDavSyncProvider provider,
     String filename,
-    List<dynamic> data,
+    BackupFileV1 backupFile,
   ) {
     showDialog(
       context: context,
@@ -247,13 +250,12 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             "文件种类将影响到最终恢复结果，请确保选择正确\n\n"
             "加密等级: ${Config.webDavEncryptLevel.name}  文件名: $filename",
         onSelected: (name) async {
-          AllpassType type;
           if (name == "卡片") {
-            type = AllpassType.card;
+            backupFile.type = AllpassType.card;
           } else {
-            type = AllpassType.password;
+            backupFile.type = AllpassType.password;
           }
-          await _handleV1RecoveryActual(provider, data, type);
+          await _handleV1RecoveryActual(provider, backupFile);
         },
       ),
     );
@@ -261,25 +263,22 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
 
   Future<void> _handleV1RecoveryActual(
     WebDavSyncProvider provider,
-    List<dynamic> data,
-    AllpassType type,{
-    Encryption? decryption
+    BackupFileV1 backupFile, {
+    Encryption? decryption,
   }) async {
     var syncResult = await provider.syncToLocalV1(
       context,
-      data,
-      type,
+      backupFile,
       decryption: decryption,
     );
     if (syncResult is SyncSuccess) {
       ToastUtil.show(msg: syncResult.message);
     } else if (syncResult is SyncPreDecryptFail) {
-      ToastUtil.showError(msg: "解密备份文件失败");
+      ToastUtil.showError(msg: syncResult.message);
       _handlePreDecryptFail(
         (customDecryption) => _handleV1RecoveryActual(
           provider,
-          data,
-          type,
+          backupFile,
           decryption: customDecryption,
         ),
       );
