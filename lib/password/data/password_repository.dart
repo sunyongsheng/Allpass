@@ -68,8 +68,8 @@ class PasswordRepository {
   Future<List<PasswordBean>> findByAppIdOrAppName(
     String appId,
     String? appName, {
-    int page: 0,
-    int pageSize: 10,
+    int page = 0,
+    int pageSize = 10,
   }) async {
     var result = await _localDataSource.findByAppIdOrAppName(appId, appName,
         page: page, pageSize: pageSize);

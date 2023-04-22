@@ -53,7 +53,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       "获取备份文件中，请稍后...",
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   )
                 ],
@@ -64,7 +64,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
               padding: EdgeInsets.only(bottom: 12),
               child: Text(
                 state.message,
-                style: Theme.of(context).textTheme.caption,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ));
           }
@@ -97,7 +97,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
           padding: EdgeInsets.only(bottom: 12),
           child: Text(
             "当前目录：${Config.webDavBackupDirectory}",
-            style: Theme.of(context).textTheme.caption,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       ),

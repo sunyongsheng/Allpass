@@ -27,14 +27,14 @@ class PasswordBean extends BaseModel {
     required String name,
     required String username,
     required String password,
-    String url: "",
-    String folder: "默认",
-    String notes: "",
+    String url = "",
+    String folder = "默认",
+    String notes = "",
     List<String>? label,
-    int fav: 0,
+    int fav = 0,
     String? createTime,
     Color? color,
-    int sortNumber: -1,
+    int sortNumber = -1,
     String? appId,
     String? appName,
   }) {
@@ -80,32 +80,30 @@ class PasswordBean extends BaseModel {
 
   /// 将Map转化为普通的PasswordBean
   static PasswordBean fromJson(Map<String, dynamic> map) {
+    assert(map["uniqueKey"] != null);
+    assert(map["name"] != null);
     assert(map["username"] != null);
     assert(map["password"] != null);
-    assert(map["url"] != null);
-    assert(map["folder"] != null);
-    assert(map["uniqueKey"] != null);
-    assert(map["fav"] != null);
-    assert(map["name"] != null);
 
     List<String> newLabel = [];
     if (map['label'] != null) {
       newLabel = StringUtil.waveLineSegStr2List(map['label']);
     }
     return PasswordBean(
-        username: map['username'],
-        password: map["password"],
-        url: map["url"],
-        folder: map["folder"],
-        notes: map["notes"],
-        fav: map["fav"],
-        key: map["uniqueKey"],
-        name: map["name"],
-        label: newLabel,
-        createTime: map['createTime'],
-        sortNumber: map['sortNumber'],
-        appId: map['appId'],
-        appName: map['appName']);
+      key: map["uniqueKey"],
+      name: map["name"],
+      username: map['username'],
+      password: map["password"],
+      url: map["url"] ?? "",
+      folder: map["folder"] ?? "默认",
+      notes: map["notes"] ?? "",
+      fav: map["fav"] ?? 0,
+      label: newLabel,
+      createTime: map['createTime'],
+      sortNumber: map['sortNumber'] ?? -1,
+      appId: map['appId'],
+      appName: map['appName'],
+    );
   }
 
   /// 将PasswordBean转化为Map

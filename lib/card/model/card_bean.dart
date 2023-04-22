@@ -22,21 +22,22 @@ class CardBean extends BaseModel {
   late int sortNumber; // 12 排序号
   Gradient? gradientColor;
 
-  CardBean(
-      {int? key,
-      String? name,
-      required String ownerName,
-      required String cardId,
-      String password: "",
-      String telephone: "",
-      String folder: "默认",
-      String notes: "",
-      List<String>? label,
-      int fav: 0,
-      String? createTime,
-      int sortNumber: -1,
-      Color? color,
-      Gradient? gradientColor,}) {
+  CardBean({
+    int? key,
+    String? name,
+    required String ownerName,
+    required String cardId,
+    String password = "",
+    String telephone = "",
+    String folder = "默认",
+    String notes = "",
+    List<String>? label,
+    int fav = 0,
+    String? createTime,
+    int sortNumber = -1,
+    Color? color,
+    Gradient? gradientColor,
+  }) {
     this.ownerName = ownerName;
     this.cardId = cardId;
     this.folder = folder;

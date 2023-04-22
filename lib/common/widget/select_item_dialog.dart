@@ -33,7 +33,7 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 8),
         child: Text(
           helpText!,
-          style: Theme.of(context).textTheme.caption?.copyWith(fontSize: 12),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 12),
         ),
       ));
     }
@@ -95,7 +95,7 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
                 subtitle,
                 style: Theme.of(context)
                     .textTheme
-                    .caption
+                    .bodySmall
                     ?.copyWith(fontSize: 12),
               ),
         trailing: selected ? Icon(Icons.check, color: Colors.grey) : null,
