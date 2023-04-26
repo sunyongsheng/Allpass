@@ -250,6 +250,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             for (var item in editProvider.selectedItem) {
               await model.deleteCard(item);
             }
+            ToastUtil.show(msg: "已删除 ${editProvider.selectedCount} 项卡片");
             editProvider.unselectAll();
           },
         ),
@@ -271,7 +272,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               await model.updateCard(element);
             });
             ToastUtil.show(
-              msg: "已移动${editProvider.selectedCount}项密码至 $value 文件夹",
+              msg: "已移动 ${editProvider.selectedCount} 项卡片至 $value 文件夹",
             );
             editProvider.unselectAll();
           },

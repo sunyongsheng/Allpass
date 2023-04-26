@@ -256,6 +256,7 @@ class _PasswordPageState extends State<PasswordPage>
             for (var item in editProvider.selectedItem) {
               await model.deletePassword(item);
             }
+            ToastUtil.show(msg: "已删除 ${editProvider.selectedCount} 项密码");
             editProvider.unselectAll();
           },
         ),
@@ -281,7 +282,7 @@ class _PasswordPageState extends State<PasswordPage>
               await model.updatePassword(element);
             });
             ToastUtil.show(
-              msg: "已移动${editProvider.selectedCount}项密码至 $value 文件夹",
+              msg: "已移动 ${editProvider.selectedCount} 项密码至 $value 文件夹",
             );
             editProvider.unselectAll();
           },
