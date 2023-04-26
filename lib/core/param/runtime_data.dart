@@ -1,18 +1,10 @@
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/string_util.dart';
 
 /// 存储运行时数据
 class RuntimeData {
   RuntimeData._();
-
-  static List<PasswordBean> multiPasswordList = []; // 多选的密码
-  static List<CardBean> multiCardList = [];         // 多选的卡片
-  static bool multiPasswordSelected = false;        // 是否点击了多选按钮
-  static bool multiCardSelected = false;
 
   static List<String> folderList = [];              // 文件夹列表
   static List<String> labelList = [];               // 标签列表
@@ -68,13 +60,4 @@ class RuntimeData {
     AllpassApplication.sp.setString(SPKeys.folder, StringUtil.list2WaveLineSegStr(folderList));
   }
 
-  static void multiSelectClear(AllpassType type) {
-    if (type == AllpassType.password) {
-      multiPasswordList.clear();
-      multiPasswordSelected = !multiPasswordSelected;
-    } else if (type == AllpassType.card) {
-      multiCardList.clear();
-      multiCardSelected = !multiCardSelected;
-    }
-  }
 }

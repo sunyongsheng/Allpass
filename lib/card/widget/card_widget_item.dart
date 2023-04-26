@@ -4,7 +4,6 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
@@ -228,17 +227,24 @@ class SimpleCardWidgetItem extends StatelessWidget {
 }
 
 class MultiCardWidgetItem extends StatefulWidget {
-  final CardBean data;
+  final CardBean card;
+  final bool Function(CardBean) selection;
+  final void Function(bool, CardBean) onChanged;
 
-  MultiCardWidgetItem({Key? key, required this.data}) : super(key: key);
+  MultiCardWidgetItem({
+    Key? key,
+    required this.card,
+    required this.selection,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _MultiCardWidgetItem(data);
+    return _MultiCardWidgetItem(card);
   }
 }
 
-class _MultiCardWidgetItem extends State<StatefulWidget> {
+class _MultiCardWidgetItem extends State<MultiCardWidgetItem> {
   final CardBean data;
 
   _MultiCardWidgetItem(this.data);
@@ -248,15 +254,9 @@ class _MultiCardWidgetItem extends State<StatefulWidget> {
     return Container(
       margin: AllpassEdgeInsets.listInset,
       child: CheckboxListTile(
-        value: RuntimeData.multiCardList.contains(data),
+        value: widget.selection(data),
         onChanged: (value) {
-          setState(() {
-            if (value ?? false) {
-              RuntimeData.multiCardList.add(data);
-            } else {
-              RuntimeData.multiCardList.remove(data);
-            }
-          });
+          widget.onChanged(value ?? false, data);
         },
         secondary: Container(
           decoration: BoxDecoration(

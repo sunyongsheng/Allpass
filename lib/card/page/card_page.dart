@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
@@ -14,6 +15,7 @@ import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
+import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,32 +59,29 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     super.build(context);
 
     CardProvider model = context.watch();
+    MultiItemEditProvider<CardBean> editProvider = context.watch();
 
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
-        icon: RuntimeData.multiCardSelected
+        icon: editProvider.editMode
             ? Icon(Icons.clear)
             : Icon(Icons.sort),
-        onPressed: () {
-          setState(() {
-            RuntimeData.multiSelectClear(AllpassType.card);
-          });
-        },
+        onPressed: editProvider.switchEditMode,
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
     Widget? floatingButton;
-    if (RuntimeData.multiCardSelected) {
+    if (editProvider.editMode) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
           onSelected: (value) {
             switch (value) {
               case "删除":
-                _deleteCard(context, model);
+                _deleteCard(context, model, editProvider);
                 break;
               case "移动":
-                _moveCard(context, model);
+                _moveCard(context, model, editProvider);
                 break;
             }
           },
@@ -95,15 +94,10 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
           onPressed: () {
-            if (RuntimeData.multiCardList.length != model.count) {
-              RuntimeData.multiCardList.clear();
-              setState(() {
-                RuntimeData.multiCardList.addAll(model.cardList);
-              });
+            if (editProvider.selectedCount != model.count) {
+              editProvider.selectAll(model.cardList);
             } else {
-              setState(() {
-                RuntimeData.multiCardList.clear();
-              });
+             editProvider.unselectAll();
             }
           },
         )
@@ -158,10 +152,14 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
     Widget listView;
     if (model.cardList.isNotEmpty) {
-      if (RuntimeData.multiCardSelected) {
+      if (editProvider.editMode) {
         listView = ListView.builder(
           controller: _controller,
-          itemBuilder: (context, index) => MultiCardWidgetItem(data: model.cardList[index]),
+          itemBuilder: (context, index) => MultiCardWidgetItem(
+            card: model.cardList[index],
+            selection: editProvider.isSelected,
+            onChanged: editProvider.select,
+          ),
           itemCount: model.count,
           physics: const AlwaysScrollableScrollPhysics(),
         );
@@ -173,7 +171,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
             return MaterialCardWidget(
                 data: model.cardList[index],
                 pageCreator: (_) => ViewCardPage(),
-                onCardClicked: () => model.previewCard(index: index));
+                onCardClicked: () => model.previewCard(index: index),
+            );
           },
           itemCount: model.count,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -237,29 +236,29 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     );
   }
 
-  void _deleteCard(BuildContext context, CardProvider model) {
-    if (RuntimeData.multiCardList.length == 0) {
+  void _deleteCard(BuildContext context, CardProvider model, MultiItemEditProvider editProvider,) {
+    if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog<bool>(
         context: context,
         builder: (context) => ConfirmDialog(
           "确认删除",
-          "您将删除${RuntimeData.multiCardList.length}项卡片，确认吗？",
+          "您将删除${editProvider.selectedCount}项卡片，确认吗？",
           danger: true,
           onConfirm: () async {
-            for (var item in RuntimeData.multiCardList) {
+            for (var item in editProvider.selectedItem) {
               await model.deleteCard(item);
             }
-            RuntimeData.multiCardList.clear();
+            editProvider.unselectAll();
           },
         ),
       );
     }
   }
 
-  void _moveCard(BuildContext context, CardProvider model) {
-    if (RuntimeData.multiCardList.length == 0) {
+  void _moveCard(BuildContext context, CardProvider model, MultiItemEditProvider<CardBean> editProvider,) {
+    if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
       showDialog(
@@ -267,16 +266,14 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         builder: (context) => DefaultSelectItemDialog<String>(
           list: RuntimeData.folderList,
           onSelected: (value) async {
-            for (int i = 0; i < RuntimeData.multiCardList.length; i++) {
-              RuntimeData.multiCardList[i].folder = value;
-              await model.updateCard(RuntimeData.multiCardList[i]);
-            }
-            ToastUtil.show(
-              msg: "已移动${RuntimeData.multiCardList.length}项密码至 $value 文件夹",
-            );
-            setState(() {
-              RuntimeData.multiCardList.clear();
+            editProvider.selectedItem.forEach((element) async {
+              element.folder = value;
+              await model.updateCard(element);
             });
+            ToastUtil.show(
+              msg: "已移动${editProvider.selectedCount}项密码至 $value 文件夹",
+            );
+            editProvider.unselectAll();
           },
         ),
       );

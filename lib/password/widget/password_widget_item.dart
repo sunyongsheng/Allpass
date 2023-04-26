@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
@@ -125,9 +124,16 @@ class PasswordWidgetItem extends StatelessWidget {
 
 class MultiPasswordWidgetItem extends StatefulWidget {
   final Key? key;
-  final int index;
+  final PasswordBean password;
+  final bool Function(PasswordBean) selection;
+  final void Function(bool, PasswordBean) onChanged;
 
-  MultiPasswordWidgetItem(this.index, {this.key}) : super(key: key);
+  const MultiPasswordWidgetItem({
+    this.key,
+    required this.password,
+    required this.selection,
+    required this.onChanged,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -140,19 +146,13 @@ class _MultiPasswordWidgetItem extends State<MultiPasswordWidgetItem> {
   Widget build(BuildContext context) {
     return Consumer<PasswordProvider>(
       builder: (context, model, child) {
-        var data = model.passwordList[widget.index];
+        var data = widget.password;
         return Container(
           margin: AllpassEdgeInsets.listInset,
           child: CheckboxListTile(
-            value: RuntimeData.multiPasswordList.contains(data),
+            value: widget.selection(data),
             onChanged: (value) {
-              setState(() {
-                if (value ?? false) {
-                  RuntimeData.multiPasswordList.add(data);
-                } else {
-                  RuntimeData.multiPasswordList.remove(data);
-                }
-              });
+              widget.onChanged(value ?? false, data);
             },
             secondary: CircleAvatar(
               backgroundColor: data.color,

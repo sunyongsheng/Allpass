@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/page/card_page.dart';
 import 'package:allpass/classification/page/classification_page.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/service/allpass_service.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/password_page.dart';
 import 'package:allpass/setting/setting_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
@@ -20,8 +23,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
   final List<Widget> _pagesList = []
-    ..add(PasswordPage())
-    ..add(CardPage())
+    ..add(ChangeNotifierProvider(
+      create: (BuildContext context) => MultiItemEditProvider<PasswordBean>(),
+      child: PasswordPage(),
+    ))
+    ..add(ChangeNotifierProvider(
+      create: (_) => MultiItemEditProvider<CardBean>(),
+      child: CardPage(),
+    ))
     ..add(ClassificationPage())
     ..add(SettingPage());
   int _currentIndex = 0;

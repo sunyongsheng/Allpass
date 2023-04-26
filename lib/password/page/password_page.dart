@@ -8,7 +8,9 @@ import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
+import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/widget/letter_index_bar.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
@@ -57,32 +59,29 @@ class _PasswordPageState extends State<PasswordPage>
     super.build(context);
 
     PasswordProvider model = context.watch();
+    MultiItemEditProvider<PasswordBean> editProvider = context.watch();
 
     List<Widget> appbarActions = [
       IconButton(
         splashColor: Colors.transparent,
-        icon: RuntimeData.multiPasswordSelected
+        icon: editProvider.editMode
             ? Icon(Icons.clear)
             : Icon(Icons.sort),
-        onPressed: () {
-          setState(() {
-            RuntimeData.multiSelectClear(AllpassType.password);
-          });
-        },
+        onPressed: editProvider.switchEditMode,
       ),
       Padding(padding: AllpassEdgeInsets.smallLPadding)
     ];
     Widget? floatingButton;
-    if (RuntimeData.multiPasswordSelected) {
+    if (editProvider.editMode) {
       appbarActions.insertAll(0, [
         PopupMenuButton<String>(
           onSelected: (value) {
             switch (value) {
               case "删除":
-                _deletePassword(context, model);
+                _deletePassword(context, model, editProvider);
                 break;
               case "移动":
-                _movePassword(context, model);
+                _movePassword(context, model, editProvider);
                 break;
             }
           },
@@ -95,15 +94,10 @@ class _PasswordPageState extends State<PasswordPage>
           splashColor: Colors.transparent,
           icon: Icon(Icons.select_all),
           onPressed: () {
-            if (RuntimeData.multiPasswordList.length != model.count) {
-              RuntimeData.multiPasswordList.clear();
-              setState(() {
-                RuntimeData.multiPasswordList.addAll(model.passwordList);
-              });
+            if (editProvider.selectedCount != model.count) {
+              editProvider.selectAll(model.passwordList);
             } else {
-              setState(() {
-                RuntimeData.multiPasswordList.clear();
-              });
+              editProvider.unselectAll();
             }
           },
         )
@@ -156,10 +150,14 @@ class _PasswordPageState extends State<PasswordPage>
 
     Widget listView;
     if (model.passwordList.isNotEmpty) {
-      if (RuntimeData.multiPasswordSelected) {
+      if (editProvider.editMode) {
         listView = ListView.builder(
           controller: _controller,
-          itemBuilder: (context, index) => MultiPasswordWidgetItem(index),
+          itemBuilder: (context, index) => MultiPasswordWidgetItem(
+            password: model.passwordList[index],
+            selection: editProvider.isSelected,
+            onChanged: editProvider.select,
+          ),
           itemCount: model.count,
           physics: const AlwaysScrollableScrollPhysics(),
         );
@@ -240,29 +238,37 @@ class _PasswordPageState extends State<PasswordPage>
     );
   }
 
-  void _deletePassword(BuildContext context, PasswordProvider model) {
-    if (RuntimeData.multiPasswordList.length == 0) {
+  void _deletePassword(
+    BuildContext context,
+    PasswordProvider model,
+    MultiItemEditProvider editProvider,
+  ) {
+    if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog<bool>(
         context: context,
         builder: (context) => ConfirmDialog(
           "确认删除",
-          "您将删除${RuntimeData.multiPasswordList.length}项密码，确认吗？",
+          "您将删除${editProvider.selectedCount}项密码，确认吗？",
           danger: true,
           onConfirm: () async {
-            for (var item in RuntimeData.multiPasswordList) {
+            for (var item in editProvider.selectedItem) {
               await model.deletePassword(item);
             }
-            RuntimeData.multiPasswordList.clear();
+            editProvider.unselectAll();
           },
         ),
       );
     }
   }
 
-  void _movePassword(BuildContext context, PasswordProvider model) {
-    if (RuntimeData.multiPasswordList.length == 0) {
+  void _movePassword(
+    BuildContext context,
+    PasswordProvider model,
+    MultiItemEditProvider<PasswordBean> editProvider,
+  ) {
+    if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项密码");
     } else {
       showDialog(
@@ -270,18 +276,14 @@ class _PasswordPageState extends State<PasswordPage>
         builder: (context) => DefaultSelectItemDialog<String>(
           list: RuntimeData.folderList,
           onSelected: (value) async {
-            for (int i = 0; i < RuntimeData.multiPasswordList.length; i++) {
-              RuntimeData.multiPasswordList[i].folder = value;
-              await model.updatePassword(RuntimeData.multiPasswordList[i]);
-            }
+            editProvider.selectedItem.forEach((element) async {
+              element.folder = value;
+              await model.updatePassword(element);
+            });
             ToastUtil.show(
-              msg: "已移动${RuntimeData.multiPasswordList.length}项密码至 $value 文件夹",
+              msg: "已移动${editProvider.selectedCount}项密码至 $value 文件夹",
             );
-            setState(
-              () {
-                RuntimeData.multiPasswordList.clear();
-              },
-            );
+            editProvider.unselectAll();
           },
         ),
       );
