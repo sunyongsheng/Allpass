@@ -11,6 +11,7 @@ class MultiItemEditProvider<T> extends ChangeNotifier {
   bool get editMode => _editMode;
 
   void switchEditMode() {
+    _selectedItem.clear();
     _editMode = !_editMode;
     notifyListeners();
   }
