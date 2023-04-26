@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
@@ -8,17 +6,17 @@ import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/common/widget/route_floating_action_button.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/extension/widget_extension.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
 import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:animations/animations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,133 +56,6 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     super.build(context);
 
-    CardProvider model = context.watch();
-    MultiItemEditProvider<CardBean> editProvider = context.watch();
-
-    List<Widget> appbarActions = [
-      IconButton(
-        splashColor: Colors.transparent,
-        icon: editProvider.editMode
-            ? Icon(Icons.clear)
-            : Icon(Icons.sort),
-        onPressed: editProvider.switchEditMode,
-      ),
-      Padding(padding: AllpassEdgeInsets.smallLPadding)
-    ];
-    Widget? floatingButton;
-    if (editProvider.editMode) {
-      appbarActions.insertAll(0, [
-        PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case "删除":
-                _deleteCard(context, model, editProvider);
-                break;
-              case "移动":
-                _moveCard(context, model, editProvider);
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            PopupMenuItem(value: "移动", child: Text("移动")),
-            PopupMenuItem(value: "删除", child: Text("删除")),
-          ],
-        ),
-        IconButton(
-          splashColor: Colors.transparent,
-          icon: Icon(Icons.select_all),
-          onPressed: () {
-            if (editProvider.selectedCount != model.count) {
-              editProvider.selectAll(model.cardList);
-            } else {
-             editProvider.unselectAll();
-            }
-          },
-        )
-      ]);
-    } else {
-      if (Platform.isIOS) {
-        floatingButton = FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (_) => EditCardPage(null, DataOperation.add),
-              ),
-            );
-          },
-          heroTag: "card",
-        );
-      } else {
-        Color mainColor = Theme.of(context).primaryColor;
-        var circleFabBorder = CircleBorder();
-        floatingButton = OpenContainer(
-          closedBuilder: (context, openContainer) {
-            return Tooltip(
-              message: "添加卡片项目",
-              child: InkWell(
-                customBorder: circleFabBorder,
-                onTap: () => openContainer(),
-                child: SizedBox(
-                  height: 56,
-                  width: 56,
-                  child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-          openColor: mainColor,
-          closedColor: mainColor,
-          closedElevation: 6,
-          closedShape: CircleBorder(),
-          openBuilder: (context, closedContainer) {
-            return EditCardPage(null, DataOperation.add);
-          },
-        );
-      }
-    }
-
-    Widget listView;
-    if (model.cardList.isNotEmpty) {
-      if (editProvider.editMode) {
-        listView = ListView.builder(
-          controller: _controller,
-          itemBuilder: (context, index) => MultiCardWidgetItem(
-            card: model.cardList[index],
-            selection: editProvider.isSelected,
-            onChanged: editProvider.select,
-          ),
-          itemCount: model.count,
-          physics: const AlwaysScrollableScrollPhysics(),
-        );
-      } else {
-        listView = ListView.separated(
-          controller: _controller,
-          padding: AllpassEdgeInsets.forCardInset,
-          itemBuilder: (context, index) {
-            return MaterialCardWidget(
-                data: model.cardList[index],
-                pageCreator: (_) => ViewCardPage(),
-                onCardClicked: () => model.previewCard(index: index),
-            );
-          },
-          itemCount: model.count,
-          physics: const AlwaysScrollableScrollPhysics(),
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 8);
-          },
-        );
-      }
-    } else {
-      listView = EmptyDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等");
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -195,17 +66,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               "卡片",
               style: AllpassTextUI.titleBarStyle,
             ),
-            onTap: () {
-              _controller.animateTo(
-                0,
-                duration: Duration(milliseconds: 200),
-                curve: Curves.decelerate,
-              );
-            },
+            onTap: _controller.scrollToTop,
           ),
         ),
         automaticallyImplyLeading: false,
-        actions: appbarActions,
+        actions: _buildAppBarActions(),
       ),
       body: Column(
         children: <Widget>[
@@ -214,13 +79,22 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           // 卡片列表
           Expanded(
             child: RefreshIndicator(
-              onRefresh: () => _query(model),
-              child: listView,
+              onRefresh: () => _query(context.read<CardProvider>()),
+              child: _buildCardContent(),
             ),
           ),
         ],
       ),
-      floatingActionButton: floatingButton,
+      floatingActionButton: Selector<MultiItemEditProvider<CardBean>, bool>(
+        selector: (_, editProvider) => editProvider.editMode,
+        builder: (_, editMode, child) => editMode ? Container() : child!,
+        child: MaterialRouteFloatingActionButton(
+          heroTag: "add_card",
+          tooltip: "添加卡片条目",
+          builder: (_) => EditCardPage(null, DataOperation.add),
+          child: Icon(Icons.add),
+        ),
+      ),
     );
   }
 
@@ -234,6 +108,56 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         ),
       ),
     );
+  }
+
+  List<Widget> _buildAppBarActions() {
+    return [
+      Consumer2<MultiItemEditProvider<CardBean>, CardProvider>(
+        builder: (context, editProvider, provider, __) {
+          var children = <Widget>[];
+          if (editProvider.editMode) {
+            children.add(PopupMenuButton<String>(
+              onSelected: (value) {
+                switch (value) {
+                  case "删除":
+                    _deleteCard(context, provider, editProvider);
+                    break;
+                  case "移动":
+                    _moveCard(context, provider, editProvider);
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(value: "移动", child: Text("移动")),
+                PopupMenuItem(value: "删除", child: Text("删除")),
+              ],
+            ));
+            children.add(IconButton(
+              splashColor: Colors.transparent,
+              icon: Icon(Icons.select_all),
+              onPressed: () {
+                if (editProvider.selectedCount != provider.count) {
+                  editProvider.selectAll(provider.cardList);
+                } else {
+                  editProvider.unselectAll();
+                }
+              },
+            ));
+          }
+          children.add(Padding(
+            padding: AllpassEdgeInsets.smallRPadding,
+            child: IconButton(
+              splashColor: Colors.transparent,
+              icon: editProvider.editMode ? Icon(Icons.clear) : Icon(Icons.sort),
+              onPressed: editProvider.switchEditMode,
+            ),
+          ));
+          return Row(
+            children: children,
+          );
+        },
+      )
+    ];
   }
 
   void _deleteCard(BuildContext context, CardProvider model, MultiItemEditProvider editProvider,) {
@@ -279,5 +203,54 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         ),
       );
     }
+  }
+
+  Widget _buildCardContent() {
+    return Selector<CardProvider, bool>(
+      selector: (_, provider) => provider.cardList.isEmpty,
+      builder: (_, empty, emptyWidget) {
+        if (empty) {
+          return emptyWidget!;
+        } else {
+          return _buildCardList();
+        }
+      },
+      child: const EmptyDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等"),
+    );
+  }
+
+  Widget _buildCardList() {
+    return Consumer2<CardProvider, MultiItemEditProvider<CardBean>>(
+      builder: (_, provider, editProvider, cardList) {
+        if (editProvider.editMode) {
+          return ListView.builder(
+            controller: _controller,
+            itemBuilder: (context, index) => MultiCardWidgetItem(
+              card: provider.cardList[index],
+              selection: editProvider.isSelected,
+              onChanged: editProvider.select,
+            ),
+            itemCount: provider.count,
+            physics: const AlwaysScrollableScrollPhysics(),
+          );
+        } else {
+          return cardList!;
+        }
+      },
+      child: Consumer<CardProvider>(
+        builder: (_, provider, __) => ListView.separated(
+          controller: _controller,
+          padding: AllpassEdgeInsets.forCardInset,
+          itemBuilder: (context, index) => MaterialCardWidget(
+            data: provider.cardList[index],
+            pageCreator: (_) => ViewCardPage(),
+            onClick: () => provider.previewCard(index: index),
+          ),
+          itemCount: provider.count,
+          physics: const AlwaysScrollableScrollPhysics(),
+          separatorBuilder: (_, index) => SizedBox(height: 8),
+        ),
+      ),
+    );
   }
 }

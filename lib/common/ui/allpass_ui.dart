@@ -134,6 +134,10 @@ class AllpassEdgeInsets {
     left: AllpassScreenUtil.setWidth(50),
   );
 
+  static EdgeInsets smallRPadding = EdgeInsets.only(
+    right: AllpassScreenUtil.setWidth(50),
+  );
+
   static EdgeInsets smallTopInsets = EdgeInsets.only(
     top: AllpassScreenUtil.setHeight(15)
   );

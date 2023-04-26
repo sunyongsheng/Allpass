@@ -18,14 +18,14 @@ class MaterialCardWidget extends StatelessWidget {
 
   final WidgetBuilder pageCreator;
 
-  final VoidCallback? onCardClicked;
+  final VoidCallback? onClick;
 
-  const MaterialCardWidget(
-      {this.key,
-      required this.data,
-      required this.pageCreator,
-      this.onCardClicked})
-      : super(key: key);
+  const MaterialCardWidget({
+    this.key,
+    required this.data,
+    required this.pageCreator,
+    this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class MaterialCardWidget extends StatelessWidget {
         key: key,
         data: data,
         onCardClicked: () {
-          onCardClicked?.call();
+          onClick?.call();
           Navigator.push(
             context,
             CupertinoPageRoute(builder: (context) => pageCreator.call(context)),
@@ -59,7 +59,7 @@ class MaterialCardWidget extends StatelessWidget {
           key: key,
           data: data,
           onCardClicked: () {
-            onCardClicked?.call();
+            onClick?.call();
             openContainer();
           },
         );

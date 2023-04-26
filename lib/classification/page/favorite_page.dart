@@ -49,7 +49,7 @@ class FavoritePage extends StatelessWidget {
             containerShape: 4,
             pageCreator: (_) => ViewPasswordPage(),
             itemColor: itemColor,
-            onPasswordClicked: () => provider1.previewPassword(index: index),
+            onClick: () => provider1.previewPassword(index: index),
           ));
         }
       } catch (e) {}

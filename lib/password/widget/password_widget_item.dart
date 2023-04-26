@@ -17,20 +17,20 @@ class MaterialPasswordWidget extends StatelessWidget {
 
   final WidgetBuilder pageCreator;
 
-  final VoidCallback? onPasswordClicked;
+  final VoidCallback? onClick;
 
   final double containerShape;
 
   final Color? itemColor;
 
-  const MaterialPasswordWidget(
-      {Key? key,
-      required this.data,
-      required this.containerShape,
-      required this.pageCreator,
-      this.onPasswordClicked,
-      this.itemColor})
-      : super(key: key);
+  const MaterialPasswordWidget({
+    Key? key,
+    required this.data,
+    required this.containerShape,
+    required this.pageCreator,
+    this.onClick,
+    this.itemColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class MaterialPasswordWidget extends StatelessWidget {
         key: key,
         data: data,
         onPasswordClicked: () {
-          onPasswordClicked?.call();
+          onClick?.call();
           Navigator.push(
             context,
             CupertinoPageRoute(builder: (ctx) => pageCreator.call(ctx)),
@@ -64,7 +64,7 @@ class MaterialPasswordWidget extends StatelessWidget {
           key: key,
           data: data,
           onPasswordClicked: () {
-            onPasswordClicked?.call();
+            onClick?.call();
             openContainer();
           },
         );

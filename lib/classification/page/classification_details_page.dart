@@ -53,7 +53,7 @@ class ClassificationDetailsPage extends StatelessWidget {
             containerShape: 4,
             itemColor: itemColor,
             pageCreator: (_) => ViewPasswordPage(),
-            onPasswordClicked: () => provider1.previewPassword(index: index),
+            onClick: () => provider1.previewPassword(index: index),
           ));
         }
       } catch (e) {}
