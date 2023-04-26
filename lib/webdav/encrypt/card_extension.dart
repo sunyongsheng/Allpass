@@ -97,6 +97,7 @@ extension CardEncrypt on CardBean {
       case EncryptLevel.All:
         String name = customDecryption.decrypt(this.name);
         String ownerName = customDecryption.decrypt(this.ownerName);
+        String password = customDecryption.decrypt(this.password);
         String cardId = customDecryption.decrypt(this.cardId);
         String telephone = customDecryption.decrypt(this.telephone.noneDataOrNot());
         String folder = customDecryption.decrypt(this.folder);
@@ -111,7 +112,7 @@ extension CardEncrypt on CardBean {
           name: name,
           ownerName: ownerName,
           cardId: cardId,
-          password: this.password,
+          password: EncryptUtil.encrypt(password),
           telephone: telephone,
           folder: folder,
           notes: notes,

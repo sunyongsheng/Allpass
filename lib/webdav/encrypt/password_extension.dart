@@ -92,7 +92,7 @@ extension PasswordEncrypt on PasswordBean {
           key: this.uniqueKey,
           name: this.name,
           username: this.username,
-          password: EncryptUtil.decrypt(password),
+          password: EncryptUtil.encrypt(password),
           url: this.url,
           folder: this.folder,
           notes: this.notes,
@@ -109,6 +109,7 @@ extension PasswordEncrypt on PasswordBean {
       case EncryptLevel.All:
         String name = customDecryption.decrypt(this.name);
         String username = customDecryption.decrypt(this.username);
+        String password = customDecryption.decrypt(this.password);
         String url = customDecryption.decrypt(this.url.noneDataOrNot());
         String folder = customDecryption.decrypt(this.folder);
         String notes = customDecryption.decrypt(this.notes.noneDataOrNot());
@@ -125,7 +126,7 @@ extension PasswordEncrypt on PasswordBean {
           key: this.uniqueKey,
           name: name,
           username: username,
-          password: this.password,
+          password: EncryptUtil.encrypt(password),
           url: url,
           folder: folder,
           notes: notes,
