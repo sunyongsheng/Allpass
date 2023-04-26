@@ -4,6 +4,7 @@ import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/ui/after_post_frame.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
 import 'package:allpass/webdav/ui/webdav_sync_page.dart';
@@ -20,7 +21,7 @@ class WebDavConfigPage extends StatefulWidget {
   }
 }
 
-class _WebDavConfigPage extends State<StatefulWidget> {
+class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin {
   late TextEditingController _urlController;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
@@ -29,7 +30,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
 
   bool _pressNext = false;
   bool _passwordVisible = false;
-  bool _frameDone = false;
 
   @override
   void initState() {
@@ -39,9 +39,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _passwordController = TextEditingController();
     _portController = TextEditingController();
     _syncService = inject();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _frameDone = true;
-    });
   }
 
   @override
@@ -51,7 +48,6 @@ class _WebDavConfigPage extends State<StatefulWidget> {
     _usernameController.dispose();
     _passwordController.dispose();
     _portController.dispose();
-    _frameDone = false;
   }
 
   @override
@@ -106,9 +102,9 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     Icons.cancel,
                     size: 20,
                   ),
-                  onTap: () {
-                    if (_frameDone) _urlController.clear();
-                  },
+                  onTap: () => afterFirstFrame(() {
+                    _urlController.clear();
+                  }),
                 ),
               ),
               NoneBorderCircularTextField(
@@ -119,9 +115,9 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     Icons.cancel,
                     size: 20,
                   ),
-                  onTap: () {
-                    if (_frameDone) _portController.clear();
-                  },
+                  onTap: () => afterFirstFrame(() {
+                    _portController.clear();
+                  }),
                 ),
               ),
               NoneBorderCircularTextField(
@@ -132,9 +128,9 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                     Icons.cancel,
                     size: 20,
                   ),
-                  onTap: () {
-                    if (_frameDone) _usernameController.clear();
-                  },
+                  onTap: () => afterFirstFrame(() {
+                    _usernameController.clear();
+                  }),
                 ),
               ),
               Row(
@@ -149,9 +145,9 @@ class _WebDavConfigPage extends State<StatefulWidget> {
                           Icons.cancel,
                           size: 20,
                         ),
-                        onTap: () {
-                          if (_frameDone) _passwordController.clear();
-                        },
+                        onTap: () => afterFirstFrame(() {
+                          _passwordController.clear();
+                        }),
                       ),
                     ),
                   ),

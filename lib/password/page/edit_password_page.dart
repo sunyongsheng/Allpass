@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,7 @@ class EditPasswordPage extends StatefulWidget {
   }
 }
 
-class _EditPasswordPage extends State<EditPasswordPage> {
+class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixin {
 
   String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
 
@@ -57,7 +58,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
   late String createTime;
 
   bool _passwordVisible = false;
-  bool frameDone = false;
 
 
   @override
@@ -68,7 +68,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
     passwordController.dispose();
     notesController.dispose();
     urlController.dispose();
-    frameDone = false;
   }
 
 
@@ -100,9 +99,6 @@ class _EditPasswordPage extends State<EditPasswordPage> {
 
       createTime = DateTime.now().toIso8601String();
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      frameDone = true;
-    });
   }
 
   @override
@@ -212,10 +208,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
             editingController: nameController,
             trailing: InkWell(
               child: Icon(Icons.cancel, size: 20,),
-              onTap: () {
-                // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                if (frameDone) nameController.clear();
-              },
+              onTap: () => afterFirstFrame(() {
+                nameController.clear();
+              }),
             ),
           )
         ],
@@ -240,9 +235,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 Icons.cancel,
                 size: 20,
               ),
-              onTap: () {
-                if (frameDone) usernameController.clear();
-              },
+              onTap: () => afterFirstFrame(() {
+                usernameController.clear();
+              }),
             ),
           ),
           SingleChildScrollView(
@@ -275,9 +270,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                     child: Icon(
                         Icons.cancel,
                         size: 20),
-                    onTap: () {
-                      if (frameDone) passwordController.clear();
-                    },
+                    onTap: () => afterFirstFrame(() {
+                      passwordController.clear();
+                    }),
                   ),
                   obscureText: !_passwordVisible,
                 ),
@@ -319,9 +314,9 @@ class _EditPasswordPage extends State<EditPasswordPage> {
                 Icons.cancel,
                 size: 20,
               ),
-              onTap: () {
-                if (frameDone) urlController.clear();
-              },
+              onTap: () => afterFirstFrame(() {
+                urlController.clear();
+              }),
             ),
           )
         ],

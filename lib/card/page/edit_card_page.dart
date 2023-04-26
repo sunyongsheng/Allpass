@@ -1,3 +1,4 @@
+import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,7 @@ class EditCardPage extends StatefulWidget {
   }
 }
 
-class _EditCardPage extends State<EditCardPage> {
+class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
 
   String get pageTitle => (operation == DataOperation.add)? "添加卡片" : "编辑卡片";
 
@@ -52,7 +53,6 @@ class _EditCardPage extends State<EditCardPage> {
   late String createTime;
 
   bool passwordVisible = false;
-  bool frameDone = false;
 
   @override
   void initState() {
@@ -82,10 +82,6 @@ class _EditCardPage extends State<EditCardPage> {
 
       createTime = DateTime.now().toIso8601String();
     }
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      frameDone = true;
-    });
   }
 
   @override
@@ -97,7 +93,6 @@ class _EditCardPage extends State<EditCardPage> {
     telephoneController.dispose();
     notesController.dispose();
     passwordController.dispose();
-    frameDone = false;
   }
 
   @override
@@ -193,9 +188,9 @@ class _EditCardPage extends State<EditCardPage> {
                           Icons.cancel,
                           size: 20,
                         ),
-                        onTap: () {
-                          if (frameDone) nameController.clear();
-                        },
+                        onTap: () => afterFirstFrame(() {
+                          nameController.clear();
+                        }),
                       ),
                     ),
                   ],
@@ -217,9 +212,9 @@ class _EditCardPage extends State<EditCardPage> {
                           Icons.cancel,
                           size: 20,
                         ),
-                        onTap: () {
-                          if (frameDone) ownerNameController.clear();
-                        },
+                        onTap: () => afterFirstFrame(() {
+                          ownerNameController.clear();
+                        }),
                       ),
                     ),
                     SingleChildScrollView(
@@ -248,9 +243,9 @@ class _EditCardPage extends State<EditCardPage> {
                           Icons.cancel,
                           size: 20,
                         ),
-                        onTap: () {
-                          if (frameDone) cardIdController.clear();
-                        },
+                        onTap: () => afterFirstFrame(() {
+                          cardIdController.clear();
+                        }),
                       ),
                     ),
                   ],
@@ -276,10 +271,9 @@ class _EditCardPage extends State<EditCardPage> {
                                 Icons.cancel,
                                 size: 20,
                               ),
-                              onTap: () {
-                                // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                                if (frameDone) passwordController.clear();
-                              },
+                              onTap: () => afterFirstFrame(() {
+                                passwordController.clear();
+                              }),
                             ),
                           ),
                         ),
@@ -318,10 +312,9 @@ class _EditCardPage extends State<EditCardPage> {
                           Icons.cancel,
                           size: 20,
                         ),
-                        onTap: () {
-                          // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                          if (frameDone) telephoneController.clear();
-                        },
+                        onTap: () => afterFirstFrame(() {
+                          telephoneController.clear();
+                        }),
                       ),
                     ),
                   ],
@@ -379,10 +372,11 @@ class _EditCardPage extends State<EditCardPage> {
                       children: <Widget>[
                         Expanded(
                           child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.start,
-                              spacing: 8.0,
-                              runSpacing: 10.0,
-                              children: _getTag()),
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            spacing: 8.0,
+                            runSpacing: 10.0,
+                            children: _getTag(),
+                          ),
                         )
                       ],
                     )
@@ -452,21 +446,22 @@ class _EditCardPage extends State<EditCardPage> {
     });
     labelChoices.add(
       ChoiceChip(
-          label: Icon(Icons.add),
-          selected: false,
-          onSelected: (_) =>
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => AddCategoryDialog()
-              ).then((label) {
-                if (label != null && RuntimeData.labelListAdd([label])) {
-                  setState(() {});
-                  ToastUtil.show(msg: "添加标签 $label 成功");
-                } else if (label != null) {
-                  ToastUtil.show(msg: "标签 $label 已存在");
-                }
-              }),
+        label: Icon(Icons.add),
+        selected: false,
+        onSelected: (_) => showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AddCategoryDialog(),
+        ).then(
+          (label) {
+            if (label != null && RuntimeData.labelListAdd([label])) {
+              setState(() {});
+              ToastUtil.show(msg: "添加标签 $label 成功");
+            } else if (label != null) {
+              ToastUtil.show(msg: "标签 $label 已存在");
+            }
+          },
+        ),
       ),
     );
     return labelChoices;
