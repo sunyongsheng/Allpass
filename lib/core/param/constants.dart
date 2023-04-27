@@ -24,6 +24,8 @@ class SPKeys {
   static const String webDavBackupDirectory = "webDavBackupDirectory";
   static const String webDavUploadTime = "webDavUploadTime";
   static const String webDavDownloadTime = "webDavDownloadTime";
+  static const String webDavBackupMethod = "webDavBackupMethod";
+  static const String webDavCustomBackupFilename = "webDavCustomBackupFilename";
   static const String contact = "contact";
   static const String timingInputMainPassword = "timingInputMainPass";
 }

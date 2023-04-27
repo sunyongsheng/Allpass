@@ -33,6 +33,7 @@ class AllpassColorUI {
     Colors.teal,
     Color.fromRGBO(52, 184, 105, 1),
     Color.fromRGBO(255, 86, 85, 1),
+    Color.fromRGBO(121, 75, 115, 1),
   ]);
 
   static final List<Gradient> allGradients = [

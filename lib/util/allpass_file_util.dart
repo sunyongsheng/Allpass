@@ -16,7 +16,10 @@ class AllpassFileUtil {
   }
 
   static Future<String> writeFile(
-      String dirname, String filename, String content) async {
+    String dirname,
+    String filename,
+    String content,
+  ) async {
     String appDirPath =
         (await getApplicationDocumentsDirectory()).uri.toFilePath();
     String dirPath = StringUtil.ensureEndsWith(appDirPath, "/") + dirname;

@@ -15,6 +15,7 @@ import 'package:allpass/util/allpass_file_util.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/version_util.dart';
+import 'package:allpass/webdav/backup/webdav_backup_method.dart';
 import 'package:allpass/webdav/encrypt/card_extension.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/encrypt/password_extension.dart';
@@ -155,11 +156,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     String contents = jsonEncode(_createBackup(data, type));
     String fileName = _generateFilename(type);
 
-    var filePath =
-        await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
+    var filePath = await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
 
+    String remoteFilename = _generateRemoteFilename(fileName, type);
     await _requester.uploadFile(
-      fileName: fileName,
+      fileName: remoteFilename,
       dirName: remoteWorkspace,
       localFilePath: filePath,
     );
@@ -180,6 +181,19 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
         return "${now}_allpass_card$suffix.json";
       case AllpassType.other:
         return "${now}_allpass_extra$suffix.json";
+    }
+  }
+
+  String _generateRemoteFilename(String filename, AllpassType type) {
+    if (Config.webDavBackupMethod == WebDavBackupMethod.createNew) {
+      return filename;
+    } else {
+      var name = Config.webDavBackupFilename?[type] ?? filename;
+      if (name.endsWith(".json")) {
+        return name;
+      } else {
+        return "$name.json";
+      }
     }
   }
 

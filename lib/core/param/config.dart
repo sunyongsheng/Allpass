@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
+import 'package:allpass/webdav/backup/webdav_backup_method.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
+import 'package:allpass/webdav/backup/custom_backup_filename.dart';
 import 'package:flutter/material.dart';
 
 /// 存储系统参数
@@ -55,6 +59,12 @@ class Config {
   /// WebDAV上次下载时间
   static late String? webDavDownloadTime;
 
+  /// WebDAV自定义备份方式
+  static late WebDavBackupMethod webDavBackupMethod;
+
+  /// WebDAV自定义备份名称
+  static late WebDavCustomBackupFilename? webDavBackupFilename;
+
   /// 定期输入主密码天数
   static late int timingInMainPassword;
 
@@ -80,6 +90,8 @@ class Config {
     webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
     webDavBackupDirectory = sp.getString(SPKeys.webDavBackupDirectory) ?? "/Allpass";
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
+    webDavBackupMethod = WebDavBackupMethods.tryParse(sp.getString(SPKeys.webDavBackupMethod)) ?? WebDavBackupMethod.createNew;
+    webDavBackupFilename = WebDavCustomBackupFilename.tryParse(sp.getString(SPKeys.webDavCustomBackupFilename));
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
     timingInMainPassword = sp.getInt(SPKeys.timingInputMainPassword) ?? 10;
@@ -100,6 +112,8 @@ class Config {
     webDavPassword = "";
     webDavEncryptLevel = EncryptLevel.OnlyPassword;
     webDavMergeMethod = MergeMethod.localFirst;
+    webDavBackupMethod = WebDavBackupMethod.createNew;
+    webDavBackupFilename = null;
     timingInMainPassword = 10;
     RuntimeData.clearData();
   }
@@ -194,6 +208,16 @@ class Config {
   static void setWebDavDownloadTime(String value) {
     webDavDownloadTime = value;
     AllpassApplication.sp.setString(SPKeys.webDavDownloadTime, value);
+  }
+
+  static void setWebDavBackupMethod(WebDavBackupMethod method) {
+    webDavBackupMethod = method;
+    AllpassApplication.sp.setString(SPKeys.webDavBackupMethod, method.name);
+  }
+
+  static void setWebDavCustomBackupFilename(WebDavCustomBackupFilename filename) {
+    webDavBackupFilename = filename;
+    AllpassApplication.sp.setString(SPKeys.webDavCustomBackupFilename, jsonEncode(filename));
   }
 
   static void setTimingInMainPassDays(int value) {

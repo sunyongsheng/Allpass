@@ -9,10 +9,12 @@ import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/path_util.dart';
 import 'package:allpass/util/toast_util.dart';
+import 'package:allpass/webdav/backup/webdav_backup_method.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
 import 'package:allpass/webdav/model/backup_file.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
+import 'package:allpass/webdav/ui/widget/custom_backup_filename_dialog.dart';
 import 'package:allpass/webdav/ui/widget/select_backup_file_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -95,13 +97,22 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text("备份目录"),
+                  title: Text("云端备份目录"),
                   subtitle: Text("${Config.webDavBackupDirectory}"),
                   leading: Icon(
                     Icons.drive_folder_upload,
                     color: AllpassColorUI.allColor[4],
                   ),
                   onTap: () => _onClickBackupDirectory(),
+                ),
+                ListTile(
+                  title: Text("备份文件方式"),
+                  subtitle: Text(Config.webDavBackupMethod.desc),
+                  leading: Icon(
+                    Icons.file_present_outlined,
+                    color: AllpassColorUI.allColor[7],
+                  ),
+                  onTap: () => _onClickBackupMethod(),
                 ),
                 ListTile(
                   title: Text("数据恢复方式"),
@@ -310,6 +321,37 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           setState(() {
             Config.setWebDavBackupDirectory(PathUtil.formatRelativePath(value));
           });
+        },
+      ),
+    );
+  }
+
+  void _onClickBackupMethod() {
+    showDialog(
+      context: context,
+      builder: (_) => DefaultSelectItemDialog<WebDavBackupMethodItem>(
+        list: backupMethods,
+        selector: (item) => item.method == Config.webDavBackupMethod,
+        itemTitleBuilder: (data) => data.name,
+        onSelected: (item) {
+          if (item.method == WebDavBackupMethod.replaceExists) {
+            showDialog(
+              context: context,
+              builder: (_) => WebDavCustomBackupFilenameDialog(
+                filename: Config.webDavBackupFilename,
+                onSubmit: (filename) {
+                  setState(() {
+                    Config.setWebDavBackupMethod(item.method);
+                    Config.setWebDavCustomBackupFilename(filename);
+                  });
+                },
+              ),
+            );
+          } else {
+            setState(() {
+              Config.setWebDavBackupMethod(item.method);
+            });
+          }
         },
       ),
     );
