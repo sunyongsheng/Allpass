@@ -1,4 +1,6 @@
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/setting/autofill/autofill_page.dart';
+import 'package:allpass/setting/autofill/autofill_provider.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/enums/category_type.dart';
-import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -185,13 +186,12 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         title: Text("自动填充"),
         leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
         onTap: () {
-          AllpassApplication.methodChannel.invokeMethod(ChannelConstants.methodIsAppDefaultAutofill).then((enabled) => {
-            if (enabled) {
-              ToastUtil.show(msg: "Allpass已经是默认自动填充服务，无需设置")
-            } else {
-              AllpassApplication.methodChannel.invokeMethod(ChannelConstants.methodSetAppDefaultAutofill)
-            }
-          });
+          Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+              create: (_) => AutofillProvider(),
+              child: AutofillPage(),
+            ),
+          ));
         },
       ));
     }
