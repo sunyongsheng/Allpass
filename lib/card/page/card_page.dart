@@ -6,6 +6,7 @@ import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/common/widget/multi_edit_button.dart';
 import 'package:allpass/common/widget/route_floating_action_button.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
@@ -112,55 +113,36 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
 
   List<Widget> _buildAppBarActions() {
     return [
-      Consumer2<MultiItemEditProvider<CardBean>, CardProvider>(
-        builder: (context, editProvider, provider, __) {
-          var children = <Widget>[];
-          if (editProvider.editMode) {
-            children.add(PopupMenuButton<String>(
-              onSelected: (value) {
-                switch (value) {
-                  case "删除":
-                    _deleteCard(context, provider, editProvider);
-                    break;
-                  case "移动":
-                    _moveCard(context, provider, editProvider);
-                    break;
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(value: "移动", child: Text("移动")),
-                PopupMenuItem(value: "删除", child: Text("删除")),
-              ],
-            ));
-            children.add(IconButton(
-              splashColor: Colors.transparent,
-              icon: Icon(Icons.select_all),
-              onPressed: () {
-                if (editProvider.selectedCount != provider.count) {
-                  editProvider.selectAll(provider.cardList);
-                } else {
-                  editProvider.unselectAll();
-                }
-              },
-            ));
-          }
-          children.add(Padding(
-            padding: AllpassEdgeInsets.smallRPadding,
-            child: IconButton(
-              splashColor: Colors.transparent,
-              icon: editProvider.editMode ? Icon(Icons.clear) : Icon(Icons.sort),
-              onPressed: editProvider.switchEditMode,
-            ),
-          ));
-          return Row(
-            children: children,
+      Selector<MultiItemEditProvider<CardBean>, bool>(
+        selector: (_, editProvider) => editProvider.editMode,
+        builder: (context, editMode, __) {
+          var provider = context.read<CardProvider>();
+          var editProvider = context.read<MultiItemEditProvider<CardBean>>();
+          return MultiEditButton(
+            inEditMode: editMode,
+            onClickMove: () => _moveCard(context, provider, editProvider),
+            onClickDelete: () => _deleteCard(context, provider, editProvider),
+            onClickEdit: editProvider.switchEditMode,
+            onClickSelectAll: () {
+              if (editProvider.selectedCount != provider.count) {
+                editProvider.selectAll(provider.cardList);
+              } else {
+                editProvider.unselectAll();
+              }
+            },
           );
         },
       )
     ];
   }
 
-  void _deleteCard(BuildContext context, CardProvider model, MultiItemEditProvider editProvider,) {
+  void _deleteCard(
+    BuildContext context,
+    CardProvider provider,
+    MultiItemEditProvider<CardBean> editProvider,
+  ) {
+    var cardProvider = context.read<CardProvider>();
+    var editProvider = context.read<MultiItemEditProvider<CardBean>>();
     if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
@@ -172,7 +154,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           danger: true,
           onConfirm: () async {
             for (var item in editProvider.selectedItem) {
-              await model.deleteCard(item);
+              await cardProvider.deleteCard(item);
             }
             ToastUtil.show(msg: "已删除 ${editProvider.selectedCount} 项卡片");
             editProvider.unselectAll();
@@ -182,7 +164,13 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     }
   }
 
-  void _moveCard(BuildContext context, CardProvider model, MultiItemEditProvider<CardBean> editProvider,) {
+  void _moveCard(
+    BuildContext context,
+    CardProvider provider,
+    MultiItemEditProvider<CardBean> editProvider,
+  ) {
+    var cardProvider = context.read<CardProvider>();
+    var editProvider = context.read<MultiItemEditProvider<CardBean>>();
     if (editProvider.isEmpty) {
       ToastUtil.show(msg: "请选择至少一项卡片");
     } else {
@@ -193,7 +181,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           onSelected: (value) async {
             editProvider.selectedItem.forEach((element) async {
               element.folder = value;
-              await model.updateCard(element);
+              await cardProvider.updateCard(element);
             });
             ToastUtil.show(
               msg: "已移动 ${editProvider.selectedCount} 项卡片至 $value 文件夹",
