@@ -109,7 +109,7 @@ class AllpassTheme {
         headlineSmall: TextStyle(color: Colors.white),
         bodySmall: TextStyle(color: Color(0xFFA1A1A1)),
         bodyLarge: TextStyle(color: Colors.white),
-        bodyMedium: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
         titleMedium: TextStyle(color: Colors.white),
         titleSmall: TextStyle(color: Colors.white),
         labelLarge: TextStyle(color: mainColor),
@@ -219,6 +219,9 @@ class AllpassTheme {
       ),
       indicatorColor: mainColor,
       textSelectionTheme: TextSelectionThemeData(cursorColor: mainColor),
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(fontSize: 14,),
+      ),
       cardTheme: CardTheme(
         color: Colors.white,
         shape: RoundedRectangleBorder(
