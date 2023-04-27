@@ -51,8 +51,13 @@ class WebDavFile {
     var contentType = propNode.obtainWebDavNode("getcontenttype")?.text;
     var isFile = contentType != "httpd/unix-directory";
 
+    var filename = name;
+    try {
+      filename = Uri.decodeComponent(name);
+    } catch (_) {}
+
     return WebDavFile(
-      filename: Uri.decodeComponent(name),
+      filename: filename,
       lastModified: lastModified,
       byteSize: int.parse(size),
       isFile: isFile,
