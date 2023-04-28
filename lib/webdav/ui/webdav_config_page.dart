@@ -95,7 +95,8 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
             children: <Widget>[
               NoneBorderCircularTextField(
                 editingController: _urlController,
-                hintText: "WebDAV服务器地址",
+                labelText: "WebDAV服务器地址",
+                hintText: "请以 http:// 或 https:// 开头",
                 onChanged: _setPortAutomatically,
                 trailing: InkWell(
                   child: Icon(
@@ -109,7 +110,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
               ),
               NoneBorderCircularTextField(
                 editingController: _portController,
-                hintText: "端口号",
+                labelText: "端口号",
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -122,7 +123,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
               ),
               NoneBorderCircularTextField(
                 editingController: _usernameController,
-                hintText: "账号",
+                labelText: "账号",
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -138,7 +139,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
                   Expanded(
                     child: NoneBorderCircularTextField(
                       editingController: _passwordController,
-                      hintText: "密码",
+                      labelText: "密码",
                       obscureText: !_passwordVisible,
                       trailing: InkWell(
                         child: Icon(
