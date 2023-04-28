@@ -156,7 +156,6 @@ Future<Null> initAppFirstRun() async {
   AllpassApplication.sp.setBool(SPKeys.firstRun, false);
   AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
   AllpassApplication.sp.setBool(SPKeys.needRegister, true);
-  AllpassApplication.sp.setString(SPKeys.username, "");
   AllpassApplication.sp.setString(SPKeys.password, "");
   AllpassApplication.sp.setBool(SPKeys.biometrics, false);
   AllpassApplication.sp.setBool(SPKeys.longPressCopy, true);

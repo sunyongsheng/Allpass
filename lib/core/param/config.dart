@@ -14,9 +14,6 @@ import 'package:flutter/material.dart';
 class Config {
   Config._();
 
-  /// 当前使用者用户名
-  static late String username;
-
   /// 使用者密码
   static late String password;
 
@@ -71,8 +68,7 @@ class Config {
   /// 参数初始化
   static void initConfig() {
     var sp = AllpassApplication.sp;
-    // 初始化当前用户名与密码
-    username = sp.getString(SPKeys.username) ?? "";
+    // 初始化主密码
     password = sp.getString(SPKeys.password) ?? "";
     // 判断是否开启生物识别
     enabledBiometrics = sp.getBool(SPKeys.biometrics) ?? false;
@@ -100,7 +96,6 @@ class Config {
 
   /// 清空参数
   static void configClear() async {
-    username = "";
     password = "";
     enabledBiometrics = false;
     longPressCopy = true;
@@ -121,11 +116,6 @@ class Config {
   /// 更新上次使用密码的时间
   static void updateLatestUsePasswordTime() {
     AllpassApplication.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());
-  }
-
-  static void setUsername(String value) {
-    username = value;
-    AllpassApplication.sp.setString(SPKeys.username, value);
   }
 
   static void setPassword(String encryptedValue) {

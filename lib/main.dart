@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/login/page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +63,17 @@ void main() async {
 class Allpass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Widget initialPage;
+    if (Config.password.isEmpty) {
+      initialPage = RegisterPage();
+    } else {
+      if (Config.enabledBiometrics) {
+        initialPage = AuthLoginPage();
+      } else {
+        initialPage = LoginPage();
+      }
+    }
+
     return ScreenUtilInit(
       designSize: const Size(1080, 1920),
       minTextAdapt: true,
@@ -75,7 +87,7 @@ class Allpass extends StatelessWidget {
         onGenerateRoute: AllpassApplication.router.generator,
         navigatorKey: AllpassApplication.navigationKey,
       ),
-      child: Config.enabledBiometrics ? AuthLoginPage() : LoginPage(),
+      child: initialPage,
     );
   }
 }

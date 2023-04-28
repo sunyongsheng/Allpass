@@ -42,26 +42,6 @@ class _AccountManagerPage extends State<AccountManagerPage> {
           Padding(
             padding: AllpassEdgeInsets.smallTopInsets,
           ),
-
-          Card(
-            margin: AllpassEdgeInsets.settingCardInset,
-            elevation: 0,
-            child: InkWell(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: Align(
-                  child: Text(Config.username,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                  ),
-                ),
-              ),
-              onTap: () {
-                ToastUtil.show(msg: "暂不支持主账号修改");
-              }
-            ),
-          ),
-
           Card(
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
@@ -72,8 +52,9 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
                   onTap: () {
                     showDialog(
-                        context: context,
-                        builder: (context) => ModifyPasswordDialog());
+                      context: context,
+                      builder: (context) => ModifyPasswordDialog(),
+                    );
                   },
                 ),
                 ListTile(
@@ -81,39 +62,39 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
                   onTap: () {
                     showDialog(
-                        context: context,
-                        builder: (context) {
-                          String initial = "${Config.timingInMainPassword}天";
-                          if (Config.timingInMainPassword == 36500) {
-                            initial = "永不";
-                          }
-                          return DefaultSelectItemDialog<String>(
-                            list: ["7天", "10天", "15天", "30天", "永不"],
-                            selector: (data) => data == initial,
-                            onSelected: (days) {
-                              if (days == "永不") {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => ConfirmDialog(
-                                      "确认选择",
-                                      "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码",
-                                      onConfirm: () {
-                                        Config.setTimingInMainPassDays(36500);
-                                      },
-                                    )
-                                );
-                              } else if (days == "7天") {
-                                Config.setTimingInMainPassDays(7);
-                              } else if (days == "10天") {
-                                Config.setTimingInMainPassDays(10);
-                              } else if (days == "15天") {
-                                Config.setTimingInMainPassDays(15);
-                              } else if (days == "30天") {
-                                Config.setTimingInMainPassDays(30);
-                              }
-                            },
-                          );
+                      context: context,
+                      builder: (context) {
+                        String initial = "${Config.timingInMainPassword}天";
+                        if (Config.timingInMainPassword == 36500) {
+                          initial = "永不";
                         }
+                        return DefaultSelectItemDialog<String>(
+                          list: ["7天", "10天", "15天", "30天", "永不"],
+                          selector: (data) => data == initial,
+                          onSelected: (days) {
+                            if (days == "永不") {
+                              showDialog(
+                                context: context,
+                                builder: (context) => ConfirmDialog(
+                                  "确认选择",
+                                  "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码",
+                                  onConfirm: () {
+                                    Config.setTimingInMainPassDays(36500);
+                                  },
+                                ),
+                              );
+                            } else if (days == "7天") {
+                              Config.setTimingInMainPassDays(7);
+                            } else if (days == "10天") {
+                              Config.setTimingInMainPassDays(10);
+                            } else if (days == "15天") {
+                              Config.setTimingInMainPassDays(15);
+                            } else if (days == "30天") {
+                              Config.setTimingInMainPassDays(30);
+                            }
+                          },
+                        );
+                      },
                     );
                   },
                 ),
@@ -131,25 +112,25 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   leading: Icon(Icons.clear, color: Colors.red),
                   onTap: () {
                     showDialog(
-                        context: context,
-                        builder: (context) => ConfirmDialog(
-                          "确认删除",
-                          "此操作将删除所有数据，继续吗？",
-                          danger: true,
-                          onConfirm: () {
-                            // 二次确认
-                            showDialog(
-                              context: context,
-                              builder: (context) => InputMainPasswordDialog(
-                                onVerified: () async {
-                                  await AllpassApplication.clearAll(context);
-                                  ToastUtil.show(msg: "已删除所有数据");
-                                  NavigationUtil.goLoginPage(context);
-                                },
-                              ),
-                            );
-                          },
-                        )
+                      context: context,
+                      builder: (context) => ConfirmDialog(
+                        "确认删除",
+                        "此操作将删除所有数据，继续吗？",
+                        danger: true,
+                        onConfirm: () {
+                          // 二次确认
+                          showDialog(
+                            context: context,
+                            builder: (context) => InputMainPasswordDialog(
+                              onVerified: () async {
+                                await AllpassApplication.clearAll(context);
+                                ToastUtil.show(msg: "已删除所有数据");
+                                NavigationUtil.goLoginPage(context);
+                              },
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

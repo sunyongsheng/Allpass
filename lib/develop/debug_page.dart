@@ -1,5 +1,7 @@
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/login/page/login_page.dart';
+import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
@@ -61,20 +63,23 @@ class _DebugPage extends State<DebugPage> {
                 child: Text("页面测试"),
                 onPressed: () async {
                   showDialog<String>(
-                      context: context,
-                      builder: (context) => DefaultSelectItemDialog<String>(
-                        list: ["webdav_sync"],
-                        onSelected: (value) {
-                          if (value == "webdav_sync") {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => ChangeNotifierProvider(
-                                  create: (context) => WebDavSyncProvider(),
-                                  child: WebDavSyncPage(),
-                                )
-                            ));
-                          }
-                        },
-                      )
+                    context: context,
+                    builder: (context) => DefaultSelectItemDialog<String>(
+                      list: ["webdav_sync", "register", "login"],
+                      onSelected: (value) {
+                        var pageMapping = {
+                          "webdav_sync": ChangeNotifierProvider(
+                            create: (context) => WebDavSyncProvider(),
+                            child: WebDavSyncPage(),
+                          ),
+                          "register": RegisterPage(),
+                          "login": LoginPage(),
+                        };
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => pageMapping[value]!,
+                        ));
+                      },
+                    ),
                   );
                 },
               ),

@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:allpass/common/widget/loading_text_button.dart';
+import 'package:allpass/home/about_page.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,6 +16,7 @@ import 'package:allpass/util/navigation_util.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
 
@@ -21,9 +27,23 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
-  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _secondController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    var themeProvider = context.read<ThemeProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      themeProvider.setExtraColor(window.platformBrightness);
+      _tryShowPrivacyDialog();
+    });
+
+    window.onPlatformBrightnessChanged = () {
+      themeProvider.setExtraColor(window.platformBrightness);
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +58,18 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Padding(
                 child: Text(
-                  "注册 Allpass",
+                  "设置 Allpass",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,
               ),
               NoneBorderCircularTextField(
-                  editingController: _usernameController,
-                  hintText: "请输入用户名",
-                  textAlign: TextAlign.center,
-              ),
-              NoneBorderCircularTextField(
                   editingController:_passwordController,
-                  hintText: "请输入密码",
+                  hintText: "请输入主密码",
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
@@ -68,23 +83,10 @@ class _RegisterPage extends State<RegisterPage> {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  title: "注册",
+                  title: "设置",
                   onPressed: () async => await register(context),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(300)),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextButton(
-                    child: Text("已有账号？登录"),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              Padding(padding: EdgeInsets.only(bottom: AllpassScreenUtil.setHeight(80)),)
             ],
           ),
         ),
@@ -97,18 +99,16 @@ class _RegisterPage extends State<RegisterPage> {
       ToastUtil.showError(msg: "两次密码输入不一致！");
       return;
     }
-    if (_usernameController.text.length < 6 && _passwordController.text.length < 6) {
-      ToastUtil.showError(msg: "用户名或密码长度必须大于等于6！");
+
+    if (_passwordController.text.length < 6) {
+      ToastUtil.showError(msg: "主密码长度必须大于等于6！");
       return;
     }
-    if (_usernameController.text.length > 15) {
-      ToastUtil.showError(msg: "用户名长度最长为15个字符！");
-      return;
-    }
+
     // 判断是否已有账号存在
-    if (AllpassApplication.sp.getString(SPKeys.username) == "") {
+    if (Config.password.isEmpty) {
       _registerActual();
-      ToastUtil.show(msg: "注册成功");
+      ToastUtil.show(msg: "设置成功");
     } else {
       ToastUtil.showError(msg: "已有账号注册过，只允许单账号");
     }
@@ -116,9 +116,40 @@ class _RegisterPage extends State<RegisterPage> {
 
   void _registerActual() {
     String _password = EncryptUtil.encrypt(_passwordController.text);
-    Config.setUsername(_usernameController.text);
     Config.setPassword(_password);
     Config.setEnabledBiometrics(false);
     NavigationUtil.goLoginPage(context);
+  }
+
+  void _tryShowPrivacyDialog() {
+    if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
+      showDialog(
+        context: context,
+        builder: (cx) => AlertDialog(
+          title: Text("服务条款"),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                AboutPage.serviceContent,
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text("同意并继续"),
+              onPressed: () async {
+                await initAppFirstRun();
+                Navigator.pop(context);
+              },
+            ),
+            TextButton(
+              child: Text("取消"),
+              onPressed: () => exit(0),
+            )
+          ],
+        ),
+      );
+    }
   }
 }
