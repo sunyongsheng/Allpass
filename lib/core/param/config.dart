@@ -200,14 +200,22 @@ class Config {
     AllpassApplication.sp.setString(SPKeys.webDavBackupDirectory, directory);
   }
 
-  static void setWebDavUploadTime(String value) {
+  static void setWebDavUploadTime(String? value) {
     webDavUploadTime = value;
-    AllpassApplication.sp.setString(SPKeys.webDavUploadTime, value);
+    if (value == null) {
+      AllpassApplication.sp.remove(SPKeys.webDavUploadTime);
+    } else {
+      AllpassApplication.sp.setString(SPKeys.webDavUploadTime, value);
+    }
   }
 
-  static void setWebDavDownloadTime(String value) {
+  static void setWebDavDownloadTime(String? value) {
     webDavDownloadTime = value;
-    AllpassApplication.sp.setString(SPKeys.webDavDownloadTime, value);
+    if (value == null) {
+      AllpassApplication.sp.remove(SPKeys.webDavDownloadTime);
+    } else {
+      AllpassApplication.sp.setString(SPKeys.webDavDownloadTime, value);
+    }
   }
 
   static void setWebDavBackupMethod(WebDavBackupMethod method) {
@@ -215,9 +223,13 @@ class Config {
     AllpassApplication.sp.setString(SPKeys.webDavBackupMethod, method.name);
   }
 
-  static void setWebDavCustomBackupFilename(WebDavCustomBackupFilename filename) {
+  static void setWebDavCustomBackupFilename(WebDavCustomBackupFilename? filename) {
     webDavBackupFilename = filename;
-    AllpassApplication.sp.setString(SPKeys.webDavCustomBackupFilename, jsonEncode(filename));
+    if (filename == null) {
+      AllpassApplication.sp.remove(SPKeys.webDavCustomBackupFilename);
+    } else {
+      AllpassApplication.sp.setString(SPKeys.webDavCustomBackupFilename, jsonEncode(filename));
+    }
   }
 
   static void setTimingInMainPassDays(int value) {

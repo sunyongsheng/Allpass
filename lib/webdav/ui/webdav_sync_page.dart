@@ -444,13 +444,19 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       context: context,
       builder: (context) => ConfirmDialog(
         "确认退出",
-        "退出账号后需要重新登录，是否继续？",
+        "退出账号后需要重新登录，并清除所有配置信息，是否继续？",
         danger: true,
         onConfirm: () {
           Config.setWebDavAuthSuccess(false);
           Config.setWebDavUsername(null);
           Config.setWebDavPassword(null);
           Config.setWebDavUrl(null);
+          Config.setWebDavUploadTime(null);
+          Config.setWebDavDownloadTime(null);
+          Config.setWevDavEncryptLevel(EncryptLevel.OnlyPassword);
+          Config.setWebDavMergeMethod(MergeMethod.localFirst);
+          Config.setWebDavBackupMethod(WebDavBackupMethod.createNew);
+          Config.setWebDavCustomBackupFilename(null);
           Navigator.pop(context);
         },
       ),
