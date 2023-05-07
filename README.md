@@ -49,9 +49,9 @@ TODO
 
 # 下载体验
 
-可以在Github Release页、扫描下面的二维码或者[点此下载](https://www.pgyer.com/624679667fcbb8c8072a884b899690e3)
+可以在Github Release页、扫描下面的二维码或者[点此下载](https://www.pgyer.com/allpass)
 
-![AllpassV1.8.0](./screenshots/allpass_v1.8.0.png)
+![Allpass](./screenshots/allpass_pgyer_url.png)
 
 (目前使用蒲公英内测模式进行分发，每天下载次数限制为500次，如遇到无法下载的情况可在Github Release页进行下载)
 
