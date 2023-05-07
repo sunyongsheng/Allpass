@@ -1,10 +1,10 @@
 import 'dart:ui';
 import 'package:allpass/common/widget/loading_text_button.dart';
+import 'package:allpass/login/locker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/navigation_util.dart';
@@ -26,7 +26,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPage extends State<LoginPage> {
   late TextEditingController _passwordController;
 
-  int inputErrorTimes = 0; // 超过五次自动清除所有内容
+  int inputErrorTimes = 0;
 
   @override
   void initState() {
@@ -68,18 +68,19 @@ class _LoginPage extends State<LoginPage> {
                   "解锁 Allpass",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,
               ),
               NoneBorderCircularTextField(
-                  editingController: _passwordController,
-                  hintText: "请输入主密码",
-                  obscureText: true,
-                  onEditingComplete: login,
-                  textAlign: TextAlign.center,
+                editingController: _passwordController,
+                hintText: "请输入主密码",
+                obscureText: true,
+                onEditingComplete: login,
+                textAlign: TextAlign.center,
+                autoFocus: true,
               ),
               Container(
                 child: LoadingTextButton(
@@ -116,32 +117,39 @@ class _LoginPage extends State<LoginPage> {
   }
 
   void login() async {
-    if (inputErrorTimes >= 5) {
-      await AllpassApplication.clearAll(context);
-      ToastUtil.showError(msg: "连续错误超过五次！已清除所有数据，请重新注册");
-      NavigationUtil.goLoginPage(context);
-    } else {
-      var password = _passwordController.text;
-      if (password.isEmpty) {
-        ToastUtil.show(msg: "请先输入应用主密码");
-        return;
-      }
+    var lockSeconds = Locker.remainsLockSeconds();
+    if (lockSeconds > 0) {
+      ToastUtil.showError(msg: "锁定中，还剩$lockSeconds秒");
+      return;
+    }
 
-      if (Config.password != "") {
-        if (Config.password == EncryptUtil.encrypt(password)) {
-          NavigationUtil.goHomePage(context);
-          ToastUtil.show(msg: "登录成功");
-          Config.updateLatestUsePasswordTime();
-        }  else {
-          inputErrorTimes++;
-          ToastUtil.showError(msg: "主密码错误，已错误$inputErrorTimes次，连续超过五次将删除所有数据！");
-        }
+    if (inputErrorTimes >= 5) {
+      await Locker.lock();
+      inputErrorTimes = 0;
+      ToastUtil.showError(msg: "连续错误超过五次，锁定30秒");
+      return;
+    }
+
+    var password = _passwordController.text;
+    if (password.isEmpty) {
+      ToastUtil.show(msg: "请先输入应用主密码");
+      return;
+    }
+
+    if (Config.password != "") {
+      if (Config.password == EncryptUtil.encrypt(password)) {
+        NavigationUtil.goHomePage(context);
+        ToastUtil.show(msg: "登录成功");
+        Config.updateLatestUsePasswordTime();
       } else {
-        ToastUtil.showError(msg: "还未设置过Allpass，请先进行设置");
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => RegisterPage(),
-        ));
+        inputErrorTimes++;
+        ToastUtil.showError(msg: "主密码错误，已错误$inputErrorTimes次，连续超过五次将锁定30秒");
       }
+    } else {
+      ToastUtil.showError(msg: "还未设置过Allpass，请先进行设置");
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => RegisterPage(),
+      ));
     }
   }
 }
