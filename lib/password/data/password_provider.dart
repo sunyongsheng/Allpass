@@ -1,5 +1,6 @@
 import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/password/data/letter_index_provider.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
@@ -9,27 +10,27 @@ import 'package:allpass/password/model/password_bean.dart';
 final List<PasswordBean> emptyList = [];
 
 /// 保存程序中的所有的Password
-class PasswordProvider with ChangeNotifier {
-  List<PasswordBean> _passwordList = emptyList;
+class PasswordProvider extends LetterIndexProvider with ChangeNotifier {
   PasswordRepository _repository = inject();
-  /// 按字母表顺序进行排序后，记录每个字母前面有多少元素的Map，符号或数字的key=#，value=0
-  /// 例如{'#': 0, 'A': 5, 'C': 9} 代表第一个以数字或字母开头的元素索引为0，第一个为'A'
-  /// 或'a'为首字母的元素索引为5，第一个以'C'或'c'为首字母的元素索引为9
-  Map<String, int> _letterCountIndex = Map();
+
+  List<PasswordBean> _passwordList = emptyList;
+  Map<String, int> _letterCountIndexMap = Map();
   PasswordBean _currPassword = PasswordBean.empty;
   SimpleCountCache<String> _mostUsedCache = SimpleCountCache(maxSize: 5);
   List<String> _mostUsedUsername = [];
 
   bool _haveInit = false;
 
-  final List<String> letters = ['A','B','C','D','E','F','G','H','I','J','K','L',
-    'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+  @override
+  Map<String, int> get letterIndexMap => _letterCountIndexMap;
 
-  List<PasswordBean> get passwordList     => _passwordList;
-  Map<String, int>   get letterCountIndex => _letterCountIndex;
-  int                get count            => _passwordList.length;
-  PasswordBean       get currPassword     => _currPassword;
-  List<String>       get mostUsedUsername => _mostUsedUsername;
+  List<PasswordBean> get passwordList => _passwordList;
+
+  int get count => _passwordList.length;
+
+  PasswordBean get currPassword => _currPassword;
+
+  List<String> get mostUsedUsername => _mostUsedUsername;
 
   Future<Null> init() async {
     if (_haveInit) return;
@@ -62,15 +63,15 @@ class PasswordProvider with ChangeNotifier {
   /// 刷新首字母索引，基于[_passwordList]已按首字母排好序的情况下
   void _refreshLetterCountIndex() {
     int amount = 0;
-    _letterCountIndex.clear();
+    _letterCountIndexMap.clear();
     _passwordList.forEach((bean) {
       String firstLetter = PinyinHelper.getFirstWordPinyin(bean.name).substring(0, 1).toUpperCase();
-      if (letters.contains(firstLetter)) {
-        if (!_letterCountIndex.containsKey(firstLetter)) {
-          _letterCountIndex[firstLetter] = amount;
+      if (lettersWithoutHash.contains(firstLetter)) {
+        if (!_letterCountIndexMap.containsKey(firstLetter)) {
+          _letterCountIndexMap[firstLetter] = amount;
         }
       } else {
-        _letterCountIndex['#'] = 0;
+        _letterCountIndexMap['#'] = 0;
       }
       amount++;
     });
@@ -144,7 +145,7 @@ class PasswordProvider with ChangeNotifier {
 
   Future<Null> clear() async {
     _passwordList.clear();
-    _letterCountIndex.clear();
+    _letterCountIndexMap.clear();
     _mostUsedUsername.clear();
     _mostUsedCache.clear();
     await _repository.deleteAll();

@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:allpass/password/data/letter_index_provider.dart';
+import 'package:allpass/password/data/password_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 
 /// 首字母索引列
 class LetterIndexBar extends StatefulWidget {
-
-  final Key? key;
   final ScrollController scrollController;
 
-  LetterIndexBar(this.scrollController, {this.key}) : super(key: key);
+  LetterIndexBar(this.scrollController, {Key? key}) : super(key: key);
 
   @override
   State createState() {
@@ -22,22 +21,41 @@ class LetterIndexBar extends StatefulWidget {
 }
 
 class _LetterIndexBar extends State<LetterIndexBar> {
-  final List<String> letters = ['#','A','B','C','D','E','F','G',
-    'H','I','J','K','L','M','N', 'O','P','Q','R','S','T',
-    'U','V','W','X','Y','Z'];
   final double letterHeight = 16;
 
   int _tapPosition = 0;
   double _opacity = 0.0;
   bool _isHidden = true;
   Timer? _hideTimer;
+  int _currentIndex = -1;
 
   late ScrollController _controller;
+
+  late ScrollController _letterController;
 
   @override
   void initState() {
     super.initState();
+
+    _letterController = ScrollController();
     _controller = widget.scrollController;
+
+    _currentIndex = _calculateFirstVisibleItemLetterIndex();
+    _controller.addListener(() {
+      var letterIndex = _calculateFirstVisibleItemLetterIndex();
+      if (letterIndex != _currentIndex) {
+        setState(() {
+          _currentIndex = letterIndex;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _letterController.dispose();
   }
 
   @override
@@ -51,20 +69,29 @@ class _LetterIndexBar extends State<LetterIndexBar> {
             height: letterHeight * letters.length,
             child: GestureDetector(
               child: SingleChildScrollView(
+                controller: _letterController,
                 child: Selector<PasswordProvider, Map<String, int>>(
-                  selector: (_, provider) => provider.letterCountIndex,
-                  builder: (_, letterCountIndex, __) {
+                  selector: (_, provider) => provider.letterIndexMap,
+                  builder: (_, letterCountIndexMap, __) {
                     List<Widget> children = [];
-                    var keys = letterCountIndex.keys;
+                    var keys = letterCountIndexMap.keys;
                     letters.forEach((item) {
-                      children.add(SizedBox(
+                      var selected = _currentIndex == letters.indexOf(item);
+                      var textColor = selected ? Colors.white : keys.contains(item) ? null : Colors.grey;
+                      children.add(Container(
+                        width: letterHeight,
+                        height: letterHeight,
+                        alignment: Alignment.center,
                         child: Text(
                           item,
-                          style: TextStyle(
-                            color: keys.contains(item) ? null : Colors.grey,
-                          ),
+                          style: TextStyle(color: textColor, fontSize: 12),
                         ),
-                        height: letterHeight,
+                        decoration: selected
+                            ? BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(4),
+                              )
+                            : null,
                       ));
                     });
                     return Column(
@@ -150,12 +177,25 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     );
   }
 
+  int _calculateFirstVisibleItemLetterIndex() {
+    var offset = _controller.offset;
+    var itemIndex = offset ~/ 72.0;
+    var letterIndex = -1;
+    context.read<PasswordProvider>().letterIndexMap.forEach((letter, index) {
+      if (itemIndex >= index) {
+        letterIndex = letters.indexOf(letter);
+        return;
+      }
+    });
+    return letterIndex;
+  }
+
   int _calculateCurrentPosition(double dy) {
-    return max(0, min(26, (dy / letterHeight).floor()));
+    return max(0, min(26, ((dy + _letterController.offset) / letterHeight).floor()));
   }
 
   void _scrollToTargetPosition(int target) {
-    var map = context.read<PasswordProvider>().letterCountIndex;
+    var map = context.read<PasswordProvider>().letterIndexMap;
     var keys = map.keys;
     if (keys.contains(letters[target])) {
       double offset = (map[letters[target]] ?? 0) * 72.0;
