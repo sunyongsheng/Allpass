@@ -49,9 +49,11 @@ TODO
 
 # 下载体验
 
-你可以在酷安搜索“Allpass”进行下载，扫描下面的二维码或者[点此下载](https://allpass.aengus.top/api/download/?version=1.5.0)
+可以在Github Release页、扫描下面的二维码或者[点此下载](https://www.pgyer.com/624679667fcbb8c8072a884b899690e3)
 
-![AllpassV1.2.0](./screenshots/allpass_v1.5.0.png)
+![AllpassV1.8.0](./screenshots/allpass_v1.8.0.png)
+
+(目前使用蒲公英内测模式进行分发，每天下载次数限制为500次，如遇到无法下载的情况可在Github Release页进行下载)
 
 # 未来规划
 
