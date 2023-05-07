@@ -1,9 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:allpass/card/data/card_table.dart';
 import 'package:allpass/password/data/password_table.dart';
 import 'package:logger/logger.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -25,7 +25,11 @@ class DBManager {
   static init() async {
     var dbPath = await getDatabasesPath();
     String dbName = _dbName;
-    String path = join(dbPath, dbName);
+    // TODO path使用 join(dbPath, dbName)，需要数据库级别进行迁移
+    String path = dbPath + dbName;
+    if (Platform.isIOS) {
+      path = dbName + "/" + dbName;
+    }
     // 打开数据库
     _database = await openDatabase(path, version: _dbVersion, onUpgrade: onUpdate);
   }
