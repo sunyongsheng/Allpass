@@ -222,7 +222,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 onTap: () async {
                   if (bean.url.startsWith("https") ||
                       bean.url.startsWith("http"))
-                    await launchUrl(Uri.parse(bean.url));
+                    await launchUrl(
+                      Uri.parse(bean.url),
+                      mode: LaunchMode.externalApplication,
+                    );
                 },
                 child: Text(
                   bean.url,

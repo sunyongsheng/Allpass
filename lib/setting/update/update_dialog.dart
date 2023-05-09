@@ -83,7 +83,10 @@ class UpdateDialog extends StatelessWidget {
                 downloadUrl = updateBean.downloadUrl;
               }
               if (downloadUrl != null) {
-                await launchUrl(Uri.parse(downloadUrl));
+                await launchUrl(
+                  Uri.parse(downloadUrl),
+                  mode: LaunchMode.externalApplication,
+                );
               }
             }),
         TextButton(

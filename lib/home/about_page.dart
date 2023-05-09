@@ -63,8 +63,11 @@ class AboutPage extends StatelessWidget {
                           trailing: Text("V${AllpassApplication.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () async {
-                            await launchUrl(Uri.parse("https://allpass.aengus.top"));
-                          },
+                              await launchUrl(
+                                Uri.parse("https://allpass.aengus.top"),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            },
                           onLongPress: () {
                             if (!VersionUtil.isDebug()) {
                               commonLogger.w("current isn't debug mode");
@@ -90,7 +93,10 @@ class AboutPage extends StatelessWidget {
                       child: TextButton(
                         child: Text("微博：@Aengus_Sun"),
                         onPressed: () async {
-                          await launchUrl(Uri.parse("https://weibo.com/u/5484402663"));
+                          await launchUrl(
+                            Uri.parse("https://weibo.com/u/5484402663"),
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
                       ),
                     ),
@@ -108,7 +114,10 @@ class AboutPage extends StatelessWidget {
                       child: TextButton(
                         child: Text("开发者网址：https://www.aengus.top"),
                         onPressed: () async {
-                          await launchUrl(Uri.parse("https://www.aengus.top"));
+                          await launchUrl(
+                            Uri.parse("https://www.aengus.top"),
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
                       ),
                     ),
@@ -119,14 +128,20 @@ class AboutPage extends StatelessWidget {
                             TextButton(
                               child: Text("开源地址：Github"),
                               onPressed: () async {
-                                await launchUrl(Uri.parse("https://github.com/sunyongsheng/Allpass"));
-                              },
+                                  await launchUrl(
+                                    Uri.parse("https://github.com/sunyongsheng/Allpass"),
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                },
                             ),
                             Text("|"),
                             TextButton(
                               child: Text("码云"),
                               onPressed: () async {
-                                await launchUrl(Uri.parse("https://gitee.com/sunyongsheng/Allpass"));
+                                await launchUrl(
+                                  Uri.parse("https://gitee.com/sunyongsheng/Allpass"),
+                                  mode: LaunchMode.externalApplication,
+                                );
                               },
                             ),
                           ],
