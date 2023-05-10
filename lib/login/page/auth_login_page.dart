@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,13 +52,14 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(
             child: Text(
-              "登录 Allpass",
+              l10n.unlockAllpass,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 22,
@@ -79,8 +81,9 @@ class _AuthLoginPage extends State<StatefulWidget> {
               children: <Widget>[
                 Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
                 Padding(padding: EdgeInsets.only(
-                    top: AllpassScreenUtil.setHeight(40)),),
-                Text("点击此处使用指纹登录")
+                  top: AllpassScreenUtil.setHeight(40),
+                )),
+                Text(l10n.clickToUseBiometrics)
               ],
             ),
           ),
@@ -90,7 +93,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextButton(
-                child: Text("使用密码登录"),
+                child: Text(l10n.usePassword),
                 onPressed: () async {
                   await _localAuthService.stopAuthenticate();
                   NavigationUtil.goLoginPage(context);
@@ -106,6 +109,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
   }
 
   Future<Null> askAuth(BuildContext context) async {
+    var l10n = context.l10n;
     // 两次时间
     DateTime now = DateTime.now();
     DateTime latestUsePassword = DateTime.parse(AllpassApplication.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
@@ -114,25 +118,25 @@ class _AuthLoginPage extends State<StatefulWidget> {
       showDialog<bool>(
         context: context,
         builder: (context) => InputMainPasswordDialog(
-          helperText: "Allpass会定期要求您输入密码以防止您忘记主密码",
+          helperText: l10n.inputMainPasswordTimingHint,
         ),
       ).then((value) {
         if (value ?? false) {
-          ToastUtil.show(msg: "验证成功");
+          ToastUtil.show(msg: l10n.verificationSuccess);
           Config.updateLatestUsePasswordTime();
           NavigationUtil.goHomePage(context);
         } else {
-          ToastUtil.show(msg: "您似乎忘记了主密码");
+          ToastUtil.show(msg: l10n.mainPasswordErrorHint);
           NavigationUtil.goLoginPage(context);
         }
       });
     } else {
-      var authResult = await _localAuthService.authenticate();
+      var authResult = await _localAuthService.authenticate(context);
       if (authResult == AuthResult.Success) {
-        ToastUtil.show(msg: "验证成功");
+        ToastUtil.show(msg: l10n.verificationSuccess);
         NavigationUtil.goHomePage(context);
       } else if (authResult == AuthResult.Failed) {
-        ToastUtil.show(msg: "认证失败，请重试");
+        ToastUtil.show(msg: l10n.biometricsRecognizedFailed);
       }
     }
   }

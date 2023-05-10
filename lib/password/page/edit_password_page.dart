@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,9 @@ class EditPasswordPage extends StatefulWidget {
 
 class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixin {
 
-  String get pageTitle => (operation == DataOperation.add)? "添加密码" : "编辑密码";
+  String get pageTitle => (operation == DataOperation.add)
+      ? context.l10n.createPassword
+      : context.l10n.updatePassword;
 
   PasswordBean? editingData;
 
@@ -156,14 +159,14 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
                 if (operation == DataOperation.add) {
                   provider.insertPassword(tempData);
                   RuntimeData.newPasswordOrCardCount++;
-                  ToastUtil.show(msg: "新增成功");
+                  ToastUtil.show(msg: context.l10n.createSuccess);
                 } else {
                   provider.updatePassword(tempData);
-                  ToastUtil.show(msg: "更新成功");
+                  ToastUtil.show(msg: context.l10n.updateSuccess);
                 }
                 Navigator.pop(context);
               } else {
-                ToastUtil.showError(msg: "名称、账号和密码不允许为空！");
+                ToastUtil.showError(msg: context.l10n.upsertPasswordRule);
               }
             },
           )
@@ -201,7 +204,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "名称",
+            context.l10n.name,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           NoneBorderCircularTextField(
@@ -225,7 +228,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "账号",
+            context.l10n.account,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           NoneBorderCircularTextField(
@@ -258,7 +261,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "密码",
+            context.l10n.password,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           Row(
@@ -304,7 +307,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "链接",
+            context.l10n.url,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           NoneBorderCircularTextField(
@@ -332,7 +335,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            "文件夹",
+            context.l10n.folderTitle,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           DropdownButton(
@@ -344,11 +347,14 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
               return DropdownMenuItem<String>(
                 value: item,
-                child: Text(item, style: TextStyle(
+                child: Text(
+                  item,
+                  style: TextStyle(
                     color: ThemeUtil.isInDarkTheme(context)
                         ? Colors.white
-                        : Colors.black
-                ),),
+                        : Colors.black,
+                  ),
+                ),
               );
             }).toList(),
             style: AllpassTextUI.firstTitleStyle,
@@ -369,42 +375,43 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            "所属App",
+            context.l10n.ownerApp,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           TextButton(
-            child: Text(appId?.isEmpty ?? true ? "无" : appName!),
+            child: Text(appId?.isEmpty ?? true ? context.l10n.none : appName!),
             onPressed: () async {
               showDialog(
-                  context: context,
-                  builder: (_) => FutureBuilder<List<Application>>(
-                    future: DeviceAppsHolder.getInstalledApps(),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.done:
-                          return SelectAppDialog(
-                            list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
-                            selectedApp: appId,
-                            onSelected: (app) {
-                              setState(() {
-                                appName = app.appName;
-                                appId = app.packageName;
-                              });
-                            },
-                            onCancel: () {
-                              setState(() {
-                                appName = null;
-                                appId = null;
-                              });
-                            },
-                          );
-                        default:
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                      }
-                    },
-                  ));
+                context: context,
+                builder: (_) => FutureBuilder<List<Application>>(
+                  future: DeviceAppsHolder.getInstalledApps(),
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.done:
+                        return SelectAppDialog(
+                          list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
+                          selectedApp: appId,
+                          onSelected: (app) {
+                            setState(() {
+                              appName = app.appName;
+                              appId = app.packageName;
+                            });
+                          },
+                          onCancel: () {
+                            setState(() {
+                              appName = null;
+                              appId = null;
+                            });
+                          },
+                        );
+                      default:
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                    }
+                  },
+                ),
+              );
             },
           ),
         ],
@@ -421,7 +428,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
           Container(
             margin: EdgeInsets.only(bottom: 10),
             child: Text(
-              "标签",
+              context.l10n.labels,
               style: TextStyle(fontSize: 16, color: mainColor),
             ),
           ),
@@ -429,10 +436,11 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             children: <Widget>[
               Expanded(
                 child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.start,
-                    spacing: 8.0,
-                    runSpacing: 10.0,
-                    children: _getTag()),
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  spacing: 8.0,
+                  runSpacing: 10.0,
+                  children: _getTag(),
+                ),
               )
             ],
           )
@@ -448,7 +456,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "备注",
+            context.l10n.notes,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
           NoneBorderCircularTextField(
@@ -457,7 +465,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             maxLines: null,
             onTap: () {
               Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => DetailTextPage("备注", notesController.text, true),
+                builder: (context) => DetailTextPage(context.l10n.notes, notesController.text, true),
               )).then((newValue) {
                 setState(() {
                   notesController.text = newValue;
@@ -512,12 +520,13 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             ).then((label) {
               if (label != null && RuntimeData.labelListAdd([label])) {
                 setState(() {});
-                ToastUtil.show(msg: "添加标签 $label 成功");
+                ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
               } else if (label != null) {
-                ToastUtil.show(msg: "标签 $label 已存在");
+                ToastUtil.show(msg: context.l10n.labelAlreadyExists(label));
               }
             });
-          }),
+          },
+      ),
     );
     return labelChoices;
   }

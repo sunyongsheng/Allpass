@@ -1,5 +1,6 @@
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/password/data/password_repository.dart';
@@ -31,6 +32,7 @@ class _DebugPage extends State<DebugPage> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text("DEBUG MODE"),
@@ -41,7 +43,7 @@ class _DebugPage extends State<DebugPage> {
           children: <Widget>[
             ListTile(
               title: TextButton(
-                child: Text("显示设备已安装App"),
+                child: Text(l10n.debugListInstalledApp),
                 onPressed: () async {
                   List<Application> installedApps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
                   showDialog(
@@ -60,7 +62,7 @@ class _DebugPage extends State<DebugPage> {
             ),
             ListTile(
               title: TextButton(
-                child: Text("页面测试"),
+                child: Text(l10n.debugPageTest),
                 onPressed: () async {
                   showDialog<String>(
                     context: context,
@@ -86,7 +88,7 @@ class _DebugPage extends State<DebugPage> {
             ),
             ListTile(
               title: TextButton(
-                child: Text("查看sp"),
+                child: Text(l10n.debugListSp),
                 onPressed: () async {
                   Set<String> keys = AllpassApplication.sp.getKeys();
                   keys.remove("password");
@@ -108,39 +110,39 @@ class _DebugPage extends State<DebugPage> {
             ),
             ListTile(
               title: TextButton(
-                child: Text("删除所有密码记录"),
+                child: Text(l10n.debugDeleteAllPassword),
                 onPressed: () async {
                   await context.read<PasswordProvider>().clear();
-                  ToastUtil.show(msg: "已删除所有密码");
+                  ToastUtil.show(msg: l10n.debugAllPasswordDeleted);
                 },
               ),
             ),
             ListTile(
               title: TextButton(
-                child: Text("删除所有卡片记录"),
+                child: Text(l10n.debugDeleteAllCard),
                 onPressed: () async {
                   await context.read<CardProvider>().clear();
-                  ToastUtil.show(msg: "已删除所有卡片");
+                  ToastUtil.show(msg: l10n.debugAllCardDeleted);
                 },
               ),
             ),
             ListTile(
               title: TextButton(
-                child: Text("删除密码数据库"),
+                child: Text(l10n.debugDeletePasswordDB),
                 onPressed: () async {
                   await context.read<PasswordProvider>().clear();
                   await _passwordRepository.dropTable();
-                  ToastUtil.show(msg: "已删除密码数据库");
+                  ToastUtil.show(msg: l10n.debugPasswordDBDeleted);
                 },
               ),
             ),
             ListTile(
               title: TextButton(
-                child: Text("删除卡片数据库"),
+                child: Text(l10n.debugDeleteCardDB),
                 onPressed: () async {
                   await context.read<CardProvider>().clear();
                   await _cardRepository.dropTable();
-                  ToastUtil.show(msg: "已删除卡片数据库");
+                  ToastUtil.show(msg: l10n.debugCardDBDeleted);
                 },
               ),
             ),

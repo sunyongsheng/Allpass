@@ -8,11 +8,12 @@ class WebDavFile {
   final int byteSize;
   final bool isFile;
 
-  WebDavFile(
-      {required this.filename,
-      required this.lastModified,
-      required this.byteSize,
-      required this.isFile});
+  WebDavFile({
+    required this.filename,
+    required this.lastModified,
+    required this.byteSize,
+    required this.isFile,
+  });
 
   static WebDavFile? parse(XmlElement responseNode) {
     String? _getNameFromHref(XmlElement responseNode) {

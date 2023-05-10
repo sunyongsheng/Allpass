@@ -1,4 +1,6 @@
 import 'package:allpass/core/error/app_error.dart';
+import 'package:allpass/l10n/l10n_support.dart';
+import 'package:flutter/cupertino.dart';
 
 enum MergeMethod {
   localFirst,
@@ -7,14 +9,27 @@ enum MergeMethod {
 }
 
 extension MergeMethodExt on MergeMethod {
-  String get name {
+  String title(BuildContext context) {
+    var l10n = context.l10n;
     switch (this) {
       case MergeMethod.localFirst:
-        return "本地优先";
+        return l10n.mergeMethodLocalFirst;
       case MergeMethod.remoteFirst:
-        return "云端优先";
+        return l10n.mergeMethodRemoteFirst;
       case MergeMethod.onlyRemote:
-        return "不保留本地数据";
+        return l10n.mergeMethodOnlyRemote;
+    }
+  }
+
+  String desc(BuildContext context) {
+    var l10n = context.l10n;
+    switch (this) {
+      case MergeMethod.localFirst:
+        return l10n.mergeMethodLocalFirstHelp;
+      case MergeMethod.remoteFirst:
+        return l10n.mergeMethodRemoteFirstHelp;
+      case MergeMethod.onlyRemote:
+        return l10n.mergeMethodOnlyRemoteHelp;
     }
   }
 }
@@ -39,15 +54,8 @@ class MergeMethods {
   }
 }
 
-class MergeMethodItem {
-  final MergeMethod method;
-  final String desc;
-
-  const MergeMethodItem(this.method, this.desc);
-}
-
 var mergeMethods = [
-  const MergeMethodItem(MergeMethod.localFirst, "当本地记录和云端记录名称、用户名和链接相同时，保留本地记录"),
-  const MergeMethodItem(MergeMethod.remoteFirst, "当本地记录和云端记录名称、用户名和链接相同时，使用云端记录"),
-  const MergeMethodItem(MergeMethod.onlyRemote, "清空本地所有数据，只使用云端数据"),
+  MergeMethod.localFirst,
+  MergeMethod.remoteFirst,
+  MergeMethod.onlyRemote,
 ];

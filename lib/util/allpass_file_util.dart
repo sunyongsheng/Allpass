@@ -10,7 +10,7 @@ class AllpassFileUtil {
   static String readFile(String filePath) {
     File file = File(filePath);
     if (!file.existsSync()) {
-      throw FileSystemException("文件不存在！", filePath);
+      throw FileSystemException("File not found", filePath);
     }
     return file.readAsStringSync();
   }

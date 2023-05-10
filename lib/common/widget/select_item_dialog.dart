@@ -1,8 +1,9 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 typedef WidgetBuilder<T> = Widget Function(BuildContext context, T data);
-typedef StringBuilder = String? Function();
-typedef StringGetter<T> = String Function(T);
+typedef StringBuilder = String? Function(BuildContext context);
+typedef StringGetter<T> = String Function(BuildContext context, T);
 
 abstract class SelectItemDialog<T> extends StatelessWidget {
   final Key? key;
@@ -18,7 +19,7 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("请选择"),
+      title: Text(context.l10n.pleaseSelect),
       content: SingleChildScrollView(
         child: Column(children: _getList(context)),
       ),
@@ -57,8 +58,8 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
   final StringGetter<T>? itemSubtitleBuilder;
   final void Function(T) onSelected;
 
-  final StringGetter<T> _defaultItemTileBuilder = (data) => data.toString();
-  final StringBuilder _defaultTitleBuilder = () => "请选择";
+  final StringGetter<T> _defaultItemTileBuilder = (_, data) => data.toString();
+  final StringBuilder _defaultTitleBuilder = (context) => context.l10n.pleaseSelect;
 
   DefaultSelectItemDialog({
     required List<T> list,
@@ -73,7 +74,7 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
 
   @override
   Widget build(BuildContext context) {
-    var title = (titleBuilder ?? _defaultTitleBuilder).call();
+    var title = (titleBuilder ?? _defaultTitleBuilder).call(context);
     return AlertDialog(
         title: title == null ? null : Text(title),
         content: SingleChildScrollView(
@@ -83,8 +84,8 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
 
   @override
   Widget buildItem(BuildContext context, T data) {
-    var title = itemTitleBuilder?.call(data) ?? _defaultItemTileBuilder(data);
-    var subtitle = itemSubtitleBuilder?.call(data);
+    var title = itemTitleBuilder?.call(context, data) ?? _defaultItemTileBuilder(context, data);
+    var subtitle = itemSubtitleBuilder?.call(context, data);
 
     var selected = selector?.call(data) ?? defaultSelector(data);
     return ListTile(

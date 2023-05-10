@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -47,7 +48,7 @@ class DetailTextPage extends StatelessWidget {
                             WidgetsBinding.instance.addPostFrameCallback((_) => _controller.clear());
                           },
                         ),
-                        hintText: "添加备注",
+                        hintText: context.l10n.addNotes,
                       ),
                     ),
                     padding: AllpassEdgeInsets.listInset,

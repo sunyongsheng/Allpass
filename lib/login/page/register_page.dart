@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/home/about_page.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,7 +59,7 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Padding(
                 child: Text(
-                  "设置 Allpass",
+                  context.l10n.setupAllpass,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 22,
@@ -69,13 +70,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               NoneBorderCircularTextField(
                   editingController:_passwordController,
-                  hintText: "请输入主密码",
+                  hintText: context.l10n.pleaseInputMainPassword,
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
               NoneBorderCircularTextField(
                   editingController: _secondController,
-                  hintText: "请再输入一遍",
+                  hintText: context.l10n.pleaseInputAgain,
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
@@ -83,7 +84,7 @@ class _RegisterPage extends State<RegisterPage> {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  title: "设置",
+                  title: context.l10n.setup,
                   onPressed: () async => await register(context),
                 ),
               ),
@@ -96,21 +97,21 @@ class _RegisterPage extends State<RegisterPage> {
 
   Future<Null> register(BuildContext context) async {
     if (_passwordController.text != _secondController.text) {
-      ToastUtil.showError(msg: "两次密码输入不一致！");
+      ToastUtil.showError(msg: context.l10n.passwordNotSame);
       return;
     }
 
     if (_passwordController.text.length < 6) {
-      ToastUtil.showError(msg: "主密码长度必须大于等于6！");
+      ToastUtil.showError(msg: context.l10n.passwordTooShort);
       return;
     }
 
     // 判断是否已有账号存在
     if (Config.password.isEmpty) {
       _registerActual();
-      ToastUtil.show(msg: "设置成功");
+      ToastUtil.show(msg: context.l10n.setupSuccess);
     } else {
-      ToastUtil.showError(msg: "已有账号注册过，只允许单账号");
+      ToastUtil.showError(msg: context.l10n.alreadySetup);
     }
   }
 
@@ -123,10 +124,11 @@ class _RegisterPage extends State<RegisterPage> {
 
   void _tryShowPrivacyDialog() {
     if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
+      var l10n = context.l10n;
       showDialog(
         context: context,
         builder: (cx) => AlertDialog(
-          title: Text("服务条款"),
+          title: Text(l10n.serviceTerms),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,14 +139,14 @@ class _RegisterPage extends State<RegisterPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text("同意并继续"),
+              child: Text(l10n.confirmServiceTerms),
               onPressed: () async {
                 await initAppFirstRun();
-                Navigator.pop(context);
+                Navigator.pop(cx);
               },
             ),
             TextButton(
-              child: Text("取消"),
+              child: Text(l10n.cancel),
               onPressed: () => exit(0),
             )
           ],

@@ -1,0 +1,738 @@
+{
+  "allpass": "Allpass",
+  "appError": "Occurs error",
+  "appErrorHint1": "App occurs unexpected error, please report to author",
+  "appErrorHint2": "Please see below for the error message. Kindly take a screenshot and send it to the email address sys6511@126.com.",
+
+  "unlock": "Unlock",
+  "@unlock": {
+    "description": "Text on LoginPage Button"
+  },
+  "unlockAllpass": "Unlock Allpass",
+  "@unlockAllpass": {
+    "description": "Title on LoginPage"
+  },
+  "pleaseInputMainPassword": "Please input master password",
+  "@pleaseInputMainPassword": {
+    "description": "Hint for user to input master password"
+  },
+  "useBiometrics": "Use Biometrics to unlock",
+  "notEnableBiometricsYet": "You have not yet enabled biometric recognition",
+  "lockingRemains": "Locked, {lockSeconds} seconds remaining",
+  "@lockingRemains": {
+    "description": "The user has entered the password incorrectly five times in a row, and the APP has been locked. If the user clicks the unlock button again at this time, the following message will appear:",
+    "placeholders": {
+      "lockSeconds": {
+        "type": "int"
+      }
+    }
+  },
+  "errorExceedThreshold": "Locked for 30 seconds due to five consecutive errors",
+  "clickToUseBiometrics": "To unlock using biometrics, simply tap here",
+  "usePassword": "Use password to unlock",
+  "inputMainPasswordTimingHint": "To ensure you don't forget your master password, Allpass will periodically prompt you to enter it",
+  "verificationSuccess": "Verification successful",
+  "mainPasswordErrorHint": "It seems like you may have forgotten your master password",
+  "biometricsRecognizedFailed": "Recognition failed, please try again",
+  "pleaseInputMainPasswordFirst": "Please input master password first",
+  "unlockSuccess": "Unlock successfully",
+  "mainPasswordError": "Main password incorrect, has been entered incorrectly {inputErrorTimes} times, consecutive errors exceeding five times will result in a 30-second lockout",
+  "@mainPasswordError": {
+    "placeholders": {
+      "inputErrorTimes": {
+        "type": "int"
+      }
+    }
+  },
+  "notSetupYet": "Allpass has not been set up yet, please set it up first",
+
+  "setupAllpass": "Setup Allpass",
+  "pleaseInputAgain": "Please input again",
+  "setup": "Setup",
+  "passwordNotSame": "The two passwords are not the same",
+  "passwordTooShort": "Main password length must be greater than 6",
+  "setupSuccess": "Setup successfully",
+  "alreadySetup": "Already setup, only allow to setup once",
+  "serviceTerms": "Service Terms",
+  "confirmServiceTerms": "Agree and continue",
+  "cancel": "Cancel",
+
+  "password": "Password",
+  "passwords": "passwords",
+  "addPasswordItem": "Add Password Item",
+  "passwordEmptyHint": "Here stores your password information, such as\nGoogle account, Twitter account, etc.",
+  "selectOnePasswordAtLeast": "Please select at least one password item",
+  "confirmDelete": "Confirm Delete",
+  "deletePasswordsWarning": "You will delete {count} password items, continue to delete?",
+  "@deletePasswordsWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deletePasswordsSuccess": "{count} password(s) deleted",
+  "@deletePasswordsSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "movePasswordsSuccess": "Moved {count} password(s) to {folder} folder",
+  "@movePasswordsSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "folder": {
+        "type": "String"
+      }
+    }
+  },
+  "searchButton": "Search {type}",
+  "@searchButton": {
+    "placeholders": {
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "emptyDataHint": "Oops, it seems like there's nothing here!",
+  "delete": "Delete",
+  "move": "Move",
+
+  "card": "Card",
+  "cards": "cards",
+  "addCardItem": "Add Card Item",
+  "cardEmptyHint": "This is where your card information such as ID cards, bank cards, or VIP cards are stored.",
+  "selectOneCardAtLeast": "Please select at least one card item",
+  "deleteCardsWarning": "You will delete {count} card items, continue to delete?",
+  "@deleteCardsWarning": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteCardsSuccess": "{count} card(s) deleted",
+  "@deleteCardsSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moveCardsSuccess": "Moved {count} card(s) to {folder} folder",
+  "@moveCardsSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "folder": {
+        "type": "String"
+      }
+    }
+  },
+
+  "unknownErrorOccur": "An error has occurred.",
+  "account": "Account",
+  "copy": "Copy",
+  "accountCopied": "Account has been copied to clipboard",
+  "passwordCopied": "Password has been copied to clipboard",
+  "url": "Link",
+  "urlCopied": "Link has been copied to clipboard",
+  "ownerApp": "Belongs to app",
+  "openAppFailed": "Failed to open app, please ensure that the app is installed",
+  "notes": "Notes",
+  "emptyNotes": "No notes",
+  "label": "tag",
+  "labels": "Tags",
+  "accountPassword": "Account: {account}\nPassword: {password}",
+  "@accountPassword": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      },
+      "password": {
+        "type": "String"
+      }
+    }
+  },
+  "accountPasswordCopied": "Account and Password has been copied to clipboard",
+  "deletePasswordWaring": "You are about to permanently delete this password item. continue to delete?",
+  "deleteSuccess": "Delete Successfully",
+  "viewPassword": "Password Detail",
+  "emptyLabel": "No tags",
+  "none": "None",
+
+  "viewCard": "Card Detail",
+  "ownerName": "Owner Name",
+  "nameCopied": "Name has been copied to clipboard",
+  "cardId": "Card Number",
+  "cardIdCopied": "Card number has been copied to clipboard",
+  "phoneNumber": "Phone Number",
+  "phoneNumberCopied": "Phone number has been copied to clipboard",
+  "deleteCardWarning": "You are about to permanently delete this card item. continue to delete?",
+
+  "createPassword": "Create Password",
+  "updatePassword": "Edit Password",
+  "createSuccess": "Create successfully",
+  "updateSuccess": "Update successfully",
+  "upsertPasswordRule": "Name, Account and Password can't be empty",
+  "name": "Name",
+  "folder": "folder",
+  "folderTitle": "Folder",
+  "createLabelSuccess": "Create Tag {tag} successfully",
+  "@createLabelSuccess": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "labelAlreadyExists": "Tag {tag} already exists",
+  "@labelAlreadyExists": {
+    "placeholders": {
+      "tag": {
+        "type": "String"
+      }
+    }
+  },
+  "setToNone": "Set to none",
+  "addNotes": "Add notes",
+  "passwordGenerator": "Password Generator",
+  "symbols": "Symbols",
+  "generate": "Generate",
+  "close": "Close",
+
+  "createCard": "Create Card",
+  "updateCard": "Update Card",
+  "cardPasswordEmptyAutoGen": "No password entered, automatically initialized as 00000",
+  "upsertCardRule": "Owner Name and Card Number can't be empty",
+
+  "settings": "Settings",
+  "mainPasswordManager": "Primary account management",
+  "biometricAuthentication": "Biometric authentication",
+  "enableBiometricSuccess": "Enable biometric authentication successfully",
+  "biometricNotAvailable": "Biometric recognition is unavailable, please ensure that your device supports and has enabled it",
+  "authorizationFailed": "Authorization failed",
+  "biometricNotSupport": "Your device not support biometric",
+  "longPressToCopy": "Long Press to Copy",
+  "appTheme": "App Theme",
+  "labelManager": "Tag Management",
+  "folderManager": "Folder Management",
+  "webDavSync": "WebDAV Sync",
+  "importExport": "Import/Export",
+  "autofill": "Autofill Service",
+  "shareToFriends": "Share Allpass",
+  "feedback": "Feedback",
+  "checkUpdate": "Check Update",
+  "about": "About",
+  "shareAllpassDesc": "[Allpass] is a simple and easy-to-use tool for managing private information. [DownloadUrl] {downloadUrl}",
+  "@shareAllpassDesc": {
+    "placeholders": {
+      "downloadUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "shareAllpassSubject": "Software recommendation - Allpass",
+  "pleaseSelect": "Please Select an Item",
+
+  "authorizeToUnlock": "Authorize to unlock Allpass",
+  "gotoSettings": "Go to Settings",
+  "iosGoToSettingsDescFace": "Face ID is currently disabled. Please go to settings to enable Face ID and try again",
+  "iosGoToSettingsDescFingerprint": "Fingerprint unlock is currently disabled. Please go to settings to enable fingerprint unlock and try again",
+  "iosGoToSettingsDescIris": "Biometric recognition is currently disabled. Please go to settings to enable it and try again",
+  "iosGoToSettingsDescDefault": "Biometric authorization is currently disabled. Please go to settings to enable Touch ID or Face ID and try again",
+  "iosLogoutFace": "Face ID has been disabled. Please lock and unlock your device to enable Face ID",
+  "iosLogoutFingerprint": "Touch ID has been disabled. Please lock and unlock your device to enable Touch ID",
+  "iosLogoutIris": "Biometric recognition has been disabled. Please lock and unlock your device to enable biometric recognition",
+  "androidGoToSettingsDesc": "Fingerprint unlock is currently disabled. Please go to settings to enable it and try again",
+  "biometricRequiredTitle": "Biometric recognition is not enabled yet",
+  "signInTitle": "Please verify",
+  "biometricHint": "Use fingerprint to unlock",
+
+  "modifyMainPassword": "Modify master password",
+  "inputMainPasswordTiming": "Regularly require master password",
+  "secretKeyUpdate": "Update encrypt secret key",
+  "clearAllData": "Clear all data",
+  "logout": "Logout",
+  "never": "Never",
+  "sevenDays": "7 Days",
+  "tenDays": "10 Days",
+  "fifteenDays": "15 Days",
+  "thirtyDays": "30 Days",
+  "nDays": "{n} Days",
+  "@nDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmSelect": "Confirm Select",
+  "selectNeverWarning": "After selecting this option, Allpass will no longer regularly ask you to enter the master password. Please keep your master password safe",
+  "confirmClearAll": "Confirm Clear",
+  "clearAllWaring": "This operation will clear all App data and can't rollback, continue?",
+  "clearAllSuccess": "Clear all data successfully",
+  "mainPasswordIncorrect": "Master password is incorrect",
+  "oldPassword": "Original Password",
+  "newPassword": "New Password",
+  "pleaseInputOldPassword": "Please input original password",
+  "pleaseInputNewPassword": "Please input new password",
+  "modifySuccess": "Modify successfully",
+  "modifyPasswordFail": "Password is less than 6 characters or the two password entries do not match",
+  "oldPasswordIncorrect": "The entered original password is incorrect!",
+
+  "secretKeyUpdateHelp1": "Please read carefully",
+  "secretKeyUpdateHelp2": "Allpass 1.5.0 and later versions use a new key storage method",
+  "secretKeyUpdateHelp3": "Allpass will generate a unique key for each user and store it in a system-specific area. This means that even if Allpass is decompiled and the data in the database is obtained through some means, it cannot be easily decrypted",
+  "secretKeyUpdateHelp4": "After upgrading, all password encryption and decryption will rely on the newly generated key. Please ",
+  "secretKeyUpdateHelp5": "keep the newly generated key safe",
+  "secretKeyUpdateHelp6": "If you have enabled WebDAV synchronization, your data can still be accessed using the encryption key, even if you uninstall Allpass and the backup files are encrypted",
+  "secretKeyUpdateHelp7": "The time required for the upgrade is relatively short, and may vary depending on the device",
+  "secretKeyUpdateHelp8": "Please do not exit the program during the upgrade process, as this may cause data loss!",
+  "secretKeyUpdateHelp9": "***************** ATTENTION *****************",
+  "secretKeyUpdateHelp10": "If you have used Allpass for WebDAV backup, the old backup files will ",
+  "secretKeyUpdateHelp11": "no longer ",
+  "secretKeyUpdateHelp12": "be usable after a key update. (Local data will not be affected)",
+  "secretKeyUpdateHelp13": "For the sake of data security, we still recommend backing up your data by exporting it to CSV before upgrading!",
+  "secretKeyUpdateHelp14": "You can directly edit the input box below and manually enter a custom key (32 characters)",
+  "secretKeyUpdateHint": "The generated key is displayed here",
+  "generateSecretKey": "Generate",
+  "generateSecretKeyDone": "Generation complete, please keep the new key safe (long press to copy)",
+  "startUpgrade": "Start Upgrade",
+  "upgradeDone": "Upgrade complete",
+  "pleaseGenerateKeyFirst": "Please generate a key first",
+  "secretKeyLengthRequire": "The key length must be 32 characters",
+  "secretKeyUpgradeResult": "Upgraded {passwordCount} password items and {cardCount} card items",
+  "@secretKeyUpgradeResult": {
+    "placeholders": {
+      "passwordCount": {
+        "type": "int"
+      },
+      "cardCount": {
+        "type": "int"
+      }
+    }
+  },
+  "secretKeyUpgradeFailed": "Upgrade failed: {error}",
+
+  "feedbackPlaceholder": "Tell us what you think",
+  "feedbackContact": "Please enter your contact information (optional)",
+  "submit": "Submit",
+  "submitting": "Submitting, please wait",
+  "feedbackContentEmptyWarning": "Please input your feedback",
+  "feedbackContentTooLong": "The feedback content must be less than 1000 characters!",
+
+  "updateAvailable": "A new version is available for download! Latest version {channel} V{version}",
+  "@updateAvailable": {
+    "placeholders": {
+      "channel": {
+        "type": "String?"
+      },
+      "version": {
+        "type": "String?",
+        "example": "2.0.0"
+      }
+    }
+  },
+  "alreadyLatestVersion": "Your version is up-to-date! {channel} V{version}",
+  "@alreadyLatestVersion": {
+    "placeholders": {
+      "channel": {
+        "type": "String?"
+      },
+      "version": {
+        "type": "String?",
+        "example": "2.0.0"
+      }
+    }
+  },
+  "updateContent": "Update Log: ",
+  "recentlyUpdateContent": "Recent update log: ",
+  "networkErrorMsg": "Network error: {message}",
+  "@networkErrorMsg": {
+    "placeholders": {
+      "message": {
+        "type": "String?"
+      }
+    }
+  },
+  "networkErrorHelp": "An error has occurred due to network issues. If you have confirmed that your network is not the problem, then it may be due to the following reasons:\n",
+  "unknownError": "Unknown error: {message}",
+  "@unknownError": {
+    "placeholders": {
+      "message": {
+        "type": "String?"
+      }
+    }
+  },
+  "unknownErrorHelp": "An error has occurred during the check process! Below is the error message, please take a screenshot and send it to sys6511@126.com\n",
+  "downloadUpdate": "Download Update",
+  "remindMeLatter": "Remind me later",
+  "confirm": "Confirm",
+
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeColorBlue": "Blue",
+  "themeColorRed": "Red",
+  "themeColorTeal": "Teal",
+  "themeColorDeepPurple": "Deep Purple",
+  "themeColorOrange": "Orange",
+  "themeColorPink": "Pink",
+  "themeColorBlueGrey": "Blue Grey",
+
+  "selectExportType": "Select Export Type",
+  "exportConfirm": "Confirm Export",
+  "exportPasswordConfirmWarning": "The exported password items will be visible to everyone. continue to export?",
+  "exportCardConfirmWarning": "The exported card items will be visible to everyone. continue to export?",
+  "passwordAndCard": "Both Password and Card",
+  "exportAllConfirmWarning": "The exported data will be visible to everyone. continue to export?",
+  "exportFailed": "Export Failed: {message}",
+  "@exportFailed": {
+    "placeholders": {
+      "message": {
+        "type": "String?"
+      }
+    }
+  },
+
+  "importFromChrome": "Import from Chrome",
+  "importFromCsv": "Import from CSV File",
+  "importFromClipboard": "Import from Clipboard",
+  "exportToCsv": "Export to CSV File",
+
+  "selectImportType": "Select Import Type",
+  "importRecordSuccess": "Importing {count} records",
+  "@importRecordSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "importFailedNotCsv": "Import failed, please make sure the CSV file is exported by Allpass",
+  "importCanceled": "Import canceled",
+
+  "importFromClipboardHelp1": "This feature helps you easily import passwords previously saved in Notepad to Allpass;\n",
+  "importFromClipboardHelp2": "The name is a mnemonic for the password item, you can give it any name you like to help you identify what this record is about;\n",
+  "importFromClipboardHelp3": "The account is the username used for login, which may be a phone number, email, or other account you have set up;\n",
+  "importFromClipboardHelp4": "The website address can help Allpass correctly fill in your password on the website, usually the URL address of the website login page;\n",
+  "importFromClipboardHelp5": "Please use a 'space' as the separator between the two fields, so that Allpass can correctly distinguish which one is the username and which one is the password;\n",
+  "importFromClipboardHelp6": "If you have selected the last import format, please enter a uniform username in the first line. If there are multiple usernames, they can be imported in several batches;",
+  "importFromClipboardSelectFormat": "Please select import password item format(use 'space' as the separator)",
+  "importFromClipboardFormat1": "Name Account Password WebUrl/Link",
+  "importFromClipboardFormat2": "Name Account Password",
+  "importFromClipboardFormat3": "Account Password WebUrl/Link",
+  "importFromClipboardFormat4": "Account Password",
+  "importFromClipboardFormat5": "Name Password",
+  "importFromClipboardFormat5Hint": "Please input account(username) at the first line",
+  "pasteDataHere": "Paste your data here",
+  "startImport": "Start import",
+  "importing": "Importing, please wait",
+  "recordFormatIncorrect": "The format of a certain record is incorrect",
+
+  "categoryManagement": "{categoryName} Management",
+  "@categoryManagement": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "createCategory": "Create {categoryName}",
+  "@createCategory": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "createCategorySuccess": "Create {categoryName} {name} successfully",
+  "@createCategorySuccess": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryAlreadyExists": "{categoryName} {name} already exists",
+  "@categoryAlreadyExists": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "folderDisallowModify": "This folded is not allowed to modify",
+  "updateCategory": "Edit {categoryName}",
+  "@updateCategory": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "updateCategorySuccess": "{categoryName} {name} saved",
+  "@saveCategorySuccess": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteCategory": "Delete {categoryName}",
+  "@deleteCategory": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteLabelWarning": "Passwords or cards associated with this tag will also delete this tag, continue to delete?",
+  "deleteFolderWarning": "This operation will move all passwords and cards in this folder to the 'Default' folder, continue to delete?",
+  "pleaseInputCategoryName": "Please input {categoryName} name",
+  "@pleaseInputCategoryName": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryNameRuleRequire": "{categoryName} name can't contains ',' '~' or 'space'",
+  "@categoryNameRuleRequire": {
+    "placeholders": {
+      "categoryName": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryNameNotValid": "input content is not valid, can't contains ',' '~' or 'space'",
+  "categoryNameNotAllowEmpty": "input content is not valid",
+
+  "autofillEnableAllpass": "Allpass is already your autofill service",
+  "autofillDisableAllpass": "Allpass is not your autofill service yet",
+  "autofillHelp": "When you enter a password in the application, the autofill service will automatically provide possible password item matching options for you to choose from. Stored password items will be considered as candidates when they meet one of the following conditions:\n\n1. The password item belongs to an app that matches the current app;\n2. The name of the password item matches the current app name;\n\nIf you find that the autofill result is not accurate, you can modify the owner app of the password item on the password editing page to help the autofill function match the password more accurately.",
+
+  "uploadToRemote": "Sync to server",
+  "recoverToLocal": "Restore to local",
+  "remoteBackupDirectory": "Cloud backup directory",
+  "backupFileMethod": "Backup file method",
+  "dataMergeMethod": "Data recovery method",
+  "encryptLevel": "Encryption Level",
+  "logoutAccount": "Logout",
+  "confirmUpload": "Confirm Upload",
+  "confirmUploadWaring": "Current encryption level is [{encryptLevel}], continue to upload?",
+  "@confirmUploadWaring": {
+    "placeholders": {
+      "encryptLevel": {
+        "type": "String"
+      }
+    }
+  },
+  "uploading": "Uploading, please wait and try again when it's complete",
+  "confirmRecover": "Confirm Restore",
+  "confirmRecoverWarning": "Current data recovery method is [{mergeMethod}], continue to restore?",
+  "@confirmRecoverWarning": {
+    "placeholders": {
+      "mergeMethod": {
+        "type": "String"
+      }
+    }
+  },
+  "recovering": "Restoring, please wait and try again when it's complete",
+  "recoverV1FileHelp": "We have detected that an old backup file is being restored. Please select the type of file, as this will affect the final recovery result. Please make sure to choose the correct type.\n\nEncryption level: {encryptLevel} Filename: {filename}",
+  "@recoverV1FileHelp": {
+    "placeholders": {
+      "encryptLevel": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "pleaseInputCustomSecretKey": "Please input custom secret key(32 characters)",
+  "inputCustomSecretKeyHelp": "The secret key used for the backup file is not the same as the current key. Please either use another backup file or use the custom secret key",
+  "pleaseInputBackupDirectory": "Please enter the backup directory path",
+  "encryptHelp1": "The encryption level refers to the encryption method used for files backed up to WebDAV. For old backup files (generated by Allpass versions 1.7.0 or earlier), please ensure that the encryption level used for upload and recovery is the same\n",
+  "encryptHelp2": "Not encrypted: ",
+  "encryptHelp3": "Data is backed up in plaintext, with password fields visible; this is the least secure but most universal method, as backup files can be opened directly to view passwords\n",
+  "encryptHelp4": "Only password: ",
+  "encryptHelp5": "The default option is to only encrypt the 'password' field in password and card records, while fields such as name, username, and tags are not encrypted\n",
+  "encryptHelp6": "All encrypted: ",
+  "encryptHelp7": "All fields are encrypted, and the encrypted data is completely unreadable. This is the most secure option, but if the encryption key is lost, it may be impossible to recover the file\n",
+  "encryptHelp8": "The last two encryption level strictly rely on the encryption key used by the Allpass application on the device. If the key is lost, the data will be unrecoverable after uninstallation or data deletion!!!",
+  "confirmLogout": "Confirm Logout",
+  "confirmLogoutWaring": "After logging out, you will need to log in again and all configuration information will be cleared, continue to logout?",
+  "lastUploadAt": "Last uploaded on {uploadTimeString}",
+  "@lastUploadAt": {
+    "placeholders": {
+      "uploadTimeString": {
+        "type": "String"
+      }
+    }
+  },
+  "lastRecoverAt":"Last restored on {recoverTimeString}",
+  "@lastRecoverAt": {
+    "placeholders": {
+      "recoverTimeString": {
+        "type": "String"
+      }
+    }
+  },
+  "decryptBackupError": "Failed to decrypt backup file",
+  "syncAuthFailed": "Account permission expired, please check your network or log out and reconfigure",
+  "syncing": "Syncing, please wait",
+
+  "webdavConfig": "WebDAV Config",
+  "port": "Port number",
+  "webdavServerUrl": "WebDAV server url",
+  "webdavServerUrlHint": "Please start with http:// or https://",
+  "webdavServerUrlRequire": "Server url must start with http:// or https://",
+  "webdavPortRequire": "WebDAV port must be a number",
+  "webdavLoginSuccess": "Login successfully",
+  "webdavLoginFailed": "Login failed, please try again",
+  "nextStep": "Next",
+  "inConfiguration": "In configuration",
+  "webdavHelp1": "This feature allows you to back up your data to a WebDAV server or recover your data\n",
+  "webdavHelp2": "The WebDAV server address should start with http:// or https://, such as the address for Dropbox (click to copy):",
+  "webdavHelp3": "Port number represents the port where the service is located. If you are not sure, please do not edit.",
+  "webdavExample": "https://dav.dropdav.com/",
+  "copySuccess": "Copy successfully",
+
+  "help": "Help",
+  "modifyBackupFilename": "Modify backup filename",
+  "passwordBackupFilename": "Passwords backup filename",
+  "cardBackupFilename": "Cards backup filename",
+  "extraBackupFilename": "Tag and folder backup filename",
+  "filenameNotAllowSame": "Filename can't be same",
+  "filenameNotAllowEmpty": "Filename can't be empty",
+  "filenameRuleRequire": "Filename can't contains \\/:*?\"<>|",
+  "selectBackupFile": "Select Backup File",
+  "gettingBackupFiles": "Retrieving backup file, please wait...",
+  "noBackupFileHint": "There are no files in the current directory, please ensure that the backup directory is correct",
+  "currentDirectory": "Current Directory: {directory}",
+  "@currentDirectory": {
+    "placeholders": {
+      "directory": {
+        "type": "String"
+      }
+    }
+  },
+
+  "uploadFileNotExists": "Upload file failed, file not exists",
+  "downloadFileFailed": "Download file failed",
+  "fileNotExists": "File not exists!",
+  "syncNeedReLogin": "Account have expired, please login again",
+  "getBackupFileFailed": "Failed to retrieve file list, please try changing the backup directory to a subfolder and retrying",
+  "getBackupFileFailedCheckNetwork": "Failed to retrieve file list, please check the network",
+  "uploadSuccess": "Upload successfully",
+  "uploadFileFailedReject": "Upload failed, please try changing the backup directory to a subfolder and retrying",
+  "uploadFileFailedCheckNetwork": "Upload failed, please check the network",
+  "uploadFileFailedUnknown": "Upload failed, message: {message}",
+  "@uploadFileFailedUnknown": {
+    "placeholders": {
+      "message": {
+        "type": "String?"
+      }
+    }
+  },
+  "uploadFileFailedOther": "Upload failed, {error}",
+  "downloadComplete": "Download complete",
+  "unsupportedBackupFile": "Unsupported backup file",
+  "backupFileCorrupt": "Backup file data is corrupt",
+  "backupFileNotFound": "Backup file has been deleted, please reopen the dialog and try again after refreshing",
+  "networkError": "Network error, please retry later",
+  "downloadFailedUnknown": "Download failed, message: {message}",
+  "@downloadFailedUnknown": {
+    "placeholders": {
+      "message": {
+        "type": "String?"
+      }
+    }
+  },
+  "downloadFailedOther": "Download failed, {error}",
+  "folderLabel": "Folder and tags",
+  "recoverySuccessMsg": "Recovery {name} successfully",
+  "@recoverySuccessMsg": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recoveryFailedMsg": "Recovery failed, {error}",
+  "recoverySuccess": "Recovery successfully",
+
+  "mergeMethodLocalFirst": "Local First",
+  "mergeMethodRemoteFirst": "Server First",
+  "mergeMethodOnlyRemote": "Only Server",
+  "mergeMethodLocalFirstHelp": "If local and server records have the same name, username, and link, keep the local record",
+  "mergeMethodRemoteFirstHelp": "If local and server records have the same name, username, and link, use the server record",
+  "mergeMethodOnlyRemoteHelp": "Delete all local data and use only server data",
+
+  "encryptLevelNone": "Not encrypted",
+  "encryptLevelOnlyPassword": "Only password",
+  "encryptLevelAll": "All encrypted",
+  "encryptLevelNoneHelp": "The password in the backup file will be displayed in plain text",
+  "encryptLevelOnlyPasswordHelp": "Default option, encrypt only password field",
+  "encryptLevelAllHelp": "All fields are encrypted, information cannot be directly retrieved from the backup file",
+
+  "backupMethodCreateNew": "Create new file every time",
+  "backupMethodReplaceExists": "Backup to specified file",
+
+  "searchHint": "Search by name, account, notes or tags",
+  "searchResultEmpty": "No results found, please try a different keyword.",
+  "view": "View",
+  "edit": "Edit",
+  "copyUsername": "Copy username",
+  "usernameCopied": "Username has been copied to clipboard",
+  "copyPassword": "Copy password",
+  "deletePassword": "Delete password",
+  "copyOwnerName": "Copy owner name",
+  "ownerNameCopied": "Owner name has been copied to clipboard",
+  "copyCardId": "Copy card number",
+  "deleteCard": "Delete Card",
+
+  "fav": "Fav",
+  "favorites": "Favorites",
+
+  "allpassIntroduction": "A simple tool for managing private information.",
+  "enterDebugMode": "Enter Debug Mode",
+  "contact": "Contact",
+  "contact1": "Twitter: @AengusSun",
+  "contact1Url": "https://twitter.com/AengusSun",
+  "contact2": "Email: sys6511@126.com",
+  "contact3": "Developer Address: https://www.aengus.top",
+  "projectUrl": "Source Repository: Github",
+  "gitee": "Gitee",
+
+  "initialFolders": "Default~Entertainment~Office~Forum~Education~Social",
+  "defaultFolder": "Default",
+
+  "debugListInstalledApp": "List installed apps",
+  "debugPageTest": "Page router",
+  "debugListSp": "List Sp",
+  "debugDeleteAllPassword": "Delete all passwords",
+  "debugDeleteAllCard": "Delete all cards",
+  "debugDeletePasswordDB": "Delete password database",
+  "debugDeleteCardDB": "Delete card database",
+  "debugAllPasswordDeleted": "All password deleted",
+  "debugAllCardDeleted": "All card deleted",
+  "debugPasswordDBDeleted": "Password database deleted",
+  "debugCardDBDeleted": "Card database deleted"
+}

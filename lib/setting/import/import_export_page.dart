@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class ImportExportPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "导入/导出",
+            context.l10n.importExport,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -35,36 +36,39 @@ class ImportExportPage extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text("从Chrome中导入"),
+                    title: Text(context.l10n.importFromChrome),
                     leading: Icon(CustomIcons.chrome, color: AllpassColorUI.allColor[6]),
                     onTap: () {
                       Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ImportFromChromePage(),
-                          ));
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ImportFromChromePage(),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
-                    title: Text("从CSV文件中导入"),
+                    title: Text(context.l10n.importFromCsv),
                     leading: Icon(Icons.import_contacts, color: AllpassColorUI.allColor[4]),
                     onTap: () {
                       Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ImportFromCsvPage(),
-                          ));
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ImportFromCsvPage(),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
-                    title: Text("从剪贴板中导入"),
+                    title: Text(context.l10n.importFromClipboard),
                     leading: Icon(Icons.content_paste, color: AllpassColorUI.allColor[1]),
                     onTap: () {
                       Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => ImportFromClipboardPage(),
-                          ));
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => ImportFromClipboardPage(),
+                        ),
+                      );
                     },
                   )
                 ],
@@ -74,14 +78,15 @@ class ImportExportPage extends StatelessWidget {
               margin: AllpassEdgeInsets.settingCardInset,
               elevation: 0,
               child: ListTile(
-                title: Text("导出为CSV文件"),
+                title: Text(context.l10n.exportToCsv),
                 leading: Icon(Icons.call_missed_outgoing, color: AllpassColorUI.allColor[3]),
                 onTap: () {
                   Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => ExportTypeSelectPage(),
-                      ));
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => ExportTypeSelectPage(),
+                    ),
+                  );
                 },
               ),
             ),

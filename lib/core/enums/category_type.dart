@@ -1,28 +1,30 @@
+import 'package:allpass/l10n/l10n_support.dart';
+import 'package:flutter/widgets.dart';
+
 /// 属性类型，包括文件夹与标签
 enum CategoryType {
   folder,
   label,
-  unknown
 }
 
-class CategoryTypes {
-  static String getCategoryName(CategoryType type) {
-    if (type == CategoryType.folder) {
-      return "文件夹";
-    } else if (type == CategoryType.label) {
-      return "标签";
-    } else {
-      return "未知";
+extension CategoryTitle on CategoryType {
+  String titles(BuildContext context) {
+    var l10n = context.l10n;
+    switch (this) {
+      case CategoryType.folder:
+        return l10n.folderTitle;
+      case CategoryType.label:
+        return l10n.labels;
     }
   }
 
-  static CategoryType getCategoryType(String name) {
-    if (name == "文件夹") {
-      return CategoryType.folder;
-    } else if (name == "标签") {
-      return CategoryType.label;
-    } else {
-      return CategoryType.unknown;
+  String title(BuildContext context) {
+    var l10n = context.l10n;
+    switch (this) {
+      case CategoryType.folder:
+        return l10n.folder;
+      case CategoryType.label:
+        return l10n.label;
     }
   }
 }

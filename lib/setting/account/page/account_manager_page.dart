@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "主账号管理",
+          context.l10n.mainPasswordManager,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -48,7 +49,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text("修改主密码"),
+                  title: Text(context.l10n.modifyMainPassword),
                   leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
                   onTap: () {
                     showDialog(
@@ -58,38 +59,44 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text("定期输入主密码"),
+                  title: Text(context.l10n.inputMainPasswordTiming),
                   leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        String initial = "${Config.timingInMainPassword}天";
+                        String initial = context.l10n.nDays(Config.timingInMainPassword);
                         if (Config.timingInMainPassword == 36500) {
-                          initial = "永不";
+                          initial = context.l10n.never;
                         }
                         return DefaultSelectItemDialog<String>(
-                          list: ["7天", "10天", "15天", "30天", "永不"],
+                          list: [
+                            context.l10n.sevenDays,
+                            context.l10n.tenDays,
+                            context.l10n.fifteenDays,
+                            context.l10n.thirtyDays,
+                            context.l10n.never
+                          ],
                           selector: (data) => data == initial,
                           onSelected: (days) {
-                            if (days == "永不") {
+                            if (days == context.l10n.never) {
                               showDialog(
                                 context: context,
                                 builder: (context) => ConfirmDialog(
-                                  "确认选择",
-                                  "选择此项后，Allpass将不再定期要求您输入主密码，请妥善保管好主密码",
+                                  context.l10n.confirmSelect,
+                                  context.l10n.selectNeverWarning,
                                   onConfirm: () {
                                     Config.setTimingInMainPassDays(36500);
                                   },
                                 ),
                               );
-                            } else if (days == "7天") {
+                            } else if (days == context.l10n.sevenDays) {
                               Config.setTimingInMainPassDays(7);
-                            } else if (days == "10天") {
+                            } else if (days == context.l10n.tenDays) {
                               Config.setTimingInMainPassDays(10);
-                            } else if (days == "15天") {
+                            } else if (days == context.l10n.fifteenDays) {
                               Config.setTimingInMainPassDays(15);
-                            } else if (days == "30天") {
+                            } else if (days == context.l10n.thirtyDays) {
                               Config.setTimingInMainPassDays(30);
                             }
                           },
@@ -99,7 +106,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text("加密密钥更新"),
+                  title: Text(context.l10n.secretKeyUpdate),
                   leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
                   onTap: () {
                     Navigator.push(context, CupertinoPageRoute(
@@ -108,14 +115,14 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text("清除所有数据"),
+                  title: Text(context.l10n.clearAllData),
                   leading: Icon(Icons.clear, color: Colors.red),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (context) => ConfirmDialog(
-                        "确认删除",
-                        "此操作将删除所有数据，继续吗？",
+                        context.l10n.confirmClearAll,
+                        context.l10n.clearAllWaring,
                         danger: true,
                         onConfirm: () {
                           // 二次确认
@@ -124,7 +131,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                             builder: (context) => InputMainPasswordDialog(
                               onVerified: () async {
                                 await AllpassApplication.clearAll(context);
-                                ToastUtil.show(msg: "已删除所有数据");
+                                ToastUtil.show(msg: context.l10n.clearAllSuccess);
                                 NavigationUtil.goLoginPage(context);
                               },
                             ),
@@ -135,7 +142,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text("注销"),
+                  title: Text(context.l10n.logout),
                   leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
                   onTap: () => Config.enabledBiometrics
                       ? NavigationUtil.goAuthLoginPage(context)

@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,9 @@ class EditCardPage extends StatefulWidget {
 
 class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
 
-  String get pageTitle => (operation == DataOperation.add)? "添加卡片" : "编辑卡片";
+  String get pageTitle => (operation == DataOperation.add)
+      ? context.l10n.createCard
+      : context.l10n.updateCard;
 
   CardBean? editingData;
 
@@ -151,19 +154,19 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     createTime: createTime
                   );
                   if (passwordController.text.length < 1) {
-                    ToastUtil.show(msg: "未输入密码，自动初始化为00000");
+                    ToastUtil.show(msg: context.l10n.cardPasswordEmptyAutoGen);
                   }
                   if (operation == DataOperation.add) {
                     provider.insertCard(tempData);
                     RuntimeData.newPasswordOrCardCount++;
-                    ToastUtil.show(msg: "新增成功");
+                    ToastUtil.show(msg: context.l10n.createSuccess);
                   } else {
                     provider.updateCard(tempData);
-                    ToastUtil.show(msg: "更新成功");
+                    ToastUtil.show(msg: context.l10n.updateSuccess);
                   }
                   Navigator.pop(context);
                 } else {
-                  ToastUtil.showError(msg: "拥有者姓名和卡号不允许为空！");
+                  ToastUtil.showError(msg: context.l10n.upsertCardRule);
                 }
               },
             )
@@ -178,7 +181,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "名称",
+                      context.l10n.name,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -202,7 +205,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "拥有者姓名",
+                      context.l10n.ownerName,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -232,7 +235,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "卡号",
+                      context.l10n.cardId,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -257,7 +260,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "密码",
+                      context.l10n.password,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     Row(
@@ -301,7 +304,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "绑定手机号",
+                      context.l10n.phoneNumber,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -327,7 +330,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "文件夹",
+                      context.l10n.folderTitle,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     DropdownButton(
@@ -364,7 +367,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     Container(
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
-                        "标签",
+                        context.l10n.labels,
                         style: TextStyle(fontSize: 16, color: mainColor),
                       ),
                     ),
@@ -389,7 +392,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "备注",
+                      context.l10n.notes,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -398,7 +401,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage("备注", notesController.text, true),
+                          builder: (context) => DetailTextPage(context.l10n.notes, notesController.text, true),
                         )).then((newValue) {
                           setState(() {
                             notesController.text = newValue;
@@ -456,9 +459,9 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
           (label) {
             if (label != null && RuntimeData.labelListAdd([label])) {
               setState(() {});
-              ToastUtil.show(msg: "添加标签 $label 成功");
+              ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
             } else if (label != null) {
-              ToastUtil.show(msg: "标签 $label 已存在");
+              ToastUtil.show(msg: context.l10n.labelAlreadyExists(label));
             }
           },
         ),

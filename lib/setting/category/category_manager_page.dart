@@ -1,4 +1,5 @@
 import 'package:allpass/common/widget/bottom_sheet.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -34,31 +35,34 @@ class CategoryManagerPage extends StatefulWidget {
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   late CategoryType type;
-  late String categoryName;
   late List<String> data;
 
   @override
   void initState() {
     super.initState();
     this.type = widget.type;
-    categoryName = CategoryTypes.getCategoryName(type);
     data = _getCategoryData(type);
   }
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
+    var categoryName = type.titles(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("$categoryName管理", style: AllpassTextUI.titleBarStyle,),
+        title: Text(
+          l10n.categoryManagement(categoryName),
+          style: AllpassTextUI.titleBarStyle,
+        ),
         centerTitle: true,
       ),
-      backgroundColor: context.read<ThemeProvider>().specialBackgroundColor,
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: Column(
         children: <Widget>[
           Padding(padding: AllpassEdgeInsets.smallTopInsets),
           Expanded(
             child: ReorderableListView(
-              children: _getAllWidget(),
+              children: _getAllWidget(categoryName),
               onReorder: (int oldIndex, int newIndex) {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
@@ -88,11 +92,11 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           ).then((value) {
             if (value != null) {
               if (this.type == CategoryType.folder && RuntimeData.folderListAdd(value)) {
-                ToastUtil.show(msg: "添加$categoryName $value 成功");
+                ToastUtil.show(msg: l10n.createCategorySuccess(categoryName, value));
               } else if (this.type == CategoryType.label && RuntimeData.labelListAdd([value])) {
-                ToastUtil.show(msg: "添加$categoryName $value 成功");
+                ToastUtil.show(msg: l10n.createCategorySuccess(categoryName, value));
               } else {
-                ToastUtil.showError(msg: "$categoryName $value 已存在");
+                ToastUtil.show(msg: l10n.categoryAlreadyExists(categoryName, value));
               }
               setState(() {});
             }
@@ -102,7 +106,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     );
   }
 
-  List<Widget> _getAllWidget() {
+  List<Widget> _getAllWidget(String categoryName) {
     List<Widget> widgets = [];
     for (int currIndex = 0; currIndex < data.length; currIndex++) {
       String currCategoryName = data[currIndex];
@@ -114,7 +118,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
           leading: Icon(Icons.list, color: Colors.grey,),
           onTap: () {
             if (this.type == CategoryType.folder && currCategoryName == defaultFolderName) {
-              ToastUtil.show(msg: "此文件夹不允许修改！");
+              ToastUtil.show(msg: context.l10n.folderDisallowModify);
               return;
             }
             showModalBottomSheet(
@@ -122,7 +126,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                 builder: (context) => BaseBottomSheet(
                     builder: (context) => [
                       ListTile(
-                        title: Text("编辑$categoryName"),
+                        title: Text(context.l10n.updateCategory(categoryName)),
                         contentPadding: EdgeInsets.symmetric(horizontal: 24),
                         leading: Icon(Icons.edit_attributes, color: Colors.blue,),
                         onTap: () {
@@ -135,41 +139,41 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                             if (value != null) {
                               if (this.type == CategoryType.label) {
                                 if (RuntimeData.labelList.contains(value)) {
-                                  ToastUtil.showError(msg: "$categoryName $value 已存在");
+                                  ToastUtil.showError(msg: context.l10n.categoryAlreadyExists(categoryName, value));
                                   return;
                                 }
                                 await editLabelAndUpdate(currIndex, value);
                               } else if (this.type == CategoryType.folder){
                                 if (RuntimeData.folderList.contains(value)) {
-                                  ToastUtil.showError(msg: "$categoryName $value 已存在");
+                                  ToastUtil.showError(msg: context.l10n.categoryAlreadyExists(categoryName, value));
                                   return;
                                 }
                                 await editFolderAndUpdate(currIndex, value);
                               }
-                              ToastUtil.show(msg: "保存$categoryName $value");
+                              ToastUtil.show(msg: context.l10n.updateCategorySuccess(categoryName, value));
                             }
                           });
                         },
                       ),
                       ListTile(
-                        title: Text("删除$categoryName"),
+                        title: Text(context.l10n.deleteCategory(categoryName)),
                         contentPadding: EdgeInsets.symmetric(horizontal: 24),
                         leading: Icon(Icons.delete, color: Colors.red,),
                         onTap: () async {
                           String hintText = "";
                           Future<Null> Function()? deleteCallback;
                           if (this.type == CategoryType.label) {
-                            hintText = "拥有此标签的密码或卡片将删除此标签，确认吗？";
+                            hintText = context.l10n.deleteLabelWarning;
                             deleteCallback = () async {
                               if (await deleteLabelAndUpdate(currCategoryName)) {
-                                ToastUtil.show(msg: "删除成功");
+                                ToastUtil.show(msg: context.l10n.deleteSuccess);
                               }
                             };
                           } else if (this.type == CategoryType.folder) {
-                            hintText = "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，确认吗？";
+                            hintText = context.l10n.deleteFolderWarning;
                             deleteCallback = () async {
                               if (await deleteFolderAndUpdate(currCategoryName)) {
-                                ToastUtil.show(msg: "删除成功");
+                                ToastUtil.show(msg: context.l10n.deleteSuccess);
                               }
                             };
                           }
@@ -177,7 +181,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
                           showDialog(
                               context: context,
                               builder: (context) => ConfirmDialog(
-                                "确认删除",
+                                context.l10n.confirmDelete,
                                 hintText,
                                 danger: true,
                                 onConfirm: () async {

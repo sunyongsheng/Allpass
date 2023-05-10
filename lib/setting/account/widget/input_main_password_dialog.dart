@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/param/config.dart';
@@ -21,7 +22,7 @@ class InputMainPasswordDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
-      title: Text("请输入主密码"),
+      title: Text(context.l10n.pleaseInputMainPassword),
       content: NoneBorderCircularTextField(
         needPadding: false,
         editingController: _passwordController,
@@ -32,11 +33,11 @@ class InputMainPasswordDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text("确认", style: TextStyle(color: mainColor)),
+          child: Text(context.l10n.confirm, style: TextStyle(color: mainColor)),
           onPressed: () => _submit(context),
         ),
         TextButton(
-          child: Text("取消", style: TextStyle(color: mainColor)),
+          child: Text(context.l10n.cancel, style: TextStyle(color: mainColor)),
           onPressed: () {
             Navigator.pop<bool>(context, false);
             onVerifyResult?.call(false);
@@ -48,7 +49,7 @@ class InputMainPasswordDialog extends StatelessWidget {
 
   void _submit(BuildContext context) {
     if (_passwordController.text.isEmpty) {
-      ToastUtil.showError(msg: "请输入密码");
+      ToastUtil.showError(msg: context.l10n.pleaseInputMainPassword);
       return;
     }
     if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
@@ -58,7 +59,7 @@ class InputMainPasswordDialog extends StatelessWidget {
       onVerifyResult?.call(true);
       onVerified?.call();
     } else {
-      ToastUtil.show(msg: "密码错误");
+      ToastUtil.show(msg: context.l10n.mainPasswordIncorrect);
       _passwordController.clear();
       Navigator.pop<bool>(context, false);
       onVerifyResult?.call(false);

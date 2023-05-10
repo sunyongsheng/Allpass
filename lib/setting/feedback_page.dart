@@ -1,4 +1,5 @@
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -45,7 +46,7 @@ class _FeedbackPage extends State<StatefulWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("意见反馈", style: AllpassTextUI.titleBarStyle,),
+        title: Text(context.l10n.feedback, style: AllpassTextUI.titleBarStyle,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -57,7 +58,7 @@ class _FeedbackPage extends State<StatefulWidget> {
               child: NoneBorderCircularTextField(
                 editingController: _feedbackController,
                 maxLines: 500,
-                hintText: "说说你的问题",
+                hintText: context.l10n.feedbackPlaceholder,
               )
             ),
             Padding(
@@ -67,7 +68,7 @@ class _FeedbackPage extends State<StatefulWidget> {
               padding: AllpassEdgeInsets.dividerInset,
               child: NoneBorderCircularTextField(
                 editingController: _contactController,
-                hintText: "请输入联系方式（选填）",
+                hintText: context.l10n.feedbackContact,
               )
             ),
             Padding(
@@ -76,17 +77,17 @@ class _FeedbackPage extends State<StatefulWidget> {
             Container(
                 padding: AllpassEdgeInsets.dividerInset,
                 child: LoadingTextButton(
-                  title: "提交",
+                  title: context.l10n.submit,
                   color: Theme.of(context).primaryColor,
-                  loadingTitle: "提交中，请稍后",
+                  loadingTitle: context.l10n.submitting,
                   loading: submitting,
                   onPressed: () async {
                     if (_feedbackController.text.trim().length < 1) {
-                      ToastUtil.show(msg: "请输入反馈内容");
+                      ToastUtil.show(msg: context.l10n.feedbackContentEmptyWarning);
                       return;
                     }
                     if (_feedbackController.text.length >= 1000) {
-                      ToastUtil.showError(msg: "反馈内容必须小于1000字！");
+                      ToastUtil.showError(msg: context.l10n.feedbackContentTooLong);
                       return;
                     }
                     FocusScope.of(context).requestFocus(FocusNode());

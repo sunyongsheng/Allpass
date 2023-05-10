@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class ImportFromCsvPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "选择导入类型",
+          context.l10n.selectImportType,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -36,7 +37,7 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text("密码"),
+                title: Text(context.l10n.password),
                 leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
                 onTap: () async {
                   FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -53,7 +54,7 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text("卡片"),
+                title: Text(context.l10n.card),
                 leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
                 onTap: () async {
                   FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -81,7 +82,7 @@ class ImportFromCsvPage extends StatelessWidget {
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
-          ToastUtil.show(msg: "导入 ${passwordList.length}条记录");
+          ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
           await passwordProvider.refresh();
         } else {
           var cardProvider = context.read<CardProvider>();
@@ -91,14 +92,14 @@ class ImportFromCsvPage extends StatelessWidget {
             RuntimeData.labelListAdd(bean.label);
             RuntimeData.folderListAdd(bean.folder);
           }
-          ToastUtil.show(msg: "导入 ${cardList.length}条记录");
+          ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
           await cardProvider.refresh();
         }
       } catch (assertError) {
-        ToastUtil.showError(msg: "导入失败，请确保csv文件为标准Allpass导出文件");
+        ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
       }
     } else {
-      ToastUtil.show(msg: "取消导入");
+      ToastUtil.show(msg: context.l10n.importCanceled);
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/backup/custom_backup_filename.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +38,10 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return AlertDialog(
       title: Text(
-        "修改备份文件名",
+        l10n.modifyBackupFilename,
         style: AllpassTextUI.firstTitleStyle,
       ),
       content: SingleChildScrollView(
@@ -49,16 +51,16 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
           children: <Widget>[
             NoneBorderCircularTextField(
               editingController: _passwordFilenameController,
-              labelText: "密码备份文件名",
+              labelText: l10n.passwordBackupFilename,
               autoFocus: true,
             ),
             NoneBorderCircularTextField(
               editingController: _cardFilenameController,
-              labelText: "卡片备份文件名",
+              labelText: l10n.cardBackupFilename,
             ),
             NoneBorderCircularTextField(
               editingController: _extraFilenameController,
-              labelText: "标签文件夹备份文件名",
+              labelText: l10n.extraBackupFilename,
             ),
           ],
         ),
@@ -66,7 +68,7 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
       actions: <Widget>[
         TextButton(
           child: Text(
-            "提交",
+            l10n.submit,
             style: TextStyle(
               color: Theme.of(context).primaryColor,
             ),
@@ -88,7 +90,7 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
             }
 
             if (password == card || password == extra || card == extra) {
-              ToastUtil.showError(msg: "文件名不能相同");
+              ToastUtil.showError(msg: l10n.filenameNotAllowSame);
               return;
             }
 
@@ -101,7 +103,7 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
           },
         ),
         TextButton(
-          child: Text("取消"),
+          child: Text(l10n.cancel),
           onPressed: () => Navigator.pop(context),
         )
       ],
@@ -110,12 +112,12 @@ class WebDavCustomBackupFilenameState extends State<WebDavCustomBackupFilenameDi
 
   bool _validate(String text) {
     if (text.isEmpty) {
-      ToastUtil.showError(msg: "文件名不能为空");
+      ToastUtil.showError(msg: context.l10n.filenameNotAllowEmpty);
       return false;
     }
 
     if (containIllegalChar(text)) {
-      ToastUtil.showError(msg: "文件名中不能含有\\/:*?\"<>|");
+      ToastUtil.showError(msg: context.l10n.filenameRuleRequire);
       return false;
     }
 

@@ -8,6 +8,7 @@ import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/extension/widget_extension.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
@@ -64,7 +65,7 @@ class _PasswordPageState extends State<PasswordPage>
           child: InkWell(
             splashColor: Colors.transparent,
             child: Text(
-              "密码",
+              context.l10n.password,
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: _controller.scrollToTop,
@@ -76,7 +77,7 @@ class _PasswordPageState extends State<PasswordPage>
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress, "密码"),
+          SearchButtonWidget(_searchPress, context.l10n.password),
           // 密码列表
           Expanded(
             child: RefreshIndicator(
@@ -93,7 +94,7 @@ class _PasswordPageState extends State<PasswordPage>
         builder: (_, editMode, child) => editMode ? Container() : child!,
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_password",
-          tooltip: "添加密码条目",
+          tooltip: context.l10n.addPasswordItem,
           builder: (_) => EditPasswordPage(null, DataOperation.add),
           child: Icon(Icons.add),
         ),
@@ -148,7 +149,7 @@ class _PasswordPageState extends State<PasswordPage>
           return _buildPasswordList();
         }
       },
-      child: const EmptyDataWidget(subtitle: "这里存储你的密码信息，例如\n微博账号、知乎账号等"),
+      child: EmptyDataWidget(subtitle: context.l10n.passwordEmptyHint),
     );
   }
 
@@ -199,19 +200,19 @@ class _PasswordPageState extends State<PasswordPage>
     MultiItemEditProvider<PasswordBean> editProvider,
   ) {
     if (editProvider.isEmpty) {
-      ToastUtil.show(msg: "请选择至少一项密码");
+      ToastUtil.show(msg: context.l10n.selectOnePasswordAtLeast);
     } else {
       showDialog<bool>(
         context: context,
         builder: (context) => ConfirmDialog(
-          "确认删除",
-          "您将删除${editProvider.selectedCount}项密码，确认吗？",
+          context.l10n.confirmDelete,
+          context.l10n.deletePasswordsWarning(editProvider.selectedCount),
           danger: true,
           onConfirm: () async {
             for (var item in editProvider.selectedItem) {
               await provider.deletePassword(item);
             }
-            ToastUtil.show(msg: "已删除 ${editProvider.selectedCount} 项密码");
+            ToastUtil.show(msg: context.l10n.deletePasswordsSuccess(editProvider.selectedCount));
             editProvider.unselectAll();
           },
         ),
@@ -225,7 +226,7 @@ class _PasswordPageState extends State<PasswordPage>
     MultiItemEditProvider<PasswordBean> editProvider,
   ) {
     if (editProvider.isEmpty) {
-      ToastUtil.show(msg: "请选择至少一项密码");
+      ToastUtil.show(msg: context.l10n.selectOnePasswordAtLeast);
     } else {
       showDialog(
         context: context,
@@ -237,7 +238,7 @@ class _PasswordPageState extends State<PasswordPage>
               await provider.updatePassword(element);
             });
             ToastUtil.show(
-              msg: "已移动 ${editProvider.selectedCount} 项密码至 $value 文件夹",
+              msg: context.l10n.movePasswordsSuccess(editProvider.selectedCount, value),
             );
             editProvider.unselectAll();
           },

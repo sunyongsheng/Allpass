@@ -13,6 +13,7 @@ import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/extension/widget_extension.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/search/search_page.dart';
 import 'package:allpass/search/search_provider.dart';
 import 'package:allpass/search/widget/search_button_widget.dart';
@@ -64,7 +65,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           child: InkWell(
             splashColor: Colors.transparent,
             child: Text(
-              "卡片",
+              context.l10n.card,
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: _controller.scrollToTop,
@@ -76,7 +77,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress, "卡片"),
+          SearchButtonWidget(_searchPress, context.l10n.card),
           // 卡片列表
           Expanded(
             child: RefreshIndicator(
@@ -91,7 +92,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         builder: (_, editMode, child) => editMode ? Container() : child!,
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_card",
-          tooltip: "添加卡片条目",
+          tooltip: context.l10n.addCardItem,
           builder: (_) => EditCardPage(null, DataOperation.add),
           child: Icon(Icons.add),
         ),
@@ -144,19 +145,19 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     var cardProvider = context.read<CardProvider>();
     var editProvider = context.read<MultiItemEditProvider<CardBean>>();
     if (editProvider.isEmpty) {
-      ToastUtil.show(msg: "请选择至少一项卡片");
+      ToastUtil.show(msg: context.l10n.selectOneCardAtLeast);
     } else {
       showDialog<bool>(
         context: context,
         builder: (context) => ConfirmDialog(
-          "确认删除",
-          "您将删除${editProvider.selectedCount}项卡片，确认吗？",
+          context.l10n.confirmDelete,
+          context.l10n.deletePasswordsWarning(editProvider.selectedCount),
           danger: true,
           onConfirm: () async {
             for (var item in editProvider.selectedItem) {
               await cardProvider.deleteCard(item);
             }
-            ToastUtil.show(msg: "已删除 ${editProvider.selectedCount} 项卡片");
+            ToastUtil.show(msg: context.l10n.deletePasswordsSuccess(editProvider.selectedCount));
             editProvider.unselectAll();
           },
         ),
@@ -172,7 +173,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     var cardProvider = context.read<CardProvider>();
     var editProvider = context.read<MultiItemEditProvider<CardBean>>();
     if (editProvider.isEmpty) {
-      ToastUtil.show(msg: "请选择至少一项卡片");
+      ToastUtil.show(msg: context.l10n.selectOneCardAtLeast);
     } else {
       showDialog(
         context: context,
@@ -184,7 +185,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
               await cardProvider.updateCard(element);
             });
             ToastUtil.show(
-              msg: "已移动 ${editProvider.selectedCount} 项卡片至 $value 文件夹",
+              msg: context.l10n.moveCardsSuccess(editProvider.selectedCount, value),
             );
             editProvider.unselectAll();
           },
@@ -203,7 +204,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           return _buildCardList();
         }
       },
-      child: const EmptyDataWidget(subtitle: "这里存储你的卡片信息，例如\n身份证，银行卡或贵宾卡等"),
+      child: EmptyDataWidget(subtitle: context.l10n.cardEmptyHint),
     );
   }
 

@@ -1,4 +1,6 @@
 import 'package:allpass/core/error/app_error.dart';
+import 'package:allpass/l10n/l10n_support.dart';
+import 'package:flutter/widgets.dart';
 
 /// 加密等級
 enum EncryptLevel { None, OnlyPassword, All }
@@ -25,14 +27,27 @@ class EncryptLevels {
 }
 
 extension EncryptLevelExt on EncryptLevel {
-  String get name {
+  String title(BuildContext context) {
+    var l10n = context.l10n;
     switch (this) {
       case EncryptLevel.None:
-        return "不加密";
+        return l10n.encryptLevelNone;
       case EncryptLevel.OnlyPassword:
-        return "仅加密密码字段";
+        return l10n.encryptLevelOnlyPassword;
       case EncryptLevel.All:
-        return "全部加密";
+        return l10n.encryptLevelAll;
+    }
+  }
+
+  String desc(BuildContext context) {
+    var l10n = context.l10n;
+    switch (this) {
+      case EncryptLevel.None:
+        return l10n.encryptLevelNoneHelp;
+      case EncryptLevel.OnlyPassword:
+        return l10n.encryptLevelOnlyPasswordHelp;
+      case EncryptLevel.All:
+        return l10n.encryptLevelAllHelp;
     }
   }
 }
@@ -44,8 +59,8 @@ class EncryptItem {
   const EncryptItem(this.level, this.desc);
 }
 
-List<EncryptItem> encryptLevels = [
-  const EncryptItem(EncryptLevel.None, "备份文件中的密码将以明文状态进行展示"),
-  const EncryptItem(EncryptLevel.OnlyPassword, "默认选项，只加密密码字段"),
-  const EncryptItem(EncryptLevel.All, "所有字段均进行加密，无法直接从备份文件中获取信息")
+var encryptLevels = [
+  EncryptLevel.None,
+  EncryptLevel.OnlyPassword,
+  EncryptLevel.All,
 ];

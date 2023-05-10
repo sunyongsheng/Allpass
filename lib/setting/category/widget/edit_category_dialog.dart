@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/enums/category_type.dart';
@@ -22,7 +23,6 @@ class EditCategoryDialog extends StatefulWidget {
 
 class _EditCategoryDialog extends State<EditCategoryDialog> {
 
-  late String categoryName;
   late String initialValue;
 
   bool _inputFormatCorr = true;
@@ -32,7 +32,6 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   void initState() {
     super.initState();
     this.initialValue = widget.initialValue;
-    this.categoryName = CategoryTypes.getCategoryName(widget.type);
     _editTextController = TextEditingController(text: initialValue);
   }
 
@@ -45,8 +44,10 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var categoryName = widget.type.title(context);
+    var l10n = context.l10n;
     return AlertDialog(
-      title: Text("编辑$categoryName"),
+      title: Text(l10n.updateCategory(categoryName)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,8 +56,8 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
             editingController: _editTextController,
             errorText: _inputFormatCorr
                 ? null
-                : "$categoryName名不允许包含“,”或“~”或空格",
-            hintText: "请输入$categoryName名",
+                : l10n.categoryNameRuleRequire(categoryName),
+            hintText: l10n.pleaseInputCategoryName(categoryName),
             needPadding: false,
             autoFocus: true,
             onChanged: (text) {
@@ -77,13 +78,13 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => _submit(),
-          child: Text('提交', style: TextStyle(color: mainColor)),
+          child: Text(l10n.submit, style: TextStyle(color: mainColor)),
         ),
         TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('取消', style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel),
         ),
       ],
     );
@@ -97,9 +98,9 @@ class _EditCategoryDialog extends State<EditCategoryDialog> {
         Navigator.pop(context);
       }
     } else if (!_inputFormatCorr) {
-      ToastUtil.showError(msg: "输入内容不合法，请勿包含“,”、“~”和空格");
+      ToastUtil.showError(msg: context.l10n.categoryNameNotValid);
     } else {
-      Navigator.pop(context);
+      ToastUtil.showError(msg: context.l10n.categoryNameNotAllowEmpty);
     }
   }
 }

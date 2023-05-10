@@ -1,16 +1,16 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 class InformationHelpDialog extends StatefulWidget {
-
-  final Key? key;
-  final Widget title;
+  final Widget? title;
   final List<Widget> content;
   final List<Widget>? actions;
 
-  InformationHelpDialog({this.key,
-    this.title = const Text("帮助"),
+  InformationHelpDialog({
+    Key? key,
+    this.title,
     required this.content,
-    this.actions
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _InformationHelpDialog extends State<InformationHelpDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       key: widget.key,
-      title: widget.title,
+      title: widget.title ?? Text(context.l10n.help),
       scrollable: true,
       content: SingleChildScrollView(
           child: ListBody(

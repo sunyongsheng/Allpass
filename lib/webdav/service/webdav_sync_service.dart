@@ -59,7 +59,7 @@ abstract class WebDavSyncService {
   /// [FileSystemException] 下载的文件不存在
   /// [UnsupportedEnumException] 解析枚举类型失败
   /// [UnsupportedContentException] 文件内容不是json类型
-  Future<BackupFile> downloadFile(String filename);
+  Future<BackupFile> downloadFile(BuildContext context, String filename);
 
   /// Throws
   /// [PreDecryptException] 预解密失败
@@ -226,7 +226,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   @override
-  Future<BackupFile> downloadFile(String filename) async {
+  Future<BackupFile> downloadFile(BuildContext context, String filename) async {
     String filePath = await _requester.downloadFile(
       fileName: filename,
       dirName: remoteWorkspace,

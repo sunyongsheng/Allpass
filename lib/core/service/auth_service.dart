@@ -1,3 +1,5 @@
+import 'package:allpass/l10n/l10n_support.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
@@ -8,7 +10,7 @@ enum AuthResult { Success, Failed, Exception, NotAvailable }
 
 abstract class AuthService {
   /// 授权，返回[true]代表授权成功
-  Future<AuthResult> authenticate();
+  Future<AuthResult> authenticate(BuildContext context);
 
   /// 取消授权，返回[true]代表成功
   Future<bool> stopAuthenticate();
@@ -21,7 +23,7 @@ class AuthServiceImpl implements AuthService {
   final _auth = LocalAuthentication();
 
   @override
-  Future<AuthResult> authenticate() async {
+  Future<AuthResult> authenticate(BuildContext context) async {
     try {
       var availableBiometrics = await _auth.getAvailableBiometrics();
       print(availableBiometrics);
@@ -34,10 +36,10 @@ class AuthServiceImpl implements AuthService {
         type = BiometricType.iris;
       }
       var isAuthenticated = await _auth.authenticate(
-          localizedReason: '授权以解锁Allpass',
+          localizedReason: context.l10n.authorizeToUnlock,
           authMessages: [
-            _iosAuthMessages(type),
-            _androidAuthMessages()
+            _iosAuthMessages(context, type),
+            _androidAuthMessages(context)
           ],
           options: AuthenticationOptions(
             useErrorDialogs: true,
@@ -60,43 +62,45 @@ class AuthServiceImpl implements AuthService {
     }
   }
 
-  IOSAuthMessages _iosAuthMessages(BiometricType? type) {
+  IOSAuthMessages _iosAuthMessages(BuildContext context, BiometricType? type) {
+    var l10n = context.l10n;
     String? goToSettingsDescription;
     String? lockOut;
     switch (type) {
       case BiometricType.face:
-        goToSettingsDescription = "Face ID暂未启用，请去设置中开启Face ID后重试";
-        lockOut = "Face ID被禁用，请锁屏后再解锁以启用Face ID";
+        goToSettingsDescription = l10n.iosGoToSettingsDescFingerprint;
+        lockOut = l10n.iosLogoutFace;
         break;
       case BiometricType.fingerprint:
-        goToSettingsDescription = "指纹解锁暂未启用，请去设置中开启指纹解锁后重试";
-        lockOut = "指纹解锁被禁用，请锁屏后再解锁以启用指纹解锁";
+        goToSettingsDescription = l10n.iosGoToSettingsDescFingerprint;
+        lockOut = l10n.iosLogoutFingerprint;
         break;
       case BiometricType.iris:
-        goToSettingsDescription = "生物识别暂未启用，请去设置中开启后重试";
-        lockOut = "生物识别被禁用，请锁屏后再解锁以启用";
+        goToSettingsDescription = l10n.iosGoToSettingsDescIris;
+        lockOut = l10n.iosLogoutIris;
         break;
       default:
-        goToSettingsDescription = "生物识别授权暂未启用，请去设置中开启Touch ID或Face ID后重试";
+        goToSettingsDescription = l10n.iosGoToSettingsDescDefault;
         break;
     }
     return IOSAuthMessages(
-        cancelButton: "取消",
-        goToSettingsButton: "去设置",
+        cancelButton: l10n.cancel,
+        goToSettingsButton: l10n.gotoSettings,
         goToSettingsDescription: goToSettingsDescription,
         lockOut: lockOut,
     );
   }
 
-  AndroidAuthMessages _androidAuthMessages() {
+  AndroidAuthMessages _androidAuthMessages(BuildContext context) {
+    var l10n = context.l10n;
     return AndroidAuthMessages(
-        cancelButton: "取消",
-        goToSettingsButton: "去设置",
-        biometricRequiredTitle: "暂未开启生物识别",
-        goToSettingsDescription: "指纹解锁暂未启用，请去设置中开启指纹解锁后重试",
-        signInTitle: "请验证",
-        biometricHint: "使用指纹解锁",
-        biometricNotRecognized: "识别失败，请重试",
+        cancelButton: l10n.cancel,
+        goToSettingsButton: l10n.gotoSettings,
+        biometricRequiredTitle: l10n.biometricRequiredTitle,
+        goToSettingsDescription: l10n.androidGoToSettingsDesc,
+        signInTitle: l10n.signInTitle,
+        biometricHint: l10n.biometricHint,
+        biometricNotRecognized: l10n.biometricsRecognizedFailed,
     );
   }
 

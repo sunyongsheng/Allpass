@@ -30,8 +30,12 @@ class WebDavRequester {
 
   Map<String, List<WebDavFile>> _dirFilesCache = Map();
 
-  WebDavRequester(
-      {String? urlPath, int? port, String? username, String? password}) {
+  WebDavRequester({
+    String? urlPath,
+    int? port,
+    String? username,
+    String? password,
+  }) {
     _dio = inject();
 
     _baseHeaders = {"Depth": 1};
@@ -47,8 +51,12 @@ class WebDavRequester {
     );
   }
 
-  void updateConfig(
-      {String? urlPath, int? port, String? username, String? password}) {
+  void updateConfig({
+    String? urlPath,
+    int? port,
+    String? username,
+    String? password,
+  }) {
     _authChecked = false;
 
     // 若端口号比较特殊，则将其设置为 url:port 的形式，否则设置为 url 的形式
@@ -203,8 +211,10 @@ class WebDavRequester {
   }
 
   /// [dirName]目录下是否含有[fileName]文件
-  Future<bool> containsFile(
-      {String dirName = root, required String fileName}) async {
+  Future<bool> containsFile({
+    String dirName = root,
+    required String fileName,
+  }) async {
     List<WebDavFile>? allFiles = _dirFilesCache[dirName];
     if (allFiles != null) {
       return allFiles.map((e) => e.filename).contains(fileName);
@@ -223,14 +233,15 @@ class WebDavRequester {
 
   /// 向文件夹[dirName]上传文件。若[dirName]为空，则默认为根目录
   /// Throws [DioError]/[FileSystemException]/[UnknownException]
-  Future<String> uploadFile(
-      {String dirName = root,
-      required String fileName,
-      required String localFilePath}) async {
+  Future<String> uploadFile({
+    String dirName = root,
+    required String fileName,
+    required String localFilePath,
+  }) async {
     String uploadPath = _concatPath(dirName, fileName);
     File file = File(localFilePath);
     if (!await file.exists()) {
-      throw FileSystemException("上传文件出错！文件不存在！", localFilePath);
+      throw FileSystemException("File not found", localFilePath);
     }
 
     var content = await file.readAsString();
@@ -250,10 +261,11 @@ class WebDavRequester {
   ///
   /// 返回保存路径
   /// Throws [DioError]/[UnknownException]
-  Future<String> downloadFile(
-      {String dirName = root,
-      required String fileName,
-      String? savePath}) async {
+  Future<String> downloadFile({
+    String dirName = root,
+    required String fileName,
+    String? savePath,
+  }) async {
     String downloadUrl = _concatPath(dirName, fileName);
     String _savePath;
     if (savePath == null) {

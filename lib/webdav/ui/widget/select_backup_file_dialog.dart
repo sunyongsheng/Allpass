@@ -1,4 +1,5 @@
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/util/date_formatter.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,15 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<WebDavSyncProvider>().refreshFiles();
+      context.read<WebDavSyncProvider>().refreshFiles(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return AlertDialog(
-      title: Text("选择备份文件"),
+      title: Text(l10n.selectBackupFile),
       scrollable: true,
       content: Consumer<WebDavSyncProvider>(
         builder: (context, provider, child) {
@@ -52,7 +54,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      "获取备份文件中，请稍后...",
+                      l10n.gettingBackupFiles,
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   )
@@ -83,7 +85,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
           if (state is GetBackupFileSuccess && provider.backupFiles.isEmpty) {
             children.add(Center(
               child: Text(
-                "当前目录下无文件，请确保备份目录正确",
+                l10n.noBackupFileHint,
               ),
             ));
           }
@@ -96,7 +98,7 @@ class _SelectBackupFileState extends State<SelectBackupFileDialog> {
         child: Padding(
           padding: EdgeInsets.only(bottom: 12),
           child: Text(
-            "当前目录：${Config.webDavBackupDirectory}",
+            l10n.currentDirectory(Config.webDavBackupDirectory),
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ),

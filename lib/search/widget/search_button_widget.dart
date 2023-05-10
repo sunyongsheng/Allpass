@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/util/theme_util.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -24,7 +25,10 @@ class SearchButtonWidget extends StatelessWidget {
           children: <Widget>[
             Icon(Icons.search, color: textColor,),
             Padding(padding: EdgeInsets.symmetric(horizontal: 3)),
-            Text("搜索$searchType", style: TextStyle(color: textColor),),
+            Text(
+              context.l10n.searchButton(searchType),
+              style: TextStyle(color: textColor),
+            ),
           ],
         )
       ),

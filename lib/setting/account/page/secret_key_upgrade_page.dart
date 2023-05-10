@@ -6,6 +6,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/encrypt/encryption.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
@@ -25,7 +26,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   PasswordRepository passwordRepository = inject();
   CardRepository cardRepository = inject();
 
-  TextEditingController controller = TextEditingController(text: "生成后的密钥显示在此");
+  TextEditingController controller = TextEditingController();
   bool haveGen = false;
   bool inUpgrade = false;
   bool haveUpgrade = false;
@@ -42,7 +43,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "加密密钥更新",
+            context.l10n.secretKeyUpdate,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -57,22 +58,21 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "请仔细阅读",
+                    context.l10n.secretKeyUpdateHelp1,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "Allpass 1.5.0及以后使用了新的密钥存储方式",
+                    context.l10n.secretKeyUpdateHelp2,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "Allpass会对每一个用户生成独一无二的密钥并将其存储到系统特定的区域中，"
-                    "这意味着即使反编译了Allpass并通过某些方法获取到了数据库中的数据，也无法轻易破解",
+                    context.l10n.secretKeyUpdateHelp3,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -81,10 +81,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                   child: Text.rich(
                     TextSpan(children: [
                       TextSpan(
-                        text: "升级后，所有密码的加密和解密均将依赖生成的新密钥，请",
+                        text: context.l10n.secretKeyUpdateHelp4,
                       ),
                       TextSpan(
-                        text: "妥善保管生成后的新密钥",
+                        text: context.l10n.secretKeyUpdateHelp5,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ]),
@@ -94,28 +94,28 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "如果您进行了WebDAV同步，即使卸载了Allpass并且备份文件中密码已加密，仍然可以通过密钥找回数据",
+                    context.l10n.secretKeyUpdateHelp6,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "升级所需时间较短，因手机而异",
+                    context.l10n.secretKeyUpdateHelp7,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "升级过程中请不要退出程序，否则可能造成数据丢失！",
+                    context.l10n.secretKeyUpdateHelp8,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "***************** 注意 *****************",
+                    context.l10n.secretKeyUpdateHelp9,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -125,14 +125,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: "如果您使用过Allpass进行WebDAV备份，那么密钥更新后旧的备份文件",
+                          text: context.l10n.secretKeyUpdateHelp10,
                         ),
                         TextSpan(
-                          text: "无法",
+                          text: context.l10n.secretKeyUpdateHelp11,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: "再使用！（本机数据不受影响）",
+                          text: context.l10n.secretKeyUpdateHelp12,
                         ),
                       ],
                     ),
@@ -142,14 +142,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "为了安全保证，仍建议在升级前通过“导出为csv”的方式进行备份！",
+                    context.l10n.secretKeyUpdateHelp13,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    "可以直接编辑下面的输入框，手动输入自定义密钥(32位)",
+                    context.l10n.secretKeyUpdateHelp14,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -157,6 +157,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 NoneBorderCircularTextField(
                   editingController: controller,
                   textAlign: TextAlign.center,
+                  hintText: context.l10n.secretKeyUpdateHint,
                   onChanged: (s) {
                     _latestKey = s;
                     setState(() {
@@ -174,13 +175,13 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                             MaterialStateProperty.all(primaryColor),
                       ),
                       child: Text(
-                        "生成密钥",
+                        context.l10n.generateSecretKey,
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         _latestKey = EncryptUtil.generateRandomKey(32);
                         if (!haveGen) {
-                          ToastUtil.show(msg: "生成完成，请保管好新密钥（可以长按复制）");
+                          ToastUtil.show(msg: context.l10n.generateSecretKeyDone);
                         }
                         setState(() {
                           haveGen = true;
@@ -199,7 +200,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                       ),
                       child: haveUpgrade
                           ? Text(
-                              "升级完成",
+                              context.l10n.upgradeDone,
                               style: TextStyle(color: Colors.white),
                             )
                           : inUpgrade
@@ -212,7 +213,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                                   ),
                                 )
                               : Text(
-                                  "开始升级",
+                                  context.l10n.startUpgrade,
                                   style: TextStyle(color: Colors.white),
                                 ),
                       onPressed: () async {
@@ -221,9 +222,9 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                           return;
                         }
                         if (!haveGen) {
-                          ToastUtil.show(msg: "请先生成密钥");
+                          ToastUtil.show(msg: context.l10n.pleaseGenerateKeyFirst);
                         } else if (_latestKey?.length != 32) {
-                          ToastUtil.show(msg: "密钥长度必须为32位");
+                          ToastUtil.show(msg: context.l10n.secretKeyLengthRequire);
                         } else {
                           setState(() {
                             inUpgrade = true;
@@ -280,7 +281,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       }
       await passwordProvider.refresh();
       await cardProvider.refresh();
-      ToastUtil.show(msg: "升级了${passwords.length}条密码和${cards.length}个卡片");
+      ToastUtil.show(msg: context.l10n.secretKeyUpgradeResult(passwords.length, cards.length));
       return true;
     } catch (e) {
       await EncryptUtil.initEncryptByKey(backupKey);
@@ -298,7 +299,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
       }
       await passwordProvider.refresh();
       await cardProvider.refresh();
-      ToastUtil.show(msg: "升级失败：$e");
+      ToastUtil.show(msg: context.l10n.secretKeyUpgradeFailed(e));
       return false;
     }
   }

@@ -1,4 +1,5 @@
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 class MultiEditButton extends StatelessWidget {
@@ -30,6 +31,7 @@ class MultiEditButton extends StatelessWidget {
       );
     }
 
+    var l10n = context.l10n;
     return Row(
       children: [
         PopupMenuButton<_MultiEditAction>(
@@ -46,12 +48,12 @@ class MultiEditButton extends StatelessWidget {
           itemBuilder: (context) => [
             PopupMenuItem(
               value: _MultiEditAction.move,
-              child: Text("移动"),
+              child: Text(l10n.move),
             ),
             PopupMenuItem(
               value: _MultiEditAction.delete,
               child: Text(
-                "删除",
+                l10n.delete,
                 style: TextStyle(color: Colors.red),
               ),
             ),

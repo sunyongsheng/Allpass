@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -22,7 +23,7 @@ class ExportTypeSelectPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "选择导出内容",
+          context.l10n.selectExportType,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -32,14 +33,14 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text("密码"),
+              title: Text(context.l10n.password),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () {
                 showDialog(
                     context: context,
                     builder: (context) => ConfirmDialog(
-                      "导出确认",
-                      "导出后的密码将被所有人可见，确认吗？",
+                      context.l10n.exportConfirm,
+                      context.l10n.exportPasswordConfirmWarning,
                       onConfirm: () {
                         showDialog<bool>(
                             context: context,
@@ -59,13 +60,13 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text("卡片"),
+              title: Text(context.l10n.card),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () => showDialog<bool>(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    "导出确认",
-                    "导出后的卡片将被所有人可见，确认吗？",
+                    context.l10n.exportConfirm,
+                    context.l10n.exportCardConfirmWarning,
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,
@@ -84,13 +85,13 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text("所有"),
+              title: Text(context.l10n.passwordAndCard),
               leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
               onTap: () => showDialog(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    "导出确认",
-                    "导出后的数据将被所有人可见，确认吗？",
+                    context.l10n.exportConfirm,
+                    context.l10n.exportAllConfirmWarning,
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,
@@ -120,7 +121,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
         } else {
-          ToastUtil.show(msg: "导出失败: ${result.msg}");
+          ToastUtil.show(msg: context.l10n.exportFailed(result.msg));
         }
         break;
       case AllpassType.card:
@@ -130,7 +131,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
         } else {
-          ToastUtil.show(msg: "导出失败: ${result.msg}");
+          ToastUtil.show(msg: context.l10n.exportFailed(result.msg));
         }
         break;
       default:
@@ -143,7 +144,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         if (passwordResult.success && cardResult.success) {
           Share.shareFiles([passwordResult.path!, cardResult.path!], mimeTypes: ["text/*", "text/*"]);
         } else {
-          ToastUtil.show(msg: "导出失败: ${passwordResult.msg}");
+          ToastUtil.show(msg: context.l10n.exportFailed(passwordResult.msg));
         }
     }
   }

@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/core/param/config.dart';
@@ -22,7 +23,7 @@ class ModifyPasswordDialog extends StatelessWidget {
     Color mainColor = Theme.of(context).primaryColor;
     return AlertDialog(
       title: Text(
-        "修改主密码",
+        context.l10n.modifyMainPassword,
         style: AllpassTextUI.firstTitleStyle,
       ),
       content: SingleChildScrollView(
@@ -32,18 +33,21 @@ class ModifyPasswordDialog extends StatelessWidget {
           children: <Widget>[
             NoneBorderCircularTextField(
               editingController: _oldPasswordController,
-              labelText: "请输入旧密码",
+              labelText: context.l10n.oldPassword,
+              hintText: context.l10n.pleaseInputOldPassword,
               obscureText: true,
               autoFocus: true,
             ),
             NoneBorderCircularTextField(
               editingController: _newPasswordController,
-              labelText: "请输入新密码",
+              labelText: context.l10n.newPassword,
+              hintText: context.l10n.pleaseInputNewPassword,
               obscureText: true,
             ),
             NoneBorderCircularTextField(
               editingController: _secondInputController,
-              labelText: "请再输入一遍",
+              labelText: context.l10n.newPassword,
+              hintText: context.l10n.pleaseInputAgain,
               obscureText: true,
             )
           ],
@@ -51,25 +55,25 @@ class ModifyPasswordDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text("提交", style: TextStyle(color: mainColor)),
+          child: Text(context.l10n.submit, style: TextStyle(color: mainColor)),
           onPressed: () async {
             if (Config.password == EncryptUtil.encrypt(_oldPasswordController.text)) {
               if (_newPasswordController.text.length >= 6
                   && _newPasswordController.text == _secondInputController.text) {
                 String newPassword = EncryptUtil.encrypt(_newPasswordController.text);
                 Config.setPassword(newPassword);
-                ToastUtil.show(msg: "修改成功");
+                ToastUtil.show(msg: context.l10n.modifySuccess);
                 Navigator.pop(context);
               } else {
-                ToastUtil.showError(msg: "密码小于6位或两次密码输入不一致！");
+                ToastUtil.showError(msg: context.l10n.modifyPasswordFail);
               }
             } else {
-              ToastUtil.showError(msg: "输入旧密码错误！");
+              ToastUtil.showError(msg: context.l10n.oldPasswordIncorrect);
             }
           },
         ),
         TextButton(
-          child: Text("取消", style: TextStyle(color: mainColor)),
+          child: Text(context.l10n.cancel, style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop(context)
         )
       ],

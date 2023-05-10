@@ -1,4 +1,5 @@
 import 'package:allpass/core/common_logger.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/util/version_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +28,11 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "关于",
+          l10n.about,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -55,11 +57,11 @@ class AboutPage extends StatelessWidget {
                           title: Container(
                             padding: EdgeInsets.only(bottom: 10),
                             child: Text(
-                              "Allpass",
+                              l10n.allpass,
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
-                          subtitle: Text("一款简单的私密信息管理工具"),
+                          subtitle: Text(l10n.allpassIntroduction),
                           trailing: Text("V${AllpassApplication.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
                           onTap: () async {
@@ -74,7 +76,7 @@ class AboutPage extends StatelessWidget {
                               return;
                             }
 
-                            ToastUtil.show(msg: "进入开发者模式");
+                            ToastUtil.show(msg: l10n.enterDebugMode);
                             Navigator.push(context, MaterialPageRoute(
                                 builder: (context) => DebugPage()
                             ));
@@ -86,15 +88,15 @@ class AboutPage extends StatelessWidget {
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
-                      child: Text("联系方式", style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(l10n.contact, style: TextStyle(fontWeight: FontWeight.bold),),
                     ),
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
                       child: TextButton(
-                        child: Text("微博：@Aengus_Sun"),
+                        child: Text(l10n.contact1),
                         onPressed: () async {
                           await launchUrl(
-                            Uri.parse("https://weibo.com/u/5484402663"),
+                            Uri.parse(l10n.contact1Url),
                             mode: LaunchMode.externalApplication,
                           );
                         },
@@ -103,7 +105,7 @@ class AboutPage extends StatelessWidget {
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
                       child: TextButton(
-                        child: Text("邮箱：sys6511@126.com"),
+                        child: Text(l10n.contact2),
                         onPressed: () async {
                           await launchUrl(Uri.parse("mailto:sys6511@126.com"));
                         },
@@ -112,7 +114,7 @@ class AboutPage extends StatelessWidget {
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
                       child: TextButton(
-                        child: Text("开发者网址：https://www.aengus.top"),
+                        child: Text(l10n.contact3),
                         onPressed: () async {
                           await launchUrl(
                             Uri.parse("https://www.aengus.top"),
@@ -126,7 +128,7 @@ class AboutPage extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             TextButton(
-                              child: Text("开源地址：Github"),
+                              child: Text(l10n.projectUrl),
                               onPressed: () async {
                                   await launchUrl(
                                     Uri.parse("https://github.com/sunyongsheng/Allpass"),
@@ -136,7 +138,7 @@ class AboutPage extends StatelessWidget {
                             ),
                             Text("|"),
                             TextButton(
-                              child: Text("码云"),
+                              child: Text(l10n.gitee),
                               onPressed: () async {
                                 await launchUrl(
                                   Uri.parse("https://gitee.com/sunyongsheng/Allpass"),
@@ -160,11 +162,11 @@ class AboutPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextButton(
-                child: Text("服务条款"),
+                child: Text(l10n.serviceTerms),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(
                     builder: (context) => DetailsPage(
-                      title: "服务条款",
+                      title: l10n.serviceTerms,
                       content: serviceContent,
                     )
                   ));

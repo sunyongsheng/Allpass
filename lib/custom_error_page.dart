@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
@@ -11,7 +12,7 @@ class InitialErrorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Allpass",
+      title: context.l10n.allpass,
       home: CustomErrorPage(msg: errorMsg),
     );
   }
@@ -25,10 +26,11 @@ class CustomErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "出错了",
+          l10n.appError,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -39,19 +41,19 @@ class CustomErrorPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(
-              child: Text("App出现错误，快去反馈给作者!"),
+              child: Text(l10n.appErrorHint1),
               padding: EdgeInsets.symmetric(vertical: 15),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.symmetric(vertical: 10),
             ),
             Padding(
-              child: Text("以下是出错信息，请截图发到邮箱sys6511@126.com"),
-              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Text(l10n.appErrorHint2),
+              padding: EdgeInsets.symmetric(vertical: 10),
             ),
             Padding(
               child: Text(msg ?? "null", style: TextStyle(color: Colors.red),),
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.symmetric(vertical: 10),
             ),
           ],
         ),

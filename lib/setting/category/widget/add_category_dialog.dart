@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/util/toast_util.dart';
@@ -22,14 +23,12 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
 
   var _addTextController = TextEditingController();
   bool _inputFormatCorr = true;
-  late String categoryName;
   late CategoryType type;
 
   @override
   void initState() {
     super.initState();
     this.type = widget.type;
-    this.categoryName = CategoryTypes.getCategoryName(type);
   }
 
   @override
@@ -41,8 +40,10 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
+    var categoryName = type.title(context);
     return AlertDialog(
-      title: Text("新建$categoryName"),
+      title: Text(l10n.createCategory(categoryName)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,9 +53,9 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
             editingController: _addTextController,
             errorText: _inputFormatCorr
                 ? null
-                : "$categoryName名不允许包含“,”或“~”或空格",
+                : l10n.categoryNameRuleRequire(type.title(context)),
             needPadding: false,
-            hintText: "请输入$categoryName名",
+            hintText: l10n.pleaseInputCategoryName(type.title(context)),
             onChanged: (text) {
               if (text.contains(",") || text.contains("~") || text.contains(" ")) {
                 setState(() {
@@ -73,11 +74,11 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: () => submit(),
-          child: Text('提交', style: TextStyle(color: mainColor)),
+          child: Text(l10n.submit, style: TextStyle(color: mainColor)),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('取消', style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel),
         ),
       ],
     );
@@ -86,8 +87,10 @@ class _AddLabelDialog extends State<AddCategoryDialog> {
   void submit() {
     if (_inputFormatCorr && ((_addTextController.text.trim().length)) > 0) {
       Navigator.pop<String>(context, _addTextController.text);
+    } else if (!_inputFormatCorr) {
+      ToastUtil.showError(msg: context.l10n.categoryNameNotValid);
     } else {
-      ToastUtil.showError(msg: "输入内容不合法");
+      ToastUtil.showError(msg: context.l10n.categoryNameNotAllowEmpty);
     }
   }
 }

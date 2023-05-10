@@ -7,6 +7,7 @@ import 'package:allpass/classification/page/classification_page.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/service/allpass_service.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/password_page.dart';
@@ -88,6 +89,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var l10n = context.l10n;
     return Scaffold(
       body: PageView(
         children: _pagesList,
@@ -105,19 +107,19 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.supervised_user_circle,),
-            label: "密码",
+            label: l10n.password,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.credit_card,),
-            label: "卡片"
+            label: l10n.card,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.class_,),
-            label: "分类"
+            label: l10n.folderTitle
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings,),
-            label: "设置"
+            label: l10n.settings
           ),
         ],
         type: BottomNavigationBarType.fixed,

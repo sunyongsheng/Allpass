@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -19,7 +20,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "主题颜色",
+            context.l10n.appTheme,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -34,18 +35,63 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
               margin: AllpassEdgeInsets.settingCardInset,
               elevation: 0,
               child: Column(
-                children: themeModes
-                    .map((e) => _createThemeModeItem(e))
-                    .toList(),
+                children: [
+                  _createThemeModeItem(ThemeModeItem(
+                    ThemeMode.system,
+                    context.l10n.themeSystem,
+                  )),
+                  _createThemeModeItem(ThemeModeItem(
+                    ThemeMode.light,
+                    context.l10n.themeLight,
+                  )),
+                  _createThemeModeItem(ThemeModeItem(
+                    ThemeMode.dark,
+                    context.l10n.themeDark,
+                  )),
+                ],
               ),
             ),
             Card(
                 margin: AllpassEdgeInsets.settingCardInset,
                 elevation: 0,
                 child: Column(
-                  children: primaryColors
-                      .map((e) => _createPrimaryColorItem(e))
-                      .toList(),
+                  children: [
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.blue,
+                      context.l10n.themeColorBlue,
+                      Colors.blue,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.red,
+                      context.l10n.themeColorRed,
+                      Colors.red,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.teal,
+                      context.l10n.themeColorTeal,
+                      Colors.teal,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.deepPurple,
+                      context.l10n.themeColorDeepPurple,
+                      Colors.deepPurple,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.orange,
+                      context.l10n.themeColorOrange,
+                      Colors.orange,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.pink,
+                      context.l10n.themeColorPink,
+                      Colors.pink,
+                    )),
+                    _createPrimaryColorItem(PrimaryColorItem(
+                      PrimaryColor.blueGrey,
+                      context.l10n.themeColorBlueGrey,
+                      Colors.blueGrey,
+                    )),
+                  ],
                 )),
           ],
         ));

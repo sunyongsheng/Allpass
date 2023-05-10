@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
@@ -24,14 +25,14 @@ class SelectAppDialog extends SelectItemDialog<Application> {
   List<Widget> buildActions(BuildContext context) {
     return [
       TextButton(
-        child: Text("设置为空", style: TextStyle(color: Colors.red),),
+        child: Text(context.l10n.setToNone, style: TextStyle(color: Colors.red),),
         onPressed: () async {
           onCancel.call();
           Navigator.pop<String>(context, SELECT_NULL_APP);
         },
       ),
       TextButton(
-        child: Text("取消", style: TextStyle(color: Colors.grey)),
+        child: Text(context.l10n.cancel, style: TextStyle(color: Colors.grey)),
         onPressed: () {
           Navigator.pop<String>(context);
         },

@@ -4,6 +4,8 @@ import 'package:allpass/core/di/di.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -83,6 +85,8 @@ class Allpass extends StatelessWidget {
         theme: context.watch<ThemeProvider>().lightTheme,
         darkTheme: context.watch<ThemeProvider>().darkTheme,
         themeMode: context.watch<ThemeProvider>().themeMode,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: child,
         onGenerateRoute: AllpassApplication.router.generator,
         navigatorKey: AllpassApplication.navigationKey,

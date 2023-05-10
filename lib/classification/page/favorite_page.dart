@@ -3,6 +3,7 @@ import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
@@ -21,7 +22,7 @@ class FavoritePage extends StatelessWidget {
         title: InkWell(
           splashColor: Colors.transparent,
           child: Text(
-            "收藏",
+            context.l10n.favorites,
             style: AllpassTextUI.titleBarStyle,
           ),
           onTap: () {

@@ -4,6 +4,7 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,7 +85,7 @@ class _CardWidgetItem extends StatelessWidget {
     if (Config.longPressCopy) {
       longPressCallback = () {
         Clipboard.setData(ClipboardData(text: data.cardId));
-        ToastUtil.show(msg: "已复制卡号");
+        ToastUtil.show(msg: context.l10n.cardIdCopied);
       };
     }
 

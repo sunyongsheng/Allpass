@@ -4,6 +4,7 @@ import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
@@ -53,11 +54,12 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "账号配置",
+          l10n.webdavConfig,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -65,21 +67,24 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
           IconButton(
             icon: Icon(Icons.help_outline),
             onPressed: () {
-              String example = "https://dav.jianguoyun.com/dav/";
+              String example = l10n.webdavExample;
               showDialog(
                 context: context,
                 builder: (context) => InformationHelpDialog(
                   content: [
-                    Text("此功能可以将您的数据备份到 WebDAV 服务器中或者进行数据恢复.\n"),
-                    Text("WebDAV 服务器地址请以 http:// 或 https:// 开头，如坚果云(点击复制)：\n"),
-                    InkWell(
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: example));
-                        ToastUtil.show(msg: "复制成功");
-                      },
-                      child: Text(example)),
-                    Text("\n"),
-                    Text("端口号代表服务所在端口，如果您不清楚，请不要编辑.")
+                    Text(l10n.webdavHelp1),
+                    Text(l10n.webdavHelp2),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: InkWell(
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: example));
+                          ToastUtil.show(msg: l10n.copySuccess);
+                        },
+                        child: Text(example),
+                      ),
+                    ),
+                    Text(l10n.webdavHelp3)
                   ],
                 )
               );
@@ -95,8 +100,8 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
             children: <Widget>[
               NoneBorderCircularTextField(
                 editingController: _urlController,
-                labelText: "WebDAV服务器地址",
-                hintText: "请以 http:// 或 https:// 开头",
+                labelText: l10n.webdavServerUrl,
+                hintText: l10n.webdavServerUrlHint,
                 onChanged: _setPortAutomatically,
                 trailing: InkWell(
                   child: Icon(
@@ -110,7 +115,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
               ),
               NoneBorderCircularTextField(
                 editingController: _portController,
-                labelText: "端口号",
+                labelText: l10n.port,
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -123,7 +128,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
               ),
               NoneBorderCircularTextField(
                 editingController: _usernameController,
-                labelText: "账号",
+                labelText: l10n.account,
                 trailing: InkWell(
                   child: Icon(
                     Icons.cancel,
@@ -139,7 +144,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
                   Expanded(
                     child: NoneBorderCircularTextField(
                       editingController: _passwordController,
-                      labelText: "密码",
+                      labelText: l10n.password,
                       obscureText: !_passwordVisible,
                       trailing: InkWell(
                         child: Icon(
@@ -167,8 +172,8 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: LoadingTextButton(
                   color: mainColor,
-                  title: "下一步",
-                  loadingTitle: "配置中",
+                  title: l10n.nextStep,
+                  loadingTitle: l10n.inConfiguration,
                   loading: _pressNext,
                   onPressed: () async => await _nextStep(),
                 ),
@@ -183,7 +188,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
   Future<Null> _nextStep() async {
     var url = _urlController.text;
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      ToastUtil.showError(msg: "服务器地址需以http://或https://开头");
+      ToastUtil.showError(msg: context.l10n.webdavServerUrlRequire);
       return;
     }
 
@@ -199,7 +204,7 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
           port: int.parse(_portController.text),
         );
       } on FormatException catch (_) {
-        ToastUtil.showError(msg: "端口号必须为数字！");
+        ToastUtil.showError(msg: context.l10n.webdavPortRequire);
         setState(() {
           _pressNext = false;
         });
@@ -209,17 +214,19 @@ class _WebDavConfigPage extends State<StatefulWidget> with AfterFirstFrameMixin 
       if (auth) {
         _syncService.configPersistence();
         Config.setWebDavAuthSuccess(true);
-        ToastUtil.show(msg: "账号验证成功");
+        ToastUtil.show(msg: context.l10n.webdavLoginSuccess);
         Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                      create: (context) => WebDavSyncProvider(),
-                      child: WebDavSyncPage(),
-                    )));
+          context,
+          CupertinoPageRoute(
+            builder: (context) => ChangeNotifierProvider(
+              create: (context) => WebDavSyncProvider(),
+              child: WebDavSyncPage(),
+            ),
+          ),
+        );
       } else {
         Config.setWebDavAuthSuccess(false);
-        ToastUtil.show(msg: "验证失败，请重试");
+        ToastUtil.show(msg: context.l10n.webdavLoginFailed);
       }
       setState(() {
         _pressNext = false;

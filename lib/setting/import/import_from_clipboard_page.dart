@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,31 +48,30 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
       if (states.contains(MaterialState.selected)) return mainColor;
       return Colors.grey;
     });
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "从剪贴板导入",
+            context.l10n.importFromClipboard,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.help_outline),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => InformationHelpDialog(
-                    content: <Widget>[
-                      Text("此功能帮助您轻松地从之前在记事本中保存的密码导入到Allpass中；\n"),
-                      Text("名称是密码的助记符，您可以随便起一个名称来让您知道此条记录是什么内容；\n"),
-                      Text("账号是登录使用的账号名，有可能是手机、邮箱或者其他您设置的账号；\n"),
-                      Text("网站地址可以帮助Allpass在正确的网站填充您的密码，大多数情况下是网站登录页的URL地址；\n"),
-                      Text("两个字段之间请以“空格”作为分隔符，这样Allpass才能正确分辨哪个是用户名，哪个是密码；\n"),
-                      Text("如果选择了最后一个导入格式，请在第一行输入统一的用户名；如果有多个用户名，可以分为几次导入；")
-                    ],
-                  )
-                );
-              },
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) => InformationHelpDialog(
+                  content: <Widget>[
+                    Text(context.l10n.importFromClipboardHelp1),
+                    Text(context.l10n.importFromClipboardHelp2),
+                    Text(context.l10n.importFromClipboardHelp3),
+                    Text(context.l10n.importFromClipboardHelp4),
+                    Text(context.l10n.importFromClipboardHelp5),
+                    Text(context.l10n.importFromClipboardHelp6),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -83,7 +83,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                 alignment: Alignment.centerLeft,
                 padding: AllpassEdgeInsets.forCardInset,
                 child: Text(
-                  "请选择密码格式（空格为分隔符）",
+                  context.l10n.importFromClipboardSelectFormat,
                   style: TextStyle(
                     fontSize: 16
                   ),
@@ -107,7 +107,10 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               });
                             },
                           ),
-                          Text("名称 账号 密码 网站地址", style: AllpassTextUI.firstTitleStyle,),
+                          Text(
+                            context.l10n.importFromClipboardFormat1,
+                            style: AllpassTextUI.firstTitleStyle,
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -129,7 +132,10 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               });
                             },
                           ),
-                          Text("名称 账号 密码", style: AllpassTextUI.firstTitleStyle,),
+                          Text(
+                            context.l10n.importFromClipboardFormat2,
+                            style: AllpassTextUI.firstTitleStyle,
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -151,7 +157,10 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               });
                             },
                           ),
-                          Text("账号 密码 网站地址", style: AllpassTextUI.firstTitleStyle,),
+                          Text(
+                            context.l10n.importFromClipboardFormat3,
+                            style: AllpassTextUI.firstTitleStyle,
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -173,7 +182,10 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               });
                             },
                           ),
-                          Text("账号 密码", style: AllpassTextUI.firstTitleStyle,),
+                          Text(
+                            context.l10n.importFromClipboardFormat4,
+                            style: AllpassTextUI.firstTitleStyle,
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -193,17 +205,20 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               setState(() {
                                 _groupValue = value!;
                               });
-                              ToastUtil.show(msg: "请在第一行输入默认账号");
+                              ToastUtil.show(msg: context.l10n.importFromClipboardFormat5Hint);
                             },
                           ),
-                          Text("名称 密码", style: AllpassTextUI.firstTitleStyle,),
+                          Text(
+                            context.l10n.importFromClipboardFormat5,
+                            style: AllpassTextUI.firstTitleStyle,
+                          ),
                         ],
                       ),
                       onTap: () {
                         setState(() {
                           _groupValue = 5;
                         });
-                        ToastUtil.show(msg: "请在第一行输入默认账号");
+                        ToastUtil.show(msg: context.l10n.importFromClipboardFormat5Hint);
                       },
                     ),
                   ],
@@ -215,34 +230,34 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                 child: NoneBorderCircularTextField(
                   editingController: _controller,
                   maxLines: 1000,
-                  hintText: "在此粘贴您的数据",
+                  hintText: context.l10n.pasteDataHere,
                 )
               ),
               Container(
-                  padding: AllpassEdgeInsets.forViewCardInset,
-                  child: LoadingTextButton(
-                    title: "开始导入",
-                    loadingTitle: "导入中请稍后",
-                    loading: importing,
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () async {
-                      setState(() {
-                        importing = true;
-                      });
-                      try {
-                        List<PasswordBean> list = await parseText(_groupValue);
-                        for (var bean in list) {
-                          await context.read<PasswordProvider>().insertPassword(bean);
-                        }
-                        ToastUtil.show(msg: "导入了${list.length}条记录");
-                      } catch (e) {
-                        ToastUtil.show(msg: e.toString());
+                padding: AllpassEdgeInsets.forViewCardInset,
+                child: LoadingTextButton(
+                  title: context.l10n.startImport,
+                  loadingTitle: context.l10n.importing,
+                  loading: importing,
+                  color: Theme.of(context).primaryColor,
+                  onPressed: () async {
+                    setState(() {
+                      importing = true;
+                    });
+                    try {
+                      List<PasswordBean> list = await parseText(_groupValue);
+                      for (var bean in list) {
+                        await context.read<PasswordProvider>().insertPassword(bean);
                       }
-                      setState(() {
-                        importing = false;
-                      });
-                    },
-                  )
+                      ToastUtil.show(msg: context.l10n.importRecordSuccess(list.length));
+                    } catch (e) {
+                      ToastUtil.show(msg: e.toString());
+                    }
+                    setState(() {
+                      importing = false;
+                    });
+                  },
+                ),
               ),
               Padding(
                 padding: AllpassEdgeInsets.smallTBPadding,
@@ -273,7 +288,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           if (field == "") continue;
           else fields.add(field);
         }
-        if (fields.length < 2) throw Exception("某条记录格式不正确！");
+        if (fields.length < 2) throw Exception(context.l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: defaultUsername,
@@ -293,7 +308,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
         else fields.add(field);
       }
       if (value == 1) {
-        if (fields.length < 4) throw Exception("某条记录格式不正确！");
+        if (fields.length < 4) throw Exception(context.l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
@@ -301,7 +316,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: fields[3],
         ));
       } else if (value == 2) {
-        if (fields.length < 3) throw Exception("某条记录格式不正确！");
+        if (fields.length < 3) throw Exception(context.l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
@@ -309,7 +324,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: "",
         ));
       } else if (value == 3) {
-        if (fields.length < 3) throw Exception("某条记录格式不正确！");
+        if (fields.length < 3) throw Exception(context.l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: "",
           username: fields[0],
@@ -317,7 +332,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: fields[2],
         ));
       } else if (value == 4) {
-        if (fields.length < 2) throw Exception("某条记录格式不正确！");
+        if (fields.length < 2) throw Exception(context.l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: "",
           username: fields[0],

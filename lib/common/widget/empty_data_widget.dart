@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -27,7 +28,7 @@ class EmptyDataWidget extends StatelessWidget {
           padding: AllpassEdgeInsets.smallTBPadding,
         ),
         Padding(
-          child: Center(child: Text(title ?? "什么也没有，赶快添加吧"),),
+          child: Center(child: Text(title ?? context.l10n.emptyDataHint),),
           padding: AllpassEdgeInsets.forCardInset,
         ),
         Padding(
@@ -40,6 +41,9 @@ class EmptyDataWidget extends StatelessWidget {
                   child: Text(
                     subtitle!,
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      height: 1.3
+                    ),
                   ),
                 ),
               padding: AllpassEdgeInsets.forCardInset,

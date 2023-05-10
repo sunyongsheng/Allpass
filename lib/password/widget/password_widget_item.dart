@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
@@ -91,7 +92,7 @@ class PasswordWidgetItem extends StatelessWidget {
         Clipboard.setData(ClipboardData(
           text: EncryptUtil.decrypt(data.password),
         ));
-        ToastUtil.show(msg: "已复制密码");
+        ToastUtil.show(msg: context.l10n.passwordCopied);
       };
     }
 

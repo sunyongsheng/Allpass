@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
@@ -44,8 +45,9 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     return AlertDialog(
-      title: Text("密码生成器"),
+      title: Text(l10n.passwordGenerator),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -120,7 +122,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                       });
                     },
                   ),
-                  Text("特殊符号"),
+                  Text(l10n.symbols),
                 ],
               ),
               onTap: () {
@@ -146,7 +148,8 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                         cap: _capitalChoose,
                         low: _lowerCaseChoose,
                         number: _numberChoose,
-                        sym: _symbolChoose,);
+                        sym: _symbolChoose,
+                      );
                     });
                   },
                 ),
@@ -159,7 +162,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   child: TextField(controller: _controller,),
                 ),
                 InkWell(
-                  child: Text("复制", style: TextStyle(fontSize: 14)),
+                  child: Text(l10n.copy, style: TextStyle(fontSize: 14)),
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: _controller.text));
                   },
@@ -171,13 +174,13 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text("确认", style: TextStyle(color: mainColor)),
+          child: Text(l10n.confirm, style: TextStyle(color: mainColor)),
           onPressed: () {
             Navigator.pop<String>(context, _controller.text);
           },
         ),
         TextButton(
-          child: Text("生成", style: TextStyle(color: mainColor)),
+          child: Text(l10n.generate, style: TextStyle(color: mainColor)),
           onPressed: () {
             setState(() {
               _controller.text = EncryptUtil.generateRandomKey(
@@ -190,7 +193,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
           },
         ),
         TextButton(
-          child: Text("关闭", style: TextStyle(color: mainColor)),
+          child: Text(l10n.close, style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop<String>(context, null),
         )
       ],

@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,7 @@ class _ViewCardPage extends State<ViewCardPage> {
     CardBean bean = provider.currCard;
 
     if (bean == CardBean.empty) {
-      ToastUtil.show(msg: "出现错误");
+      ToastUtil.show(msg: context.l10n.unknownErrorOccur);
       Navigator.pop(context);
       return Container();
     }
@@ -60,7 +61,7 @@ class _ViewCardPage extends State<ViewCardPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "查看卡片",
+            context.l10n.viewCard,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -80,69 +81,85 @@ class _ViewCardPage extends State<ViewCardPage> {
               Padding(
                 padding: AllpassEdgeInsets.forViewCardInset,
                 child: Card(
-                    elevation: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.symmetric(vertical: 23, horizontal: 0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: AllpassUI.smallBorderRadius,
-                                color: bean.color,
+                  elevation: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 23,
+                          horizontal: 0,
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: AllpassUI.smallBorderRadius,
+                            color: bean.color,
+                          ),
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.transparent,
+                            child: Text(
+                              bean.name.substring(0, 1),
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
                               ),
-                              child: CircleAvatar(
-                                radius: 25,
-                                backgroundColor: Colors.transparent,
-                                child: Text(
-                                  bean.name.substring(0, 1),
-                                  style: TextStyle(
-                                      fontSize: 25, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: AllpassEdgeInsets.smallLPadding,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 5),
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxWidth: AllpassScreenUtil.setWidth(450),
+                              ),
+                              child: Text(
+                                bean.name,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            )
-                        ),
-                        Padding(
-                          padding: AllpassEdgeInsets.smallLPadding,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                                padding: EdgeInsets.only(left: 5),
-                                child: ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      maxWidth: AllpassScreenUtil.setWidth(450)
-                                  ),
-                                  child: Text(bean.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                                  ),
-                                )
                             ),
-                            Container(
-                                margin: EdgeInsets.only(left: 0, right: 5, top: 3, bottom: 0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(Icons.folder_open),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 5),
-                                      color: Colors.grey[250],
-                                      child: Container(
-                                        child: Text(bean.folder,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        width: 50,
-                                      ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: 0,
+                              right: 5,
+                              top: 3,
+                              bottom: 0,
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.folder_open),
+                                Container(
+                                  margin: EdgeInsets.only(left: 5),
+                                  color: Colors.grey[250],
+                                  child: Container(
+                                    child: Text(
+                                      bean.folder,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                )),
-                          ],
-                        )
-                      ],
-                    )
+                                    width: 50,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -153,38 +170,40 @@ class _ViewCardPage extends State<ViewCardPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(
-                          padding: AllpassEdgeInsets.smallTBPadding,),
+                          padding: AllpassEdgeInsets.smallTBPadding,
+                        ),
                         // 拥有者姓名标题
-                        _titleContainer(mainColor, "拥有者姓名"),
+                        _titleContainer(mainColor, context.l10n.ownerName),
                         // 拥有者姓名主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
                                 child: Text(bean.ownerName,
                                   overflow: TextOverflow.ellipsis,
-                                  style: AllpassTextUI
-                                      .firstTitleStyle,
-                                ),),
-                              Padding(padding: AllpassEdgeInsets
-                                  .smallLPadding,),
+                                  style: AllpassTextUI.firstTitleStyle,
+                                ),
+                              ),
+                              Padding(padding: AllpassEdgeInsets.smallLPadding),
                               InkWell(
-                                child: Text("复制",
-                                  style: TextStyle(fontSize: 14, color: mainColor),),
+                                child: Text(
+                                  context.l10n.copy,
+                                  style: TextStyle(fontSize: 14, color: mainColor),
+                                ),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
-                                      text: bean.ownerName));
-                                  ToastUtil.show(msg: "已复制姓名");
+                                    text: bean.ownerName,
+                                  ));
+                                  ToastUtil.show(msg: context.l10n.nameCopied);
                                 },
                               )
                             ],
                           ),
                         ),
                         // 卡号标题
-                        _titleContainer(mainColor, "卡号"),
+                        _titleContainer(mainColor, context.l10n.cardId),
                         // 卡号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -196,8 +215,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                     ? bean.cardId
                                     : "*" * bean.cardId.length,
                                   overflow: TextOverflow.ellipsis,
-                                  style: AllpassTextUI
-                                      .firstTitleStyle,
+                                  style: AllpassTextUI.firstTitleStyle,
                                 ),
                               ),
                               Row(
@@ -215,13 +233,19 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   Padding(padding: AllpassEdgeInsets.smallLPadding,),
                                   InkWell(
                                     onTap: () {
-                                      Clipboard.setData(
-                                          ClipboardData(text: bean.cardId));
+                                      Clipboard.setData(ClipboardData(
+                                        text: bean.cardId,
+                                      ));
                                       ToastUtil.show(
-                                          msg: "已复制卡号");
+                                        msg: context.l10n.cardIdCopied,
+                                      );
                                     },
-                                    child: Text("复制",
-                                      style: TextStyle(fontSize: 14, color: mainColor),
+                                    child: Text(
+                                      context.l10n.copy,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: mainColor,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -230,7 +254,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 密码标题
-                        _titleContainer(mainColor, "密码"),
+                        _titleContainer(mainColor, context.l10n.password),
                         // 密码主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -261,10 +285,14 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(text: password));
-                                      ToastUtil.show(msg: "已复制密码");
+                                      ToastUtil.show(msg: context.l10n.passwordCopied);
                                     },
-                                    child: Text("复制",
-                                      style: TextStyle(fontSize: 14, color: mainColor),
+                                    child: Text(
+                                      context.l10n.copy,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: mainColor,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -273,70 +301,80 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 绑定手机号标题
-                        _titleContainer(mainColor, "绑定手机号"),
+                        _titleContainer(mainColor, context.l10n.phoneNumber),
                         // 绑定手机号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                child: Text(bean.telephone,
+                                child: Text(
+                                  bean.telephone,
                                   overflow: TextOverflow.ellipsis,
-                                  style: AllpassTextUI
-                                      .firstTitleStyle,
-                                ),),
-                              Padding(padding: AllpassEdgeInsets
-                                  .smallLPadding,),
+                                  style: AllpassTextUI.firstTitleStyle,
+                                ),
+                              ),
+                              Padding(padding: AllpassEdgeInsets.smallLPadding),
                               InkWell(
-                                child: Text("复制",
-                                  style: TextStyle(fontSize: 14, color: mainColor),),
+                                child: Text(
+                                  context.l10n.copy,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: mainColor,
+                                  ),
+                                ),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
-                                      text: bean.telephone));
-                                  ToastUtil.show(msg: "已复制手机号");
+                                    text: bean.telephone,
+                                  ));
+                                  ToastUtil.show(msg: context.l10n.phoneNumberCopied);
                                 },
                               )
                             ],
                           ),
                         ),
                         // 备注标题
-                        _titleContainer(mainColor, "备注"),
+                        _titleContainer(mainColor, context.l10n.notes),
                         // 备注主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment
-                                .spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      if (bean.notes.length >= 1) {
-                                        Navigator.push(
-                                            context, CupertinoPageRoute(
-                                          builder: (context) =>
-                                              DetailTextPage("备注", bean.notes, false),));
-                                      }
-                                    },
-                                    child: Text(bean.notes.length < 1
-                                        ? "无备注"
+                                child: InkWell(
+                                  onTap: () {
+                                    if (bean.notes.length >= 1) {
+                                      Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => DetailTextPage(
+                                            context.l10n.notes,
+                                            bean.notes,
+                                            false,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: Text(
+                                    bean.notes.length < 1
+                                        ? context.l10n.emptyNotes
                                         : bean.notes,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: bean.notes.length < 1
-                                          ? AllpassTextUI
-                                          .hintTextStyle
-                                          : AllpassTextUI
-                                          .firstTitleStyle,
-                                    ),
-                                  )),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: bean.notes.length < 1
+                                        ? AllpassTextUI.hintTextStyle
+                                        : AllpassTextUI.firstTitleStyle,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         // 标签标题
-                        _titleContainer(mainColor, "标签"),
+                        _titleContainer(mainColor, context.l10n.labels),
                         // 标签主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -359,7 +397,8 @@ class _ViewCardPage extends State<ViewCardPage> {
                     backgroundColor: Colors.blueAccent,
                     elevation: 0,
                     onPressed: () => Navigator.push(context, CupertinoPageRoute(
-                        builder: (_) => EditCardPage(bean, DataOperation.update))),
+                        builder: (_) => EditCardPage(bean, DataOperation.update),
+                    )),
                     child: Icon(Icons.edit),
                   ),
                   Padding(padding: AllpassEdgeInsets.smallLPadding,),
@@ -368,18 +407,18 @@ class _ViewCardPage extends State<ViewCardPage> {
                     elevation: 0,
                     backgroundColor: Colors.redAccent,
                     onPressed: () => showDialog(
-                        context: context,
-                        builder: (context) => ConfirmDialog(
-                          "确认删除",
-                          "你将删除此卡片，确认吗？",
-                          danger: true,
-                          onConfirm: () async {
-                            deleted = true;
-                            await provider.deleteCard(bean);
-                            ToastUtil.show(msg: "删除成功");
-                            Navigator.pop(context);
-                          },
-                        )
+                      context: context,
+                      builder: (context) => ConfirmDialog(
+                        context.l10n.confirmDelete,
+                        context.l10n.deleteCardWarning,
+                        danger: true,
+                        onConfirm: () async {
+                          deleted = true;
+                          await provider.deleteCard(bean);
+                          ToastUtil.show(msg: context.l10n.deleteSuccess);
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                     child: Icon(Icons.delete),
                   ),
@@ -403,7 +442,10 @@ class _ViewCardPage extends State<ViewCardPage> {
       ));
     });
     if (labelChoices.length == 0) {
-      labelChoices.add(Text("无标签", style: AllpassTextUI.hintTextStyle,));
+      labelChoices.add(Text(
+        context.l10n.emptyLabel,
+        style: AllpassTextUI.hintTextStyle,
+      ));
     }
     return labelChoices;
   }

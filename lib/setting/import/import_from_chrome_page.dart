@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,7 +11,7 @@ class ImportFromChromePage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "从Chrome中导入",
+            context.l10n.importFromChrome,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,

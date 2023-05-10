@@ -1,4 +1,5 @@
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 class EditTextDialog extends StatefulWidget {
@@ -40,6 +41,7 @@ class _EditTextDialogState extends State<EditTextDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return AlertDialog(
       title: Text(widget.dialogTitle),
       content: SingleChildScrollView(
@@ -48,7 +50,7 @@ class _EditTextDialogState extends State<EditTextDialog> {
       actions: <Widget>[
         TextButton(
           child: Text(
-            "确认",
+            l10n.confirm,
             style: _confirmEnable
                 ? TextStyle(color: Theme.of(context).primaryColor)
                 : TextStyle(color: Colors.grey),
@@ -56,7 +58,7 @@ class _EditTextDialogState extends State<EditTextDialog> {
           onPressed: () => _submit(context, _editingController.text),
         ),
         TextButton(
-          child: Text("取消", style: TextStyle(color: Colors.grey)),
+          child: Text(l10n.cancel, style: TextStyle(color: Colors.grey)),
           onPressed: () {
             Navigator.pop(context);
             widget.onCancel?.call();

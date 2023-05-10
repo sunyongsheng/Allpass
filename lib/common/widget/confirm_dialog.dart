@@ -1,7 +1,7 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatelessWidget {
-  final Key? key;
   final bool danger;
   final String _dialogMessage;
   final String _dialogTitle;
@@ -9,9 +9,13 @@ class ConfirmDialog extends StatelessWidget {
   final void Function()? onConfirm;
 
   ConfirmDialog(
-      this._dialogTitle,
-      this._dialogMessage,
-      {this.key, this.danger = false, this.onClick, this.onConfirm}) : super(key: key);
+    this._dialogTitle,
+    this._dialogMessage, {
+    Key? key,
+    this.danger = false,
+    this.onClick,
+    this.onConfirm,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +30,7 @@ class ConfirmDialog extends StatelessWidget {
       content: Text(_dialogMessage),
       actions: <Widget>[
         TextButton(
-          child: Text("确认", style: TextStyle(color: mainColor),),
+          child: Text(context.l10n.confirm, style: TextStyle(color: mainColor),),
           onPressed: () async {
             Navigator.pop<bool>(context, true);
             onClick?.call(true);
@@ -34,7 +38,7 @@ class ConfirmDialog extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text("取消", style: TextStyle(color: Colors.grey)),
+          child: Text(context.l10n.cancel, style: TextStyle(color: Colors.grey)),
           onPressed: () {
             Navigator.pop<bool>(context, false);
             onClick?.call(false);

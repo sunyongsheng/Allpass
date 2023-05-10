@@ -19,7 +19,7 @@ class _AuthDialogState extends State<AuthDialog> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      if (await _localAuthService.authenticate() == AuthResult.Success) {
+      if (await _localAuthService.authenticate(context) == AuthResult.Success) {
         setState(() {
           error = false;
         });

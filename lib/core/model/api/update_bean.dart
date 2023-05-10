@@ -1,19 +1,25 @@
 class UpdateBean {
 
-  CheckUpdateResult checkResult;
+  final CheckUpdateResult checkResult;
 
-  String? version;
+  final String? version;
 
-  String? updateContent;
+  final String? updateContent;
 
-  String? downloadUrl;
+  final String? downloadUrl;
 
-  String? updateTime;
+  final String? updateTime;
 
-  String? channel;
+  final String? channel;
 
-  UpdateBean({this.checkResult = CheckUpdateResult.NoUpdate,
-    this.version, this.updateContent, this.downloadUrl, this.updateTime, this.channel});
+  UpdateBean({
+    this.checkResult = CheckUpdateResult.NoUpdate,
+    this.version,
+    this.updateContent,
+    this.downloadUrl,
+    this.updateTime,
+    this.channel,
+  });
 
   bool isBetaChannel() {
     return this.channel?.toUpperCase() == "BETA";

@@ -1,3 +1,4 @@
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +17,13 @@ class ClassificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
         appBar: AppBar(
           title: InkWell(
             splashColor: Colors.transparent,
             child: Text(
-              "分类",
+              l10n.folderTitle,
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: () {
@@ -53,7 +55,7 @@ class ClassificationPage extends StatelessWidget {
                 builder: (context) => FavoritePage()
             ));
           },
-          title: "收藏",
+          title: context.l10n.fav,
         )
     );
     list.addAll(RuntimeData.folderList.map((folder) =>

@@ -6,6 +6,7 @@ import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/decrypt_error_widget.dart';
 import 'package:allpass/common/widget/label_chip.dart';
 import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/page/edit_password_page.dart';
@@ -44,7 +45,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     Color mainColor = Theme.of(context).primaryColor;
 
     if (bean == PasswordBean.empty) {
-      ToastUtil.show(msg: "出现了错误");
+      ToastUtil.show(msg: context.l10n.unknownErrorOccur);
       Navigator.pop(context);
       return Container();
     }
@@ -134,7 +135,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     var detailWidgets = [
       padding,
       // 账号标题
-      _titleContainer(mainColor, "账号"),
+      _titleContainer(mainColor, context.l10n.account),
       // 用户名主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -153,19 +154,19 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
             ),
             InkWell(
               child: Text(
-                "复制",
+                context.l10n.copy,
                 style: TextStyle(fontSize: 14, color: mainColor),
               ),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: bean.username));
-                ToastUtil.show(msg: "已复制账号");
+                ToastUtil.show(msg: context.l10n.accountCopied);
               },
             )
           ],
         ),
       ),
       // 密码标题
-      _titleContainer(mainColor, "密码"),
+      _titleContainer(mainColor, context.l10n.password),
       // 密码主体
       Container(
         margin: AllpassEdgeInsets.bottom30Inset,
@@ -197,10 +198,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 InkWell(
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: password));
-                    ToastUtil.show(msg: "已复制密码");
+                    ToastUtil.show(msg: context.l10n.passwordCopied);
                   },
                   child: Text(
-                    "复制",
+                    context.l10n.copy,
                     style: TextStyle(fontSize: 14, color: mainColor),
                   ),
                 )
@@ -210,7 +211,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         ),
       ),
       // 链接标题
-      _titleContainer(mainColor, "链接"),
+      _titleContainer(mainColor, context.l10n.url),
       // 链接主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -241,10 +242,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
             InkWell(
               onTap: () {
                 Clipboard.setData(ClipboardData(text: bean.url));
-                ToastUtil.show(msg: "已复制链接");
+                ToastUtil.show(msg: context.l10n.urlCopied);
               },
               child: Text(
-                "复制",
+                context.l10n.copy,
                 style: TextStyle(fontSize: 14, color: mainColor),
               ),
             )
@@ -253,7 +254,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       ),
     ];
     if (Platform.isAndroid) {
-      detailWidgets.add(_titleContainer(mainColor, "所属App"));
+      detailWidgets.add(_titleContainer(mainColor, context.l10n.ownerApp));
       detailWidgets.add(Container(
         margin: AllpassEdgeInsets.bottom50Inset,
         child: Row(
@@ -265,12 +266,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                   if (bean.appId?.isNotEmpty ?? false) {
                     var openable = await DeviceApps.openApp(bean.appId!);
                     if (!openable) {
-                      ToastUtil.show(msg: "打开App失败，请确保App已安装");
+                      ToastUtil.show(msg: context.l10n.openAppFailed);
                     }
                   }
                 },
                 child: Text(
-                  bean.appId?.isEmpty ?? true ? "无" : bean.appName!,
+                  bean.appId?.isEmpty ?? true ? context.l10n.none : bean.appName!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: bean.appId?.isEmpty ?? true
@@ -285,7 +286,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     }
     detailWidgets.addAll([
       // 备注标题
-      _titleContainer(mainColor, "备注"),
+      _titleContainer(mainColor, context.l10n.notes),
       // 备注主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -299,13 +300,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (_) => DetailTextPage("备注", bean.notes, false),
+                        builder: (_) => DetailTextPage(context.l10n.notes, bean.notes, false),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  bean.notes.length < 1 ? "无备注" : bean.notes,
+                  bean.notes.length < 1 ? context.l10n.emptyNotes : bean.notes,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: bean.notes.length < 1
@@ -318,7 +319,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         ),
       ),
       // 标签标题
-      _titleContainer(mainColor, "标签"),
+      _titleContainer(mainColor, context.l10n.labels),
       // 标签主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -364,9 +365,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
           backgroundColor: Colors.green,
           onPressed: () {
             Clipboard.setData(ClipboardData(
-              text: "账号：${bean.username}\n密码：$password",
+              text: context.l10n.accountPassword(bean.username, password),
             ));
-            ToastUtil.show(msg: "已复制账号及密码");
+            ToastUtil.show(msg: context.l10n.accountPasswordCopied);
           },
           child: Icon(Icons.content_copy),
         ),
@@ -380,13 +381,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
           onPressed: () => showDialog(
             context: context,
             builder: (context) => ConfirmDialog(
-              "确认删除",
-              "你将删除此密码，确认吗？",
+              context.l10n.confirmDelete,
+              context.l10n.deletePasswordWaring,
               danger: true,
               onConfirm: () async {
                 deleted = true;
                 await provider.deletePassword(bean);
-                ToastUtil.show(msg: "删除成功");
+                ToastUtil.show(msg: context.l10n.deleteSuccess);
                 Navigator.pop(context);
               },
             ),
@@ -398,7 +399,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "查看密码",
+          context.l10n.viewPassword,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -441,7 +442,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     });
     if (labelChoices.length == 0) {
       labelChoices.add(Text(
-        "无标签",
+        context.l10n.emptyLabel,
         style: AllpassTextUI.hintTextStyle,
       ));
     }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:allpass/common/widget/loading_text_button.dart';
+import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/login/locker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -65,7 +66,7 @@ class _LoginPage extends State<LoginPage> {
             children: <Widget>[
               Padding(
                 child: Text(
-                  "解锁 Allpass",
+                  context.l10n.unlockAllpass,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 22,
@@ -76,7 +77,7 @@ class _LoginPage extends State<LoginPage> {
               ),
               NoneBorderCircularTextField(
                 editingController: _passwordController,
-                hintText: "请输入主密码",
+                hintText: context.l10n.pleaseInputMainPassword,
                 obscureText: true,
                 onEditingComplete: login,
                 textAlign: TextAlign.center,
@@ -85,7 +86,7 @@ class _LoginPage extends State<LoginPage> {
               Container(
                 child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  title: "解锁",
+                  title: context.l10n.unlock,
                   onPressed: () => login(),
                 ),
                 padding: AllpassEdgeInsets.smallTBPadding,
@@ -97,12 +98,12 @@ class _LoginPage extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   TextButton(
-                    child: Text("使用生物识别"),
+                    child: Text(context.l10n.useBiometrics),
                     onPressed: () {
                       if (Config.enabledBiometrics) {
                         NavigationUtil.goAuthLoginPage(context);
                       } else {
-                        ToastUtil.show(msg: "您还未开启生物识别");
+                        ToastUtil.show(msg: context.l10n.notEnableBiometricsYet);
                       }
                     },
                   )
@@ -119,34 +120,34 @@ class _LoginPage extends State<LoginPage> {
   void login() async {
     var lockSeconds = Locker.remainsLockSeconds();
     if (lockSeconds > 0) {
-      ToastUtil.showError(msg: "锁定中，还剩$lockSeconds秒");
+      ToastUtil.showError(msg: context.l10n.lockingRemains(lockSeconds));
       return;
     }
 
     if (inputErrorTimes >= 5) {
       await Locker.lock();
       inputErrorTimes = 0;
-      ToastUtil.showError(msg: "连续错误超过五次，锁定30秒");
+      ToastUtil.showError(msg: context.l10n.errorExceedThreshold);
       return;
     }
 
     var password = _passwordController.text;
     if (password.isEmpty) {
-      ToastUtil.show(msg: "请先输入应用主密码");
+      ToastUtil.show(msg: context.l10n.pleaseInputMainPasswordFirst);
       return;
     }
 
     if (Config.password != "") {
       if (Config.password == EncryptUtil.encrypt(password)) {
         NavigationUtil.goHomePage(context);
-        ToastUtil.show(msg: "登录成功");
+        ToastUtil.show(msg: context.l10n.unlockSuccess);
         Config.updateLatestUsePasswordTime();
       } else {
         inputErrorTimes++;
-        ToastUtil.showError(msg: "主密码错误，已错误$inputErrorTimes次，连续超过五次将锁定30秒");
+        ToastUtil.showError(msg: context.l10n.mainPasswordError(inputErrorTimes));
       }
     } else {
-      ToastUtil.showError(msg: "还未设置过Allpass，请先进行设置");
+      ToastUtil.showError(msg: context.l10n.notSetupYet);
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => RegisterPage(),
       ));
