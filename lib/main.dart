@@ -5,7 +5,6 @@ import 'package:allpass/login/page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,16 +79,20 @@ class Allpass extends StatelessWidget {
       designSize: const Size(1080, 1920),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => MaterialApp(
-        title: 'Allpass',
-        theme: context.watch<ThemeProvider>().lightTheme,
-        darkTheme: context.watch<ThemeProvider>().darkTheme,
-        themeMode: context.watch<ThemeProvider>().themeMode,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: child,
-        onGenerateRoute: AllpassApplication.router.generator,
-        navigatorKey: AllpassApplication.navigationKey,
+      builder: (_, homePage) => Selector<ThemeProvider, AppTheme>(
+        selector: (_, provider) => provider.appTheme,
+        builder: (_, theme, home) => MaterialApp(
+          title: 'Allpass',
+          theme: theme.lightTheme,
+          darkTheme: theme.darkTheme,
+          themeMode: theme.themeMode,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          onGenerateRoute: AllpassApplication.router.generator,
+          navigatorKey: AllpassApplication.navigationKey,
+          home: home,
+        ),
+        child: homePage,
       ),
       child: initialPage,
     );

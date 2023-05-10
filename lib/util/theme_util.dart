@@ -6,7 +6,7 @@ class ThemeUtil {
   ThemeUtil._();
 
   static bool isInDarkTheme(BuildContext context) {
-    var themeMode = context.read<ThemeProvider>().themeMode;
+    var themeMode = context.read<ThemeProvider>().appTheme.themeMode;
     return themeMode == ThemeMode.dark ||
         (themeMode == ThemeMode.system &&
             MediaQuery.platformBrightnessOf(context) == Brightness.dark);

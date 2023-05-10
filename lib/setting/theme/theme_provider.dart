@@ -3,12 +3,22 @@ import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/setting/theme/theme_resource.dart';
 import 'package:flutter/material.dart';
 
+class AppTheme {
+  final ThemeData lightTheme;
+  final ThemeData darkTheme;
+  final ThemeMode themeMode;
+
+  AppTheme(this.lightTheme, this.darkTheme, this.themeMode);
+}
+
 class ThemeProvider with ChangeNotifier {
   late AllpassTheme _allpassTheme;
 
-  late ThemeData lightTheme;
-  late ThemeData darkTheme;
-  late ThemeMode themeMode;
+  late ThemeData _lightTheme;
+  late ThemeData _darkTheme;
+  late ThemeMode _themeMode;
+
+  AppTheme get appTheme => AppTheme(_lightTheme, _darkTheme, _themeMode);
 
   /// 特殊的背景颜色
   /// 少部分页面背景颜色为浅白色
@@ -17,20 +27,20 @@ class ThemeProvider with ChangeNotifier {
 
   init() {
     _allpassTheme = AllpassTheme();
-    themeMode = Config.themeMode;
-    lightTheme = _convertTheme(Config.primaryColor, false);
-    darkTheme = _convertTheme(Config.primaryColor, true);
+    _themeMode = Config.themeMode;
+    _lightTheme = _convertTheme(Config.primaryColor, false);
+    _darkTheme = _convertTheme(Config.primaryColor, true);
   }
 
   void changeThemeMode(ThemeMode targetMode, Brightness platformBrightness) {
-    themeMode = targetMode;
+    _themeMode = targetMode;
     Config.setThemeMode(targetMode);
     setExtraColor(platformBrightness);
   }
 
   void changePrimaryColor(PrimaryColor color, Brightness platformBrightness) {
-    lightTheme = _convertTheme(color, false);
-    darkTheme = _convertTheme(color, true);
+    _lightTheme = _convertTheme(color, false);
+    _darkTheme = _convertTheme(color, true);
     Config.setPrimaryColor(color);
     setExtraColor(platformBrightness);
   }
@@ -57,9 +67,9 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void setExtraColor(Brightness platformBrightness) {
-    if (themeMode == ThemeMode.system) {
+    if (_themeMode == ThemeMode.system) {
       _setExtraColorAuto(platformBrightness);
-    } else if (themeMode == ThemeMode.dark) {
+    } else if (_themeMode == ThemeMode.dark) {
       _setExtraColorDarkMode();
     } else {
       _setExtraColorLightMode();
