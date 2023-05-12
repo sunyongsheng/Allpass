@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 
 class NoneBorderCircularTextField extends StatelessWidget {
-  final Key? key;
   final TextEditingController editingController;
   final String? hintText;
   final String? helperText;
@@ -25,7 +24,7 @@ class NoneBorderCircularTextField extends StatelessWidget {
   final bool needPadding;
 
   NoneBorderCircularTextField({
-    this.key,
+    Key? key,
     required this.editingController,
     this.hintText,
     this.helperText,
@@ -44,7 +43,8 @@ class NoneBorderCircularTextField extends StatelessWidget {
     this.onTap,
     this.enable,
     this.readOnly = false,
-    this.needPadding = true}) : super(key: key);
+    this.needPadding = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,8 @@ class NoneBorderCircularTextField extends StatelessWidget {
           borderRadius: AllpassUI.smallBorderRadius,
         ),
         labelText: labelText,
-        errorText: errorText
+        errorText: errorText,
+        errorMaxLines: 3,
       ),
       textAlign: textAlign,
       autofocus: autoFocus,
