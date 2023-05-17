@@ -42,18 +42,18 @@ class CustomErrorPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               child: Text(l10n.appErrorHint1),
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
             ),
             Padding(
               child: Text(l10n.appErrorHint2),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
             Padding(
               child: Text(msg ?? "null", style: TextStyle(color: Colors.red),),
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             ),
           ],
         ),

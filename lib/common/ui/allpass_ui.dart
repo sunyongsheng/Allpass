@@ -7,9 +7,10 @@ class AllpassTextUI {
   AllpassTextUI._();
 
   static final TextStyle titleBarStyle = TextStyle(
-      fontSize: 17,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 1.5);
+    fontSize: 17,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 1.2,
+  );
 
   static final TextStyle firstTitleStyle =
       TextStyle(fontSize: 16);
