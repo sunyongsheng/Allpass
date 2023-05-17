@@ -90,7 +90,11 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       ),
       floatingActionButton: Selector<MultiItemEditProvider<CardBean>, bool>(
         selector: (_, editProvider) => editProvider.editMode,
-        builder: (_, editMode, child) => editMode ? Container() : child!,
+        builder: (_, editMode, child) => AnimatedScale(
+          scale: editMode ? 0 : 1,
+          duration: Duration(milliseconds: 180),
+          child: child,
+        ),
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_card",
           tooltip: l10n.addCardItem,

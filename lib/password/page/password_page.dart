@@ -102,7 +102,11 @@ class _PasswordPageState extends State<PasswordPage>
       ),
       floatingActionButton: Selector<MultiItemEditProvider<PasswordBean>, bool>(
         selector: (_, editProvider) => editProvider.editMode,
-        builder: (_, editMode, child) => editMode ? Container() : child!,
+        builder: (_, editMode, child) => AnimatedScale(
+          scale: editMode ? 0 : 1,
+          duration: Duration(milliseconds: 180),
+          child: child,
+        ),
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_password",
           tooltip: l10n.addPasswordItem,
