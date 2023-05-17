@@ -60,6 +60,7 @@ class _PasswordPageState extends State<PasswordPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var l10n = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +69,7 @@ class _PasswordPageState extends State<PasswordPage>
           child: InkWell(
             splashColor: Colors.transparent,
             child: Text(
-              context.l10n.password,
+              l10n.password,
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: () {
@@ -87,7 +88,7 @@ class _PasswordPageState extends State<PasswordPage>
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress, context.l10n.password),
+          SearchButtonWidget(_searchPress, l10n.password),
           // 密码列表
           Expanded(
             child: RefreshIndicator(
@@ -104,7 +105,7 @@ class _PasswordPageState extends State<PasswordPage>
         builder: (_, editMode, child) => editMode ? Container() : child!,
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_password",
-          tooltip: context.l10n.addPasswordItem,
+          tooltip: l10n.addPasswordItem,
           builder: (_) => EditPasswordPage(null, DataOperation.add),
           child: Icon(Icons.add),
         ),

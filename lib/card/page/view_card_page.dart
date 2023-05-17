@@ -40,9 +40,10 @@ class _ViewCardPage extends State<ViewCardPage> {
     Color mainColor = Theme.of(context).primaryColor;
     CardProvider provider = context.watch();
     CardBean bean = provider.currCard;
+    var l10n = context.l10n;
 
     if (bean == CardBean.empty) {
-      ToastUtil.show(msg: context.l10n.unknownErrorOccur);
+      ToastUtil.show(msg: l10n.unknownErrorOccur);
       Navigator.pop(context);
       return Container();
     }
@@ -61,7 +62,7 @@ class _ViewCardPage extends State<ViewCardPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.viewCard,
+            l10n.viewCard,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -173,7 +174,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           padding: AllpassEdgeInsets.smallTBPadding,
                         ),
                         // 拥有者姓名标题
-                        _titleContainer(mainColor, context.l10n.ownerName),
+                        _titleContainer(mainColor, l10n.ownerName),
                         // 拥有者姓名主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -189,21 +190,21 @@ class _ViewCardPage extends State<ViewCardPage> {
                               Padding(padding: AllpassEdgeInsets.smallLPadding),
                               InkWell(
                                 child: Text(
-                                  context.l10n.copy,
+                                  l10n.copy,
                                   style: TextStyle(fontSize: 14, color: mainColor),
                                 ),
                                 onTap: () {
                                   Clipboard.setData(ClipboardData(
                                     text: bean.ownerName,
                                   ));
-                                  ToastUtil.show(msg: context.l10n.nameCopied);
+                                  ToastUtil.show(msg: l10n.nameCopied);
                                 },
                               )
                             ],
                           ),
                         ),
                         // 卡号标题
-                        _titleContainer(mainColor, context.l10n.cardId),
+                        _titleContainer(mainColor, l10n.cardId),
                         // 卡号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -237,11 +238,11 @@ class _ViewCardPage extends State<ViewCardPage> {
                                         text: bean.cardId,
                                       ));
                                       ToastUtil.show(
-                                        msg: context.l10n.cardIdCopied,
+                                        msg: l10n.cardIdCopied,
                                       );
                                     },
                                     child: Text(
-                                      context.l10n.copy,
+                                      l10n.copy,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: mainColor,
@@ -254,7 +255,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 密码标题
-                        _titleContainer(mainColor, context.l10n.password),
+                        _titleContainer(mainColor, l10n.password),
                         // 密码主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -285,10 +286,10 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   InkWell(
                                     onTap: () {
                                       Clipboard.setData(ClipboardData(text: password));
-                                      ToastUtil.show(msg: context.l10n.passwordCopied);
+                                      ToastUtil.show(msg: l10n.passwordCopied);
                                     },
                                     child: Text(
-                                      context.l10n.copy,
+                                      l10n.copy,
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: mainColor,
@@ -301,7 +302,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 绑定手机号标题
-                        _titleContainer(mainColor, context.l10n.phoneNumber),
+                        _titleContainer(mainColor, l10n.phoneNumber),
                         // 绑定手机号主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -318,7 +319,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                               Padding(padding: AllpassEdgeInsets.smallLPadding),
                               InkWell(
                                 child: Text(
-                                  context.l10n.copy,
+                                  l10n.copy,
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: mainColor,
@@ -328,14 +329,14 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   Clipboard.setData(ClipboardData(
                                     text: bean.telephone,
                                   ));
-                                  ToastUtil.show(msg: context.l10n.phoneNumberCopied);
+                                  ToastUtil.show(msg: l10n.phoneNumberCopied);
                                 },
                               )
                             ],
                           ),
                         ),
                         // 备注标题
-                        _titleContainer(mainColor, context.l10n.notes),
+                        _titleContainer(mainColor, l10n.notes),
                         // 备注主体
                         Container(
                           margin: AllpassEdgeInsets.bottom50Inset,
@@ -350,7 +351,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                         context,
                                         CupertinoPageRoute(
                                           builder: (context) => DetailTextPage(
-                                            context.l10n.notes,
+                                            l10n.notes,
                                             bean.notes,
                                             false,
                                           ),
@@ -360,7 +361,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   },
                                   child: Text(
                                     bean.notes.length < 1
-                                        ? context.l10n.emptyNotes
+                                        ? l10n.emptyNotes
                                         : bean.notes,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
@@ -374,7 +375,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                           ),
                         ),
                         // 标签标题
-                        _titleContainer(mainColor, context.l10n.labels),
+                        _titleContainer(mainColor, l10n.labels),
                         // 标签主体
                         Container(
                           margin: AllpassEdgeInsets.bottom30Inset,
@@ -409,13 +410,13 @@ class _ViewCardPage extends State<ViewCardPage> {
                     onPressed: () => showDialog(
                       context: context,
                       builder: (context) => ConfirmDialog(
-                        context.l10n.confirmDelete,
-                        context.l10n.deleteCardWarning,
+                        l10n.confirmDelete,
+                        l10n.deleteCardWarning,
                         danger: true,
                         onConfirm: () async {
                           deleted = true;
                           await provider.deleteCard(bean);
-                          ToastUtil.show(msg: context.l10n.deleteSuccess);
+                          ToastUtil.show(msg: l10n.deleteSuccess);
                           Navigator.pop(context);
                         },
                       ),

@@ -58,6 +58,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
   Widget build(BuildContext context) {
     super.build(context);
 
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -65,7 +66,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           child: InkWell(
             splashColor: Colors.transparent,
             child: Text(
-              context.l10n.card,
+              l10n.card,
               style: AllpassTextUI.titleBarStyle,
             ),
             onTap: _controller.scrollToTop,
@@ -77,7 +78,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       body: Column(
         children: <Widget>[
           // 搜索框 按钮
-          SearchButtonWidget(_searchPress, context.l10n.card),
+          SearchButtonWidget(_searchPress, l10n.card),
           // 卡片列表
           Expanded(
             child: RefreshIndicator(
@@ -92,7 +93,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
         builder: (_, editMode, child) => editMode ? Container() : child!,
         child: MaterialRouteFloatingActionButton(
           heroTag: "add_card",
-          tooltip: context.l10n.addCardItem,
+          tooltip: l10n.addCardItem,
           builder: (_) => EditCardPage(null, DataOperation.add),
           child: Icon(Icons.add),
         ),

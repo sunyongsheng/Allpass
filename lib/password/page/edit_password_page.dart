@@ -106,6 +106,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     PasswordProvider provider = context.watch<PasswordProvider>();
     return Scaffold(
       appBar: AppBar(
@@ -117,8 +118,10 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
           IconButton(
             icon: Icon(Icons.code),
             onPressed: () {
-              showDialog(context: context, builder: (cx) => PasswordGenerationDialog())
-                  .then((value) {
+              showDialog(
+                context: context,
+                builder: (cx) => PasswordGenerationDialog(),
+              ).then((value) {
                 if (value != null) passwordController.text = value;
               });
             },
@@ -159,23 +162,24 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
                 if (operation == DataOperation.add) {
                   provider.insertPassword(tempData);
                   RuntimeData.newPasswordOrCardCount++;
-                  ToastUtil.show(msg: context.l10n.createSuccess);
+                  ToastUtil.show(msg: l10n.createSuccess);
                 } else {
                   provider.updatePassword(tempData);
-                  ToastUtil.show(msg: context.l10n.updateSuccess);
+                  ToastUtil.show(msg: l10n.updateSuccess);
                 }
                 Navigator.pop(context);
               } else {
-                ToastUtil.showError(msg: context.l10n.upsertPasswordRule);
+                ToastUtil.showError(msg: l10n.upsertPasswordRule);
               }
             },
           )
         ],
       ),
       body: SingleChildScrollView(
-          child: Column(
-            children: _createContent(context, provider),
-          ))
+        child: Column(
+          children: _createContent(context, provider),
+        ),
+      ),
     );
   }
 

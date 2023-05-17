@@ -23,17 +23,18 @@ class UpdateDialog extends StatelessWidget {
   }
 
   Widget _createUpdateContent(BuildContext context) {
-    String _updateContent = updateBean.updateContent?.replaceAll("~", "\n") ?? context.l10n.none;
+    var l10n = context.l10n;
+    String _updateContent = updateBean.updateContent?.replaceAll("~", "\n") ?? l10n.none;
     switch (updateBean.checkResult) {
       case CheckUpdateResult.HaveUpdate:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(context.l10n.updateAvailable(updateBean.channel, updateBean.version)),
+            Text(l10n.updateAvailable(updateBean.channel, updateBean.version)),
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
               child: Text(
-                context.l10n.updateContent,
+                l10n.updateContent,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -44,11 +45,11 @@ class UpdateDialog extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(context.l10n.alreadyLatestVersion(updateBean.channel, updateBean.version)),
+            Text(l10n.alreadyLatestVersion(updateBean.channel, updateBean.version)),
             Padding(
               padding: AllpassEdgeInsets.smallTBPadding,
               child: Text(
-                context.l10n.recentlyUpdateContent,
+                l10n.recentlyUpdateContent,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -56,20 +57,20 @@ class UpdateDialog extends StatelessWidget {
           ],
         );
       case CheckUpdateResult.NetworkError:
-        _updateContent = context.l10n.networkErrorMsg(updateBean.updateContent);
+        _updateContent = l10n.networkErrorMsg(updateBean.updateContent);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(context.l10n.networkErrorHelp),
+            Text(l10n.networkErrorHelp),
             Text(_updateContent)
           ],
         );
       default:
-        _updateContent = context.l10n.unknownError(updateBean.updateContent);
+        _updateContent = l10n.unknownError(updateBean.updateContent);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(context.l10n.unknownErrorHelp),
+            Text(l10n.unknownErrorHelp),
             Text(_updateContent)
           ],
         );
@@ -78,11 +79,12 @@ class UpdateDialog extends StatelessWidget {
 
   List<Widget> _createUpdateAction(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     if (updateBean.checkResult == CheckUpdateResult.HaveUpdate) {
       return [
         TextButton(
           child: Text(
-            context.l10n.downloadUpdate,
+            l10n.downloadUpdate,
             style: TextStyle(color: mainColor),
           ),
           onPressed: () async {
@@ -102,7 +104,7 @@ class UpdateDialog extends StatelessWidget {
         ),
         TextButton(
           child: Text(
-            context.l10n.remindMeLatter,
+            l10n.remindMeLatter,
             style: TextStyle(color: mainColor),
           ),
           onPressed: () => Navigator.pop(context),
@@ -111,11 +113,11 @@ class UpdateDialog extends StatelessWidget {
     } else {
       return [
         TextButton(
-          child: Text(context.l10n.confirm, style: TextStyle(color: mainColor)),
+          child: Text(l10n.confirm, style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop(context),
         ),
         TextButton(
-          child: Text(context.l10n.cancel, style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel, style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop(context),
         )
       ];

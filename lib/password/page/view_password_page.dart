@@ -43,9 +43,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     PasswordProvider provider = context.watch();
     PasswordBean bean = provider.currPassword;
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
 
     if (bean == PasswordBean.empty) {
-      ToastUtil.show(msg: context.l10n.unknownErrorOccur);
+      ToastUtil.show(msg: l10n.unknownErrorOccur);
       Navigator.pop(context);
       return Container();
     }
@@ -135,7 +136,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     var detailWidgets = [
       padding,
       // 账号标题
-      _titleContainer(mainColor, context.l10n.account),
+      _titleContainer(mainColor, l10n.account),
       // 用户名主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -154,19 +155,19 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
             ),
             InkWell(
               child: Text(
-                context.l10n.copy,
+                l10n.copy,
                 style: TextStyle(fontSize: 14, color: mainColor),
               ),
               onTap: () {
                 Clipboard.setData(ClipboardData(text: bean.username));
-                ToastUtil.show(msg: context.l10n.accountCopied);
+                ToastUtil.show(msg: l10n.accountCopied);
               },
             )
           ],
         ),
       ),
       // 密码标题
-      _titleContainer(mainColor, context.l10n.password),
+      _titleContainer(mainColor, l10n.password),
       // 密码主体
       Container(
         margin: AllpassEdgeInsets.bottom30Inset,
@@ -198,10 +199,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                 InkWell(
                   onTap: () {
                     Clipboard.setData(ClipboardData(text: password));
-                    ToastUtil.show(msg: context.l10n.passwordCopied);
+                    ToastUtil.show(msg: l10n.passwordCopied);
                   },
                   child: Text(
-                    context.l10n.copy,
+                    l10n.copy,
                     style: TextStyle(fontSize: 14, color: mainColor),
                   ),
                 )
@@ -211,7 +212,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         ),
       ),
       // 链接标题
-      _titleContainer(mainColor, context.l10n.url),
+      _titleContainer(mainColor, l10n.url),
       // 链接主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -242,10 +243,10 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
             InkWell(
               onTap: () {
                 Clipboard.setData(ClipboardData(text: bean.url));
-                ToastUtil.show(msg: context.l10n.urlCopied);
+                ToastUtil.show(msg: l10n.urlCopied);
               },
               child: Text(
-                context.l10n.copy,
+                l10n.copy,
                 style: TextStyle(fontSize: 14, color: mainColor),
               ),
             )
@@ -254,7 +255,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       ),
     ];
     if (Platform.isAndroid) {
-      detailWidgets.add(_titleContainer(mainColor, context.l10n.ownerApp));
+      detailWidgets.add(_titleContainer(mainColor, l10n.ownerApp));
       detailWidgets.add(Container(
         margin: AllpassEdgeInsets.bottom50Inset,
         child: Row(
@@ -266,12 +267,12 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                   if (bean.appId?.isNotEmpty ?? false) {
                     var openable = await DeviceApps.openApp(bean.appId!);
                     if (!openable) {
-                      ToastUtil.show(msg: context.l10n.openAppFailed);
+                      ToastUtil.show(msg: l10n.openAppFailed);
                     }
                   }
                 },
                 child: Text(
-                  bean.appId?.isEmpty ?? true ? context.l10n.none : bean.appName!,
+                  bean.appId?.isEmpty ?? true ? l10n.none : bean.appName!,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: bean.appId?.isEmpty ?? true
@@ -286,7 +287,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     }
     detailWidgets.addAll([
       // 备注标题
-      _titleContainer(mainColor, context.l10n.notes),
+      _titleContainer(mainColor, l10n.notes),
       // 备注主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -300,13 +301,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (_) => DetailTextPage(context.l10n.notes, bean.notes, false),
+                        builder: (_) => DetailTextPage(l10n.notes, bean.notes, false),
                       ),
                     );
                   }
                 },
                 child: Text(
-                  bean.notes.length < 1 ? context.l10n.emptyNotes : bean.notes,
+                  bean.notes.length < 1 ? l10n.emptyNotes : bean.notes,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: bean.notes.length < 1
@@ -319,7 +320,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         ),
       ),
       // 标签标题
-      _titleContainer(mainColor, context.l10n.labels),
+      _titleContainer(mainColor, l10n.labels),
       // 标签主体
       Container(
         margin: AllpassEdgeInsets.bottom50Inset,
@@ -365,9 +366,9 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
           backgroundColor: Colors.green,
           onPressed: () {
             Clipboard.setData(ClipboardData(
-              text: context.l10n.accountPassword(bean.username, password),
+              text: l10n.accountPassword(bean.username, password),
             ));
-            ToastUtil.show(msg: context.l10n.accountPasswordCopied);
+            ToastUtil.show(msg: l10n.accountPasswordCopied);
           },
           child: Icon(Icons.content_copy),
         ),
@@ -381,13 +382,13 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
           onPressed: () => showDialog(
             context: context,
             builder: (context) => ConfirmDialog(
-              context.l10n.confirmDelete,
-              context.l10n.deletePasswordWaring,
+              l10n.confirmDelete,
+              l10n.deletePasswordWaring,
               danger: true,
               onConfirm: () async {
                 deleted = true;
                 await provider.deletePassword(bean);
-                ToastUtil.show(msg: context.l10n.deleteSuccess);
+                ToastUtil.show(msg: l10n.deleteSuccess);
                 Navigator.pop(context);
               },
             ),
@@ -399,7 +400,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.viewPassword,
+          l10n.viewPassword,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,

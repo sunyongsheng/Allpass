@@ -48,6 +48,7 @@ class _RegisterPage extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(500)),
@@ -59,7 +60,7 @@ class _RegisterPage extends State<RegisterPage> {
             children: <Widget>[
               Padding(
                 child: Text(
-                  context.l10n.setupAllpass,
+                  l10n.setupAllpass,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 22,
@@ -70,13 +71,13 @@ class _RegisterPage extends State<RegisterPage> {
               ),
               NoneBorderCircularTextField(
                   editingController:_passwordController,
-                  hintText: context.l10n.pleaseInputMainPassword,
+                  hintText: l10n.pleaseInputMainPassword,
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
               NoneBorderCircularTextField(
                   editingController: _secondController,
-                  hintText: context.l10n.pleaseInputAgain,
+                  hintText: l10n.pleaseInputAgain,
                   obscureText: true,
                   textAlign: TextAlign.center,
               ),
@@ -84,7 +85,7 @@ class _RegisterPage extends State<RegisterPage> {
                 padding: AllpassEdgeInsets.smallTBPadding,
                 child: LoadingTextButton(
                   color: Theme.of(context).primaryColor,
-                  title: context.l10n.setup,
+                  title: l10n.setup,
                   onPressed: () async => await register(context),
                 ),
               ),

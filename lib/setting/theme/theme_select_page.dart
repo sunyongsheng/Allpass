@@ -17,10 +17,11 @@ class ThemeSelectPage extends StatefulWidget {
 class _ThemeSelectPage extends State<ThemeSelectPage> {
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.appTheme,
+            l10n.appTheme,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -38,15 +39,15 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
                 children: [
                   _createThemeModeItem(ThemeModeItem(
                     ThemeMode.system,
-                    context.l10n.themeSystem,
+                    l10n.themeSystem,
                   )),
                   _createThemeModeItem(ThemeModeItem(
                     ThemeMode.light,
-                    context.l10n.themeLight,
+                    l10n.themeLight,
                   )),
                   _createThemeModeItem(ThemeModeItem(
                     ThemeMode.dark,
-                    context.l10n.themeDark,
+                    l10n.themeDark,
                   )),
                 ],
               ),
@@ -58,37 +59,37 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
                   children: [
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.blue,
-                      context.l10n.themeColorBlue,
+                      l10n.themeColorBlue,
                       Colors.blue,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.red,
-                      context.l10n.themeColorRed,
+                      l10n.themeColorRed,
                       Colors.red,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.teal,
-                      context.l10n.themeColorTeal,
+                      l10n.themeColorTeal,
                       Colors.teal,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.deepPurple,
-                      context.l10n.themeColorDeepPurple,
+                      l10n.themeColorDeepPurple,
                       Colors.deepPurple,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.orange,
-                      context.l10n.themeColorOrange,
+                      l10n.themeColorOrange,
                       Colors.orange,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.pink,
-                      context.l10n.themeColorPink,
+                      l10n.themeColorPink,
                       Colors.pink,
                     )),
                     _createPrimaryColorItem(PrimaryColorItem(
                       PrimaryColor.blueGrey,
-                      context.l10n.themeColorBlueGrey,
+                      l10n.themeColorBlueGrey,
                       Colors.blueGrey,
                     )),
                   ],

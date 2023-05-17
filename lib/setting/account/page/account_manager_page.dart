@@ -29,10 +29,11 @@ class _AccountManagerPage extends State<AccountManagerPage> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.mainPasswordManager,
+          l10n.mainPasswordManager,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -49,7 +50,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(context.l10n.modifyMainPassword),
+                  title: Text(l10n.modifyMainPassword),
                   leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
                   onTap: () {
                     showDialog(
@@ -59,44 +60,44 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text(context.l10n.inputMainPasswordTiming),
+                  title: Text(l10n.inputMainPasswordTiming),
                   leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        String initial = context.l10n.nDays(Config.timingInMainPassword);
+                        String initial = l10n.nDays(Config.timingInMainPassword);
                         if (Config.timingInMainPassword == 36500) {
-                          initial = context.l10n.never;
+                          initial = l10n.never;
                         }
                         return DefaultSelectItemDialog<String>(
                           list: [
-                            context.l10n.sevenDays,
-                            context.l10n.tenDays,
-                            context.l10n.fifteenDays,
-                            context.l10n.thirtyDays,
-                            context.l10n.never
+                            l10n.sevenDays,
+                            l10n.tenDays,
+                            l10n.fifteenDays,
+                            l10n.thirtyDays,
+                            l10n.never
                           ],
                           selector: (data) => data == initial,
                           onSelected: (days) {
-                            if (days == context.l10n.never) {
+                            if (days == l10n.never) {
                               showDialog(
                                 context: context,
                                 builder: (context) => ConfirmDialog(
-                                  context.l10n.confirmSelect,
-                                  context.l10n.selectNeverWarning,
+                                  l10n.confirmSelect,
+                                  l10n.selectNeverWarning,
                                   onConfirm: () {
                                     Config.setTimingInMainPassDays(36500);
                                   },
                                 ),
                               );
-                            } else if (days == context.l10n.sevenDays) {
+                            } else if (days == l10n.sevenDays) {
                               Config.setTimingInMainPassDays(7);
-                            } else if (days == context.l10n.tenDays) {
+                            } else if (days == l10n.tenDays) {
                               Config.setTimingInMainPassDays(10);
-                            } else if (days == context.l10n.fifteenDays) {
+                            } else if (days == l10n.fifteenDays) {
                               Config.setTimingInMainPassDays(15);
-                            } else if (days == context.l10n.thirtyDays) {
+                            } else if (days == l10n.thirtyDays) {
                               Config.setTimingInMainPassDays(30);
                             }
                           },
@@ -106,7 +107,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text(context.l10n.secretKeyUpdate),
+                  title: Text(l10n.secretKeyUpdate),
                   leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
                   onTap: () {
                     Navigator.push(context, CupertinoPageRoute(
@@ -115,14 +116,14 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text(context.l10n.clearAllData),
+                  title: Text(l10n.clearAllData),
                   leading: Icon(Icons.clear, color: Colors.red),
                   onTap: () {
                     showDialog(
                       context: context,
                       builder: (context) => ConfirmDialog(
-                        context.l10n.confirmClearAll,
-                        context.l10n.clearAllWaring,
+                        l10n.confirmClearAll,
+                        l10n.clearAllWaring,
                         danger: true,
                         onConfirm: () {
                           // 二次确认
@@ -131,7 +132,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                             builder: (context) => InputMainPasswordDialog(
                               onVerified: () async {
                                 await AllpassApplication.clearAll(context);
-                                ToastUtil.show(msg: context.l10n.clearAllSuccess);
+                                ToastUtil.show(msg: l10n.clearAllSuccess);
                                 NavigationUtil.goLoginPage(context);
                               },
                             ),
@@ -142,7 +143,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   },
                 ),
                 ListTile(
-                  title: Text(context.l10n.logout),
+                  title: Text(l10n.logout),
                   leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
                   onTap: () => Config.enabledBiometrics
                       ? NavigationUtil.goAuthLoginPage(context)

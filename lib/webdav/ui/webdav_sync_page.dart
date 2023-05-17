@@ -30,10 +30,11 @@ class WebDavSyncPage extends StatefulWidget {
 class _WebDavSyncPage extends State<WebDavSyncPage> {
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.webDavSync,
+          l10n.webDavSync,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -53,7 +54,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   builder: (context, provider, loadingChild) {
                     var uploadTime = provider.uploadTime(context);
                     return ListTile(
-                      title: Text(context.l10n.uploadToRemote),
+                      title: Text(l10n.uploadToRemote),
                       subtitle: uploadTime == null ? null : Text(uploadTime),
                       leading: Icon(
                         Icons.cloud_upload,
@@ -73,7 +74,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   builder: (context, provider, loadingChild) {
                     var downloadTime = provider.downloadTime(context);
                     return ListTile(
-                      title: Text(context.l10n.recoverToLocal),
+                      title: Text(l10n.recoverToLocal),
                       subtitle: downloadTime == null ? null : Text(downloadTime),
                       leading: Icon(
                         Icons.cloud_download,
@@ -98,7 +99,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text(context.l10n.remoteBackupDirectory),
+                  title: Text(l10n.remoteBackupDirectory),
                   subtitle: Text("${Config.webDavBackupDirectory}"),
                   leading: Icon(
                     Icons.drive_folder_upload,
@@ -107,7 +108,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   onTap: () => _onClickBackupDirectory(),
                 ),
                 ListTile(
-                  title: Text(context.l10n.backupFileMethod),
+                  title: Text(l10n.backupFileMethod),
                   subtitle: Text(Config.webDavBackupMethod.title(context)),
                   leading: Icon(
                     Icons.file_present_outlined,
@@ -116,7 +117,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   onTap: () => _onClickBackupMethod(),
                 ),
                 ListTile(
-                  title: Text(context.l10n.dataMergeMethod),
+                  title: Text(l10n.dataMergeMethod),
                   subtitle: Text("${Config.webDavMergeMethod.title(context)}"),
                   leading: Icon(
                     Icons.merge_type_rounded,
@@ -125,7 +126,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
                   onTap: () => _onClickMergeMethod(),
                 ),
                 ListTile(
-                  title: Text(context.l10n.encryptLevel),
+                  title: Text(l10n.encryptLevel),
                   subtitle: Text("${Config.webDavEncryptLevel.title(context)}"),
                   leading: Icon(
                     Icons.enhanced_encryption,
@@ -147,7 +148,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-              title: Text(context.l10n.logoutAccount),
+              title: Text(l10n.logoutAccount),
               subtitle: Text("${Config.webDavUsername}"),
               leading: Icon(
                 Icons.exit_to_app,
@@ -162,17 +163,18 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   }
 
   void _onClickBackup(WebDavSyncProvider provider) async {
+    var l10n = context.l10n;
     showDialog(
       context: context,
       builder: (_) => ConfirmDialog(
-        context.l10n.confirmUpload,
-        context.l10n.confirmUploadWaring(Config.webDavEncryptLevel.title(context)),
+        l10n.confirmUpload,
+        l10n.confirmUploadWaring(Config.webDavEncryptLevel.title(context)),
         onConfirm: () async {
           var syncResult = await provider.syncToRemote(context);
           if (syncResult is SyncSuccess) {
             ToastUtil.show(msg: syncResult.message);
           } else if (syncResult is Syncing) {
-            ToastUtil.show(msg: context.l10n.uploading);
+            ToastUtil.show(msg: l10n.uploading);
           } else {
             ToastUtil.showError(msg: syncResult.message);
           }
@@ -253,14 +255,15 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
     String filename,
     BackupFileV1 backupFile,
   ) {
+    var l10n = context.l10n;
     showDialog(
       context: context,
       builder: (_) => DefaultSelectItemDialog(
         titleBuilder: (_) => null,
-        list: [context.l10n.password, context.l10n.card],
-        helpText: context.l10n.recoverV1FileHelp(Config.webDavEncryptLevel.title(context), filename),
+        list: [l10n.password, l10n.card],
+        helpText: l10n.recoverV1FileHelp(Config.webDavEncryptLevel.title(context), filename),
         onSelected: (name) async {
-          if (name == context.l10n.card) {
+          if (name == l10n.card) {
             backupFile.type = AllpassType.card;
           } else {
             backupFile.type = AllpassType.password;
@@ -374,6 +377,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
   }
 
   void _onClickEncryptHelp() {
+    var l10n = context.l10n;
     var boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 14);
     var textStyle = TextStyle(fontSize: 14);
     showDialog(
@@ -381,32 +385,32 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
       builder: (context) => InformationHelpDialog(
         content: <Widget>[
           Text(
-            context.l10n.encryptHelp1,
+            l10n.encryptHelp1,
             style: textStyle,
           ),
           Text.rich(TextSpan(children: [
-            TextSpan(text: context.l10n.encryptHelp2, style: boldTextStyle),
+            TextSpan(text: l10n.encryptHelp2, style: boldTextStyle),
             TextSpan(
-              text: context.l10n.encryptHelp3,
+              text: l10n.encryptHelp3,
               style: textStyle,
             )
           ])),
           Text.rich(TextSpan(children: [
-            TextSpan(text: context.l10n.encryptHelp4, style: boldTextStyle),
+            TextSpan(text: l10n.encryptHelp4, style: boldTextStyle),
             TextSpan(
-              text: context.l10n.encryptHelp5,
+              text: l10n.encryptHelp5,
               style: textStyle,
             )
           ])),
           Text.rich(TextSpan(children: [
-            TextSpan(text: context.l10n.encryptHelp6, style: boldTextStyle),
+            TextSpan(text: l10n.encryptHelp6, style: boldTextStyle),
             TextSpan(
-              text: context.l10n.encryptHelp7,
+              text: l10n.encryptHelp7,
               style: textStyle,
             )
           ])),
           Text(
-            context.l10n.encryptHelp8,
+            l10n.encryptHelp8,
             style: textStyle,
           ),
         ],

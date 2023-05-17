@@ -44,9 +44,10 @@ class _FeedbackPage extends State<StatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.l10n.feedback, style: AllpassTextUI.titleBarStyle,),
+        title: Text(l10n.feedback, style: AllpassTextUI.titleBarStyle,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -58,7 +59,7 @@ class _FeedbackPage extends State<StatefulWidget> {
               child: NoneBorderCircularTextField(
                 editingController: _feedbackController,
                 maxLines: 500,
-                hintText: context.l10n.feedbackPlaceholder,
+                hintText: l10n.feedbackPlaceholder,
               )
             ),
             Padding(
@@ -68,7 +69,7 @@ class _FeedbackPage extends State<StatefulWidget> {
               padding: AllpassEdgeInsets.dividerInset,
               child: NoneBorderCircularTextField(
                 editingController: _contactController,
-                hintText: context.l10n.feedbackContact,
+                hintText: l10n.feedbackContact,
               )
             ),
             Padding(
@@ -77,17 +78,17 @@ class _FeedbackPage extends State<StatefulWidget> {
             Container(
                 padding: AllpassEdgeInsets.dividerInset,
                 child: LoadingTextButton(
-                  title: context.l10n.submit,
+                  title: l10n.submit,
                   color: Theme.of(context).primaryColor,
-                  loadingTitle: context.l10n.submitting,
+                  loadingTitle: l10n.submitting,
                   loading: submitting,
                   onPressed: () async {
                     if (_feedbackController.text.trim().length < 1) {
-                      ToastUtil.show(msg: context.l10n.feedbackContentEmptyWarning);
+                      ToastUtil.show(msg: l10n.feedbackContentEmptyWarning);
                       return;
                     }
                     if (_feedbackController.text.length >= 1000) {
-                      ToastUtil.showError(msg: context.l10n.feedbackContentTooLong);
+                      ToastUtil.showError(msg: l10n.feedbackContentTooLong);
                       return;
                     }
                     FocusScope.of(context).requestFocus(FocusNode());

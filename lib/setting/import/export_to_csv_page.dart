@@ -20,10 +20,11 @@ import 'package:share/share.dart';
 class ExportTypeSelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.selectExportType,
+          l10n.selectExportType,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -33,14 +34,14 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text(context.l10n.password),
+              title: Text(l10n.password),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () {
                 showDialog(
                     context: context,
                     builder: (context) => ConfirmDialog(
-                      context.l10n.exportConfirm,
-                      context.l10n.exportPasswordConfirmWarning,
+                      l10n.exportConfirm,
+                      l10n.exportPasswordConfirmWarning,
                       onConfirm: () {
                         showDialog<bool>(
                             context: context,
@@ -60,13 +61,13 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text(context.l10n.card),
+              title: Text(l10n.card),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () => showDialog<bool>(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    context.l10n.exportConfirm,
-                    context.l10n.exportCardConfirmWarning,
+                    l10n.exportConfirm,
+                    l10n.exportCardConfirmWarning,
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,
@@ -85,13 +86,13 @@ class ExportTypeSelectPage extends StatelessWidget {
           Container(
             padding: AllpassEdgeInsets.listInset,
             child: ListTile(
-              title: Text(context.l10n.passwordAndCard),
+              title: Text(l10n.passwordAndCard),
               leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
               onTap: () => showDialog(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    context.l10n.exportConfirm,
-                    context.l10n.exportAllConfirmWarning,
+                    l10n.exportConfirm,
+                    l10n.exportAllConfirmWarning,
                     onConfirm: () {
                       showDialog<bool>(
                           context: context,

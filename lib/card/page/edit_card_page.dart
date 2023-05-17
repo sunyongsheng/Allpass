@@ -103,6 +103,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
     CardProvider provider = context.watch<CardProvider>();
     Color mainColor = Theme.of(context).primaryColor;
     EdgeInsets marginInset = EdgeInsets.only(left: 30, right: 30, bottom: 20);
+    var l10n = context.l10n;
 
     return Scaffold(
         appBar: AppBar(
@@ -154,19 +155,19 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     createTime: createTime
                   );
                   if (passwordController.text.length < 1) {
-                    ToastUtil.show(msg: context.l10n.cardPasswordEmptyAutoGen);
+                    ToastUtil.show(msg: l10n.cardPasswordEmptyAutoGen);
                   }
                   if (operation == DataOperation.add) {
                     provider.insertCard(tempData);
                     RuntimeData.newPasswordOrCardCount++;
-                    ToastUtil.show(msg: context.l10n.createSuccess);
+                    ToastUtil.show(msg: l10n.createSuccess);
                   } else {
                     provider.updateCard(tempData);
-                    ToastUtil.show(msg: context.l10n.updateSuccess);
+                    ToastUtil.show(msg: l10n.updateSuccess);
                   }
                   Navigator.pop(context);
                 } else {
-                  ToastUtil.showError(msg: context.l10n.upsertCardRule);
+                  ToastUtil.showError(msg: l10n.upsertCardRule);
                 }
               },
             )
@@ -181,7 +182,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.name,
+                      l10n.name,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -205,7 +206,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.ownerName,
+                      l10n.ownerName,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -235,7 +236,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.cardId,
+                      l10n.cardId,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -260,7 +261,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.password,
+                      l10n.password,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     Row(
@@ -304,7 +305,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.phoneNumber,
+                      l10n.phoneNumber,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -330,7 +331,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      context.l10n.folderTitle,
+                      l10n.folderTitle,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     DropdownButton(
@@ -367,7 +368,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     Container(
                       margin: EdgeInsets.only(bottom: 10),
                       child: Text(
-                        context.l10n.labels,
+                        l10n.labels,
                         style: TextStyle(fontSize: 16, color: mainColor),
                       ),
                     ),
@@ -392,7 +393,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      context.l10n.notes,
+                      l10n.notes,
                       style: TextStyle(fontSize: 16, color: mainColor),
                     ),
                     NoneBorderCircularTextField(
@@ -401,7 +402,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage(context.l10n.notes, notesController.text, true),
+                          builder: (context) => DetailTextPage(l10n.notes, notesController.text, true),
                         )).then((newValue) {
                           setState(() {
                             notesController.text = newValue;

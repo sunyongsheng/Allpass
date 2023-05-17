@@ -38,10 +38,11 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.autofill,
+          l10n.autofill,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -62,8 +63,8 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
                   child: Consumer<AutofillProvider>(
                     builder: (_, provider, __) => Text(
                       provider.autofillEnable
-                          ? context.l10n.autofillEnableAllpass
-                          : context.l10n.autofillDisableAllpass,
+                          ? l10n.autofillEnableAllpass
+                          : l10n.autofillDisableAllpass,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -82,7 +83,7 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
           Padding(
             padding: AllpassEdgeInsets.settingCardInset,
             child: Text(
-              context.l10n.autofillHelp,
+              l10n.autofillHelp,
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontSize: 12,

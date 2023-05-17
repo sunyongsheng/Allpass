@@ -15,10 +15,11 @@ import 'package:provider/provider.dart';
 class ImportExportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.importExport,
+            l10n.importExport,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -36,7 +37,7 @@ class ImportExportPage extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text(context.l10n.importFromChrome),
+                    title: Text(l10n.importFromChrome),
                     leading: Icon(CustomIcons.chrome, color: AllpassColorUI.allColor[6]),
                     onTap: () {
                       Navigator.push(
@@ -48,7 +49,7 @@ class ImportExportPage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: Text(context.l10n.importFromCsv),
+                    title: Text(l10n.importFromCsv),
                     leading: Icon(Icons.import_contacts, color: AllpassColorUI.allColor[4]),
                     onTap: () {
                       Navigator.push(
@@ -60,7 +61,7 @@ class ImportExportPage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: Text(context.l10n.importFromClipboard),
+                    title: Text(l10n.importFromClipboard),
                     leading: Icon(Icons.content_paste, color: AllpassColorUI.allColor[1]),
                     onTap: () {
                       Navigator.push(
@@ -78,7 +79,7 @@ class ImportExportPage extends StatelessWidget {
               margin: AllpassEdgeInsets.settingCardInset,
               elevation: 0,
               child: ListTile(
-                title: Text(context.l10n.exportToCsv),
+                title: Text(l10n.exportToCsv),
                 leading: Icon(Icons.call_missed_outgoing, color: AllpassColorUI.allColor[3]),
                 onTap: () {
                   Navigator.push(

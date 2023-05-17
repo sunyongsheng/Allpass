@@ -21,9 +21,10 @@ class ModifyPasswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     return AlertDialog(
       title: Text(
-        context.l10n.modifyMainPassword,
+        l10n.modifyMainPassword,
         style: AllpassTextUI.firstTitleStyle,
       ),
       content: SingleChildScrollView(
@@ -33,21 +34,21 @@ class ModifyPasswordDialog extends StatelessWidget {
           children: <Widget>[
             NoneBorderCircularTextField(
               editingController: _oldPasswordController,
-              labelText: context.l10n.oldPassword,
-              hintText: context.l10n.pleaseInputOldPassword,
+              labelText: l10n.oldPassword,
+              hintText: l10n.pleaseInputOldPassword,
               obscureText: true,
               autoFocus: true,
             ),
             NoneBorderCircularTextField(
               editingController: _newPasswordController,
-              labelText: context.l10n.newPassword,
-              hintText: context.l10n.pleaseInputNewPassword,
+              labelText: l10n.newPassword,
+              hintText: l10n.pleaseInputNewPassword,
               obscureText: true,
             ),
             NoneBorderCircularTextField(
               editingController: _secondInputController,
-              labelText: context.l10n.newPassword,
-              hintText: context.l10n.pleaseInputAgain,
+              labelText: l10n.newPassword,
+              hintText: l10n.pleaseInputAgain,
               obscureText: true,
             )
           ],
@@ -55,25 +56,25 @@ class ModifyPasswordDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(context.l10n.submit, style: TextStyle(color: mainColor)),
+          child: Text(l10n.submit, style: TextStyle(color: mainColor)),
           onPressed: () async {
             if (Config.password == EncryptUtil.encrypt(_oldPasswordController.text)) {
               if (_newPasswordController.text.length >= 6
                   && _newPasswordController.text == _secondInputController.text) {
                 String newPassword = EncryptUtil.encrypt(_newPasswordController.text);
                 Config.setPassword(newPassword);
-                ToastUtil.show(msg: context.l10n.modifySuccess);
+                ToastUtil.show(msg: l10n.modifySuccess);
                 Navigator.pop(context);
               } else {
-                ToastUtil.showError(msg: context.l10n.modifyPasswordFail);
+                ToastUtil.showError(msg: l10n.modifyPasswordFail);
               }
             } else {
-              ToastUtil.showError(msg: context.l10n.oldPasswordIncorrect);
+              ToastUtil.showError(msg: l10n.oldPasswordIncorrect);
             }
           },
         ),
         TextButton(
-          child: Text(context.l10n.cancel, style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel, style: TextStyle(color: mainColor)),
           onPressed: () => Navigator.pop(context)
         )
       ],

@@ -18,10 +18,11 @@ class ImportFromCsvPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          context.l10n.selectImportType,
+          l10n.selectImportType,
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
@@ -37,7 +38,7 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text(context.l10n.password),
+                title: Text(l10n.password),
                 leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
                 onTap: () async {
                   FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -54,7 +55,7 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text(context.l10n.card),
+                title: Text(l10n.card),
                 leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
                 onTap: () async {
                   FilePickerResult? result = await FilePicker.platform.pickFiles(

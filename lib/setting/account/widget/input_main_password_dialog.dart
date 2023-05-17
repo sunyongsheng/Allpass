@@ -21,8 +21,9 @@ class InputMainPasswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     return AlertDialog(
-      title: Text(context.l10n.pleaseInputMainPassword),
+      title: Text(l10n.pleaseInputMainPassword),
       content: NoneBorderCircularTextField(
         needPadding: false,
         editingController: _passwordController,
@@ -33,11 +34,11 @@ class InputMainPasswordDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text(context.l10n.confirm, style: TextStyle(color: mainColor)),
+          child: Text(l10n.confirm, style: TextStyle(color: mainColor)),
           onPressed: () => _submit(context),
         ),
         TextButton(
-          child: Text(context.l10n.cancel, style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel, style: TextStyle(color: mainColor)),
           onPressed: () {
             Navigator.pop<bool>(context, false);
             onVerifyResult?.call(false);

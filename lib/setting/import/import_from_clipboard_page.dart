@@ -44,6 +44,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
   @override
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     var fillColor = MaterialStateColor.resolveWith((states) {
       if (states.contains(MaterialState.selected)) return mainColor;
       return Colors.grey;
@@ -52,7 +53,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.importFromClipboard,
+            l10n.importFromClipboard,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -63,12 +64,12 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                 context: context,
                 builder: (context) => InformationHelpDialog(
                   content: <Widget>[
-                    Text(context.l10n.importFromClipboardHelp1),
-                    Text(context.l10n.importFromClipboardHelp2),
-                    Text(context.l10n.importFromClipboardHelp3),
-                    Text(context.l10n.importFromClipboardHelp4),
-                    Text(context.l10n.importFromClipboardHelp5),
-                    Text(context.l10n.importFromClipboardHelp6),
+                    Text(l10n.importFromClipboardHelp1),
+                    Text(l10n.importFromClipboardHelp2),
+                    Text(l10n.importFromClipboardHelp3),
+                    Text(l10n.importFromClipboardHelp4),
+                    Text(l10n.importFromClipboardHelp5),
+                    Text(l10n.importFromClipboardHelp6),
                   ],
                 ),
               ),
@@ -83,7 +84,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                 alignment: Alignment.centerLeft,
                 padding: AllpassEdgeInsets.forCardInset,
                 child: Text(
-                  context.l10n.importFromClipboardSelectFormat,
+                  l10n.importFromClipboardSelectFormat,
                   style: TextStyle(
                     fontSize: 16
                   ),
@@ -108,7 +109,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                             },
                           ),
                           Text(
-                            context.l10n.importFromClipboardFormat1,
+                            l10n.importFromClipboardFormat1,
                             style: AllpassTextUI.firstTitleStyle,
                           ),
                         ],
@@ -133,7 +134,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                             },
                           ),
                           Text(
-                            context.l10n.importFromClipboardFormat2,
+                            l10n.importFromClipboardFormat2,
                             style: AllpassTextUI.firstTitleStyle,
                           ),
                         ],
@@ -158,7 +159,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                             },
                           ),
                           Text(
-                            context.l10n.importFromClipboardFormat3,
+                            l10n.importFromClipboardFormat3,
                             style: AllpassTextUI.firstTitleStyle,
                           ),
                         ],
@@ -183,7 +184,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                             },
                           ),
                           Text(
-                            context.l10n.importFromClipboardFormat4,
+                            l10n.importFromClipboardFormat4,
                             style: AllpassTextUI.firstTitleStyle,
                           ),
                         ],
@@ -205,11 +206,11 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                               setState(() {
                                 _groupValue = value!;
                               });
-                              ToastUtil.show(msg: context.l10n.importFromClipboardFormat5Hint);
+                              ToastUtil.show(msg: l10n.importFromClipboardFormat5Hint);
                             },
                           ),
                           Text(
-                            context.l10n.importFromClipboardFormat5,
+                            l10n.importFromClipboardFormat5,
                             style: AllpassTextUI.firstTitleStyle,
                           ),
                         ],
@@ -218,7 +219,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                         setState(() {
                           _groupValue = 5;
                         });
-                        ToastUtil.show(msg: context.l10n.importFromClipboardFormat5Hint);
+                        ToastUtil.show(msg: l10n.importFromClipboardFormat5Hint);
                       },
                     ),
                   ],
@@ -230,14 +231,14 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                 child: NoneBorderCircularTextField(
                   editingController: _controller,
                   maxLines: 1000,
-                  hintText: context.l10n.pasteDataHere,
+                  hintText: l10n.pasteDataHere,
                 )
               ),
               Container(
                 padding: AllpassEdgeInsets.forViewCardInset,
                 child: LoadingTextButton(
-                  title: context.l10n.startImport,
-                  loadingTitle: context.l10n.importing,
+                  title: l10n.startImport,
+                  loadingTitle: l10n.importing,
                   loading: importing,
                   color: Theme.of(context).primaryColor,
                   onPressed: () async {
@@ -249,7 +250,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                       for (var bean in list) {
                         await context.read<PasswordProvider>().insertPassword(bean);
                       }
-                      ToastUtil.show(msg: context.l10n.importRecordSuccess(list.length));
+                      ToastUtil.show(msg: l10n.importRecordSuccess(list.length));
                     } catch (e) {
                       ToastUtil.show(msg: e.toString());
                     }
@@ -278,6 +279,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
     }
     List<PasswordBean> temp = [];
     // 下面这种情况需要设置默认用户名
+    var l10n = context.l10n;
     if (value == 5) {
       String defaultUsername = rows[0];
       for (String row in rows.sublist(1)) {
@@ -288,7 +290,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           if (field == "") continue;
           else fields.add(field);
         }
-        if (fields.length < 2) throw Exception(context.l10n.recordFormatIncorrect);
+        if (fields.length < 2) throw Exception(l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: defaultUsername,
@@ -308,7 +310,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
         else fields.add(field);
       }
       if (value == 1) {
-        if (fields.length < 4) throw Exception(context.l10n.recordFormatIncorrect);
+        if (fields.length < 4) throw Exception(l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
@@ -316,7 +318,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: fields[3],
         ));
       } else if (value == 2) {
-        if (fields.length < 3) throw Exception(context.l10n.recordFormatIncorrect);
+        if (fields.length < 3) throw Exception(l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: fields[0],
           username: fields[1],
@@ -324,7 +326,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: "",
         ));
       } else if (value == 3) {
-        if (fields.length < 3) throw Exception(context.l10n.recordFormatIncorrect);
+        if (fields.length < 3) throw Exception(l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: "",
           username: fields[0],
@@ -332,7 +334,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
           url: fields[2],
         ));
       } else if (value == 4) {
-        if (fields.length < 2) throw Exception(context.l10n.recordFormatIncorrect);
+        if (fields.length < 2) throw Exception(l10n.recordFormatIncorrect);
         temp.add(PasswordBean(
           name: "",
           username: fields[0],

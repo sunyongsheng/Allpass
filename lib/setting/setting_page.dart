@@ -63,10 +63,11 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    var l10n = context.l10n;
 
     var firstCardWidgets = [
       ListTile(
-        title: Text(context.l10n.mainPasswordManager),
+        title: Text(l10n.mainPasswordManager),
         leading: Icon(Icons.account_circle_outlined, color: AllpassColorUI.allColor[0],),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -75,7 +76,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       ),
       ListTile(
-        title: Text(context.l10n.biometricAuthentication),
+        title: Text(l10n.biometricAuthentication),
         leading: Icon(Icons.fingerprint, color: AllpassColorUI.allColor[1]),
         trailing: Switch(
           value: Config.enabledBiometrics,
@@ -91,26 +92,26 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                         setState(() {
                           Config.setEnabledBiometrics(sw);
                         });
-                        ToastUtil.show(msg: context.l10n.enableBiometricSuccess);
+                        ToastUtil.show(msg: l10n.enableBiometricSuccess);
                         break;
                       case AuthResult.NotAvailable:
-                        ToastUtil.show(msg: context.l10n.biometricNotAvailable);
+                        ToastUtil.show(msg: l10n.biometricNotAvailable);
                         break;
                       default:
-                        ToastUtil.show(msg: context.l10n.authorizationFailed);
+                        ToastUtil.show(msg: l10n.authorizationFailed);
                     }
                   },
                 ),
               );
             } else {
               Config.setEnabledBiometrics(false);
-              ToastUtil.show(msg: context.l10n.biometricNotSupport);
+              ToastUtil.show(msg: l10n.biometricNotSupport);
             }
           },
         ),
       ),
       ListTile(
-        title: Text(context.l10n.longPressToCopy),
+        title: Text(l10n.longPressToCopy),
         leading: Icon(Icons.content_copy, color: AllpassColorUI.allColor[2]),
         trailing: Switch(
           value: Config.longPressCopy,
@@ -122,7 +123,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         ),
       ),
       ListTile(
-        title: Text(context.l10n.appTheme),
+        title: Text(l10n.appTheme),
         leading: Icon(Icons.color_lens_outlined, color: AllpassColorUI.allColor[5]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -134,7 +135,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
     var secondCardWidgets = [
       ListTile(
-        title: Text(context.l10n.labelManager),
+        title: Text(l10n.labelManager),
         leading: Icon(Icons.label_outline, color: AllpassColorUI.allColor[3]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -143,7 +144,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       ),
       ListTile(
-        title: Text(context.l10n.folderManager),
+        title: Text(l10n.folderManager),
         leading: Icon(Icons.folder_open, color: AllpassColorUI.allColor[4]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -155,7 +156,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
     var thirdCardWidgets = [
       ListTile(
-        title: Text(context.l10n.webDavSync),
+        title: Text(l10n.webDavSync),
         leading: Icon(Icons.cloud_outlined, color: AllpassColorUI.allColor[0]),
         onTap: () {
           if (Config.webDavAuthSuccess) {
@@ -173,7 +174,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       ),
       ListTile(
-        title: Text(context.l10n.importExport),
+        title: Text(l10n.importExport),
         leading: Icon(Icons.import_export, color: AllpassColorUI.allColor[5]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -184,7 +185,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     ];
     if (AllpassApplication.isAndroid && AllpassApplication.systemSdkInt >= 26) {
       thirdCardWidgets.add(ListTile(
-        title: Text(context.l10n.autofill),
+        title: Text(l10n.autofill),
         leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -199,24 +200,24 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
 
     var forthCardWidgets = [
       ListTile(
-          title: Text(context.l10n.shareToFriends),
+          title: Text(l10n.shareToFriends),
           leading: Icon(Icons.share, color: AllpassColorUI.allColor[2]),
           onTap: () async => await doRecommend()
       ),
       ListTile(
-          title: Text(context.l10n.feedback),
+          title: Text(l10n.feedback),
           leading: Icon(Icons.feedback_outlined, color: AllpassColorUI.allColor[1]),
           onTap: () => Navigator.push(context, CupertinoPageRoute(
             builder: (context) => FeedbackPage(),
           ))
       ),
       ListTile(
-          title: Text(context.l10n.checkUpdate),
+          title: Text(l10n.checkUpdate),
           leading: Icon(Icons.update, color: AllpassColorUI.allColor[6]),
           onTap: () => checkUpdate()
       ),
       ListTile(
-        title: Text(context.l10n.about),
+        title: Text(l10n.about),
         leading: Icon(Icons.details, color: AllpassColorUI.allColor[0]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
@@ -231,7 +232,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         title: InkWell(
           splashColor: Colors.transparent,
           child: Text(
-            context.l10n.settings,
+            l10n.settings,
             style: AllpassTextUI.titleBarStyle,
           ),
           onTap: () {

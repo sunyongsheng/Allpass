@@ -40,10 +40,11 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     var primaryColor = Theme.of(context).primaryColor;
+    var l10n = context.l10n;
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            context.l10n.secretKeyUpdate,
+            l10n.secretKeyUpdate,
             style: AllpassTextUI.titleBarStyle,
           ),
           centerTitle: true,
@@ -58,21 +59,21 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp1,
+                    l10n.secretKeyUpdateHelp1,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp2,
+                    l10n.secretKeyUpdateHelp2,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp3,
+                    l10n.secretKeyUpdateHelp3,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -81,10 +82,10 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                   child: Text.rich(
                     TextSpan(children: [
                       TextSpan(
-                        text: context.l10n.secretKeyUpdateHelp4,
+                        text: l10n.secretKeyUpdateHelp4,
                       ),
                       TextSpan(
-                        text: context.l10n.secretKeyUpdateHelp5,
+                        text: l10n.secretKeyUpdateHelp5,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ]),
@@ -94,28 +95,28 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp6,
+                    l10n.secretKeyUpdateHelp6,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp7,
+                    l10n.secretKeyUpdateHelp7,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp8,
+                    l10n.secretKeyUpdateHelp8,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp9,
+                    l10n.secretKeyUpdateHelp9,
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -125,14 +126,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: context.l10n.secretKeyUpdateHelp10,
+                          text: l10n.secretKeyUpdateHelp10,
                         ),
                         TextSpan(
-                          text: context.l10n.secretKeyUpdateHelp11,
+                          text: l10n.secretKeyUpdateHelp11,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
-                          text: context.l10n.secretKeyUpdateHelp12,
+                          text: l10n.secretKeyUpdateHelp12,
                         ),
                       ],
                     ),
@@ -142,14 +143,14 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp13,
+                    l10n.secretKeyUpdateHelp13,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
                   padding: AllpassEdgeInsets.smallTBPadding,
                   child: Text(
-                    context.l10n.secretKeyUpdateHelp14,
+                    l10n.secretKeyUpdateHelp14,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -157,7 +158,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                 NoneBorderCircularTextField(
                   editingController: controller,
                   textAlign: TextAlign.center,
-                  hintText: context.l10n.secretKeyUpdateHint,
+                  hintText: l10n.secretKeyUpdateHint,
                   onChanged: (s) {
                     _latestKey = s;
                     setState(() {
@@ -175,13 +176,13 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                             MaterialStateProperty.all(primaryColor),
                       ),
                       child: Text(
-                        context.l10n.generateSecretKey,
+                        l10n.generateSecretKey,
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
                         _latestKey = EncryptUtil.generateRandomKey(32);
                         if (!haveGen) {
-                          ToastUtil.show(msg: context.l10n.generateSecretKeyDone);
+                          ToastUtil.show(msg: l10n.generateSecretKeyDone);
                         }
                         setState(() {
                           haveGen = true;
@@ -200,7 +201,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                       ),
                       child: haveUpgrade
                           ? Text(
-                              context.l10n.upgradeDone,
+                              l10n.upgradeDone,
                               style: TextStyle(color: Colors.white),
                             )
                           : inUpgrade
@@ -213,7 +214,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                                   ),
                                 )
                               : Text(
-                                  context.l10n.startUpgrade,
+                                  l10n.startUpgrade,
                                   style: TextStyle(color: Colors.white),
                                 ),
                       onPressed: () async {
@@ -222,9 +223,9 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                           return;
                         }
                         if (!haveGen) {
-                          ToastUtil.show(msg: context.l10n.pleaseGenerateKeyFirst);
+                          ToastUtil.show(msg: l10n.pleaseGenerateKeyFirst);
                         } else if (_latestKey?.length != 32) {
-                          ToastUtil.show(msg: context.l10n.secretKeyLengthRequire);
+                          ToastUtil.show(msg: l10n.secretKeyLengthRequire);
                         } else {
                           setState(() {
                             inUpgrade = true;
