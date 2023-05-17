@@ -100,6 +100,10 @@ class AllpassEdgeInsets {
     right: AllpassScreenUtil.setWidth(30),
   );
 
+  static EdgeInsets widgetItemInset = EdgeInsets.symmetric(
+    horizontal: AllpassScreenUtil.setHeight(42),
+  );
+
   static EdgeInsets dividerInset = EdgeInsets.only(
     left: AllpassScreenUtil.setWidth(70),
     right: AllpassScreenUtil.setWidth(70),

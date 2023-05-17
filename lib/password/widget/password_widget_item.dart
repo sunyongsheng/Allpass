@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
@@ -11,7 +10,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class MaterialPasswordWidget extends StatelessWidget {
   final PasswordBean data;
@@ -75,14 +73,15 @@ class MaterialPasswordWidget extends StatelessWidget {
 }
 
 class PasswordWidgetItem extends StatelessWidget {
-  final Key? key;
-
   final PasswordBean data;
 
   final VoidCallback? onPasswordClicked;
 
-  PasswordWidgetItem({this.key, required this.data, this.onPasswordClicked})
-      : super(key: key);
+  PasswordWidgetItem({
+    Key? key,
+    required this.data,
+    this.onPasswordClicked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,41 +95,36 @@ class PasswordWidgetItem extends StatelessWidget {
       };
     }
 
-    return Container(
-      margin: AllpassEdgeInsets.listInset,
-      child: GestureDetector(
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: data.color,
-            child: Text(
-              data.name.substring(0, 1),
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          title: Text(
-            data.name,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Text(
-            data.username,
-            overflow: TextOverflow.ellipsis,
-          ),
-          onTap: () => onPasswordClicked?.call(),
-          onLongPress: longPressCallback,
+    return ListTile(
+      contentPadding: AllpassEdgeInsets.widgetItemInset,
+      leading: CircleAvatar(
+        backgroundColor: data.color,
+        child: Text(
+          data.name.substring(0, 1),
+          style: TextStyle(color: Colors.white),
         ),
       ),
+      title: Text(
+        data.name,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        data.username,
+        overflow: TextOverflow.ellipsis,
+      ),
+      onTap: () => onPasswordClicked?.call(),
+      onLongPress: longPressCallback,
     );
   }
 }
 
 class MultiPasswordWidgetItem extends StatefulWidget {
-  final Key? key;
   final PasswordBean password;
   final bool Function(PasswordBean) selection;
   final void Function(bool, PasswordBean) onChanged;
 
   const MultiPasswordWidgetItem({
-    this.key,
+    Key? key,
     required this.password,
     required this.selection,
     required this.onChanged,
@@ -145,34 +139,28 @@ class MultiPasswordWidgetItem extends StatefulWidget {
 class _MultiPasswordWidgetItem extends State<MultiPasswordWidgetItem> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<PasswordProvider>(
-      builder: (context, model, child) {
-        var data = widget.password;
-        return Container(
-          margin: AllpassEdgeInsets.listInset,
-          child: CheckboxListTile(
-            value: widget.selection(data),
-            onChanged: (value) {
-              widget.onChanged(value ?? false, data);
-            },
-            secondary: CircleAvatar(
-              backgroundColor: data.color,
-              child: Text(
-                data.name.substring(0, 1),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            title: Text(
-              data.name,
-              overflow: TextOverflow.ellipsis,
-            ),
-            subtitle: Text(
-              data.username,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        );
+    var data = widget.password;
+    return CheckboxListTile(
+      contentPadding: AllpassEdgeInsets.widgetItemInset,
+      value: widget.selection(data),
+      onChanged: (value) {
+        widget.onChanged(value ?? false, data);
       },
+      secondary: CircleAvatar(
+        backgroundColor: data.color,
+        child: Text(
+          data.name.substring(0, 1),
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Text(
+        data.name,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        data.username,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 }

@@ -67,7 +67,8 @@ class ClassificationDetailsPage extends StatelessWidget {
               pageCreator: (_) => ViewCardPage(),
               containerShape: 4,
               itemColor: itemColor,
-              onCardClicked: () => provider2.previewCard(index: index)));
+              onCardClicked: () => provider2.previewCard(index: index),
+          ));
         }
       } catch (e) {}
     }
@@ -77,20 +78,27 @@ class ClassificationDetailsPage extends StatelessWidget {
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
     ));
-    all.add(Card(
-      margin: AllpassEdgeInsets.settingCardInset,
-      elevation: 0,
-      child: Column(
-        children: list1,
-      ),
-    ));
-    all.add(Card(
-      margin: AllpassEdgeInsets.settingCardInset,
-      elevation: 0,
-      child: Column(
-        children: list2,
-      ),
-    ));
+
+    if (list1.isNotEmpty) {
+      all.add(Card(
+        margin: AllpassEdgeInsets.settingCardInset,
+        elevation: 0,
+        child: Column(
+          children: list1,
+        ),
+      ));
+    }
+
+    if (list2.isNotEmpty) {
+      all.add(Card(
+        margin: AllpassEdgeInsets.settingCardInset,
+        elevation: 0,
+        child: Column(
+          children: list2,
+        ),
+      ));
+    }
+
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
     ));

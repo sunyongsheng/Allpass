@@ -77,20 +77,27 @@ class FavoritePage extends StatelessWidget {
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
     ));
-    all.add(Card(
-      margin: AllpassEdgeInsets.settingCardInset,
-      elevation: 0,
-      child: Column(
-        children: list1,
-      ),
-    ));
-    all.add(Card(
-      margin: AllpassEdgeInsets.settingCardInset,
-      elevation: 0,
-      child: Column(
-        children: list2,
-      ),
-    ));
+
+    if (list1.isNotEmpty) {
+      all.add(Card(
+        margin: AllpassEdgeInsets.settingCardInset,
+        elevation: 0,
+        child: Column(
+          children: list1,
+        ),
+      ));
+    }
+
+    if (list2.isNotEmpty) {
+      all.add(Card(
+        margin: AllpassEdgeInsets.settingCardInset,
+        elevation: 0,
+        child: Column(
+          children: list2,
+        ),
+      ));
+    }
+
     all.add(Padding(
       padding: EdgeInsets.symmetric(vertical: AllpassScreenUtil.setHeight(10)),
     ));

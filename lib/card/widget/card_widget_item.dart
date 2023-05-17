@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/param/config.dart';
@@ -10,11 +9,8 @@ import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class MaterialCardWidget extends StatelessWidget {
-  final Key? key;
-
   final CardBean data;
 
   final WidgetBuilder pageCreator;
@@ -22,7 +18,7 @@ class MaterialCardWidget extends StatelessWidget {
   final VoidCallback? onClick;
 
   const MaterialCardWidget({
-    this.key,
+    Key? key,
     required this.data,
     required this.pageCreator,
     this.onClick,
@@ -70,14 +66,15 @@ class MaterialCardWidget extends StatelessWidget {
 }
 
 class _CardWidgetItem extends StatelessWidget {
-  final Key? key;
-
   final CardBean data;
 
   final VoidCallback? onCardClicked;
 
-  const _CardWidgetItem({this.key, required this.data, this.onCardClicked})
-      : super(key: key);
+  const _CardWidgetItem({
+    Key? key,
+    required this.data,
+    this.onCardClicked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -192,37 +189,32 @@ class SimpleCardWidgetItem extends StatelessWidget {
   final CardBean data;
   final VoidCallback? onCardClicked;
 
-  SimpleCardWidgetItem({Key? key, required this.data, this.onCardClicked})
-      : super(key: key);
+  SimpleCardWidgetItem({
+    Key? key,
+    required this.data,
+    this.onCardClicked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CardProvider>(
-      builder: (context, model, _) {
-        return Container(
-          margin: AllpassEdgeInsets.listInset,
-          child: GestureDetector(
-            child: ListTile(
-              leading: Container(
-                decoration: BoxDecoration(
-                  borderRadius: AllpassUI.smallBorderRadius,
-                  color: data.color,
-                ),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Text(
-                    data.name.substring(0, 1),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              title: Text(data.name),
-              subtitle: Text(data.ownerName),
-              onTap: () => onCardClicked?.call(),
-            ),
+    return ListTile(
+      contentPadding: AllpassEdgeInsets.widgetItemInset,
+      leading: Container(
+        decoration: BoxDecoration(
+          borderRadius: AllpassUI.smallBorderRadius,
+          color: data.color,
+        ),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          child: Text(
+            data.name.substring(0, 1),
+            style: TextStyle(color: Colors.white),
           ),
-        );
-      },
+        ),
+      ),
+      title: Text(data.name),
+      subtitle: Text(data.ownerName),
+      onTap: () => onCardClicked?.call(),
     );
   }
 }
@@ -252,34 +244,32 @@ class _MultiCardWidgetItem extends State<MultiCardWidgetItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: AllpassEdgeInsets.listInset,
-      child: CheckboxListTile(
-        value: widget.selection(data),
-        onChanged: (value) {
-          widget.onChanged(value ?? false, data);
-        },
-        secondary: Container(
-          decoration: BoxDecoration(
-            borderRadius: AllpassUI.smallBorderRadius,
-            color: data.color,
-          ),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            child: Text(
-              data.name.substring(0, 1),
-              style: TextStyle(color: Colors.white),
-            ),
+    return CheckboxListTile(
+      contentPadding: AllpassEdgeInsets.widgetItemInset,
+      value: widget.selection(data),
+      onChanged: (value) {
+        widget.onChanged(value ?? false, data);
+      },
+      secondary: Container(
+        decoration: BoxDecoration(
+          borderRadius: AllpassUI.smallBorderRadius,
+          color: data.color,
+        ),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          child: Text(
+            data.name.substring(0, 1),
+            style: TextStyle(color: Colors.white),
           ),
         ),
-        title: Text(
-          data.name,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          data.cardId,
-          overflow: TextOverflow.ellipsis,
-        ),
+      ),
+      title: Text(
+        data.name,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        data.cardId,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
