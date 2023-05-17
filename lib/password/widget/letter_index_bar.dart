@@ -33,6 +33,8 @@ class _LetterIndexBar extends State<LetterIndexBar> {
 
   late ScrollController _letterController;
 
+  late VoidCallback _scrollListener;
+
   @override
   void initState() {
     super.initState();
@@ -40,15 +42,17 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     _letterController = ScrollController();
     _controller = widget.scrollController;
 
-    _currentIndex = _calculateFirstVisibleItemLetterIndex();
-    _controller.addListener(() {
+    _scrollListener = () {
       var letterIndex = _calculateFirstVisibleItemLetterIndex();
       if (letterIndex != _currentIndex) {
         setState(() {
           _currentIndex = letterIndex;
         });
       }
-    });
+    };
+
+    _currentIndex = _calculateFirstVisibleItemLetterIndex();
+    _controller.addListener(_scrollListener);
   }
 
   @override
@@ -56,6 +60,7 @@ class _LetterIndexBar extends State<LetterIndexBar> {
     super.dispose();
 
     _letterController.dispose();
+    _controller.removeListener(_scrollListener);
   }
 
   @override

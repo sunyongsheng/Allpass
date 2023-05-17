@@ -34,10 +34,12 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage>
     with AutomaticKeepAliveClientMixin {
   late ScrollController _controller;
+  late ScrollController _multiEditController;
 
   @override
   void initState() {
     _controller = ScrollController();
+    _multiEditController = ScrollController();
     super.initState();
   }
 
@@ -45,6 +47,7 @@ class _PasswordPageState extends State<PasswordPage>
   void dispose() {
     super.dispose();
     _controller.dispose();
+    _multiEditController.dispose();
   }
 
   Future<Null> _query(PasswordProvider model) async {
@@ -68,7 +71,14 @@ class _PasswordPageState extends State<PasswordPage>
               context.l10n.password,
               style: AllpassTextUI.titleBarStyle,
             ),
-            onTap: _controller.scrollToTop,
+            onTap: () {
+              var inEditMode = context.read<MultiItemEditProvider<PasswordBean>>().editMode;
+              if (inEditMode) {
+                _multiEditController.scrollToTop();
+              } else {
+                _controller.scrollToTop();
+              }
+            },
           ),
         ),
         automaticallyImplyLeading: false,
@@ -158,7 +168,7 @@ class _PasswordPageState extends State<PasswordPage>
       builder: (_, provider, editProvider, postList) {
         if (editProvider.editMode) {
           return ListView.builder(
-            controller: _controller,
+            controller: _multiEditController,
             itemBuilder: (context, index) => MultiPasswordWidgetItem(
               password: provider.passwordList[index],
               selection: editProvider.isSelected,
