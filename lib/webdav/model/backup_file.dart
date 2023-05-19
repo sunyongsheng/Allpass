@@ -1,11 +1,11 @@
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/webdav/model/file_metadata.dart';
 
-abstract class BackupFile {}
+sealed class BackupFile {}
 
 /// V1备份文件，内容格式
 /// "${bean数组}"
-class BackupFileV1 implements BackupFile {
+class BackupFileV1 extends BackupFile {
   late AllpassType type;
   final List<dynamic> list;
 
@@ -21,7 +21,7 @@ class BackupFileV1 implements BackupFile {
 ///   },
 ///   "data": "${bean数组}"
 /// }
-class BackupFileV2 implements BackupFile {
+class BackupFileV2 extends BackupFile {
   final FileMetadata metadata;
   final String data;
 

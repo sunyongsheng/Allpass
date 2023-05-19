@@ -36,12 +36,12 @@ class _AuthLoginPage extends State<StatefulWidget> {
 
     var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      themeProvider.setExtraColor(window.platformBrightness);
+      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
       askAuth(context);
     });
 
-    window.onPlatformBrightnessChanged = () {
-      themeProvider.setExtraColor(window.platformBrightness);
+    PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
+      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
     };
   }
 

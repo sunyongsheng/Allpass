@@ -37,7 +37,7 @@ extension MergeResultApply <T> on List<MergeResult<T>> {
   }
 }
 
-abstract class MergeExecutor<T extends Object> {
+abstract interface class MergeExecutor<T> {
   List<MergeResult<T>> merge(List<T> local, List<T> remote);
 }
 

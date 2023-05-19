@@ -8,7 +8,7 @@ import 'package:local_auth_ios/local_auth_ios.dart';
 
 enum AuthResult { Success, Failed, Exception, NotAvailable }
 
-abstract class AuthService {
+abstract interface class AuthService {
   /// 授权，返回[true]代表授权成功
   Future<AuthResult> authenticate(BuildContext context);
 

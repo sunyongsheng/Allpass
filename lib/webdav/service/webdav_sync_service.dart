@@ -29,7 +29,7 @@ import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-abstract class WebDavSyncService {
+abstract interface class WebDavSyncService {
   void updateConfig({
     String? urlPath,
     int? port,

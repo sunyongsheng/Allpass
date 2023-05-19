@@ -10,7 +10,7 @@ import 'package:allpass/password/model/password_bean.dart';
 final List<PasswordBean> emptyList = [];
 
 /// 保存程序中的所有的Password
-class PasswordProvider extends LetterIndexProvider with ChangeNotifier {
+class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
   PasswordRepository _repository = inject();
 
   List<PasswordBean> _passwordList = emptyList;

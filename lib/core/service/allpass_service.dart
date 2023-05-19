@@ -7,7 +7,7 @@ import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/model/api/feedback_bean.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 
-abstract class AllpassService {
+abstract interface class AllpassService {
   /// 注册用户
   Future<AllpassResponse> registerUser(UserBean user);
 

@@ -22,9 +22,9 @@ class WebDavFile {
         return null;
       }
 
-      var index = hrefNode.text.lastIndexOf("/");
+      var index = hrefNode.innerText.lastIndexOf("/");
       if (index >= 0) {
-        return hrefNode.text.substring(index + 1);
+        return hrefNode.innerText.substring(index + 1);
       }
       return null;
     }
@@ -35,11 +35,11 @@ class WebDavFile {
       return null;
     }
 
-    var name = propNode.obtainWebDavNode("displayname")?.text ??
+    var name = propNode.obtainWebDavNode("displayname")?.innerText ??
         _getNameFromHref(responseNode) ??
         "未知名称";
 
-    var lastModifiedString = propNode.obtainWebDavNode("getlastmodified")?.text;
+    var lastModifiedString = propNode.obtainWebDavNode("getlastmodified")?.innerText;
     DateTime lastModified;
     if (lastModifiedString != null) {
       lastModified = HttpDate.parse(lastModifiedString).toLocal();
@@ -47,9 +47,9 @@ class WebDavFile {
       lastModified = DateTime.fromMillisecondsSinceEpoch(0);
     }
 
-    var size = propNode.obtainWebDavNode("getcontentlength")?.text ?? "-1";
+    var size = propNode.obtainWebDavNode("getcontentlength")?.innerText ?? "-1";
 
-    var contentType = propNode.obtainWebDavNode("getcontenttype")?.text;
+    var contentType = propNode.obtainWebDavNode("getcontenttype")?.innerText;
     var isFile = contentType != "httpd/unix-directory";
 
     var filename = name;

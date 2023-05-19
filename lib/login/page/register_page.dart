@@ -37,12 +37,12 @@ class _RegisterPage extends State<RegisterPage> {
 
     var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      themeProvider.setExtraColor(window.platformBrightness);
+      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
       _tryShowPrivacyDialog();
     });
 
-    window.onPlatformBrightnessChanged = () {
-      themeProvider.setExtraColor(window.platformBrightness);
+    PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
+      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
     };
   }
 

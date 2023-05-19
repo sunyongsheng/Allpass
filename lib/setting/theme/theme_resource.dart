@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 
 /// 主题
 class AllpassTheme {
+
+  var _useMaterial3 = false;
+
   ThemeData blueTheme(bool dark) {
     if (dark) {
       return darkTheme(mainColor: Colors.blue);
@@ -62,6 +65,7 @@ class AllpassTheme {
 
   ThemeData darkTheme({required MaterialColor mainColor}) {
     return ThemeData(
+      useMaterial3: _useMaterial3,
       primaryColor: mainColor,
       colorScheme: ColorScheme.fromSwatch(primarySwatch: mainColor)
           .copyWith(secondary: mainColor),
@@ -181,6 +185,7 @@ class AllpassTheme {
 
   ThemeData defaultTheme({required MaterialColor mainColor}) {
     return ThemeData(
+      useMaterial3: _useMaterial3,
       primaryColor: mainColor,
       primarySwatch: mainColor,
       floatingActionButtonTheme: FloatingActionButtonThemeData(

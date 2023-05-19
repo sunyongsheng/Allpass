@@ -16,7 +16,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 
-abstract class SyncResult<T> {
+sealed class SyncResult<T> {
   String? message;
 }
 
@@ -64,17 +64,17 @@ class Syncing extends SyncResult<Never> {
 }
 
 
-abstract class GetBackupFileState {}
+sealed class GetBackupFileState {}
 
-class GettingBackupFile implements GetBackupFileState {}
+class GettingBackupFile extends GetBackupFileState {}
 
-class GetBackupFileSuccess implements GetBackupFileState {
+class GetBackupFileSuccess extends GetBackupFileState {
   final List<WebDavFile> backupFiles;
 
   GetBackupFileSuccess(this.backupFiles);
 }
 
-class GetBackupFileFail implements GetBackupFileState {
+class GetBackupFileFail extends GetBackupFileState {
   final String message;
 
   GetBackupFileFail(this.message);

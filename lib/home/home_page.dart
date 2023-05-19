@@ -59,7 +59,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    context.read<ThemeProvider>().setExtraColor(window.platformBrightness);
+    context.read<ThemeProvider>().setExtraColor(PlatformDispatcher.instance.platformBrightness);
   }
 
   @override

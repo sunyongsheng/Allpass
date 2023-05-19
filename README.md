@@ -86,7 +86,7 @@ TODO
 # Flutter环境
 
 ```
-[✓] Flutter (Channel stable, 3.7.11, on macOS 13.3.1 22E261 darwin-arm64, locale en-CN)
+[✓] Flutter (Channel stable, 3.10.1, on macOS 13.3.1 22E261 darwin-arm64, locale en-CN)
 [✓] Android toolchain - develop for Android devices (Android SDK version 33.0.2)
 [✓] Android Studio (version 2022.2)
 ```

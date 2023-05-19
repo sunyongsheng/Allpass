@@ -111,7 +111,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
       onTap: () {
         var provider = context.read<ThemeProvider>();
         setState(() {
-          provider.changePrimaryColor(mode, window.platformBrightness);
+          provider.changePrimaryColor(mode, PlatformDispatcher.instance.platformBrightness);
         });
       },
     );
@@ -126,7 +126,7 @@ class _ThemeSelectPage extends State<ThemeSelectPage> {
       onTap: () {
         var provider = context.read<ThemeProvider>();
         setState(() {
-          provider.changeThemeMode(item.mode, window.platformBrightness);
+          provider.changeThemeMode(item.mode, PlatformDispatcher.instance.platformBrightness);
         });
       },
     );
