@@ -78,14 +78,6 @@ class _CardWidgetItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    GestureLongPressCallback? longPressCallback;
-    if (Config.longPressCopy) {
-      longPressCallback = () {
-        Clipboard.setData(ClipboardData(text: data.cardId));
-        ToastUtil.show(msg: context.l10n.cardIdCopied);
-      };
-    }
-
     return Card(
       elevation: 0,
       margin: EdgeInsets.all(0),
@@ -116,7 +108,12 @@ class _CardWidgetItem extends StatelessWidget {
             maxLines: 1,
           ),
           onTap: () => onCardClicked?.call(),
-          onLongPress: longPressCallback,
+          onLongPress: () {
+            if (Config.longPressCopy) {
+              Clipboard.setData(ClipboardData(text: data.cardId));
+              ToastUtil.show(msg: context.l10n.cardIdCopied);
+            }
+          },
           contentPadding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         ),
       ),
