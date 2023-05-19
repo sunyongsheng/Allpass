@@ -212,6 +212,12 @@ class SimpleCardWidgetItem extends StatelessWidget {
       title: Text(data.name),
       subtitle: Text(data.ownerName),
       onTap: () => onCardClicked?.call(),
+      onLongPress: () {
+        if (Config.longPressCopy) {
+          Clipboard.setData(ClipboardData(text: data.cardId));
+          ToastUtil.show(msg: context.l10n.cardIdCopied);
+        }
+      },
     );
   }
 }
