@@ -187,6 +187,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     ),
                     NoneBorderCircularTextField(
                       editingController: nameController,
+                      inputType: TextInputType.text,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
@@ -211,6 +212,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     ),
                     NoneBorderCircularTextField(
                       editingController: ownerNameController,
+                      inputType: TextInputType.name,
                       trailing: InkWell(
                         child: Icon(
                           Icons.cancel,
@@ -269,6 +271,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                         Expanded(
                           child: NoneBorderCircularTextField(
                             editingController: passwordController,
+                            inputType: TextInputType.visiblePassword,
                             obscureText: !passwordVisible,
                             trailing: InkWell(
                               child: Icon(

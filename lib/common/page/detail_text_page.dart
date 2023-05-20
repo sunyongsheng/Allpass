@@ -17,82 +17,61 @@ class DetailTextPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget child;
     if (canChange) {
-      return WillPopScope(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                title,
-                style: AllpassTextUI.titleBarStyle,
-              ),
-              centerTitle: true,
+      child = TextField(
+        autofocus: true,
+        controller: _controller,
+        maxLines: 1000,
+        style: AllpassTextUI.firstTitleStyle,
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+          suffix: InkWell(
+            child: Icon(
+              Icons.cancel,
+              size: 20,
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    child: TextField(
-                      autofocus: true,
-                      controller: _controller,
-                      maxLines: 1000,
-                      style: AllpassTextUI.firstTitleStyle,
-                      decoration: InputDecoration(
-                        suffix: InkWell(
-                          child: Icon(
-                            Icons.cancel,
-                            size: 20,
-                          ),
-                          onTap: () {
-                            // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
-                            WidgetsBinding.instance.addPostFrameCallback((_) => _controller.clear());
-                          },
-                        ),
-                        hintText: context.l10n.addNotes,
-                      ),
-                    ),
-                    padding: AllpassEdgeInsets.listInset,
-                  )
-                ],
-              ),
-            ),
+            onTap: () {
+              // 保证在组件build的第一帧时才去触发取消清空内容，防止报错
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => _controller.clear());
+            },
           ),
-          onWillPop: () {
-            Navigator.pop<String>(context, _controller.text);
-            return Future.value(false);
-          }
+          hintText: context.l10n.addNotes,
+        ),
       );
     } else {
-      return WillPopScope(
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                title,
-                style: AllpassTextUI.titleBarStyle,
-              ),
-              centerTitle: true,
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    child: Text(text,
-                      style: AllpassTextUI.firstTitleStyle,
-                    ),
-                    padding: AllpassEdgeInsets.listInset,
-                  )
-                ],
-              ),
-            ),
-          ),
-          onWillPop: () {
-            Navigator.pop<String>(context, text);
-            return Future.value(false);
-          }
+      child = Text(
+        text,
+        style: AllpassTextUI.firstTitleStyle,
       );
     }
 
+    return WillPopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            title,
+            style: AllpassTextUI.titleBarStyle,
+          ),
+          centerTitle: true,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                child: child,
+                padding: AllpassEdgeInsets.listInset,
+              )
+            ],
+          ),
+        ),
+      ),
+      onWillPop: () {
+        Navigator.pop<String>(context, _controller.text);
+        return Future.value(true);
+      },
+    );
   }
-
 }

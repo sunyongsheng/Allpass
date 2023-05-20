@@ -213,6 +213,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
           ),
           NoneBorderCircularTextField(
             editingController: nameController,
+            inputType: TextInputType.text,
             trailing: InkWell(
               child: Icon(Icons.cancel, size: 20,),
               onTap: () => afterFirstFrame(() {
@@ -237,6 +238,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
           ),
           NoneBorderCircularTextField(
             editingController: usernameController,
+            inputType: TextInputType.emailAddress,
             trailing: InkWell(
               child: Icon(
                 Icons.cancel,
@@ -273,6 +275,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
               Expanded(
                 child: NoneBorderCircularTextField(
                   editingController: passwordController,
+                  inputType: TextInputType.visiblePassword,
                   trailing: InkWell(
                     child: Icon(
                         Icons.cancel,
@@ -316,6 +319,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
           ),
           NoneBorderCircularTextField(
             editingController: urlController,
+            inputType: TextInputType.url,
             trailing: InkWell(
               child: Icon(
                 Icons.cancel,
