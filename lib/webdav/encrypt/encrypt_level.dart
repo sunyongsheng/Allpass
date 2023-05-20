@@ -29,34 +29,21 @@ class EncryptLevels {
 extension EncryptLevelExt on EncryptLevel {
   String title(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case EncryptLevel.None:
-        return l10n.encryptLevelNone;
-      case EncryptLevel.OnlyPassword:
-        return l10n.encryptLevelOnlyPassword;
-      case EncryptLevel.All:
-        return l10n.encryptLevelAll;
-    }
+    return switch (this) {
+      EncryptLevel.None => l10n.encryptLevelNone,
+      EncryptLevel.OnlyPassword => l10n.encryptLevelOnlyPassword,
+      EncryptLevel.All => l10n.encryptLevelAll,
+    };
   }
 
   String desc(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case EncryptLevel.None:
-        return l10n.encryptLevelNoneHelp;
-      case EncryptLevel.OnlyPassword:
-        return l10n.encryptLevelOnlyPasswordHelp;
-      case EncryptLevel.All:
-        return l10n.encryptLevelAllHelp;
-    }
+    return switch (this) {
+      EncryptLevel.None => l10n.encryptLevelNoneHelp,
+      EncryptLevel.OnlyPassword => l10n.encryptLevelOnlyPasswordHelp,
+      EncryptLevel.All => l10n.encryptLevelAllHelp,
+    };
   }
-}
-
-class EncryptItem {
-  final EncryptLevel level;
-  final String desc;
-
-  const EncryptItem(this.level, this.desc);
 }
 
 var encryptLevels = [

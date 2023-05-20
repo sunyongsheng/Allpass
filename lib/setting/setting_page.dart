@@ -294,20 +294,16 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
   void checkUpdate() {
     var bean = inject<AllpassService>().checkUpdate();
     showDialog(
-        context: context,
-        builder: (cx) => FutureBuilder<UpdateBean>(
-          future: bean,
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return UpdateDialog(snapshot.data!);
-              default:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-            }
-          },
-        )
+      context: context,
+      builder: (cx) => FutureBuilder<UpdateBean>(
+        future: bean,
+        builder: (context, snapshot) => switch (snapshot.connectionState) {
+          ConnectionState.done => UpdateDialog(snapshot.data!),
+          _ => Center(
+              child: CircularProgressIndicator(),
+            ),
+        },
+      ),
     );
   }
 

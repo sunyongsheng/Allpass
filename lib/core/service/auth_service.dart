@@ -64,30 +64,23 @@ class AuthServiceImpl implements AuthService {
 
   IOSAuthMessages _iosAuthMessages(BuildContext context, BiometricType? type) {
     var l10n = context.l10n;
-    String? goToSettingsDescription;
-    String? lockOut;
-    switch (type) {
-      case BiometricType.face:
-        goToSettingsDescription = l10n.iosGoToSettingsDescFingerprint;
-        lockOut = l10n.iosLogoutFace;
-        break;
-      case BiometricType.fingerprint:
-        goToSettingsDescription = l10n.iosGoToSettingsDescFingerprint;
-        lockOut = l10n.iosLogoutFingerprint;
-        break;
-      case BiometricType.iris:
-        goToSettingsDescription = l10n.iosGoToSettingsDescIris;
-        lockOut = l10n.iosLogoutIris;
-        break;
-      default:
-        goToSettingsDescription = l10n.iosGoToSettingsDescDefault;
-        break;
-    }
+    var (String goToSettingsDescription, String? lockOut) = switch (type) {
+      BiometricType.face => (
+          l10n.iosGoToSettingsDescFingerprint,
+          l10n.iosLogoutFace
+        ),
+      BiometricType.fingerprint => (
+          l10n.iosGoToSettingsDescFingerprint,
+          l10n.iosLogoutFingerprint
+        ),
+      BiometricType.iris => (l10n.iosGoToSettingsDescIris, l10n.iosLogoutIris),
+      _ => (l10n.iosGoToSettingsDescDefault, null),
+    };
     return IOSAuthMessages(
-        cancelButton: l10n.cancel,
-        goToSettingsButton: l10n.gotoSettings,
-        goToSettingsDescription: goToSettingsDescription,
-        lockOut: lockOut,
+      cancelButton: l10n.cancel,
+      goToSettingsButton: l10n.gotoSettings,
+      goToSettingsDescription: goToSettingsDescription,
+      lockOut: lockOut,
     );
   }
 

@@ -11,26 +11,20 @@ enum MergeMethod {
 extension MergeMethodExt on MergeMethod {
   String title(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case MergeMethod.localFirst:
-        return l10n.mergeMethodLocalFirst;
-      case MergeMethod.remoteFirst:
-        return l10n.mergeMethodRemoteFirst;
-      case MergeMethod.onlyRemote:
-        return l10n.mergeMethodOnlyRemote;
-    }
+    return switch (this) {
+      MergeMethod.localFirst => l10n.mergeMethodLocalFirst,
+      MergeMethod.remoteFirst => l10n.mergeMethodRemoteFirst,
+      MergeMethod.onlyRemote => l10n.mergeMethodOnlyRemote,
+    };
   }
 
   String desc(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case MergeMethod.localFirst:
-        return l10n.mergeMethodLocalFirstHelp;
-      case MergeMethod.remoteFirst:
-        return l10n.mergeMethodRemoteFirstHelp;
-      case MergeMethod.onlyRemote:
-        return l10n.mergeMethodOnlyRemoteHelp;
-    }
+    return switch (this) {
+      MergeMethod.localFirst => l10n.mergeMethodLocalFirstHelp,
+      MergeMethod.remoteFirst => l10n.mergeMethodRemoteFirstHelp,
+      MergeMethod.onlyRemote => l10n.mergeMethodOnlyRemoteHelp,
+    };
   }
 }
 

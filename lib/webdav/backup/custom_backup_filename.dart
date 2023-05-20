@@ -14,14 +14,11 @@ class WebDavCustomBackupFilename {
   });
 
   String operator [](AllpassType type) {
-    switch (type) {
-      case AllpassType.password:
-        return passwordName;
-      case AllpassType.card:
-        return cardName;
-      case AllpassType.other:
-        return extraName;
-    }
+    return switch (type) {
+      AllpassType.password => passwordName,
+      AllpassType.card => cardName,
+      AllpassType.other => extraName,
+    };
   }
 
   static WebDavCustomBackupFilename fromJson(Map<String, dynamic> json) {

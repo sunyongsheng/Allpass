@@ -172,18 +172,15 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on Exception catch (e, s) {
       _logger.e("syncToRemote Exception: ${e.runtimeType}", e, s);
 
-      if (e is DioError) {
-        if (e.response?.statusCode == 405) {
-          return SyncFailed(l10n.uploadFileFailedReject);
-        }
-        return SyncFailed(l10n.uploadFileFailedCheckNetwork);
-      } else if (e is FileSystemException){
-        return SyncFailed(l10n.uploadFileNotExists);
-      } else if (e is UnknownException) {
-        return SyncFailed(l10n.uploadFileFailedUnknown(e.message));
-      } else {
-        return SyncFailed(l10n.uploadFileFailedOther(e.toString()));
-      }
+      return switch (e) {
+        DioError dioError when dioError.response?.statusCode == 405 =>
+          SyncFailed(l10n.uploadFileFailedReject),
+        DioError _ => SyncFailed(l10n.uploadFileFailedCheckNetwork),
+        FileSystemException _ => SyncFailed(l10n.uploadFileNotExists),
+        UnknownException u =>
+          SyncFailed(l10n.uploadFileFailedUnknown(u.message)),
+        _ => SyncFailed(l10n.uploadFileFailedOther(e.toString())),
+      };
     } finally {
       _uploading = false;
       notifyListeners();
@@ -213,23 +210,16 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on Exception catch (e, s) {
       _logger.e("downloadFile Exception: ${e.runtimeType}", e, s);
 
-      if (e is UnsupportedContentException) {
-        return SyncFailed(l10n.unsupportedBackupFile);
-      } else if (e is UnsupportedEnumException) {
-        return SyncFailed(l10n.backupFileCorrupt);
-      } else if (e is DioError) {
-        if (e.response?.statusCode == 404) {
-          return SyncFailed(l10n.backupFileNotFound);
-        }
-
-        return SyncFailed(l10n.networkError);
-      } else if (e is FileSystemException) {
-        return SyncFailed(l10n.downloadFileFailed);
-      } else if (e is UnknownException) {
-        return SyncFailed(l10n.downloadFailedUnknown(e.message));
-      } else {
-        return SyncFailed(l10n.downloadFailedOther(e.toString()));
-      }
+      return switch (e) {
+        UnsupportedContentException _ => SyncFailed(l10n.unsupportedBackupFile),
+        UnsupportedEnumException _ => SyncFailed(l10n.backupFileCorrupt),
+        DioError dioError when dioError.response?.statusCode == 404 =>
+          SyncFailed(l10n.backupFileNotFound),
+        DioError _ => SyncFailed(l10n.networkError),
+        FileSystemException _ => SyncFailed(l10n.downloadFileFailed),
+        UnknownException _ => SyncFailed(l10n.downloadFailedUnknown(e.message)),
+        _ => SyncFailed(l10n.downloadFailedOther(e.toString())),
+      };
     } finally {
       _downloading = false;
       notifyListeners();
@@ -254,18 +244,11 @@ class WebDavSyncProvider extends ChangeNotifier {
       await _syncService.recoveryV2(context, backupFile, realDecryption);
       Config.setWebDavDownloadTime(DateFormatter.format(DateTime.now()));
 
-      var name;
-      switch (backupFile.metadata.type) {
-        case AllpassType.password:
-          name = l10n.passwords;
-          break;
-        case AllpassType.card:
-          name = l10n.cards;
-          break;
-        case AllpassType.other:
-          name = l10n.folderLabel;
-          break;
-      }
+      var name = switch (backupFile.metadata.type) {
+        AllpassType.password => l10n.passwords,
+        AllpassType.card => l10n.cards,
+        AllpassType.other => l10n.folderLabel,
+      };
       return SyncSuccess(Null, l10n.recoverySuccessMsg(name));
     } on PreDecryptException {
       return SyncPreDecryptFail(context);
@@ -276,11 +259,10 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on Exception catch (e, s) {
       _logger.e("syncToLocal Exception: ${e.runtimeType}", e, s);
 
-      if (e is DecodeException) {
-        return SyncFailed(l10n.backupFileCorrupt);
-      } else {
-        return SyncFailed(l10n.recoveryFailedMsg(e.toString()));
-      }
+      return switch (e) {
+        DecodeException _ => SyncFailed(l10n.backupFileCorrupt),
+        _ => SyncFailed(l10n.recoveryFailedMsg(e.toString())),
+      };
     } finally {
       _downloading = false;
       notifyListeners();
@@ -308,13 +290,12 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on Exception catch (e, s) {
       _logger.e("syncToLocalOld Exception: ${e.runtimeType}", e, s);
 
-      if (e is UnsupportedEnumException || e is DecodeException) {
-        return SyncFailed(l10n.backupFileCorrupt);
-      } else if (e is PreDecryptException) {
-        return SyncFailed(l10n.inputCustomSecretKeyHelp);
-      } else {
-        return SyncFailed(l10n.recoveryFailedMsg(e.toString()));
-      }
+      return switch (e) {
+        UnsupportedEnumException _ => SyncFailed(l10n.backupFileCorrupt),
+        DecodeException _ => SyncFailed(l10n.backupFileCorrupt),
+        PreDecryptException _ => SyncFailed(l10n.inputCustomSecretKeyHelp),
+        _ => SyncFailed(l10n.recoveryFailedMsg(e.toString())),
+      };
     } finally {
       _downloading = false;
       notifyListeners();

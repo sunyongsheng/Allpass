@@ -84,13 +84,10 @@ class OnlyRemoteMergeExecutor<T extends Object> implements MergeExecutor<T> {
 
 extension MergeExecutorCreator on MergeMethod {
   MergeExecutor<T> createExecutor<T extends Object>() {
-    switch (this) {
-      case MergeMethod.localFirst:
-        return LocalFirstMergeExecutor();
-      case MergeMethod.remoteFirst:
-        return RemoteFirstMergeExecutor();
-      case MergeMethod.onlyRemote:
-        return OnlyRemoteMergeExecutor();
-    }
+    return switch (this) {
+      MergeMethod.localFirst => LocalFirstMergeExecutor(),
+      MergeMethod.remoteFirst => RemoteFirstMergeExecutor(),
+      MergeMethod.onlyRemote => OnlyRemoteMergeExecutor(),
+    };
   }
 }

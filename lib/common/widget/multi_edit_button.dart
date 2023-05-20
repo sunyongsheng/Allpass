@@ -35,15 +35,9 @@ class MultiEditButton extends StatelessWidget {
     return Row(
       children: [
         PopupMenuButton<_MultiEditAction>(
-          onSelected: (value) {
-            switch (value) {
-              case _MultiEditAction.delete:
-                onClickDelete();
-                break;
-              case _MultiEditAction.move:
-                onClickMove();
-                break;
-            }
+          onSelected: (value) => switch (value) {
+            _MultiEditAction.delete => onClickDelete(),
+            _MultiEditAction.move => onClickMove(),
           },
           itemBuilder: (context) => [
             PopupMenuItem(

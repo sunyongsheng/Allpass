@@ -12,8 +12,12 @@ class AllpassResponse {
   /// 其他信息
   Map<String, String>? extra;
 
-  AllpassResponse({this.status = ResponseStatus.OK,
-    this.msg, this.success = true, this.extra});
+  AllpassResponse({
+    this.status = ResponseStatus.OK,
+    this.msg,
+    this.success = true,
+    this.extra,
+  });
 
   static AllpassResponse create(Map<String, String> data, {ResponseConfig? defaultConfig}) {
 
@@ -32,27 +36,21 @@ class AllpassResponse {
     if (string == null) {
       return defaultConfig?.defaultStatus ?? ResponseStatus.UnknownError;
     }
-    int code = int.parse(string);
-    switch (code) {
-      case 2000:
-        return ResponseStatus.OK;
-      case 3100:
-      case 3200:
-        return ResponseStatus.ParamError;
-      case 4100:
-        return ResponseStatus.ServerError;
-      case 4900:
-        return ResponseStatus.UnknownError;
-      default:
-        return defaultConfig?.defaultStatus ?? ResponseStatus.OK;
-    }
+    int? code = int.tryParse(string);
+    return switch (code) {
+      2000 => ResponseStatus.OK,
+      3100 || 3200 => ResponseStatus.ParamError,
+      4100 => ResponseStatus.ServerError,
+      4900 => ResponseStatus.UnknownError,
+      _ => defaultConfig?.defaultStatus ?? ResponseStatus.OK,
+    };
   }
 
   static bool _evaluateSuccess(String? string, {ResponseConfig? defaultConfig}) {
-    if (string == null) return defaultConfig?.defaultSuccess ?? false;
-    if (string == "1") return true;
-    if (string == "true") return true;
-    return defaultConfig?.defaultSuccess ?? false;
+    return switch (string) {
+      "1" || "true" => true,
+      _ => defaultConfig?.defaultSuccess ?? false,
+    };
   }
 
   static String? _evaluateMsg(String? string, bool success, { ResponseConfig? defaultConfig }) {

@@ -10,21 +10,17 @@ enum CategoryType {
 extension CategoryTitle on CategoryType {
   String titles(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case CategoryType.folder:
-        return l10n.folderTitle;
-      case CategoryType.label:
-        return l10n.labels;
-    }
+    return switch (this) {
+      CategoryType.folder => l10n.folderTitle,
+      CategoryType.label => l10n.labels,
+    };
   }
 
   String title(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case CategoryType.folder:
-        return l10n.folder;
-      case CategoryType.label:
-        return l10n.label;
-    }
+    return switch (this) {
+      CategoryType.folder => l10n.folder,
+      CategoryType.label => l10n.label,
+    };
   }
 }

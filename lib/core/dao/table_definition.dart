@@ -29,24 +29,16 @@ class ColumnDefinition {
   });
 
   String get typeString {
-    switch (type) {
-      case ColumnType.integer:
-        return "INTEGER";
-      case ColumnType.real:
-        return "REAL";
-      case ColumnType.text:
-        return "TEXT";
-      case ColumnType.blob:
-        return "BLOB";
-      case ColumnType.boolean:
-        return "BOOLEAN";
-      case ColumnType.date:
-        return "DATE";
-      case ColumnType.time:
-        return "TIME";
-      case ColumnType.datetime:
-        return "DATETIME";
-    }
+    return switch (type) {
+      ColumnType.integer => "INTEGER",
+      ColumnType.real => "REAL",
+      ColumnType.text => "TEXT",
+      ColumnType.blob => "BLOB",
+      ColumnType.boolean => "BOOLEAN",
+      ColumnType.date => "DATE",
+      ColumnType.time => "TIME",
+      ColumnType.datetime => "DATETIME",
+    };
   }
 
   String get definition {

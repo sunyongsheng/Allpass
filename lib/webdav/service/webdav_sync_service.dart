@@ -174,14 +174,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     if (isDebug) {
       suffix = "_debug";
     }
-    switch (type) {
-      case AllpassType.password:
-        return "${now}_allpass_password$suffix.json";
-      case AllpassType.card:
-        return "${now}_allpass_card$suffix.json";
-      case AllpassType.other:
-        return "${now}_allpass_extra$suffix.json";
-    }
+    return switch (type) {
+      AllpassType.password => "${now}_allpass_password$suffix.json",
+      AllpassType.card => "${now}_allpass_card$suffix.json",
+      AllpassType.other => "${now}_allpass_extra$suffix.json",
+    };
   }
 
   String _generateRemoteFilename(String filename, AllpassType type) {

@@ -107,25 +107,21 @@ class ImportFromCsvPage extends StatelessWidget {
 
 void _process(BuildContext context, Future futureFunction) {
   showDialog(
-      context: context,
-      builder: (cx) => FutureBuilder(
-        future: futureFunction,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Center(
-                child: Icon(
-                  Icons.check_circle,
-                  size: 50,
-                  color: Colors.white,
-                ),
-              );
-            default:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-          }
-        },
-      )
+    context: context,
+    builder: (cx) => FutureBuilder(
+      future: futureFunction,
+      builder: (context, snapshot) => switch (snapshot.connectionState) {
+        ConnectionState.done => Center(
+            child: Icon(
+              Icons.check_circle,
+              size: 50,
+              color: Colors.white,
+            ),
+          ),
+        _ => Center(
+            child: CircularProgressIndicator(),
+          ),
+      },
+    ),
   );
 }

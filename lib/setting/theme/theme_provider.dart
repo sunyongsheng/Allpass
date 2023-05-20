@@ -46,24 +46,15 @@ class ThemeProvider with ChangeNotifier {
   }
 
   ThemeData _convertTheme(PrimaryColor color, bool dark) {
-    switch (color) {
-      case PrimaryColor.blue:
-        return _allpassTheme.blueTheme(dark);
-      case PrimaryColor.red:
-        return _allpassTheme.redTheme(dark);
-      case PrimaryColor.teal:
-        return _allpassTheme.tealTheme(dark);
-      case PrimaryColor.deepPurple:
-        return _allpassTheme.deepPurpleTheme(dark);
-      case PrimaryColor.orange:
-        return _allpassTheme.orangeTheme(dark);
-      case PrimaryColor.pink:
-        return _allpassTheme.pinkTheme(dark);
-      case PrimaryColor.blueGrey:
-        return _allpassTheme.blueGreyTheme(dark);
-      default:
-        return _allpassTheme.blueTheme(dark);
-    }
+    return switch (color) {
+      PrimaryColor.blue => _allpassTheme.blueTheme(dark),
+      PrimaryColor.red => _allpassTheme.redTheme(dark),
+      PrimaryColor.teal => _allpassTheme.tealTheme(dark),
+      PrimaryColor.deepPurple => _allpassTheme.deepPurpleTheme(dark),
+      PrimaryColor.orange => _allpassTheme.orangeTheme(dark),
+      PrimaryColor.pink => _allpassTheme.pinkTheme(dark),
+      PrimaryColor.blueGrey => _allpassTheme.blueGreyTheme(dark),
+    };
   }
 
   void setExtraColor(Brightness platformBrightness) {

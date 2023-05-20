@@ -8,25 +8,21 @@ enum WebDavBackupMethod {
 
 class WebDavBackupMethods {
   static WebDavBackupMethod? tryParse(String? string) {
-    if (string == "createNew") {
-      return WebDavBackupMethod.createNew;
-    } else if (string == "replaceExists") {
-      return WebDavBackupMethod.replaceExists;
-    } else {
-      return null;
-    }
+    return switch (string) {
+      "createNew" => WebDavBackupMethod.createNew,
+      "replaceExists" => WebDavBackupMethod.replaceExists,
+      _ => null,
+    };
   }
 }
 
 extension WebDavBackupMethodDesc on WebDavBackupMethod {
   String title(BuildContext context) {
     var l10n = context.l10n;
-    switch (this) {
-      case WebDavBackupMethod.createNew:
-        return l10n.backupMethodCreateNew;
-      case WebDavBackupMethod.replaceExists:
-        return l10n.backupMethodReplaceExists;
-    }
+    return switch (this) {
+      WebDavBackupMethod.createNew => l10n.backupMethodCreateNew,
+      WebDavBackupMethod.replaceExists => l10n.backupMethodReplaceExists,
+    };
   }
 }
 
