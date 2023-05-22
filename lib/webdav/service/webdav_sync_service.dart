@@ -153,7 +153,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   Future<void> _backupActual(List<BaseModel> data, AllpassType type) async {
     await ensureRemoteWorkspace();
 
-    String contents = jsonEncode(_createBackup(data, type));
+    String contents = jsonEncode(await _createBackup(data, type));
     String fileName = _generateFilename(type);
 
     var filePath = await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
@@ -196,22 +196,16 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   BackupFileV2 _createBackup(List<BaseModel> list, AllpassType type) {
     var level = Config.webDavEncryptLevel;
-    String data;
-    switch (type) {
-      case AllpassType.password:
-        var encryptedList = (list as List<PasswordBean>).encrypt(level);
-        data = jsonEncode(encryptedList);
-        break;
-      case AllpassType.card:
-        var encryptedList = (list as List<CardBean>).encrypt(level);
-        data = jsonEncode(encryptedList);
-        break;
-      case AllpassType.other:
-        List<String> folder = List.from(RuntimeData.folderList);
-        List<String> label = List.from(RuntimeData.labelList);
-        data = jsonEncode(ExtraModel(folder, label));
-        break;
-    }
+    String data = switch (type) {
+      AllpassType.password =>
+        jsonEncode((list as List<PasswordBean>).encrypt(level)),
+      AllpassType.card => jsonEncode((list as List<CardBean>).encrypt(level)),
+      AllpassType.other => jsonEncode(ExtraModel(
+          List.from(RuntimeData.folderList),
+          List.from(RuntimeData.labelList),
+        )),
+    };
+
     return BackupFileV2(
       metadata: FileMetadata(
         type: type,
@@ -256,7 +250,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           throw DecodeException();
         }
 
-        recoverPassword(context, list);
+        await recoverPassword(context, list);
         break;
       case AllpassType.card:
         var list = _decodeList<CardBean>(jsonDecode(content), decryption, level);
@@ -264,7 +258,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           throw DecodeException();
         }
 
-        recoverCard(context, list);
+        await recoverCard(context, list);
         break;
       case AllpassType.other:
         var model = _decodeFolderAndLabel(content);
@@ -272,7 +266,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           throw DecodeException();
         }
 
-        recoverFolderAndLabel(model);
+        await recoverFolderAndLabel(model);
         break;
     }
     return type;
@@ -356,28 +350,30 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   }
 
   Future<int> recoverPassword(
-      BuildContext context, List<PasswordBean> remoteList) async {
+    BuildContext context,
+    List<PasswordBean> remoteList,
+  ) async {
     var passwordProvider = context.read<PasswordProvider>();
     List<PasswordBean> localList = List.from(passwordProvider.passwordList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<PasswordBean>();
     try {
       var result = mergeExecutor.merge(localList, remoteList);
-      result.apply(
-        onAdd: (bean, source) {
+      await result.apply(
+        onAdd: (bean, source) async {
           _logger.d("$_tag recoverPassword insert dataSource=$source $bean");
 
-          passwordProvider.insertPassword(bean);
+          await passwordProvider.insertPassword(bean);
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         },
-        onDelete: (bean, source) {
+        onDelete: (bean, source) async {
           _logger.d("$_tag recoverPassword delete dataSource=$source $bean");
 
-          passwordProvider.deletePassword(bean);
+          await passwordProvider.deletePassword(bean);
         },
         onSkip: (bean, source) {
           _logger.d("$_tag recoverPassword skip   dataSource=$source $bean");
-        }
+        },
       );
       return result.length;
     } catch (e2) {
@@ -395,18 +391,18 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();
     try {
       var result = mergeExecutor.merge(localList, remoteList);
-      result.apply(
-        onAdd: (bean, source) {
+      await result.apply(
+        onAdd: (bean, source) async {
           _logger.d("$_tag recoverCard insert dataSource=$source $bean");
 
-          cardProvider.insertCard(bean);
+          await cardProvider.insertCard(bean);
           RuntimeData.labelListAdd(bean.label);
           RuntimeData.folderListAdd(bean.folder);
         },
-        onDelete: (bean, source) {
+        onDelete: (bean, source) async {
           _logger.d("$_tag recoverCard delete dataSource=$source $bean");
 
-          cardProvider.deleteCard(bean);
+          await cardProvider.deleteCard(bean);
         },
         onSkip: (bean, source) {
           _logger.d("$_tag recoverCard skip   dataSource=$source $bean");
@@ -453,22 +449,24 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     BackupFileV1 backupFile,
     Encryption decryption,
   ) async {
+    var encryptLevel = Config.webDavEncryptLevel;
+    var data = backupFile.list;
     switch (backupFile.type) {
       case AllpassType.password:
-        var result = _decodeList<PasswordBean>(backupFile.list, decryption, Config.webDavEncryptLevel);
+        var result = _decodeList<PasswordBean>(data, decryption, encryptLevel);
         if (result == null) {
           throw DecodeException();
         }
 
-        recoverPassword(context, result);
+        await recoverPassword(context, result);
         break;
       case AllpassType.card:
-        var result = _decodeList<CardBean>(backupFile.list, decryption, Config.webDavEncryptLevel);
+        var result = _decodeList<CardBean>(data, decryption, encryptLevel);
         if (result == null) {
           throw DecodeException();
         }
 
-        recoverCard(context, result);
+        await recoverCard(context, result);
         break;
       case AllpassType.other:
         break;

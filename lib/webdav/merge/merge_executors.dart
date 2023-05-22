@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/webdav/merge/merge_method.dart';
 import 'package:allpass/webdav/merge/merge_support.dart';
+
+typedef MergeCallback<T> = FutureOr<void> Function(T data, DataSource source);
 
 enum DataSource {
   local,
@@ -16,24 +20,24 @@ class MergeResult<T> {
 }
 
 extension MergeResultApply <T> on List<MergeResult<T>> {
-  void apply({
-    required void Function(T data, DataSource source) onAdd,
-    required void Function(T data, DataSource source) onDelete,
-    void Function(T data, DataSource source)? onSkip,
-  }) {
-    this.forEach((element) {
+  FutureOr<void> apply({
+    required MergeCallback<T> onAdd,
+    required MergeCallback<T> onDelete,
+    MergeCallback<T> ? onSkip,
+  }) async {
+    for (var element in this) {
       switch (element.operation) {
         case DataOperation.add:
-          onAdd(element.data, element.source);
+          await onAdd(element.data, element.source);
           break;
         case DataOperation.delete:
-          onDelete(element.data, element.source);
+          await onDelete(element.data, element.source);
           break;
         case DataOperation.skipped:
-          onSkip?.call(element.data, element.source);
+          await onSkip?.call(element.data, element.source);
           break;
       }
-    });
+    }
   }
 }
 
