@@ -79,6 +79,7 @@ class Allpass extends StatelessWidget {
       designSize: const Size(1080, 1920),
       minTextAdapt: true,
       splitScreenMode: true,
+      useInheritedMediaQuery: true,
       builder: (_, homePage) => Selector<ThemeProvider, AppTheme>(
         selector: (_, provider) => provider.appTheme,
         builder: (_, theme, home) => MaterialApp(
