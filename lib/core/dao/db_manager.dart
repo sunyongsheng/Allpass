@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:allpass/card/data/card_table.dart';
+import 'package:allpass/core/dao/old_db_migration.dart';
 import 'package:allpass/password/data/password_table.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:path/path.dart';
 
 class DBManager {
 
@@ -25,10 +25,10 @@ class DBManager {
   static init() async {
     var dbPath = await getDatabasesPath();
     String dbName = _dbName;
-    // TODO path使用 join(dbPath, dbName)，需要数据库级别进行迁移
-    String path = dbPath + dbName;
-    if (Platform.isIOS) {
-      path = dbName + "/" + dbName;
+    var path = join(dbPath, dbName);
+    var migration = OldDatabaseMigration();
+    if (await migration.needMigration()) {
+      path = await migration.migrate(path);
     }
     // 打开数据库
     _database = await openDatabase(path, version: _dbVersion, onUpgrade: onUpdate);
@@ -71,7 +71,6 @@ class DBManager {
   static Future<void> _upgrade1To2(Database database) async {
     _logger.i("数据库升级： 1 -> 2");
     String renamePasswordSql = "ALTER TABLE ${PasswordTable.name} RENAME TO allpass_password1";
-    await database.execute(renamePasswordSql);
     String createPasswordSql = '''
         CREATE TABLE ${PasswordTable.name}(
         uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -85,17 +84,12 @@ class DBManager {
         fav INTEGER DEFAULT 0,
         createTime TEXT)
       ''';
-    await database.execute(createPasswordSql);
     String movePasswordSql = "INSERT INTO ${PasswordTable.name}(uniqueKey,name,username,password,url,folder,notes,label,fav) "
         "SELECT uniqueKey,name,username,password,url,folder,notes,label,fav from allpass_password1";
-    await database.execute(movePasswordSql);
     String dropPasswordSql = "DROP TABLE allpass_password1";
-    await database.execute(dropPasswordSql);
     String updatePasswordSql = "UPDATE ${PasswordTable.name} SET createTime=?";
-    await database.execute(updatePasswordSql, [DateTime.now().toIso8601String()]);
 
     String renameCardSql = "ALTER TABLE ${CardTable.name} RENAME TO allpass_card1";
-    await database.execute(renameCardSql);
     String createCardSql = '''
         CREATE TABLE ${CardTable.name}(
         uniqueKey INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -110,14 +104,23 @@ class DBManager {
         fav INTEGER DEFAULT 0,
         createTime TEXT)
       ''';
-    await database.execute(createCardSql);
     String moveCardSql = "INSERT INTO ${CardTable.name}(uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav)"
         " SELECT uniqueKey,name,ownerName,cardId,password,telephone,folder,notes,label,fav from allpass_card1";
-    await database.execute(moveCardSql);
     String dropCardSql = "DROP TABLE allpass_card1";
-    await database.execute(dropCardSql);
     String updateCardSql = "UPDATE ${CardTable.name} SET createTime=?";
-    await database.execute(updateCardSql, [DateTime.now().toIso8601String()]);
+
+    await database.transaction((txn) async {
+      await txn.execute(renamePasswordSql);
+      await txn.execute(createPasswordSql);
+      await txn.execute(movePasswordSql);
+      await txn.execute(dropPasswordSql);
+      await txn.execute(updatePasswordSql, [DateTime.now().toIso8601String()]);
+      await txn.execute(renameCardSql);
+      await txn.execute(createCardSql);
+      await txn.execute(moveCardSql);
+      await txn.execute(dropCardSql);
+      await txn.execute(updateCardSql, [DateTime.now().toIso8601String()]);
+    });
 
     _logger.i("数据库升级完成");
   }
@@ -125,9 +128,11 @@ class DBManager {
   static Future<void> _upgrade2To3(Database database) async {
     _logger.i("数据库升级： 2 -> 3");
     String addPasswordColumnSql = "ALTER TABLE ${PasswordTable.name} ADD COLUMN ${PasswordTable.columnSortNumber} INTEGER DEFAULT -1";
-    await database.execute(addPasswordColumnSql);
     String addCardColumnSql = "ALTER TABLE ${CardTable.name} ADD COLUMN ${CardTable.columnSortNumber} INTEGER DEFAULT -1";
-    await database.execute(addCardColumnSql);
+    await database.transaction((txn) async {
+      await txn.execute(addPasswordColumnSql);
+      await txn.execute(addCardColumnSql);
+    });
     _logger.i("数据库升级完成");
   }
 
