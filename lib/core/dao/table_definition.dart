@@ -71,6 +71,11 @@ class ColumnDefinition {
             throw FormatException("The default value of a real column must be a real number.");
           }
           break;
+        case ColumnType.text:
+          if (!defaultValue!.startsWith("'") || !defaultValue!.endsWith("'")) {
+            throw FormatException("The default value of a text column must use '' to surround.");
+          }
+          break;
         case ColumnType.blob:
           throw FormatException("blob columns cannot have a default value.");
         case ColumnType.boolean:
