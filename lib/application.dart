@@ -6,7 +6,7 @@ import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/core/route/routes.dart';
+import 'package:allpass/navigation/routes.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/password/data/password_provider.dart';

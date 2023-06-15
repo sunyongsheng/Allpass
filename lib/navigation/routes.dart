@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
 
-import 'package:allpass/core/route/route_handles.dart';
+import 'package:allpass/navigation/route_handles.dart';
 import 'package:allpass/login/page/login_page.dart';
 
 class Routes {

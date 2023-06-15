@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/setting/account/widget/modify_password_dialog.dart';
@@ -133,7 +133,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                               onVerified: () async {
                                 await AllpassApplication.clearAll(context);
                                 ToastUtil.show(msg: l10n.clearAllSuccess);
-                                NavigationUtil.goLoginPage(context);
+                                AllpassNavigator.goLoginPage(context);
                               },
                             ),
                           );
@@ -146,8 +146,8 @@ class _AccountManagerPage extends State<AccountManagerPage> {
                   title: Text(l10n.logout),
                   leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
                   onTap: () => Config.enabledBiometrics
-                      ? NavigationUtil.goAuthLoginPage(context)
-                      : NavigationUtil.goLoginPage(context),
+                      ? AllpassNavigator.goAuthLoginPage(context)
+                      : AllpassNavigator.goLoginPage(context),
                 ),
               ],
             ),

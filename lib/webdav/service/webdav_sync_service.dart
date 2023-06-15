@@ -153,7 +153,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
   Future<void> _backupActual(List<BaseModel> data, AllpassType type) async {
     await ensureRemoteWorkspace();
 
-    String contents = jsonEncode(await _createBackup(data, type));
+    String contents = jsonEncode(_createBackup(data, type));
     String fileName = _generateFilename(type);
 
     var filePath = await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);

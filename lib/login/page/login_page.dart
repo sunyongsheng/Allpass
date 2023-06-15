@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -101,7 +101,7 @@ class _LoginPage extends State<LoginPage> {
                     child: Text(context.l10n.useBiometrics),
                     onPressed: () {
                       if (Config.enabledBiometrics) {
-                        NavigationUtil.goAuthLoginPage(context);
+                        AllpassNavigator.goAuthLoginPage(context);
                       } else {
                         ToastUtil.show(msg: context.l10n.notEnableBiometricsYet);
                       }
@@ -139,7 +139,7 @@ class _LoginPage extends State<LoginPage> {
 
     if (Config.password != "") {
       if (Config.password == EncryptUtil.encrypt(password)) {
-        NavigationUtil.goHomePage(context);
+        AllpassNavigator.goHomePage(context);
         ToastUtil.show(msg: context.l10n.unlockSuccess);
         Config.updateLatestUsePasswordTime();
       } else {

@@ -13,7 +13,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
-import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
@@ -120,7 +120,7 @@ class _RegisterPage extends State<RegisterPage> {
     String _password = EncryptUtil.encrypt(_passwordController.text);
     Config.setPassword(_password);
     Config.setEnabledBiometrics(false);
-    NavigationUtil.goLoginPage(context);
+    AllpassNavigator.goLoginPage(context);
   }
 
   void _tryShowPrivacyDialog() {

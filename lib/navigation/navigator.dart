@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:allpass/application.dart';
-import 'package:allpass/core/route/routes.dart';
+import 'package:allpass/navigation/routes.dart';
 
-class NavigationUtil {
+class AllpassNavigator {
 
-  NavigationUtil._();
+  AllpassNavigator._();
 
   static _navigateTo(
     BuildContext context,

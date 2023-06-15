@@ -9,7 +9,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/util/navigation_util.dart';
+import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/service/auth_service.dart';
@@ -96,7 +96,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
                 child: Text(l10n.usePassword),
                 onPressed: () async {
                   await _localAuthService.stopAuthenticate();
-                  NavigationUtil.goLoginPage(context);
+                  AllpassNavigator.goLoginPage(context);
                 },
               )
             ],
@@ -124,17 +124,17 @@ class _AuthLoginPage extends State<StatefulWidget> {
         if (value ?? false) {
           ToastUtil.show(msg: l10n.verificationSuccess);
           Config.updateLatestUsePasswordTime();
-          NavigationUtil.goHomePage(context);
+          AllpassNavigator.goHomePage(context);
         } else {
           ToastUtil.show(msg: l10n.mainPasswordErrorHint);
-          NavigationUtil.goLoginPage(context);
+          AllpassNavigator.goLoginPage(context);
         }
       });
     } else {
       var authResult = await _localAuthService.authenticate(context);
       if (authResult == AuthResult.Success) {
         ToastUtil.show(msg: l10n.verificationSuccess);
-        NavigationUtil.goHomePage(context);
+        AllpassNavigator.goHomePage(context);
       } else if (authResult == AuthResult.Failed) {
         ToastUtil.show(msg: l10n.biometricsRecognizedFailed);
       }
