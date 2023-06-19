@@ -8,6 +8,8 @@ class PasswordBean extends BaseModel {
   static PasswordBean empty =
       PasswordBean(key: -1, name: "", username: "", password: "", url: "");
 
+  bool encrypted = true;
+
   late int? uniqueKey; // 1 ID
   late String name; // 2 账号名称
   late String username; // 3 用户名
@@ -37,7 +39,9 @@ class PasswordBean extends BaseModel {
     int sortNumber = -1,
     String? appId,
     String? appName,
+    bool encrypted = true,
   }) {
+    this.encrypted = encrypted;
     this.uniqueKey = key;
     this.name = name;
     this.username = username;

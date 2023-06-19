@@ -23,6 +23,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// 查看密码页
 class ViewPasswordPage extends StatefulWidget {
+
+  final bool readOnly;
+
+  const ViewPasswordPage({super.key, bool readOnly = false}) : this.readOnly = readOnly;
+
   @override
   State<StatefulWidget> createState() {
     return _ViewPasswordPage();
@@ -53,7 +58,11 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
     try {
       if (cache != bean.password) {
-        password = EncryptUtil.decrypt(bean.password);
+        if (bean.encrypted) {
+          password = EncryptUtil.decrypt(bean.password);
+        } else {
+          password = bean.password;
+        }
         cache = bean.password;
       }
     } on ArgumentError {
@@ -340,63 +349,73 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
         ),
       ),
     );
-    var actionButtons = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        FloatingActionButton(
-          heroTag: "edit",
-          backgroundColor: Colors.blueAccent,
-          elevation: 0,
-          onPressed: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (_) => EditPasswordPage(bean, DataOperation.update),
-              ),
-            );
-          },
-          child: Icon(Icons.edit),
-        ),
-        Padding(
-          padding: AllpassEdgeInsets.smallLPadding,
-        ),
-        FloatingActionButton(
-          heroTag: "oneKeyCopy",
-          elevation: 0,
-          backgroundColor: Colors.green,
-          onPressed: () {
-            Clipboard.setData(ClipboardData(
-              text: l10n.accountPassword(bean.username, password),
-            ));
-            ToastUtil.show(msg: l10n.accountPasswordCopied);
-          },
-          child: Icon(Icons.content_copy),
-        ),
-        Padding(
-          padding: AllpassEdgeInsets.smallLPadding,
-        ),
-        FloatingActionButton(
-          heroTag: "delete",
-          elevation: 0,
-          backgroundColor: Colors.redAccent,
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => ConfirmDialog(
-              l10n.confirmDelete,
-              l10n.deletePasswordWaring,
-              danger: true,
-              onConfirm: () async {
-                deleted = true;
-                await provider.deletePassword(bean);
-                ToastUtil.show(msg: l10n.deleteSuccess);
-                Navigator.pop(context);
-              },
-            ),
+    var children = <Widget>[];
+    children
+      ..add(overviewWidget)
+      ..add(detailWidget)
+      ..add(padding);
+    if (!widget.readOnly) {
+      var actionButtons = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          FloatingActionButton(
+            heroTag: "edit",
+            backgroundColor: Colors.blueAccent,
+            elevation: 0,
+            onPressed: () {
+              Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (_) => EditPasswordPage(bean, DataOperation.update),
+                ),
+              );
+            },
+            child: Icon(Icons.edit),
           ),
-          child: Icon(Icons.delete),
-        ),
-      ],
-    );
+          Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
+          ),
+          FloatingActionButton(
+            heroTag: "oneKeyCopy",
+            elevation: 0,
+            backgroundColor: Colors.green,
+            onPressed: () {
+              Clipboard.setData(ClipboardData(
+                text: l10n.accountPassword(bean.username, password),
+              ));
+              ToastUtil.show(msg: l10n.accountPasswordCopied);
+            },
+            child: Icon(Icons.content_copy),
+          ),
+          Padding(
+            padding: AllpassEdgeInsets.smallLPadding,
+          ),
+          FloatingActionButton(
+            heroTag: "delete",
+            elevation: 0,
+            backgroundColor: Colors.redAccent,
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => ConfirmDialog(
+                l10n.confirmDelete,
+                l10n.deletePasswordWaring,
+                danger: true,
+                onConfirm: () async {
+                  deleted = true;
+                  await provider.deletePassword(bean);
+                  ToastUtil.show(msg: l10n.deleteSuccess);
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            child: Icon(Icons.delete),
+          ),
+        ],
+      );
+      children
+        ..add(actionButtons)
+        ..add(padding);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -420,13 +439,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            overviewWidget,
-            detailWidget,
-            padding,
-            actionButtons,
-            padding
-          ],
+          children: children,
         ),
       ),
     );
