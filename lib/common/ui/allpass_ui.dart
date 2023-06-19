@@ -172,7 +172,7 @@ class AllpassUI {
 }
 
 Color getRandomColor({int? seed}) {
-  if (seed == null) seed = 101;
+  if (seed == null) seed = Object().hashCode;
   Random random = Random(seed);
   int i = random.nextInt(AllpassColorUI.allColor.length - 1);
   return AllpassColorUI.allColor[i];

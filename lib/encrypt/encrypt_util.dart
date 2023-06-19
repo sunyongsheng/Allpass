@@ -125,7 +125,7 @@ class EncryptUtil {
       list = _symbolList;
     }
     StringBuffer stringBuffer = StringBuffer();
-    Random random = Random(DateTime.now().hashCode - (list.length + len).hashCode);
+    Random random = Random.secure();
     for (int i = 0; i < len; i++) {
       int index = random.nextInt(list.length);
       stringBuffer.write(list[index]);
