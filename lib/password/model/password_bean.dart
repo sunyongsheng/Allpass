@@ -145,8 +145,8 @@ class PasswordBean extends BaseModel {
         "${bean.fav},"
         "${bean.createTime},"
         "${bean.sortNumber},"
-        "${bean.appId},"
-        "${bean.appName}\n";
+        "${bean.appId ?? ""},"
+        "${bean.appName ?? ""}\n";
     return csv;
   }
 
