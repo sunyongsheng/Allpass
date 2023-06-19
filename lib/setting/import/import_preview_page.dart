@@ -1,4 +1,5 @@
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/empty_data_widget.dart';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
@@ -9,6 +10,7 @@ import 'package:allpass/password/widget/password_widget_item.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class ImportPreviewPage extends StatefulWidget {
@@ -41,27 +43,53 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
       body: Stack(
         children: [
           Consumer<PasswordProvider>(
-            builder: (context, provider, _) => ListView.builder(
-              itemBuilder: (context, index) {
-                return PasswordWidgetItem(
-                  data: provider.passwordList[index],
-                  onPasswordClicked: () {
-                    provider.previewPassword(index: index);
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (_) => ChangeNotifierProvider.value(
-                          value: provider,
-                          child: ViewPasswordPage(readOnly: true),
-                        ),
+            builder: (context, provider, emptyWidget) {
+              if (provider.count == 0) {
+                return emptyWidget!;
+              } else {
+                return ListView.builder(
+                  itemBuilder: (context, index) {
+                    var password = provider.passwordList[index];
+                    return Slidable(
+                      key: Key("${index}_${password.uniqueKey}"),
+                      endActionPane: ActionPane(
+                        motion: ScrollMotion(),
+                        extentRatio: 0.25,
+                        children: [
+                          SlidableAction(
+                            onPressed: (_) {
+                              provider.deletePassword(password);
+                            },
+                            backgroundColor: Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete_outline,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: PasswordWidgetItem(
+                        data: password,
+                        onPasswordClicked: () {
+                          provider.previewPassword(index: index);
+                          Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                              builder: (_) => ChangeNotifierProvider.value(
+                                value: provider,
+                                child: ViewPasswordPage(readOnly: true),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
+                  itemCount: provider.count,
+                  physics: const AlwaysScrollableScrollPhysics(),
                 );
-              },
-              itemCount: provider.count,
-              physics: const AlwaysScrollableScrollPhysics(),
-            ),
+              }
+            },
+            child: EmptyDataWidget(title: l10n.emptyDataHint),
           ),
           Align(
             alignment: Alignment.bottomCenter,

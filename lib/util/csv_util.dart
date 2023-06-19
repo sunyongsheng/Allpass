@@ -78,7 +78,7 @@ class CsvUtil {
       List<String> columnNames = text[0].split(",");
       Map<String, int> columnIndexMap = _findIndexOf(columnNames);
       // 对接下来的每一行
-      for (var item in text.sublist(1)) {
+      for (var (index, item) in text.sublist(1).indexed) {
         List<String> columns = item.split(",");
         if (columns.length != columnNames.length) continue;
         List<String> label = [];
@@ -102,6 +102,7 @@ class CsvUtil {
         }
 
         res.add(PasswordBean(
+          key: index,
           name: name,
           username: username,
           password: EncryptUtil.encrypt(password),
