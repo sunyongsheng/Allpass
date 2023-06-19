@@ -59,7 +59,7 @@ class CsvUtil {
   }
 
   /// 从csv文件中导入Password，返回List<PasswordBean>
-  static Future<List<PasswordBean>?> passwordImportFromCsv({String? path, String? toParseText}) async {
+  static Future<List<PasswordBean>> parsePasswordFromCsv({String? path, String? toParseText}) async {
     assert(path == null || toParseText == null, "只能传入一个参数！");
     List<PasswordBean> res = [];
     String fileContext;
@@ -73,29 +73,29 @@ class CsvUtil {
       throw Exception("传入参数为空！");
     }
     List<String> text = fileContext.split("\n");
-    if (text.length <= 1) return null;
+    if (text.length <= 1) return [];
     else {
-      List<String> index = text[0].split(",");
-      Map<String, int> indexMap = _findIndexOf(index);
+      List<String> columnNames = text[0].split(",");
+      Map<String, int> columnIndexMap = _findIndexOf(columnNames);
       // 对接下来的每一行
       for (var item in text.sublist(1)) {
-        List<String> attribute = item.split(",");
-        if (attribute.length != index.length) continue;
+        List<String> columns = item.split(",");
+        if (columns.length != columnNames.length) continue;
         List<String> label = [];
-        String name = _getValueWithCatch(attribute, indexMap, 'name');
-        String username = _getValueWithCatch(attribute, indexMap, 'username');
-        String password = _getValueWithCatch(attribute, indexMap, 'password');
-        String url = _getValueWithCatch(attribute, indexMap, 'url');
-        String folder = _getValueWithCatch(attribute, indexMap, 'folder');
-        String notes = _getValueWithCatch(attribute, indexMap, 'notes');
-        if (indexMap.containsKey('label') && attribute[indexMap['label']!].length > 0) {
-          label = StringUtil.waveLineSegStr2List(_getValueWithCatch(attribute, indexMap, 'label'));
+        String name = _getValueWithCatch(columns, columnIndexMap, 'name');
+        String username = _getValueWithCatch(columns, columnIndexMap, 'username');
+        String password = _getValueWithCatch(columns, columnIndexMap, 'password');
+        String url = _getValueWithCatch(columns, columnIndexMap, 'url');
+        String folder = _getValueWithCatch(columns, columnIndexMap, 'folder');
+        String notes = _getValueWithCatch(columns, columnIndexMap, 'notes');
+        if (columnIndexMap.containsKey('label') && columns[columnIndexMap['label']!].length > 0) {
+          label = StringUtil.waveLineSegStr2List(_getValueWithCatch(columns, columnIndexMap, 'label'));
         }
-        int fav = int.parse(_getValueWithCatch(attribute, indexMap, 'fav'));
-        String createTime = _getValueWithCatch(attribute, indexMap, "createTime");
-        int sortNumber = int.parse(_getValueWithCatch(attribute, indexMap, 'sortNumber'));
-        String appId = _getValueWithCatch(attribute, indexMap, "appId");
-        String appName = _getValueWithCatch(attribute, indexMap, "appName");
+        int fav = int.parse(_getValueWithCatch(columns, columnIndexMap, 'fav'));
+        String createTime = _getValueWithCatch(columns, columnIndexMap, "createTime");
+        int sortNumber = int.parse(_getValueWithCatch(columns, columnIndexMap, 'sortNumber'));
+        String appId = _getValueWithCatch(columns, columnIndexMap, "appId");
+        String appName = _getValueWithCatch(columns, columnIndexMap, "appName");
         res.add(PasswordBean(
           name: name,
           username: username,
@@ -108,7 +108,7 @@ class CsvUtil {
           createTime: createTime,
           sortNumber: sortNumber,
           appId: appId,
-          appName: appName
+          appName: appName,
         ));
       }
     }
@@ -162,24 +162,28 @@ class CsvUtil {
     return res;
   }
 
-  static Map<String, int> _findIndexOf(List<String> index) {
+  static Map<String, int> _findIndexOf(List<String> columns) {
     Map<String, int> res = HashMap();
-    for (int i = 0; i < index.length; i++) {
-      res[index[i]] = i;
-      if (index[i].contains('password')) {
+    for (int i = 0; i < columns.length; i++) {
+      var column = columns[i];
+      res[column] = i;
+      if (column.contains('password')) {
         res['password'] = i;
       }
     }
     return res;
   }
 
-  static String _getValueWithCatch(List<String> values, Map<String, int> indexMap, String mapKey) {
+  static String _getValueWithCatch(List<String> values, Map<String, int> columnIndexMap, String column) {
     try {
-      if (indexMap.containsKey(mapKey)) return values[indexMap[mapKey]!];
+      if (columnIndexMap.containsKey(column)) {
+        var index = columnIndexMap[column]!;
+        return values[index];
+      }
     } on RangeError {} catch (e) {}
-    if (mapKey == "folder") return "默认";
-    if (mapKey == 'fav') return '0';
-    if (mapKey == 'sortNumber') return "-1";
+    if (column == "folder") return "默认";
+    if (column == 'fav') return '0';
+    if (column == 'sortNumber') return "-1";
     return "";
   }
 

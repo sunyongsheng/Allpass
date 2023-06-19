@@ -77,7 +77,7 @@ class ImportFromCsvPage extends StatelessWidget {
       try {
         if (type == AllpassType.password) {
           var passwordProvider = context.read<PasswordProvider>();
-          List<PasswordBean> passwordList = await CsvUtil.passwordImportFromCsv(path: path) ?? [];
+          List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
           for (var bean in passwordList) {
             await passwordProvider.insertPassword(bean);
             RuntimeData.labelListAdd(bean.label);
