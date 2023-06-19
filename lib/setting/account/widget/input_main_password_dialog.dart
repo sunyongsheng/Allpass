@@ -62,7 +62,6 @@ class InputMainPasswordDialog extends StatelessWidget {
     } else {
       ToastUtil.show(msg: context.l10n.mainPasswordIncorrect);
       _passwordController.clear();
-      Navigator.pop<bool>(context, false);
       onVerifyResult?.call(false);
     }
   }
