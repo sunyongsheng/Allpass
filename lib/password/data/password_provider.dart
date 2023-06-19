@@ -1,7 +1,7 @@
 import 'package:allpass/common/arch/lru_cache.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/password/data/letter_index_provider.dart';
-import 'package:allpass/password/data/password_repository.dart';
+import 'package:allpass/password/repository/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:lpinyin/lpinyin.dart';
 import 'package:allpass/core/param/runtime_data.dart';
@@ -11,7 +11,8 @@ final List<PasswordBean> emptyList = [];
 
 /// 保存程序中的所有的Password
 class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
-  PasswordRepository _repository = inject();
+
+  late final PasswordRepository _repository;
 
   List<PasswordBean> _passwordList = emptyList;
   Map<String, int> _letterCountIndexMap = Map();
@@ -20,6 +21,10 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
   List<String> _mostUsedUsername = [];
 
   bool _haveInit = false;
+
+  PasswordProvider({PasswordRepository? passwordRepository}) {
+    _repository = passwordRepository ?? inject();
+  }
 
   @override
   Map<String, int> get letterIndexMap => _letterCountIndexMap;
@@ -112,13 +117,11 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
   }
 
   Future<Null> updatePassword(PasswordBean bean) async {
-    int index = -1;
-    for (int i = 0; i < _passwordList.length; i++) {
-      if (_passwordList[i].uniqueKey == bean.uniqueKey) {
-        index = i;
-        break;
-      }
+    int index = _passwordList.indexWhere((element) => element.uniqueKey == bean.uniqueKey);
+    if (index < 0) {
+      return;
     }
+
     String oldName = _passwordList[index].name;
     String oldUsername = _passwordList[index].username;
     _passwordList[index] = bean;

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/password/data/password_repository.dart';
+import 'package:allpass/password/repository/password_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 

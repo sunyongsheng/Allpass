@@ -3,7 +3,7 @@ import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/register_page.dart';
-import 'package:allpass/password/data/password_repository.dart';
+import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

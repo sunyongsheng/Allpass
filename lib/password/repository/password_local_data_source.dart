@@ -1,20 +1,24 @@
 import 'package:allpass/autofill/autofill_save_request.dart';
-import 'package:allpass/password/data/password_table.dart';
+import 'package:allpass/core/dao/db_provider.dart';
+import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/repository/password_data_source.dart';
+import 'package:allpass/password/repository/password_table.dart';
+import 'package:allpass/util/string_util.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:allpass/password/model/password_bean.dart';
-import 'package:allpass/core/dao/db_provider.dart';
-import 'package:allpass/util/string_util.dart';
-
-class PasswordDataSource extends BaseDBProvider with PasswordTable {
+class PasswordLocalDataSource extends BaseDBProvider
+    with PasswordTable
+    implements PasswordDataSource {
   /// 删除表
+  @override
   Future<Null> deleteTable() async {
     Database db = await getDatabase();
     await db.rawDelete("DROP TABLE ${PasswordTable.name}");
   }
 
   /// 删除表中所有内容
-  Future<int> deleteContent() async {
+  @override
+  Future<int> deleteAll() async {
     Database db = await getDatabase();
     var count = await db.delete(PasswordTable.name);
     // 清除表的Key自增值
@@ -27,6 +31,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
   }
 
   /// 插入密码
+  @override
   Future<int> insert(PasswordBean bean) async {
     Database db = await getDatabase();
     Map<String, dynamic> map = bean.toJson();
@@ -37,6 +42,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
     );
   }
 
+  @override
   Future<int> updateUserData(AutofillSaveRequest request) async {
     Database db = await getDatabase();
     return await db.rawUpdate(
@@ -51,7 +57,8 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
   }
 
   /// 根据uniqueKey查询记录
-  Future<PasswordBean?> findById(String id) async {
+  @override
+  Future<PasswordBean?> findById(int id) async {
     Database db = await getDatabase();
     List<Map<String, dynamic>> maps = await db.query(
       PasswordTable.name,
@@ -65,6 +72,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
   }
 
   /// 获取所有的密码List
+  @override
   Future<List<PasswordBean>> findAll() async {
     Database db = await getDatabase();
     List<Map<String, dynamic>> list = await db.query(PasswordTable.name);
@@ -79,6 +87,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
     return [];
   }
 
+  @override
   Future<List<PasswordBean>> findByAppIdAndUsername(
       String appId, String username) async {
     if (appId.length == 0) {
@@ -87,12 +96,14 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
     Database db = await getDatabase();
     List<Map<String, dynamic>> list = await db.query(
       PasswordTable.name,
-      where: "${PasswordTable.columnAppId}=? AND ${PasswordTable.columnUsername}=?",
+      where:
+          "${PasswordTable.columnAppId}=? AND ${PasswordTable.columnUsername}=?",
       whereArgs: [appId, username],
     );
     return list.map((e) => PasswordBean.fromJson(e)).toList();
   }
 
+  @override
   Future<List<PasswordBean>> findByAppIdOrAppName(
     String appId,
     String? appName, {
@@ -112,7 +123,8 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
     } else {
       list = await db.query(
         PasswordTable.name,
-        where: "${PasswordTable.columnAppId} LIKE ? OR ${PasswordTable.columnAppName}=? OR ${PasswordTable.columnName} LIKE ?",
+        where:
+            "${PasswordTable.columnAppId} LIKE ? OR ${PasswordTable.columnAppName}=? OR ${PasswordTable.columnName} LIKE ?",
         whereArgs: ["%$appId%", appName, "%$appName%"],
       );
     }
@@ -120,6 +132,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
   }
 
   /// 删除指定uniqueKey的密码
+  @override
   Future<int> deleteById(int key) async {
     Database db = await getDatabase();
     return await db.delete(
@@ -130,6 +143,7 @@ class PasswordDataSource extends BaseDBProvider with PasswordTable {
   }
 
   /// 更新
+  @override
   Future<int> updateById(PasswordBean bean) async {
     Database db = await getDatabase();
     String labels = StringUtil.list2WaveLineSegStr(bean.label);

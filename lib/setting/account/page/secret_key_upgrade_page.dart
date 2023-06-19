@@ -8,7 +8,7 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
-import 'package:allpass/password/data/password_repository.dart';
+import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';

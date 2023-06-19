@@ -1,17 +1,18 @@
 import 'package:allpass/common/ui/allpass_ui.dart';
-import 'package:allpass/password/data/password_data_source.dart';
 import 'package:allpass/autofill/autofill_save_request.dart';
 import 'package:allpass/password/model/password_bean.dart';
+import 'package:allpass/password/repository/password_data_source.dart';
+import 'package:allpass/password/repository/password_local_data_source.dart';
 
 class PasswordRepository {
-  late final PasswordDataSource _localDataSource;
+  late final PasswordDataSource _dataSource;
 
-  PasswordRepository({PasswordDataSource? passwordDao}) {
-    this._localDataSource = passwordDao ?? PasswordDataSource();
+  PasswordRepository({PasswordDataSource? dataSource}) {
+    this._dataSource = dataSource ?? PasswordLocalDataSource();
   }
 
   Future<PasswordBean> create(PasswordBean passwordBean) async {
-    int key = await _localDataSource.insert(passwordBean);
+    int key = await _dataSource.insert(passwordBean);
     passwordBean.uniqueKey = key;
     _assignColor(passwordBean);
     return passwordBean;
@@ -30,26 +31,26 @@ class PasswordRepository {
       folder: "默认",
       label: [],
     );
-    var key = await _localDataSource.insert(passwordBean);
+    var key = await _dataSource.insert(passwordBean);
     passwordBean.uniqueKey = key;
     _assignColor(passwordBean);
     return passwordBean;
   }
 
   Future<int> updateFromUser(AutofillSaveRequest request) async {
-    return await _localDataSource.updateUserData(request);
+    return await _dataSource.updateUserData(request);
   }
 
   Future<List<PasswordBean>> requestAll() async {
-    var result = await _localDataSource.findAll();
+    var result = await _dataSource.findAll();
     result.forEach((element) {
       _assignColor(element);
     });
     return result;
   }
 
-  Future<PasswordBean?> findById(String id) async {
-    var result = await _localDataSource.findById(id);
+  Future<PasswordBean?> findById(int id) async {
+    var result = await _dataSource.findById(id);
     if (result != null) {
       _assignColor(result);
     }
@@ -58,7 +59,7 @@ class PasswordRepository {
 
   Future<List<PasswordBean>> findByAppIdAndUsername(
       String appId, String username) async {
-    var result = await _localDataSource.findByAppIdAndUsername(appId, username);
+    var result = await _dataSource.findByAppIdAndUsername(appId, username);
     result.forEach((element) {
       _assignColor(element);
     });
@@ -71,8 +72,12 @@ class PasswordRepository {
     int page = 0,
     int pageSize = 10,
   }) async {
-    var result = await _localDataSource.findByAppIdOrAppName(appId, appName,
-        page: page, pageSize: pageSize);
+    var result = await _dataSource.findByAppIdOrAppName(
+      appId,
+      appName,
+      page: page,
+      pageSize: pageSize,
+    );
     result.forEach((element) {
       _assignColor(element);
     });
@@ -80,19 +85,19 @@ class PasswordRepository {
   }
 
   Future<int> updateById(PasswordBean bean) async {
-    return await _localDataSource.updateById(bean);
+    return await _dataSource.updateById(bean);
   }
 
   Future<int> deleteById(int key) async {
-    return await _localDataSource.deleteById(key);
+    return await _dataSource.deleteById(key);
   }
 
   Future<int> deleteAll() async {
-    return await _localDataSource.deleteContent();
+    return await _dataSource.deleteAll();
   }
 
   Future<void> dropTable() async {
-    return await _localDataSource.deleteTable();
+    return await _dataSource.deleteTable();
   }
 
   void _assignColor(PasswordBean bean) {
