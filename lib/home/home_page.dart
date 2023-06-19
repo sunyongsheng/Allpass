@@ -6,8 +6,10 @@ import 'package:allpass/card/page/card_page.dart';
 import 'package:allpass/classification/page/classification_page.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
+import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/password_page.dart';
@@ -15,6 +17,7 @@ import 'package:allpass/setting/setting_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,6 +56,15 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
             builder: (cx) => UpdateDialog(updateBean)
         );
       }
+    });
+
+    // 导入密码Channel
+    var importCsvMessageChannel = MethodChannel(ChannelConstants.channelImportCsv);
+    importCsvMessageChannel.setMethodCallHandler((call) {
+      if (call.method == ChannelConstants.methodOpenImportPage) {
+        AllpassNavigator.goImportDataPage(context, call.arguments);
+      }
+      return Future.value(null);
     });
   }
 

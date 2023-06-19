@@ -259,6 +259,9 @@
   "importing": "导入中，请稍后",
   "recordFormatIncorrect": "某条记录格式不正确，请检查",
 
+  "importFromExternalPreview": "导入预览",
+  "confirmImport": "确认导入",
+
   "categoryManagement": "{categoryName}管理",
   "createCategory": "新建{categoryName}",
   "createCategorySuccess": "创建{categoryName} {name} 成功",

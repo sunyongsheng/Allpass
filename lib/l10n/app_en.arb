@@ -436,6 +436,9 @@
   "importing": "Importing, please wait",
   "recordFormatIncorrect": "The format of a certain record is incorrect",
 
+  "importFromExternalPreview": "Imports Preview",
+  "confirmImport": "Continue import",
+
   "categoryManagement": "{categoryName} Management",
   "@categoryManagement": {
     "placeholders": {

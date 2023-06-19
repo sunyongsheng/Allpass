@@ -44,10 +44,8 @@ class ChannelConstants {
   static const String channelSaveForAutofill = "$channel/savePasswordForAutofill";
 
   // Android -> Flutter
-  static const String methodImportFromCsv = "importChromeData";
   static const String methodSavePasswordForAutofill = "savePasswordForAutofill";
-
-  static const String messageQueryPasswordForAutofill = "queryPasswordForAutofill:";
+  static const String methodOpenImportPage = "openImportPage";
 
   // Flutter -> Android
   static const String methodIsAppDefaultAutofill = "isAppDefaultAutofill";

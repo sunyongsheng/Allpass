@@ -1,3 +1,8 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -21,16 +26,14 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.8.1'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 def keystoreProperties = new Properties()
 if (file("config/key.properties").exists()) {
     keystoreProperties.load(new FileInputStream(file("config/key.properties")))
 } else {
     keystoreProperties.load(new FileInputStream(file("config/default.properties")))
 }
+
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     compileSdkVersion 33
@@ -101,4 +104,5 @@ dependencies {
     implementation "androidx.core:core-ktx:1.9.0"
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.activity:activity-ktx:1.7.2"
 }

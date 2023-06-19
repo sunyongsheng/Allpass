@@ -5,16 +5,13 @@ import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/navigation/routes.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
-import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
-import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/webdav/service/webdav_sync_service.dart';
 import 'package:dio/dio.dart';
@@ -85,28 +82,6 @@ class AllpassApplication {
     savePasswordChannel.setMessageHandler((jsonStr) => Future<String>(() async {
       return _savePasswordForAutofill(jsonStr!);
     }));
-
-    // 导入密码Channel
-    var importCsvMessageChannel = BasicMessageChannel(ChannelConstants.channelImportCsv, StringCodec());
-    importCsvMessageChannel.setMessageHandler((message) => Future<String>(() {
-      Future<List<PasswordBean>?> res = CsvUtil.passwordImportFromCsv(toParseText: message);
-      return _importPasswordFromFutureList(res);
-    }));
-  }
-
-  static Future<String> _importPasswordFromFutureList(Future<List<PasswordBean>?> list) async {
-    List<PasswordBean>? passwordList = await list;
-    if (passwordList != null) {
-      PasswordRepository repository = inject();
-      for (var bean in passwordList) {
-        await repository.create(bean);
-        RuntimeData.labelListAdd(bean.label);
-        RuntimeData.folderListAdd(bean.folder);
-      }
-      return passwordList.length.toString();
-    } else {
-      return "0";
-    }
   }
 
   static Future<String> _savePasswordForAutofill(String jsonStr) async {
