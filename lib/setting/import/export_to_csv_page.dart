@@ -3,6 +3,7 @@ import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/repository/password_repository.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -14,6 +15,7 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 /// 导出选择页
@@ -29,82 +31,89 @@ class ExportTypeSelectPage extends StatelessWidget {
         ),
         centerTitle: true,
       ),
+      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
       body: Column(
         children: <Widget>[
-          Container(
-            padding: AllpassEdgeInsets.listInset,
+          Padding(
+            padding: AllpassEdgeInsets.smallTopInsets,
+          ),
+          Card(
+            margin: AllpassEdgeInsets.settingCardInset,
+            elevation: 0,
             child: ListTile(
               title: Text(l10n.password),
               leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
               onTap: () {
                 showDialog(
-                    context: context,
-                    builder: (context) => ConfirmDialog(
-                      l10n.exportConfirm,
-                      l10n.exportPasswordConfirmWarning,
-                      onConfirm: () {
-                        showDialog<bool>(
-                            context: context,
-                            builder: (context) => InputMainPasswordDialog(
-                              onVerified: () async {
-                                var directory = await getApplicationDocumentsDirectory();
-                                exportActual(context, Directory(directory.path), type: AllpassType.password);
-                              },
-                            )
-                        );
-                      },
-                    )
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    l10n.exportConfirm,
+                    l10n.exportPasswordConfirmWarning,
+                    onConfirm: () {
+                      showDialog<bool>(
+                        context: context,
+                        builder: (context) => InputMainPasswordDialog(
+                          onVerified: () async {
+                            var directory = await getApplicationDocumentsDirectory();
+                            exportActual(context, Directory(directory.path), type: AllpassType.password);
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             ),
           ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
+          Card(
+            margin: AllpassEdgeInsets.settingCardInset,
+            elevation: 0,
             child: ListTile(
               title: Text(l10n.card),
               leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
               onTap: () => showDialog<bool>(
-                  context: context,
-                  builder: (context) => ConfirmDialog(
-                    l10n.exportConfirm,
-                    l10n.exportCardConfirmWarning,
-                    onConfirm: () {
-                      showDialog<bool>(
-                          context: context,
-                          builder: (context) => InputMainPasswordDialog(
-                            onVerified: () async {
-                              var directory = await getApplicationDocumentsDirectory();
-                              exportActual(context, Directory(directory.path), type: AllpassType.card);
-                            },
-                          )
-                      );
-                    },
-                  )
+                context: context,
+                builder: (context) => ConfirmDialog(
+                  l10n.exportConfirm,
+                  l10n.exportCardConfirmWarning,
+                  onConfirm: () {
+                    showDialog<bool>(
+                      context: context,
+                      builder: (context) => InputMainPasswordDialog(
+                        onVerified: () async {
+                          var directory = await getApplicationDocumentsDirectory();
+                          exportActual(context, Directory(directory.path), type: AllpassType.card);
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          Container(
-            padding: AllpassEdgeInsets.listInset,
+          Card(
+            margin: AllpassEdgeInsets.settingCardInset,
+            elevation: 0,
             child: ListTile(
               title: Text(l10n.passwordAndCard),
               leading: Icon(Icons.all_inclusive, color: AllpassColorUI.allColor[4]),
               onTap: () => showDialog(
-                  context: context,
-                  builder: (context) => ConfirmDialog(
-                    l10n.exportConfirm,
-                    l10n.exportAllConfirmWarning,
-                    onConfirm: () {
-                      showDialog<bool>(
-                          context: context,
-                          builder: (context) => InputMainPasswordDialog(
-                            onVerified: () async {
-                              var directory = await getApplicationDocumentsDirectory();
-                              exportActual(context, Directory(directory.path));
-                            },
-                          )
-                      );
-                    },
-                  )
+                context: context,
+                builder: (context) => ConfirmDialog(
+                  l10n.exportConfirm,
+                  l10n.exportAllConfirmWarning,
+                  onConfirm: () {
+                    showDialog<bool>(
+                      context: context,
+                      builder: (context) => InputMainPasswordDialog(
+                        onVerified: () async {
+                          var directory = await getApplicationDocumentsDirectory();
+                          exportActual(context, Directory(directory.path));
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
