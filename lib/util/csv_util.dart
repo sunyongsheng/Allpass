@@ -96,6 +96,11 @@ class CsvUtil {
         int sortNumber = int.parse(_getValueWithCatch(columns, columnIndexMap, 'sortNumber'));
         String appId = _getValueWithCatch(columns, columnIndexMap, "appId");
         String appName = _getValueWithCatch(columns, columnIndexMap, "appName");
+
+        if (password.isEmpty) {
+          password = "000000";
+        }
+
         res.add(PasswordBean(
           name: name,
           username: username,
