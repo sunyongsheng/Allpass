@@ -121,8 +121,8 @@ class _PasswordPageState extends State<PasswordPage>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider.value(
-          value: SearchProvider(AllpassType.password, context),
+        builder: (context) => ChangeNotifierProvider(
+          create: (context) => SearchProvider(AllpassType.password, context),
           child: SearchPage(AllpassType.password),
         ),
       ),

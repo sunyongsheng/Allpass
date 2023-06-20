@@ -109,8 +109,8 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider.value(
-          value: SearchProvider(AllpassType.card, context),
+        builder: (context) => ChangeNotifierProvider(
+          create: (context) => SearchProvider(AllpassType.card, context),
           child: SearchPage(AllpassType.card),
         ),
       ),
