@@ -101,6 +101,7 @@
   "passwordGenerator": "密码生成器",
   "symbols": "特殊符号",
   "generate": "生成",
+  "pleaseSelectOneItemAtLeast": "请至少选择一项",
   "close": "关闭",
 
   "createCard": "新增卡片",

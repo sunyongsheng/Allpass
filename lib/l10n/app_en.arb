@@ -204,6 +204,7 @@
   "passwordGenerator": "Password Generator",
   "symbols": "Symbols",
   "generate": "Generate",
+  "pleaseSelectOneItemAtLeast": "Please select one item at least",
   "close": "Close",
 
   "createCard": "Create Card",

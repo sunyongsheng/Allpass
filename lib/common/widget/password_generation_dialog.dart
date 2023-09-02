@@ -1,5 +1,6 @@
 import 'package:allpass/encrypt/password_generator.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,11 +20,14 @@ class PasswordGenerationDialog extends StatefulWidget {
 class _PasswordGenerationDialog extends State<StatefulWidget> {
 
   TextEditingController _controller = TextEditingController();
+
   bool _capitalChoose = true;
   bool _lowerCaseChoose = true;
   bool _numberChoose = true;
   bool _symbolChoose = true;
   double _length = 12;
+
+  bool _selectWarning = false;
 
   @override
   void initState() {
@@ -59,6 +63,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _capitalChoose,
                     onChanged: (choose) {
                       setState(() {
+                        _selectWarning = false;
                         _capitalChoose = choose ?? true;
                       });
                     },
@@ -68,6 +73,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
               ),
               onTap: () {
                 setState(() {
+                  _selectWarning = false;
                   _capitalChoose = !_capitalChoose;
                 });
               },
@@ -79,6 +85,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _lowerCaseChoose,
                     onChanged: (choose) {
                       setState(() {
+                        _selectWarning = false;
                         _lowerCaseChoose = choose ?? true;
                       });
                     },
@@ -88,6 +95,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
               ),
               onTap: () {
                 setState(() {
+                  _selectWarning = false;
                   _lowerCaseChoose = !_lowerCaseChoose;
                 });
               },
@@ -99,6 +107,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _numberChoose,
                     onChanged: (choose) {
                       setState(() {
+                        _selectWarning = false;
                         _numberChoose = choose ?? true;
                       });
                     },
@@ -108,6 +117,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
               ),
               onTap: () {
                 setState(() {
+                  _selectWarning = false;
                   _numberChoose = !_numberChoose;
                 });
               },
@@ -119,6 +129,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                     value: _symbolChoose,
                     onChanged: (choose) {
                       setState(() {
+                        _selectWarning = false;
                         _symbolChoose = choose ?? true;
                       });
                     },
@@ -128,6 +139,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
               ),
               onTap: () {
                 setState(() {
+                  _selectWarning = false;
                   _symbolChoose = !_symbolChoose;
                 });
               },
@@ -142,15 +154,17 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   value: _length,
                   label: _length.round().toString(),
                   onChanged: (value) {
-                    setState(() {
-                      _length = value;
-                      _controller.text = PasswordGenerator.generate(
-                        _length.floor(),
-                        cap: _capitalChoose,
-                        low: _lowerCaseChoose,
-                        number: _numberChoose,
-                        sym: _symbolChoose,
-                      );
+                    _ensureSelectOne(() {
+                      setState(() {
+                        _length = value;
+                        _controller.text = PasswordGenerator.generate(
+                          _length.floor(),
+                          cap: _capitalChoose,
+                          low: _lowerCaseChoose,
+                          number: _numberChoose,
+                          sym: _symbolChoose,
+                        );
+                      });
                     });
                   },
                 ),
@@ -183,14 +197,17 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
         TextButton(
           child: Text(l10n.generate, style: TextStyle(color: mainColor)),
           onPressed: () {
-            setState(() {
-              _controller.text = PasswordGenerator.generate(
-                _length.floor(),
-                cap: _capitalChoose,
-                low: _lowerCaseChoose,
-                number: _numberChoose,
-                sym: _symbolChoose,
-              );
+            _selectWarning = false;
+            _ensureSelectOne(() {
+              setState(() {
+                _controller.text = PasswordGenerator.generate(
+                  _length.floor(),
+                  cap: _capitalChoose,
+                  low: _lowerCaseChoose,
+                  number: _numberChoose,
+                  sym: _symbolChoose,
+                );
+              });
             });
           },
         ),
@@ -200,5 +217,14 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
         )
       ],
     );
+  }
+
+  void _ensureSelectOne(void Function() onValid) {
+    if (_capitalChoose || _lowerCaseChoose || _numberChoose || _symbolChoose) {
+      onValid();
+    } else if (!_selectWarning) {
+      _selectWarning = true;
+      ToastUtil.showError(msg: context.l10n.pleaseSelectOneItemAtLeast);
+    }
   }
 }
