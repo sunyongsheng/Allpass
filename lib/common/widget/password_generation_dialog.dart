@@ -1,7 +1,7 @@
+import 'package:allpass/encrypt/password_generator.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:allpass/encrypt/encrypt_util.dart';
 
 class PasswordGenerationDialog extends StatefulWidget {
 
@@ -27,12 +27,13 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
 
   @override
   void initState() {
-    _controller.text = EncryptUtil.generateRandomKey(
+    _controller.text = PasswordGenerator.generate(
       _length.floor(),
       cap: _capitalChoose,
       low: _lowerCaseChoose,
       number: _numberChoose,
-      sym: _symbolChoose,);
+      sym: _symbolChoose,
+    );
     super.initState();
   }
 
@@ -143,7 +144,7 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
                   onChanged: (value) {
                     setState(() {
                       _length = value;
-                      _controller.text = EncryptUtil.generateRandomKey(
+                      _controller.text = PasswordGenerator.generate(
                         _length.floor(),
                         cap: _capitalChoose,
                         low: _lowerCaseChoose,
@@ -183,12 +184,13 @@ class _PasswordGenerationDialog extends State<StatefulWidget> {
           child: Text(l10n.generate, style: TextStyle(color: mainColor)),
           onPressed: () {
             setState(() {
-              _controller.text = EncryptUtil.generateRandomKey(
+              _controller.text = PasswordGenerator.generate(
                 _length.floor(),
                 cap: _capitalChoose,
                 low: _lowerCaseChoose,
                 number: _numberChoose,
-                sym: _symbolChoose,);
+                sym: _symbolChoose,
+              );
             });
           },
         ),

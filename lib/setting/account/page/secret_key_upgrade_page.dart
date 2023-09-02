@@ -6,6 +6,7 @@ import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/encrypt/encryption.dart';
+import 'package:allpass/encrypt/password_generator.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
@@ -180,7 +181,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () async {
-                        _latestKey = EncryptUtil.generateRandomKey(32);
+                        _latestKey = PasswordGenerator.generate(32);
                         if (!haveGen) {
                           ToastUtil.show(msg: l10n.generateSecretKeyDone);
                         }
