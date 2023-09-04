@@ -217,32 +217,38 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
     return Consumer2<CardProvider, MultiItemEditProvider<CardBean>>(
       builder: (_, provider, editProvider, cardList) {
         if (editProvider.editMode) {
-          return ListView.builder(
+          return Scrollbar(
             controller: _controller,
-            itemBuilder: (context, index) => MultiCardWidgetItem(
-              card: provider.cardList[index],
-              selection: editProvider.isSelected,
-              onChanged: editProvider.select,
+            child: ListView.builder(
+              controller: _controller,
+              itemBuilder: (context, index) => MultiCardWidgetItem(
+                card: provider.cardList[index],
+                selection: editProvider.isSelected,
+                onChanged: editProvider.select,
+              ),
+              itemCount: provider.count,
+              physics: const AlwaysScrollableScrollPhysics(),
             ),
-            itemCount: provider.count,
-            physics: const AlwaysScrollableScrollPhysics(),
           );
         } else {
           return cardList!;
         }
       },
       child: Consumer<CardProvider>(
-        builder: (_, provider, __) => ListView.separated(
+        builder: (_, provider, __) => Scrollbar(
           controller: _controller,
-          padding: AllpassEdgeInsets.forCardInset,
-          itemBuilder: (context, index) => MaterialCardWidget(
-            data: provider.cardList[index],
-            pageCreator: (_) => ViewCardPage(),
-            onClick: () => provider.previewCard(index: index),
+          child: ListView.separated(
+            controller: _controller,
+            padding: AllpassEdgeInsets.forCardInset,
+            itemBuilder: (context, index) => MaterialCardWidget(
+              data: provider.cardList[index],
+              pageCreator: (_) => ViewCardPage(),
+              onClick: () => provider.previewCard(index: index),
+            ),
+            itemCount: provider.count,
+            physics: const AlwaysScrollableScrollPhysics(),
+            separatorBuilder: (_, index) => SizedBox(height: 8),
           ),
-          itemCount: provider.count,
-          physics: const AlwaysScrollableScrollPhysics(),
-          separatorBuilder: (_, index) => SizedBox(height: 8),
         ),
       ),
     );

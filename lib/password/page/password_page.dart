@@ -93,9 +93,7 @@ class _PasswordPageState extends State<PasswordPage>
           Expanded(
             child: RefreshIndicator(
               onRefresh: () => _query(context.read<PasswordProvider>()),
-              child: Scrollbar(
-                child: _buildPasswordContent(),
-              ),
+              child: _buildPasswordContent(),
             ),
           )
         ],
@@ -172,15 +170,18 @@ class _PasswordPageState extends State<PasswordPage>
     return Consumer2<PasswordProvider, MultiItemEditProvider<PasswordBean>>(
       builder: (_, provider, editProvider, postList) {
         if (editProvider.editMode) {
-          return ListView.builder(
+          return Scrollbar(
             controller: _multiEditController,
-            itemBuilder: (context, index) => MultiPasswordWidgetItem(
-              password: provider.passwordList[index],
-              selection: editProvider.isSelected,
-              onChanged: editProvider.select,
+            child: ListView.builder(
+              controller: _multiEditController,
+              itemBuilder: (context, index) => MultiPasswordWidgetItem(
+                password: provider.passwordList[index],
+                selection: editProvider.isSelected,
+                onChanged: editProvider.select,
+              ),
+              itemCount: provider.count,
+              physics: const AlwaysScrollableScrollPhysics(),
             ),
-            itemCount: provider.count,
-            physics: const AlwaysScrollableScrollPhysics(),
           );
         } else {
           return postList!;
@@ -189,18 +190,21 @@ class _PasswordPageState extends State<PasswordPage>
       child: Stack(
         children: <Widget>[
           Consumer<PasswordProvider>(
-            builder: (_, provider, __) => ListView.builder(
+            builder: (_, provider, __) => Scrollbar(
               controller: _controller,
-              itemBuilder: (context, index) {
-                return MaterialPasswordWidget(
-                  data: provider.passwordList[index],
-                  containerShape: 0,
-                  pageCreator: (_) => ViewPasswordPage(),
-                  onClick: () => provider.previewPassword(index: index),
-                );
-              },
-              itemCount: provider.count,
-              physics: const AlwaysScrollableScrollPhysics(),
+              child: ListView.builder(
+                controller: _controller,
+                itemBuilder: (context, index) {
+                  return MaterialPasswordWidget(
+                    data: provider.passwordList[index],
+                    containerShape: 0,
+                    pageCreator: (_) => ViewPasswordPage(),
+                    onClick: () => provider.previewPassword(index: index),
+                  );
+                },
+                itemCount: provider.count,
+                physics: const AlwaysScrollableScrollPhysics(),
+              ),
             ),
           ),
           LetterIndexBar(_controller),
