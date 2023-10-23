@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/initializer/di_initializer.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,7 @@ void main() async {
     await EncryptUtil.initEncrypt();
     Config.initConfig();
     AllpassApplication.initRouter();
-    AllpassApplication.initLocator();
+    GetItInitializer.initialize();
     AllpassApplication.initAndroidChannel();
 
     if (Platform.isAndroid) {

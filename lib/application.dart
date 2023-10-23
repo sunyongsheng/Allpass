@@ -1,24 +1,18 @@
 import 'dart:convert';
 
 import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/navigation/routes.dart';
-import 'package:allpass/core/service/allpass_service.dart';
-import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/password/model/simple_user.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
-import 'package:allpass/webdav/service/webdav_sync_service.dart';
-import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +20,6 @@ class AllpassApplication {
   AllpassApplication._();
 
   static GlobalKey<NavigatorState> navigationKey = GlobalKey();
-
   static late FluroRouter router;
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
@@ -39,23 +32,6 @@ class AllpassApplication {
 
   static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
-  }
-
-  static void initLocator() {
-    var getIt = GetIt.instance;
-
-    getIt.registerSingleton<AuthService>(AuthServiceImpl());
-    getIt.registerSingleton<AllpassService>(AllpassServiceImpl());
-    getIt.registerSingleton<WebDavSyncService>(WebDavSyncServiceImpl());
-
-    getIt.registerSingleton(PasswordRepository());
-    getIt.registerSingleton(CardRepository());
-
-    getIt.registerFactory(() => Dio(BaseOptions(
-        receiveTimeout: Duration(seconds: 30),
-        connectTimeout: Duration(seconds: 10),
-        baseUrl: allpassUrl,
-    )));
   }
 
   static void initRouter() {
