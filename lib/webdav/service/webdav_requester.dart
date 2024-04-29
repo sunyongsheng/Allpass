@@ -26,7 +26,7 @@ class WebDavRequester {
 
   bool _authChecked = false;
 
-  CancelToken _authCancelToken = CancelToken();
+  CancelToken? _authCancelToken;
 
   Map<String, List<WebDavFile>> _dirFilesCache = Map();
 
@@ -89,6 +89,8 @@ class WebDavRequester {
     }
 
     try {
+      _authCancelToken?.cancel("authority check");
+      _authCancelToken = CancelToken();
       Response response = await _dio.request(
         urlPath + root,
         options: Options(
@@ -111,7 +113,12 @@ class WebDavRequester {
         }
         _authChecked = true;
         return true;
-      } else if (response.statusCode == 401) return false;
+      } else if (response.statusCode == 401) {
+        return false;
+      } else {
+        _logger.w("authorityCheck response code: ${response.statusCode}");
+        return false;
+      }
     } on DioError catch (e) {
       _logger.e("authorityCheck data: ${e.response?.data}", e);
     }
@@ -287,7 +294,8 @@ class WebDavRequester {
   }
 
   void cancelConfirmAuth() {
-    _authCancelToken.cancel();
+    _authCancelToken?.cancel("manual cancel");
+    _authCancelToken = null;
   }
 
   bool _checkResponse(int? statusCode) {
