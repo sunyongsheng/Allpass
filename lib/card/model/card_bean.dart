@@ -1,10 +1,11 @@
 import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/core/model/identifiable.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:flutter/material.dart';
 
 /// 保存“卡片”数据
-class CardBean extends BaseModel {
+class CardBean extends BaseModel implements Identifiable<CardBean> {
   static CardBean empty =
       CardBean(key: -1, name: "", ownerName: "", cardId: "");
 
@@ -156,5 +157,12 @@ class CardBean extends BaseModel {
       }
     }
     return false;
+  }
+
+  @override
+  bool identify(CardBean other) {
+    return this.name == other.name &&
+        this.ownerName == other.ownerName &&
+        this.cardId == other.cardId;
   }
 }

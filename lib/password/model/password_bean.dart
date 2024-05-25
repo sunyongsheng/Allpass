@@ -1,10 +1,11 @@
 import 'package:allpass/core/model/data/base_model.dart';
+import 'package:allpass/core/model/identifiable.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/string_util.dart';
 import 'package:flutter/material.dart';
 
 /// 存储新建的“密码”
-class PasswordBean extends BaseModel {
+class PasswordBean extends BaseModel implements Identifiable<PasswordBean> {
   static PasswordBean empty =
       PasswordBean(key: -1, name: "", username: "", password: "", url: "");
 
@@ -164,5 +165,12 @@ class PasswordBean extends BaseModel {
       }
     }
     return false;
+  }
+
+  @override
+  bool identify(PasswordBean other) {
+    return this.name == other.name &&
+        this.username == other.username &&
+        this.url == other.url;
   }
 }
