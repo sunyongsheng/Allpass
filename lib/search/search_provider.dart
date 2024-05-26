@@ -1,10 +1,13 @@
+import 'dart:async';
+
+import 'package:allpass/card/data/card_repository.dart';
+import 'package:allpass/core/di/di.dart';
+import 'package:allpass/core/error/app_error.dart';
+import 'package:allpass/password/repository/password_repository.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
-import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/string_util.dart';
 
@@ -15,38 +18,45 @@ class SearchProvider with ChangeNotifier {
   
   late List<PasswordBean> passwordSearch;
   late List<CardBean> cardSearch;
+
+  bool Function(PasswordBean) _passwordFilter = (_) => true;
+  bool Function(CardBean) _cardFilter = (_) => true;
+
+  StreamSubscription<Object>? _streamSubscription;
   
   final AllpassType type;
   
-  SearchProvider(this.type, BuildContext context) {
+  SearchProvider(this.type) {
     if (type == AllpassType.password) {
-      _passwordList = [];
-      passwordSearch = [];
-      _passwordList.addAll(context.read<PasswordProvider>().passwordList);
-      passwordSearch.addAll(_passwordList);
+      var passwordRepository = inject<PasswordRepository>();
+      _streamSubscription = passwordRepository.passwordStream.listen((event) {
+        _passwordList = event.list;
+        passwordSearch = event.list.takeWhile(_passwordFilter).toList();
+        notifyListeners();
+      });
+      _passwordList = passwordRepository.passwordList;
+      passwordSearch = passwordRepository.passwordList;
     } else if (type == AllpassType.card) {
-      _cardList = [];
-      cardSearch = [];
-      _cardList.addAll(context.read<CardProvider>().cardList);
-      cardSearch.addAll(_cardList);
+      var cardRepository = inject<CardRepository>();
+      _streamSubscription = cardRepository.cardStream.listen((event) {
+        _cardList = event.list;
+        cardSearch = event.list.takeWhile(_cardFilter).toList();
+        notifyListeners();
+      });
+      _cardList = cardRepository.cardList;
+      cardSearch = cardRepository.cardList;
+    } else {
+      throw UnsupportedArgumentException('Invalid type: $type');
     }
   }
   
   void search(String regex) {
     if (type == AllpassType.password) {
-      passwordSearch.clear();
-      for (var bean in _passwordList) {
-        if (_containsKeyword1(bean, regex)) {
-          passwordSearch.add(bean);
-        }
-      }
+      _passwordFilter = (bean) => _containsKeyword1(bean, regex);
+      passwordSearch = _passwordList.takeWhile(_passwordFilter).toList();
     } else if (type == AllpassType.card) {
-      cardSearch.clear();
-      for (var bean in _cardList) {
-        if (_containsKeyword2(bean, regex)) {
-          cardSearch.add(bean);
-        }
-      }
+      _cardFilter = (bean) => _containsKeyword2(bean, regex);
+      cardSearch = _cardList.takeWhile(_cardFilter).toList();
     }
     notifyListeners();
   }
@@ -85,6 +95,12 @@ class SearchProvider with ChangeNotifier {
     stringBuffer.write(cardBean.notes.toLowerCase());
     stringBuffer.write(StringUtil.list2PureStr(cardBean.label).toLowerCase());
     return stringBuffer.toString().contains(keyword);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _streamSubscription?.cancel();
   }
 
 }

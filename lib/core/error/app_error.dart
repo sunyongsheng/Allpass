@@ -20,3 +20,14 @@ class UnknownException implements Exception {
     return "UnknownError: $message";
   }
 }
+
+class UnsupportedArgumentException implements Exception {
+  final String message;
+
+  UnsupportedArgumentException(this.message);
+
+  @override
+  String toString() {
+    return "UnsupportedArgumentException: $message";
+  }
+}

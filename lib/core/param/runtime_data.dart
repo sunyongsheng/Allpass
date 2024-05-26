@@ -9,8 +9,6 @@ class RuntimeData {
   static List<String> folderList = [];              // 文件夹列表
   static List<String> labelList = [];               // 标签列表
 
-  static int newPasswordOrCardCount = 0;  // 每次打开软件新增的密码或卡片数量
-
   static void initData() {
     String folder = AllpassApplication.sp.getString(SPKeys.folder) ?? "";
     String label = AllpassApplication.sp.getString(SPKeys.label) ?? "";

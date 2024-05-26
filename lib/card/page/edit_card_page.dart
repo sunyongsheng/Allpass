@@ -159,7 +159,6 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                   }
                   if (operation == DataOperation.add) {
                     provider.insertCard(tempData);
-                    RuntimeData.newPasswordOrCardCount++;
                     ToastUtil.show(msg: l10n.createSuccess);
                   } else {
                     provider.updateCard(tempData);

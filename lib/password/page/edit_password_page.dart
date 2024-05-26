@@ -161,7 +161,6 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
                 );
                 if (operation == DataOperation.add) {
                   provider.insertPassword(tempData);
-                  RuntimeData.newPasswordOrCardCount++;
                   ToastUtil.show(msg: l10n.createSuccess);
                 } else {
                   provider.updatePassword(tempData);
