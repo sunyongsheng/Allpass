@@ -74,7 +74,7 @@ class ModifyPasswordDialog extends StatelessWidget {
           },
         ),
         TextButton(
-          child: Text(l10n.cancel, style: TextStyle(color: mainColor)),
+          child: Text(l10n.cancel, style: TextStyle(color: Colors.grey)),
           onPressed: () => Navigator.pop(context)
         )
       ],

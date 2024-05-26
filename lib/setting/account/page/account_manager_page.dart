@@ -32,7 +32,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     var children = <Widget>[
       ListTile(
         title: Text(l10n.modifyMainPassword),
-        leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
+        leading: Icon(Icons.password, color: AllpassColorUI.allColor[0]),
         onTap: () {
           showDialog(
             context: context,
@@ -63,14 +63,14 @@ class _AccountManagerPage extends State<AccountManagerPage> {
       ),
       ListTile(
         title: Text(l10n.clearAllData),
-        leading: Icon(Icons.clear, color: Colors.red),
+        leading: Icon(Icons.clear_all, color: Colors.red),
         onTap: () {
           _onTapClearAllData(context);
         },
       ),
       ListTile(
-        title: Text(l10n.logout),
-        leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
+        title: Text(l10n.lockAllpass),
+        leading: Icon(Icons.lock, color: AllpassColorUI.allColor[7]),
         onTap: () => Config.enabledBiometrics
             ? AllpassNavigator.goAuthLoginPage(context)
             : AllpassNavigator.goLoginPage(context),

@@ -149,7 +149,7 @@
   "inputMainPasswordTiming": "定期输入主密码",
   "secretKeyUpdate": "更新加密密钥",
   "clearAllData": "清除所有数据",
-  "logout": "注销",
+  "lockAllpass": "锁定 Allpass",
   "never": "永不",
   "sevenDays": "7 天",
   "tenDays": "10 天",

@@ -9,7 +9,7 @@ class AllpassTextUI {
   static final TextStyle titleBarStyle = TextStyle(
     fontSize: 17,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1.2,
+    letterSpacing: 1.02,
   );
 
   static final TextStyle firstTitleStyle =

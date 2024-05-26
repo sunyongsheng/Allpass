@@ -259,7 +259,7 @@
   "inputMainPasswordTiming": "Regularly require master password",
   "secretKeyUpdate": "Update encrypt secret key",
   "clearAllData": "Clear all data",
-  "logout": "Logout",
+  "lockAllpass": "Lock Allpass",
   "never": "Never",
   "sevenDays": "7 Days",
   "tenDays": "10 Days",
