@@ -24,12 +24,58 @@ class AccountManagerPage extends StatefulWidget {
 }
 
 class _AccountManagerPage extends State<AccountManagerPage> {
-
   var passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var l10n = context.l10n;
+    var children = <Widget>[
+      ListTile(
+        title: Text(l10n.modifyMainPassword),
+        leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => ModifyPasswordDialog(),
+          );
+        },
+      ),
+    ];
+    if (Config.enabledBiometrics) {
+      children.add(ListTile(
+        title: Text(l10n.inputMainPasswordTiming),
+        leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
+        onTap: () {
+          _onTapInputMasterPasswordTiming(context);
+        },
+      ));
+    }
+    children.addAll([
+      ListTile(
+        title: Text(l10n.secretKeyUpdate),
+        leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
+        onTap: () {
+          Navigator.push(
+            context,
+            CupertinoPageRoute(builder: (context) => SecretKeyUpgradePage()),
+          );
+        },
+      ),
+      ListTile(
+        title: Text(l10n.clearAllData),
+        leading: Icon(Icons.clear, color: Colors.red),
+        onTap: () {
+          _onTapClearAllData(context);
+        },
+      ),
+      ListTile(
+        title: Text(l10n.logout),
+        leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
+        onTap: () => Config.enabledBiometrics
+            ? AllpassNavigator.goAuthLoginPage(context)
+            : AllpassNavigator.goLoginPage(context),
+      ),
+    ]);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -48,111 +94,80 @@ class _AccountManagerPage extends State<AccountManagerPage> {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: Column(
-              children: [
-                ListTile(
-                  title: Text(l10n.modifyMainPassword),
-                  leading: Icon(Icons.lock_open, color: AllpassColorUI.allColor[0]),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ModifyPasswordDialog(),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.inputMainPasswordTiming),
-                  leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        String initial = l10n.nDays(Config.timingInMainPassword);
-                        if (Config.timingInMainPassword == 36500) {
-                          initial = l10n.never;
-                        }
-                        return DefaultSelectItemDialog<String>(
-                          list: [
-                            l10n.sevenDays,
-                            l10n.tenDays,
-                            l10n.fifteenDays,
-                            l10n.thirtyDays,
-                            l10n.never
-                          ],
-                          selector: (data) => data == initial,
-                          onSelected: (days) {
-                            if (days == l10n.never) {
-                              showDialog(
-                                context: context,
-                                builder: (context) => ConfirmDialog(
-                                  l10n.confirmSelect,
-                                  l10n.selectNeverWarning,
-                                  onConfirm: () {
-                                    Config.setTimingInMainPassDays(36500);
-                                  },
-                                ),
-                              );
-                            } else if (days == l10n.sevenDays) {
-                              Config.setTimingInMainPassDays(7);
-                            } else if (days == l10n.tenDays) {
-                              Config.setTimingInMainPassDays(10);
-                            } else if (days == l10n.fifteenDays) {
-                              Config.setTimingInMainPassDays(15);
-                            } else if (days == l10n.thirtyDays) {
-                              Config.setTimingInMainPassDays(30);
-                            }
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.secretKeyUpdate),
-                  leading: Icon(Icons.security, color: AllpassColorUI.allColor[4]),
-                  onTap: () {
-                    Navigator.push(context, CupertinoPageRoute(
-                        builder: (context) => SecretKeyUpgradePage()
-                    ));
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.clearAllData),
-                  leading: Icon(Icons.clear, color: Colors.red),
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ConfirmDialog(
-                        l10n.confirmClearAll,
-                        l10n.clearAllWaring,
-                        danger: true,
-                        onConfirm: () {
-                          // 二次确认
-                          showDialog(
-                            context: context,
-                            builder: (context) => InputMainPasswordDialog(
-                              onVerified: () async {
-                                await AllpassApplication.clearAll(context);
-                                ToastUtil.show(msg: l10n.clearAllSuccess);
-                                AllpassNavigator.goLoginPage(context);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text(l10n.logout),
-                  leading: Icon(Icons.exit_to_app, color: AllpassColorUI.allColor[2]),
-                  onTap: () => Config.enabledBiometrics
-                      ? AllpassNavigator.goAuthLoginPage(context)
-                      : AllpassNavigator.goLoginPage(context),
-                ),
-              ],
+              children: children,
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void _onTapInputMasterPasswordTiming(BuildContext context) {
+    var l10n = context.l10n;
+    showDialog(
+      context: context,
+      builder: (context) {
+        String initial = l10n.nDays(Config.timingInMainPassword);
+        if (Config.timingInMainPassword < 0) {
+          initial = l10n.never;
+        }
+        return DefaultSelectItemDialog<String>(
+          list: [
+            l10n.sevenDays,
+            l10n.tenDays,
+            l10n.fifteenDays,
+            l10n.thirtyDays,
+            l10n.never
+          ],
+          selector: (data) => data == initial,
+          onSelected: (days) {
+            if (days == l10n.never) {
+              showDialog(
+                context: context,
+                builder: (context) => ConfirmDialog(
+                  l10n.confirmSelect,
+                  l10n.selectNeverWarning,
+                  onConfirm: () {
+                    Config.setTimingInMainPassDays(-1);
+                  },
+                ),
+              );
+            } else if (days == l10n.sevenDays) {
+              Config.setTimingInMainPassDays(7);
+            } else if (days == l10n.tenDays) {
+              Config.setTimingInMainPassDays(10);
+            } else if (days == l10n.fifteenDays) {
+              Config.setTimingInMainPassDays(15);
+            } else if (days == l10n.thirtyDays) {
+              Config.setTimingInMainPassDays(30);
+            }
+          },
+        );
+      },
+    );
+  }
+
+  void _onTapClearAllData(BuildContext context) {
+    var l10n = context.l10n;
+    showDialog(
+      context: context,
+      builder: (context) => ConfirmDialog(
+        l10n.confirmClearAll,
+        l10n.clearAllWaring,
+        danger: true,
+        onConfirm: () {
+          // 二次确认
+          showDialog(
+            context: context,
+            builder: (context) => InputMainPasswordDialog(
+              onVerified: () async {
+                await AllpassApplication.clearAll(context);
+                ToastUtil.show(msg: l10n.clearAllSuccess);
+                AllpassNavigator.goLoginPage(context);
+              },
+            ),
+          );
+        },
       ),
     );
   }
