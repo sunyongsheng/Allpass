@@ -248,11 +248,9 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
     String backupKey = (await EncryptUtil.getStoreKey())!;
     var encryption = Encryption(backupKey);
     List<PasswordBean> passwords = await passwordRepository.findAll();
-    List<PasswordBean> passwordsBackup = [];
-    passwordsBackup.addAll(passwords);
+    List<PasswordBean> passwordsBackup = passwords.map((e) => e.copy()).toList();
     List<CardBean> cards = await cardRepository.findAll();
-    List<CardBean> cardsBackup = [];
-    cardsBackup.addAll(cards);
+    List<CardBean> cardsBackup = cards.map((e) => e.copy()).toList();
     String backup1 = Config.password;
     String? backup2 = Config.webDavPassword;
 

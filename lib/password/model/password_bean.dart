@@ -83,6 +83,25 @@ class PasswordBean extends BaseModel implements Identifiable<PasswordBean> {
         "}";
   }
 
+  PasswordBean copy() {
+    return PasswordBean(
+      key: uniqueKey,
+      name: name,
+      username: username,
+      password: password,
+      url: url,
+      folder: folder,
+      notes: notes,
+      label: label,
+      fav: fav,
+      createTime: createTime,
+      sortNumber: sortNumber,
+      appId: appId,
+      appName: appName,
+      color: color,
+    );
+  }
+
   /// 将Map转化为普通的PasswordBean
   static PasswordBean fromJson(Map<String, dynamic> map) {
     assert(map["uniqueKey"] != null);

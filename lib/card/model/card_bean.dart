@@ -74,6 +74,25 @@ class CardBean extends BaseModel implements Identifiable<CardBean> {
         "}";
   }
 
+  CardBean copy() {
+    return CardBean(
+      key: this.uniqueKey,
+      name: this.name,
+      ownerName: this.ownerName,
+      cardId: this.cardId,
+      password: this.password,
+      telephone: this.telephone,
+      folder: this.folder,
+      notes: this.notes,
+      label: this.label,
+      fav: this.fav,
+      createTime: this.createTime,
+      sortNumber: this.sortNumber,
+      color: this.color,
+      gradientColor: this.gradientColor,
+    );
+  }
+
   /// 将Map转化为普通的CardBean
   static CardBean fromJson(Map<String, dynamic> map) {
     assert(map["name"] != null);
