@@ -1,4 +1,3 @@
-import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -8,13 +7,11 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/encrypt/password_generator.dart';
 import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SecretKeyUpgradePage extends StatefulWidget {
   @override
@@ -250,23 +247,20 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
   Future<bool> updateData() async {
     String backupKey = (await EncryptUtil.getStoreKey())!;
     var encryption = Encryption(backupKey);
-    List<PasswordBean> passwords = await passwordRepository.requestAll();
+    List<PasswordBean> passwords = await passwordRepository.findAll();
     List<PasswordBean> passwordsBackup = [];
     passwordsBackup.addAll(passwords);
-    List<CardBean> cards = await cardRepository.requestAll();
+    List<CardBean> cards = await cardRepository.findAll();
     List<CardBean> cardsBackup = [];
     cardsBackup.addAll(cards);
     String backup1 = Config.password;
     String? backup2 = Config.webDavPassword;
 
-    var passwordProvider = context.read<PasswordProvider>();
-    var cardProvider = context.read<CardProvider>();
-
     await EncryptUtil.initEncryptByKey(_latestKey!);
     try {
       Config.setPassword(
           EncryptUtil.encrypt(encryption.decrypt(Config.password)));
-      if ((Config.webDavPassword?.length ?? 0) > 6) {
+      if ((Config.webDavPassword?.isNotEmpty ?? false)) {
         Config.setWebDavPassword(
             EncryptUtil.encrypt(encryption.decrypt(Config.webDavPassword!)));
       }
@@ -281,8 +275,6 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardRepository.updateById(bean);
       }
-      await passwordProvider.refresh();
-      await cardProvider.refresh();
       ToastUtil.show(msg: context.l10n.secretKeyUpgradeResult(passwords.length, cards.length));
       return true;
     } catch (e) {
@@ -299,8 +291,6 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
         bean.password = password;
         cardRepository.updateById(bean);
       }
-      await passwordProvider.refresh();
-      await cardProvider.refresh();
       ToastUtil.show(msg: context.l10n.secretKeyUpgradeFailed(e));
       return false;
     }

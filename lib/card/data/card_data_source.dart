@@ -14,7 +14,7 @@ class CardDataSource extends BaseDBProvider with CardTable {
   }
 
   /// 删除表中所有数据
-  Future<int> deleteContent() async {
+  Future<int> deleteAll() async {
     Database db = await getDatabase();
     var count = db.delete(CardTable.name);
     // 清除表的Key自增值

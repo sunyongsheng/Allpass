@@ -47,15 +47,15 @@ class _DebugPage extends State<DebugPage> {
                 onPressed: () async {
                   List<Application> installedApps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
                   showDialog(
-                      context: context,
-                      builder: (_) => SelectAppDialog(
-                        list: installedApps,
-                        selectedApp: "top.aengus.fove",
-                        onSelected: (app) {
-                          debugPrint(app.appName);
-                        },
-                        onCancel: () {},
-                      )
+                    context: context,
+                    builder: (_) => SelectAppDialog(
+                      list: installedApps,
+                      selectedApp: "top.aengus.fove",
+                      onSelected: (app) {
+                        debugPrint(app.appName);
+                      },
+                      onCancel: () {},
+                    ),
                   );
                 },
               ),
@@ -93,17 +93,16 @@ class _DebugPage extends State<DebugPage> {
                   Set<String> keys = AllpassApplication.sp.getKeys();
                   keys.remove("password");
                   showDialog<Null>(
-                      context: context,
-                      builder: (context) =>
-                          SimpleDialog(
-                              children: keys.map((key) => ListTile(
-                                title: Text(key),
-                                subtitle: Text(AllpassApplication.sp.get(key).toString()),
-                                onLongPress: () {
-                                  AllpassApplication.sp.remove(key);
-                                },
-                              )).toList()
-                          )
+                    context: context,
+                    builder: (context) => SimpleDialog(
+                      children: keys.map((key) => ListTile(
+                        title: Text(key),
+                        subtitle: Text(AllpassApplication.sp.get(key).toString()),
+                        onLongPress: () {
+                          AllpassApplication.sp.remove(key);
+                        },
+                      )).toList(),
+                    ),
                   );
                 },
               ),
@@ -130,7 +129,6 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text(l10n.debugDeletePasswordDB),
                 onPressed: () async {
-                  await context.read<PasswordProvider>().clear();
                   await _passwordRepository.dropTable();
                   ToastUtil.show(msg: l10n.debugPasswordDBDeleted);
                 },
@@ -140,7 +138,6 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text(l10n.debugDeleteCardDB),
                 onPressed: () async {
-                  await context.read<CardProvider>().clear();
                   await _cardRepository.dropTable();
                   ToastUtil.show(msg: l10n.debugCardDBDeleted);
                 },

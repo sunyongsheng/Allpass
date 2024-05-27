@@ -126,7 +126,7 @@ class ExportTypeSelectPage extends StatelessWidget {
     switch (type) {
       case AllpassType.password:
         PasswordRepository passwordRepository = inject();
-        List<PasswordBean> list = await passwordRepository.requestAll();
+        List<PasswordBean> list = await passwordRepository.findAll();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -136,7 +136,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         break;
       case AllpassType.card:
         CardRepository cardRepository = inject();
-        List<CardBean> list = await cardRepository.requestAll();
+        List<CardBean> list = await cardRepository.findAll();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
           Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
@@ -146,10 +146,10 @@ class ExportTypeSelectPage extends StatelessWidget {
         break;
       default:
         PasswordRepository passwordRepository = inject();
-        List<PasswordBean> passwordList = await passwordRepository.requestAll();
+        List<PasswordBean> passwordList = await passwordRepository.findAll();
         ExportResult passwordResult = await CsvUtil.passwordExportCsv(passwordList, newDir);
         CardRepository cardRepository = inject();
-        List<CardBean> cardList = await cardRepository.requestAll();
+        List<CardBean> cardList = await cardRepository.findAll();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {
           Share.shareFiles([passwordResult.path!, cardResult.path!], mimeTypes: ["text/*", "text/*"]);

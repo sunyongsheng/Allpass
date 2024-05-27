@@ -9,13 +9,17 @@ import 'package:allpass/password/repository/password_local_data_source.dart';
 sealed class PasswordListAction {}
 
 class PasswordActionRequestAll extends PasswordListAction {}
+
 class PasswordActionCreate extends PasswordListAction {}
+
 class PasswordActionUpdate extends PasswordListAction {
   final bool nameChanged;
   final bool usernameChanged;
   PasswordActionUpdate(this.nameChanged, this.usernameChanged);
 }
+
 class PasswordActionDelete extends PasswordListAction {}
+
 class PasswordActionDeleteAll extends PasswordListAction {}
 
 class PasswordListEvent {
@@ -43,7 +47,7 @@ class PasswordRepository {
     passwordBean.uniqueKey = key;
     _assignColor(passwordBean);
     _passwordList.add(passwordBean);
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionCreate()));
+    _emitEvent(PasswordActionCreate());
     return passwordBean;
   }
 
@@ -64,12 +68,16 @@ class PasswordRepository {
     passwordBean.uniqueKey = key;
     _assignColor(passwordBean);
     _passwordList.add(passwordBean);
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionCreate()));
+    _emitEvent(PasswordActionCreate());
     return passwordBean;
   }
 
   Future<int> updateFromUser(AutofillSaveRequest request) async {
-    var index = _passwordList.indexWhere((element) => element.username == request.username && element.appId == request.appId);
+    var index = _passwordList.indexWhere(
+      (element) =>
+          element.username == request.username &&
+          element.appId == request.appId,
+    );
     if (index >= 0) {
       var password = _passwordList[index];
       var newName = request.name ?? request.username;
@@ -78,18 +86,18 @@ class PasswordRepository {
       password.password = request.password;
       password.appName = request.appName;
       _passwordList[index] = password;
-      _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionUpdate(nameChanged, false)));
+      _emitEvent(PasswordActionUpdate(nameChanged, false));
     }
     return await _dataSource.updateUserData(request);
   }
 
-  Future<List<PasswordBean>> requestAll() async {
+  Future<List<PasswordBean>> findAll() async {
     var result = await _dataSource.findAll();
     result.forEach((element) {
       _assignColor(element);
     });
     _passwordList = result;
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionRequestAll()));
+    _emitEvent(PasswordActionRequestAll());
     return result;
   }
 
@@ -102,7 +110,9 @@ class PasswordRepository {
   }
 
   Future<List<PasswordBean>> findByAppIdAndUsername(
-      String appId, String username) async {
+    String appId,
+    String username,
+  ) async {
     var result = await _dataSource.findByAppIdAndUsername(appId, username);
     result.forEach((element) {
       _assignColor(element);
@@ -129,33 +139,39 @@ class PasswordRepository {
   }
 
   Future<int> updateById(PasswordBean bean) async {
-    var index = _passwordList.indexWhere((element) => element.uniqueKey == bean.uniqueKey);
+    var index = _passwordList.indexWhere(
+      (element) => element.uniqueKey == bean.uniqueKey,
+    );
     if (index >= 0) {
       var password = _passwordList[index];
       var nameChanged = password.name[0] != bean.name[0];
       var usernameChanged = password.username != bean.username;
       _passwordList[index] = bean;
-      _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionUpdate(nameChanged, usernameChanged)));
+      _emitEvent(PasswordActionUpdate(nameChanged, usernameChanged));
     }
     return await _dataSource.updateById(bean);
   }
 
   Future<int> deleteById(int key) async {
     _passwordList.removeWhere((element) => element.uniqueKey == key);
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionDelete()));
+    _emitEvent(PasswordActionDelete());
     return await _dataSource.deleteById(key);
   }
 
   Future<int> deleteAll() async {
     _passwordList.clear();
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionDeleteAll()));
+    _emitEvent(PasswordActionDeleteAll());
     return await _dataSource.deleteAll();
   }
 
   Future<void> dropTable() async {
     _passwordList.clear();
-    _passwordListStreamController.add(PasswordListEvent(_passwordList, PasswordActionDeleteAll()));
+    _emitEvent(PasswordActionDeleteAll());
     return await _dataSource.deleteTable();
+  }
+
+  void _emitEvent(PasswordListAction action) {
+    _passwordListStreamController.add(PasswordListEvent(_passwordList, action));
   }
 
   void _assignColor(PasswordBean bean) {

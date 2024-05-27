@@ -69,13 +69,13 @@ class CardProvider with ChangeNotifier {
 
   Future<Null> init() async {
     if (_haveInit) return;
-    await _repository.requestAll();
+    await _repository.findAll();
     _haveInit = true;
   }
 
   Future<Null> refresh() async {
     if (!_haveInit) return;
-    await _repository.requestAll();
+    await _repository.findAll();
   }
 
   Future<Null> insertCard(CardBean bean) async {

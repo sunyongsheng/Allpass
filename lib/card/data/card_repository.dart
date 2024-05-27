@@ -41,7 +41,7 @@ class CardRepository {
     param.uniqueKey = key;
     _assignColor(param);
     _cardList.add(param);
-    _cardListStreamController.add(CardListEvent(_cardList, CardActionCreate()));
+    _emitEvent(CardActionCreate());
     return param;
   }
 
@@ -53,43 +53,45 @@ class CardRepository {
     return result;
   }
 
-  Future<List<CardBean>> requestAll() async {
+  Future<List<CardBean>> findAll() async {
     var result = await _localDataSource.findAll();
     result.forEach((element) {
       _assignColor(element);
     });
     _cardList = result;
-    _cardListStreamController.add(CardListEvent(_cardList, CardActionRequestAll()));
+    _emitEvent(CardActionRequestAll());
     return result;
   }
 
   Future<int> deleteById(int key) async {
     _cardList.removeWhere((element) => element.uniqueKey == key);
-    _cardListStreamController.add(CardListEvent(_cardList, CardActionDelete()));
+    _emitEvent(CardActionDelete());
     return await _localDataSource.deleteById(key);
   }
 
   Future<int> updateById(CardBean bean) async {
-    var index = _cardList.indexWhere((element) => element.uniqueKey == bean.uniqueKey);
+    var index = _cardList.indexWhere(
+      (element) => element.uniqueKey == bean.uniqueKey,
+    );
     if (index >= 0) {
       var card = _cardList[index];
       var namedChanged = card.name[0] != bean.name[0];
       var ownerNameChanged = card.ownerName != bean.ownerName;
       _cardList[index] = bean;
-      _cardListStreamController.add(CardListEvent(_cardList, CardActionUpdate(namedChanged, ownerNameChanged)));
+      _emitEvent(CardActionUpdate(namedChanged, ownerNameChanged));
     }
     return await _localDataSource.updateById(bean);
   }
 
   Future<int> deleteAll() async {
     _cardList.clear();
-    _cardListStreamController.add(CardListEvent(_cardList, CardActionDeleteAll()));
-    return await _localDataSource.deleteContent();
+    _emitEvent(CardActionDeleteAll());
+    return await _localDataSource.deleteAll();
   }
 
   Future<void> dropTable() async {
     _cardList.clear();
-    _cardListStreamController.add(CardListEvent(_cardList, CardActionDeleteAll()));
+    _emitEvent(CardActionDeleteAll());
     await _localDataSource.deleteTable();
   }
 
@@ -99,5 +101,9 @@ class CardRepository {
       bean.color = getCenterColor(gradient.colors);
       bean.gradientColor = gradient;
     }
+  }
+
+  void _emitEvent(CardListAction action) {
+    _cardListStreamController.add(CardListEvent(_cardList, action));
   }
 }

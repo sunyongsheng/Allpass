@@ -99,13 +99,13 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
 
   Future<Null> init() async {
     if (_haveInit) return;
-    await _repository.requestAll();
+    await _repository.findAll();
     _haveInit = true;
   }
 
   Future<Null> refresh() async {
     if (!_haveInit) return;
-    await _repository.requestAll();
+    await _repository.findAll();
   }
 
   Future<Null> insertPassword(PasswordBean bean) async {
