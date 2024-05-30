@@ -63,7 +63,7 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
                             backgroundColor: Color(0xFFFE4A49),
                             foregroundColor: Colors.white,
                             icon: Icons.delete_outline,
-                            label: 'Delete',
+                            label: l10n.delete,
                           ),
                         ],
                       ),
@@ -95,7 +95,7 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
             alignment: Alignment.bottomCenter,
             child: Container(
               padding: AllpassEdgeInsets.listInset,
-              color: Colors.white,
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: LoadingTextButton(
                 title: l10n.confirmImport,
                 loading: _importing,
