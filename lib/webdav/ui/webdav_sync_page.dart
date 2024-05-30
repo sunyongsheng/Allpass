@@ -449,7 +449,7 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
           Config.setWebDavUrl(null);
           Config.setWebDavUploadTime(null);
           Config.setWebDavDownloadTime(null);
-          Config.setWevDavEncryptLevel(EncryptLevel.OnlyPassword);
+          Config.setWevDavEncryptLevel(EncryptLevel.None);
           Config.setWebDavMergeMethod(MergeMethod.localFirst);
           Config.setWebDavBackupMethod(WebDavBackupMethod.createNew);
           Config.setWebDavCustomBackupFilename(null);

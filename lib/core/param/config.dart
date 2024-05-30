@@ -82,7 +82,7 @@ class Config {
     webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
-    webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.OnlyPassword;
+    webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.None;
     webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
     webDavBackupDirectory = sp.getString(SPKeys.webDavBackupDirectory) ?? "/Allpass";
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
@@ -101,15 +101,15 @@ class Config {
     longPressCopy = true;
     primaryColor = PrimaryColor.blue;
     themeMode = ThemeMode.system;
+    timingInMainPassword = 10;
     webDavAuthSuccess = false;
     webDavUrl = "";
     webDavUsername = "";
     webDavPassword = "";
-    webDavEncryptLevel = EncryptLevel.OnlyPassword;
+    webDavEncryptLevel = EncryptLevel.None;
     webDavMergeMethod = MergeMethod.localFirst;
     webDavBackupMethod = WebDavBackupMethod.createNew;
     webDavBackupFilename = null;
-    timingInMainPassword = 10;
     RuntimeData.clearData();
   }
 
