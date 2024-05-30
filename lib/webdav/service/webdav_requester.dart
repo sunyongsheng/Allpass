@@ -119,7 +119,7 @@ class WebDavRequester {
         _logger.w("authorityCheck response code: ${response.statusCode}");
         return false;
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _logger.e("authorityCheck data: ${e.response?.data}", e);
     }
     return false;
@@ -142,7 +142,7 @@ class WebDavRequester {
       } else {
         return false;
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _logger.e("createDir error\n${e.response?.data}", e);
     }
     return false;
@@ -210,7 +210,7 @@ class WebDavRequester {
         _dirFilesCache[path] = [];
         return true;
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       _logger.e("exists error\n${e.response?.data}", e);
       return false;
     }
@@ -231,7 +231,7 @@ class WebDavRequester {
             ?.map((e) => e.filename)
             .contains(fileName) ??
             false;
-      } on DioError catch (e) {
+      } on DioException catch (e) {
         _logger.e("containsFile data: ${e.response?.data}", e, e.stackTrace);
         return false;
       }
@@ -239,7 +239,7 @@ class WebDavRequester {
   }
 
   /// 向文件夹[dirName]上传文件。若[dirName]为空，则默认为根目录
-  /// Throws [DioError]/[FileSystemException]/[UnknownException]
+  /// Throws [DioException]/[FileSystemException]/[UnknownException]
   Future<String> uploadFile({
     String dirName = root,
     required String fileName,
@@ -267,7 +267,7 @@ class WebDavRequester {
   /// 下载文件夹[dirName]中的文件。若[dirName]为空，则默认为根目录
   ///
   /// 返回保存路径
-  /// Throws [DioError]/[UnknownException]
+  /// Throws [DioException]/[UnknownException]
   Future<String> downloadFile({
     String dirName = root,
     required String fileName,

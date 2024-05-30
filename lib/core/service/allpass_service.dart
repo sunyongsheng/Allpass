@@ -60,8 +60,8 @@ class AllpassServiceImpl implements AllpassService {
           defaultFailedMsg: "提交失败，请反馈给作者！",
         ),
       );
-    } on DioError catch (dioError) {
-      if (dioError.type == DioErrorType.badResponse) {
+    } on DioException catch (dioError) {
+      if (dioError.type == DioExceptionType.badResponse) {
         return AllpassResponse(
           status: ResponseStatus.ServerError,
           msg: "提交失败，远程服务器出现问题，请发送邮件到sys6511@126.com",
@@ -114,7 +114,7 @@ class AllpassServiceImpl implements AllpassService {
         downloadUrl: downloadUrl,
         channel: channel,
       );
-    } on DioError catch (_) {
+    } on DioException catch (_) {
       return UpdateBean(
         checkResult: CheckUpdateResult.NetworkError,
         version: AllpassApplication.version,

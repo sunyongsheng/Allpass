@@ -67,7 +67,7 @@ class _DetailTextState extends State<DetailTextPage> {
       );
     }
 
-    return WillPopScope(
+    return PopScope(
       child: Scaffold(
         appBar: AppBar(
           title: Text(
@@ -88,9 +88,8 @@ class _DetailTextState extends State<DetailTextPage> {
           ),
         ),
       ),
-      onWillPop: () {
+      onPopInvoked: (didPop) {
         Navigator.pop<String>(context, _controller.text);
-        return Future.value(true);
       },
     );
   }

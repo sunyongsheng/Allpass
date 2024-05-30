@@ -132,8 +132,8 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       _getBackupFileState = GetBackupFileSuccess(files);
       notifyListeners();
-    } on DioError catch (e) {
-      _logger.e("refreshFiles DioError", e, e.stackTrace);
+    } on DioException catch (e) {
+      _logger.e("refreshFiles DioException", e, e.stackTrace);
 
       if (e.response?.statusCode == 405) {
         _backupFiles.clear();
@@ -173,9 +173,9 @@ class WebDavSyncProvider extends ChangeNotifier {
       _logger.e("syncToRemote Exception: ${e.runtimeType}", e, s);
 
       return switch (e) {
-        DioError dioError when dioError.response?.statusCode == 405 =>
+        DioException dioError when dioError.response?.statusCode == 405 =>
           SyncFailed(l10n.uploadFileFailedReject),
-        DioError _ => SyncFailed(l10n.uploadFileFailedCheckNetwork),
+        DioException _ => SyncFailed(l10n.uploadFileFailedCheckNetwork),
         FileSystemException _ => SyncFailed(l10n.uploadFileNotExists),
         UnknownException u =>
           SyncFailed(l10n.uploadFileFailedUnknown(u.message)),
@@ -213,9 +213,9 @@ class WebDavSyncProvider extends ChangeNotifier {
       return switch (e) {
         UnsupportedContentException _ => SyncFailed(l10n.unsupportedBackupFile),
         UnsupportedEnumException _ => SyncFailed(l10n.backupFileCorrupt),
-        DioError dioError when dioError.response?.statusCode == 404 =>
+        DioException dioError when dioError.response?.statusCode == 404 =>
           SyncFailed(l10n.backupFileNotFound),
-        DioError _ => SyncFailed(l10n.networkError),
+        DioException _ => SyncFailed(l10n.networkError),
         FileSystemException _ => SyncFailed(l10n.downloadFileFailed),
         UnknownException _ => SyncFailed(l10n.downloadFailedUnknown(e.message)),
         _ => SyncFailed(l10n.downloadFailedOther(e.toString())),

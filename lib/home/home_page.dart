@@ -87,6 +87,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
           break;
         case AppLifecycleState.detached:
           break;
+        default:
+          break;
       }
     }
   }

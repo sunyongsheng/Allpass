@@ -54,7 +54,7 @@ abstract interface class WebDavSyncService {
   Future<void> backupFolderAndLabel(BuildContext context);
 
   /// Throws
-  /// [DioError] 下载失败
+  /// [DioException] 下载失败
   /// [UnknownError] 下载异常
   /// [FileSystemException] 下载的文件不存在
   /// [UnsupportedEnumException] 解析枚举类型失败

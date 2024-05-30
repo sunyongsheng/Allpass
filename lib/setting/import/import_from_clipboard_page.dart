@@ -45,8 +45,8 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
   Widget build(BuildContext context) {
     Color mainColor = Theme.of(context).primaryColor;
     var l10n = context.l10n;
-    var fillColor = MaterialStateColor.resolveWith((states) {
-      if (states.contains(MaterialState.selected)) return mainColor;
+    var fillColor = WidgetStateColor.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) return mainColor;
       return Colors.grey;
     });
 

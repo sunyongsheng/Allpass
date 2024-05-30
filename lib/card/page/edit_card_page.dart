@@ -338,10 +338,10 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                     ),
                     DropdownButton(
                       onChanged: (newValue) {
-                        setState(() => {
+                        setState(() {
                           if (newValue != null) {
-                            folder = newValue.toString()
-                          }
+                            folder = newValue.toString();
+                          };
                         });
                       },
                       items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {

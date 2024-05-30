@@ -133,8 +133,8 @@ class AllpassTheme {
           borderRadius: AllpassUI.smallBorderRadius,
           borderSide: BorderSide.none,
         ),
-        labelStyle: MaterialStateTextStyle.resolveWith((states) {
-          if (states.contains(MaterialState.focused)) {
+        labelStyle: WidgetStateTextStyle.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
             return TextStyle(color: mainColor);
           } else {
             return TextStyle(color: Colors.grey);
@@ -150,10 +150,10 @@ class AllpassTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
           alignment: Alignment.center,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: AllpassUI.smallBorderRadius,
             ),
@@ -212,10 +212,10 @@ class AllpassTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(Colors.black),
-          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          foregroundColor: WidgetStateProperty.all(Colors.black),
+          backgroundColor: WidgetStateProperty.all(Colors.transparent),
           alignment: Alignment.center,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: AllpassUI.smallBorderRadius,
             ),

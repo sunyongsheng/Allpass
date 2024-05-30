@@ -18,7 +18,7 @@ class SearchButtonWidget extends StatelessWidget {
       padding: AllpassEdgeInsets.forSearchButtonInset,
       child: TextButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all((Theme.of(context).inputDecorationTheme.fillColor)),
+          backgroundColor: WidgetStateProperty.all((Theme.of(context).inputDecorationTheme.fillColor)),
         ),
         onPressed: press,
         child: Row(

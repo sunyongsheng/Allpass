@@ -1,6 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
 def localProperties = new Properties()
@@ -9,11 +10,6 @@ if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new FileNotFoundException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -27,16 +23,15 @@ if (flutterVersionName == null) {
 }
 
 def keystoreProperties = new Properties()
-if (file("config/key.properties").exists()) {
-    keystoreProperties.load(new FileInputStream(file("config/key.properties")))
+def keyPropertiesFile = file("config/key.properties")
+if (keyPropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keyPropertiesFile))
 } else {
     keystoreProperties.load(new FileInputStream(file("config/default.properties")))
 }
 
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -100,7 +95,6 @@ flutter {
 
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:1.9.0"
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"

@@ -171,7 +171,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     TextButton(
                       style: ButtonStyle(
                         backgroundColor:
-                            MaterialStateProperty.all(primaryColor),
+                            WidgetStateProperty.all(primaryColor),
                       ),
                       child: Text(
                         l10n.generateSecretKey,
@@ -193,7 +193,7 @@ class _SecretKeyUpgradePage extends State<StatefulWidget> {
                     ),
                     TextButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith(
+                        backgroundColor: WidgetStateProperty.resolveWith(
                           (states) => haveGen ? primaryColor : Colors.grey,
                         ),
                       ),

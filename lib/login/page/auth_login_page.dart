@@ -73,7 +73,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
           ),
           TextButton(
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.transparent)
+              backgroundColor: WidgetStateProperty.all(Colors.transparent)
             ),
             autofocus: true,
             onPressed: () => askAuth(context),
