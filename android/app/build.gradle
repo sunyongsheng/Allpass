@@ -14,12 +14,12 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '9'
+    throw new GradleException("Flutter versionCode not found. Specify it in Flutter pubspec.yaml")
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.8.1'
+    throw new GradleException("Flutter versionName not found. Specify it in Flutter pubspec.yaml")
 }
 
 def keystoreProperties = new Properties()
