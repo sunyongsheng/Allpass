@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:encrypt/encrypt.dart';
 
 class Encryption {
@@ -8,7 +10,8 @@ class Encryption {
 
   Encryption(String encryptKey) {
     _key = Key.fromUtf8(encryptKey);
-    _iv = IV.fromLength(16);
+    // TODO secure random
+    _iv = IV(Uint8List(16));
     _encrypt = Encrypter(AES(_key));
   }
 
