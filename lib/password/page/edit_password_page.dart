@@ -472,12 +472,12 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             maxLines: null,
             onTap: () {
               Navigator.push(context, CupertinoPageRoute(
-                builder: (context) => DetailTextPage(context.l10n.notes, notesController.text, true),
-              )).then((newValue) {
-                setState(() {
-                  notesController.text = newValue;
-                });
-              });
+                builder: (context) => DetailTextPage(context.l10n.notes, notesController.text, (newValue) {
+                  setState(() {
+                    notesController.text = newValue;
+                  });
+                }),
+              ));
             },
           ),
         ],

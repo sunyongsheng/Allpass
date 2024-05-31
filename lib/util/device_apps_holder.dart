@@ -8,7 +8,7 @@ class DeviceAppsHolder {
   static List<Application>? _cache;
 
   static Future<List<Application>> getInstalledApps() async {
-    if (_cache == null) {
+    if (_cache == null || _cache?.isEmpty == true) {
       var list = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
       );

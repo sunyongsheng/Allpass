@@ -404,12 +404,12 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                       maxLines: null,
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(
-                          builder: (context) => DetailTextPage(l10n.notes, notesController.text, true),
-                        )).then((newValue) {
-                          setState(() {
-                            notesController.text = newValue;
-                          });
-                        });
+                          builder: (context) => DetailTextPage(l10n.notes, notesController.text, (newValue) {
+                            setState(() {
+                              notesController.text = newValue;
+                            });
+                          }),
+                        ));
                       },
                     )
                   ],

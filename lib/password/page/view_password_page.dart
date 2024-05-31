@@ -310,7 +310,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                        builder: (_) => DetailTextPage(l10n.notes, bean.notes, false),
+                        builder: (_) => DetailTextPage(l10n.notes, bean.notes, null),
                       ),
                     );
                   }

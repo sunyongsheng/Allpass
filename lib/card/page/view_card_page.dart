@@ -353,7 +353,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                           builder: (context) => DetailTextPage(
                                             l10n.notes,
                                             bean.notes,
-                                            false,
+                                            null,
                                           ),
                                         ),
                                       );

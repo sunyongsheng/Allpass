@@ -9,9 +9,9 @@ class DetailTextPage extends StatefulWidget {
 
   final String title;
   final String text;
-  final bool canChange;
+  final void Function(String)? onChanged;
 
-  DetailTextPage(this.title, this.text, this.canChange);
+  DetailTextPage(this.title, this.text, this.onChanged);
 
   @override
   State createState() {
@@ -23,22 +23,30 @@ class _DetailTextState extends State<DetailTextPage> {
 
   final TextEditingController _controller = TextEditingController();
 
+  late VoidCallback listener;
+
   @override
   void initState() {
     super.initState();
     _controller.text = widget.text;
+
+    listener = () {
+      widget.onChanged?.call(_controller.text);
+    };
+    _controller.addListener(listener);
   }
 
   @override
   void dispose() {
     super.dispose();
+    _controller.removeListener(listener);
     _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Widget child;
-    if (widget.canChange) {
+    if (widget.onChanged != null) {
       child = TextField(
         autofocus: true,
         controller: _controller,
@@ -67,30 +75,25 @@ class _DetailTextState extends State<DetailTextPage> {
       );
     }
 
-    return PopScope(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.title,
-            style: AllpassTextUI.titleBarStyle,
-          ),
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.title,
+          style: AllpassTextUI.titleBarStyle,
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                child: child,
-                padding: AllpassEdgeInsets.listInset,
-              )
-            ],
-          ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              child: child,
+              padding: AllpassEdgeInsets.listInset,
+            )
+          ],
         ),
       ),
-      onPopInvoked: (didPop) {
-        Navigator.pop<String>(context, _controller.text);
-      },
     );
   }
 }
