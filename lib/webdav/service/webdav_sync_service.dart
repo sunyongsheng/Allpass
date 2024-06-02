@@ -4,6 +4,7 @@ import 'package:allpass/application.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
+import 'package:allpass/core/lazy/lazy.dart';
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/core/model/data/extra_model.dart';
 import 'package:allpass/core/param/config.dart';
@@ -88,20 +89,13 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   final String localWorkspace = "webdav_backup";
 
-  WebDavRequester? _requesterImpl;
-
-  WebDavRequester get _requester {
-    if (_requesterImpl == null) {
-      _requesterImpl = WebDavRequester(
-        urlPath: Config.webDavUrl,
-        username: Config.webDavUsername,
-        password: Config.webDavPassword?.isNotEmpty == true
-            ? EncryptUtil.decrypt(Config.webDavPassword!)
-            : null,
-      );
-    }
-    return _requesterImpl!;
-  }
+  WebDavRequester get _requester => lazy(() => WebDavRequester(
+    urlPath: Config.webDavUrl,
+    username: Config.webDavUsername,
+    password: Config.webDavPassword?.isNotEmpty == true
+        ? EncryptUtil.decrypt(Config.webDavPassword!)
+        : null,
+  )).value;
 
   @override
   void updateConfig({
@@ -156,7 +150,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     String contents = jsonEncode(_createBackup(data, type));
     String fileName = _generateFilename(type);
 
-    var filePath = await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
+    var filePath =
+        await AllpassFileUtil.writeFile(localWorkspace, fileName, contents);
 
     String remoteFilename = _generateRemoteFilename(fileName, type);
     await _requester.uploadFile(
