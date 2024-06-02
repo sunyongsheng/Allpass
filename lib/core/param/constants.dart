@@ -29,10 +29,6 @@ class SPKeys {
   static const String timingInputMainPassword = "timingInputMainPass";
 }
 
-class ExtraKeys {
-  static const String storeKey = "ALLPASS_SECURE_STORE_KEY";
-}
-
 class ChannelConstants {
 
   ChannelConstants._();

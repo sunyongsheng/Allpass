@@ -1,11 +1,12 @@
 import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/encrypt/password_generator.dart';
-import 'package:allpass/core/param/constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// 加密解密辅助类
 class EncryptUtil {
   EncryptUtil._();
+
+  static const String storeKey = "ALLPASS_SECURE_STORE_KEY";
 
   static String initialKey = "6#MhbKXxU#4K1XGuvrVMWk3VLWu2*OGG";
 
@@ -70,11 +71,11 @@ class EncryptUtil {
 
   static Future<String?> _getStoreKey() async {
     final storage = _getSecureStorage();
-    return await storage.read(key: ExtraKeys.storeKey);
+    return await storage.read(key: storeKey);
   }
 
   static Future<Null> _setStoreKey(String keyValue) async {
     final storage = _getSecureStorage();
-    await storage.write(key: ExtraKeys.storeKey, value: keyValue);
+    await storage.write(key: storeKey, value: keyValue);
   }
 }
