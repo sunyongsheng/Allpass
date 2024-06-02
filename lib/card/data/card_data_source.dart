@@ -1,5 +1,5 @@
 import 'package:allpass/card/data/card_table.dart';
-import 'package:allpass/core/dao/db_provider.dart';
+import 'package:allpass/database/db_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:allpass/card/model/card_bean.dart';

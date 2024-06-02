@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:allpass/card/data/card_table.dart';
-import 'package:allpass/core/dao/old_db_migration.dart';
+import 'package:allpass/database/old_db_migration.dart';
 import 'package:allpass/password/repository/password_table.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';

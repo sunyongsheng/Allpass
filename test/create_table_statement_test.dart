@@ -1,4 +1,4 @@
-import 'package:allpass/core/dao/table_definition.dart';
+import 'package:allpass/database/table_definition.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

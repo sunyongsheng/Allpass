@@ -1,5 +1,5 @@
 import 'package:allpass/autofill/autofill_save_request.dart';
-import 'package:allpass/core/dao/db_provider.dart';
+import 'package:allpass/database/db_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/password/repository/password_data_source.dart';
 import 'package:allpass/password/repository/password_table.dart';

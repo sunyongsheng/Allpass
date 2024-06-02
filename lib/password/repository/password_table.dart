@@ -1,5 +1,5 @@
-import 'package:allpass/core/dao/db_provider.dart';
-import 'package:allpass/core/dao/table_definition.dart';
+import 'package:allpass/database/db_provider.dart';
+import 'package:allpass/database/table_definition.dart';
 
 mixin PasswordTable on BaseDBProvider {
   /// 表名

@@ -1,6 +1,6 @@
-import 'package:allpass/core/dao/table_definition.dart';
+import 'package:allpass/database/table_definition.dart';
+import 'package:allpass/database/db_manager.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:allpass/core/dao/db_manager.dart';
 
 /// 这个类定义创建数据库表的基础方法；
 /// 这个类是一个抽象类，把具体创建数据库表的sql暴露出去，让子类去具体实现；
@@ -10,6 +10,7 @@ abstract class BaseDBProvider {
 
   String tableName();
 
+  /// 最新的表结构
   List<ColumnDefinition> tableColumns();
 
   Future<Database> getDatabase() async {
