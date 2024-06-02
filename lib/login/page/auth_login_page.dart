@@ -137,6 +137,8 @@ class _AuthLoginPage extends State<StatefulWidget> {
         AllpassNavigator.goHomePage(context);
       } else if (authResult == AuthResult.Failed) {
         ToastUtil.show(msg: l10n.biometricsRecognizedFailed);
+      } else {
+        ToastUtil.show(msg: l10n.authorizationFailed);
       }
     }
   }

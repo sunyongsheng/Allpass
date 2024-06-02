@@ -113,7 +113,7 @@
   "mainPasswordManager": "主密码管理",
   "biometricAuthentication": "生物识别",
   "enableBiometricSuccess": "已开启生物识别",
-  "biometricNotAvailable": "生物识别不可用，请确保设备支持并已启用",
+  "biometricNotAvailable": "生物识别不可用，请去系统设置中启用并重试",
   "authorizationFailed": "授权失败",
   "biometricNotSupport": "您的设备似乎不支持生物识别",
   "longPressToCopy": "长按复制密码或卡号",
