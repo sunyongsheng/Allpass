@@ -89,13 +89,15 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   final String localWorkspace = "webdav_backup";
 
-  WebDavRequester get _requester => lazy(() => WebDavRequester(
-    urlPath: Config.webDavUrl,
-    username: Config.webDavUsername,
-    password: Config.webDavPassword?.isNotEmpty == true
-        ? EncryptUtil.decrypt(Config.webDavPassword!)
-        : null,
-  )).value;
+  final _requesterLazy = lazy(() => WebDavRequester(
+        urlPath: Config.webDavUrl,
+        username: Config.webDavUsername,
+        password: Config.webDavPassword?.isNotEmpty == true
+            ? EncryptUtil.decrypt(Config.webDavPassword!)
+            : null,
+      ));
+
+  WebDavRequester get _requester => _requesterLazy.value;
 
   @override
   void updateConfig({
