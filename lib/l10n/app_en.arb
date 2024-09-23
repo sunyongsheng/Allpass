@@ -216,6 +216,7 @@
   "mainPasswordManager": "Primary account management",
   "biometricAuthentication": "Biometric authentication",
   "enableBiometricSuccess": "Enable biometric authentication successfully",
+  "disableBiometricSuccess": "Disable biometric authentication successfully",
   "biometricNotAvailable": "Biometric recognition is unavailable, please go to system settings to enable it and retry",
   "authorizationFailed": "Authorization failed",
   "biometricNotSupport": "Your device not support biometric",

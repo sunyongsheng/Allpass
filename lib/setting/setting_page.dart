@@ -92,7 +92,11 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                         setState(() {
                           Config.setEnabledBiometrics(sw);
                         });
-                        ToastUtil.show(msg: l10n.enableBiometricSuccess);
+                        if (sw) {
+                          ToastUtil.show(msg: l10n.enableBiometricSuccess);
+                        } else {
+                          ToastUtil.show(msg: l10n.disableBiometricSuccess);
+                        }
                         break;
                       case AuthResult.NotAvailable:
                         ToastUtil.show(msg: l10n.biometricNotAvailable);
