@@ -24,7 +24,7 @@ class AllpassApplication {
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
 
-  static String version = "1.8.1";
+  static String version = "1.9.0";
 
   static int systemSdkInt = -1;
   static bool isAndroid = true;
