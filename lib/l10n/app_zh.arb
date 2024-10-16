@@ -227,10 +227,10 @@
 
   "selectExportType": "选择导出内容",
   "exportConfirm": "导出确认",
-  "exportPasswordConfirmWarning": "导出后的密码将被所有人可见，是否继续？",
-  "exportCardConfirmWarning": "导出后的卡片将被所有人可见，是否继续？",
+  "exportPasswordConfirmWarning": "导出后的密码将以明文展示，请妥善保管",
+  "exportCardConfirmWarning": "导出后的卡片将以明文展示，请妥善保管",
   "passwordAndCard": "所有",
-  "exportAllConfirmWarning": "导出后的数据将被所有人可见，是否继续？",
+  "exportAllConfirmWarning": "导出后的数据将以明文展示，请妥善保管",
   "exportFailed": "导出失败：{message}",
 
   "importFromChrome": "从 Chrome 中导入",

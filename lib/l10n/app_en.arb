@@ -390,10 +390,10 @@
 
   "selectExportType": "Select Export Type",
   "exportConfirm": "Confirm Export",
-  "exportPasswordConfirmWarning": "The exported password items will be visible to everyone. continue to export?",
-  "exportCardConfirmWarning": "The exported card items will be visible to everyone. continue to export?",
+  "exportPasswordConfirmWarning": "The exported password will be displayed in plain text. Please keep it secure",
+  "exportCardConfirmWarning": "The exported card items will be displayed in plain text. Please keep it secure",
   "passwordAndCard": "Both Password and Card",
-  "exportAllConfirmWarning": "The exported data will be visible to everyone. continue to export?",
+  "exportAllConfirmWarning": "The exported data will be displayed in plain text. Please keep it secure",
   "exportFailed": "Export Failed: {message}",
   "@exportFailed": {
     "placeholders": {
