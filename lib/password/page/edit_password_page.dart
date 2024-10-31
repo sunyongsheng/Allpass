@@ -4,8 +4,8 @@ import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:installed_apps/app_info.dart';
 import 'package:provider/provider.dart';
-import 'package:device_apps/device_apps.dart';
 
 import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/constants.dart';
@@ -390,17 +390,17 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             onPressed: () async {
               showDialog(
                 context: context,
-                builder: (_) => FutureBuilder<List<Application>>(
+                builder: (_) => FutureBuilder<List<AppInfo>>(
                   future: DeviceAppsHolder.getInstalledApps(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.done:
                         return SelectAppDialog(
-                          list: (snapshot.data ?? [])..sort((a, b) => a.appName.compareTo(b.appName)),
+                          list: (snapshot.data ?? [])..sort((a, b) => a.name.compareTo(b.name)),
                           selectedApp: appId,
                           onSelected: (app) {
                             setState(() {
-                              appName = app.appName;
+                              appName = app.name;
                               appId = app.packageName;
                             });
                           },

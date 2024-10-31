@@ -5,7 +5,6 @@ import 'package:allpass/setting/autofill/autofill_provider.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
@@ -28,6 +27,7 @@ import 'package:allpass/webdav/ui/webdav_config_page.dart';
 import 'package:allpass/webdav/ui/webdav_sync_page.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
+import 'package:share_plus/share_plus.dart';
 
 
 /// 设置页面

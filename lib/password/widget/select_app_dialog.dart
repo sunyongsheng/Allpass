@@ -1,18 +1,18 @@
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
+import 'package:installed_apps/app_info.dart';
 
 const String SELECT_NULL_APP = "select_null_app";
 
-class SelectAppDialog extends SelectItemDialog<Application> {
+class SelectAppDialog extends SelectItemDialog<AppInfo> {
 
-  final void Function(Application) onSelected;
+  final void Function(AppInfo) onSelected;
 
   final void Function() onCancel;
 
   SelectAppDialog({
-    required List<Application> list,
+    required List<AppInfo> list,
     String? selectedApp,
     required this.onSelected,
     required this.onCancel
@@ -41,19 +41,19 @@ class SelectAppDialog extends SelectItemDialog<Application> {
   }
 
   @override
-  Widget buildItem(BuildContext context, Application data) {
+  Widget buildItem(BuildContext context, AppInfo data) {
     return ListTile(
-      title: Text(data.appName),
+      title: Text(data.name),
       subtitle: Text(data.packageName),
       leading: CircleAvatar(
-        child: Image.memory((data as ApplicationWithIcon).icon),
+        child: Image.memory(data.icon!),
       ),
       trailing: selector!.call(data)
           ? Icon(Icons.check, color: Colors.grey,)
           : null,
       onTap: () {
         onSelected(data);
-        Navigator.pop<Application>(context, data);
+        Navigator.pop<AppInfo>(context, data);
       },
     );
   }

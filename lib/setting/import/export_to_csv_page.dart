@@ -16,7 +16,7 @@ import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 /// 导出选择页
 class ExportTypeSelectPage extends StatelessWidget {
@@ -129,7 +129,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         List<PasswordBean> list = await passwordRepository.findAll();
         ExportResult result = await CsvUtil.passwordExportCsv(list, newDir);
         if (result.success) {
-          Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
+          await Share.shareXFiles([XFile(result.path!, mimeType: "text/csv")]);
         } else {
           ToastUtil.show(msg: context.l10n.exportFailed(result.msg));
         }
@@ -139,7 +139,7 @@ class ExportTypeSelectPage extends StatelessWidget {
         List<CardBean> list = await cardRepository.findAll();
         ExportResult result = await CsvUtil.cardExportCsv(list, newDir);
         if (result.success) {
-          Share.shareFiles([result.path!], mimeTypes: ["text/*"]);
+          await Share.shareXFiles([XFile(result.path!, mimeType: "text/csv")]);
         } else {
           ToastUtil.show(msg: context.l10n.exportFailed(result.msg));
         }
@@ -152,7 +152,10 @@ class ExportTypeSelectPage extends StatelessWidget {
         List<CardBean> cardList = await cardRepository.findAll();
         ExportResult cardResult = await CsvUtil.cardExportCsv(cardList, newDir);
         if (passwordResult.success && cardResult.success) {
-          Share.shareFiles([passwordResult.path!, cardResult.path!], mimeTypes: ["text/*", "text/*"]);
+          Share.shareXFiles([
+            XFile(passwordResult.path!, mimeType: "text/csv"),
+            XFile(cardResult.path!, mimeType: "text/csv")
+          ]);
         } else {
           ToastUtil.show(msg: context.l10n.exportFailed(passwordResult.msg));
         }

@@ -14,10 +14,10 @@ import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:installed_apps/installed_apps.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -274,8 +274,8 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
               child: InkWell(
                 onTap: () async {
                   if (bean.appId?.isNotEmpty ?? false) {
-                    var openable = await DeviceApps.openApp(bean.appId!);
-                    if (!openable) {
+                    var openable = await InstalledApps.startApp(bean.appId!);
+                    if (openable != true) {
                       ToastUtil.show(msg: l10n.openAppFailed);
                     }
                   }

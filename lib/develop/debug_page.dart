@@ -6,8 +6,9 @@ import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:installed_apps/app_info.dart';
+import 'package:installed_apps/installed_apps.dart';
 import 'package:provider/provider.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:allpass/application.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/card/data/card_provider.dart';
@@ -45,14 +46,14 @@ class _DebugPage extends State<DebugPage> {
               title: TextButton(
                 child: Text(l10n.debugListInstalledApp),
                 onPressed: () async {
-                  List<Application> installedApps = await DeviceApps.getInstalledApplications(includeAppIcons: true);
+                  List<AppInfo> installedApps = await InstalledApps.getInstalledApps(true, true);
                   showDialog(
                     context: context,
                     builder: (_) => SelectAppDialog(
                       list: installedApps,
                       selectedApp: "top.aengus.fove",
                       onSelected: (app) {
-                        debugPrint(app.appName);
+                        debugPrint(app.name);
                       },
                       onCancel: () {},
                     ),

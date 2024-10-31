@@ -120,7 +120,7 @@ class WebDavRequester {
         return false;
       }
     } on DioException catch (e) {
-      _logger.e("authorityCheck data: ${e.response?.data}", e);
+      _logger.e("authorityCheck data: ${e.response?.data}", error: e);
     }
     return false;
   }
@@ -143,7 +143,7 @@ class WebDavRequester {
         return false;
       }
     } on DioException catch (e) {
-      _logger.e("createDir error\n${e.response?.data}", e);
+      _logger.e("createDir error\n${e.response?.data}", error: e);
     }
     return false;
   }
@@ -211,7 +211,7 @@ class WebDavRequester {
         return true;
       }
     } on DioException catch (e) {
-      _logger.e("exists error\n${e.response?.data}", e);
+      _logger.e("exists error\n${e.response?.data}", error: e);
       return false;
     }
     return false;
@@ -232,7 +232,7 @@ class WebDavRequester {
             .contains(fileName) ??
             false;
       } on DioException catch (e) {
-        _logger.e("containsFile data: ${e.response?.data}", e, e.stackTrace);
+        _logger.e("containsFile data: ${e.response?.data}", error: e, stackTrace: e.stackTrace);
         return false;
       }
     }

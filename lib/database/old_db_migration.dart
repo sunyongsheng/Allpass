@@ -35,7 +35,7 @@ class OldDatabaseMigration {
       }
       success = true;
     } catch (e) {
-      _logger.e("$_tag migrate error", e);
+      _logger.e("$_tag migrate error", error: e);
     }
     _logger.i("$_tag database migration result=$success");
     if (success) {

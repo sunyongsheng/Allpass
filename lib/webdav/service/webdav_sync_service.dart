@@ -341,7 +341,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
       return ExtraModel(folderList, labelList);
     } on FormatException catch (e) {
-      _logger.e("$_tag _decodeFolderAndLabel error", e);
+      _logger.e("$_tag _decodeFolderAndLabel error", error: e);
       return null;
     }
   }
@@ -374,7 +374,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       );
       return result.length;
     } catch (e2) {
-      _logger.e("$_tag recoverPassword", e2);
+      _logger.e("$_tag recoverPassword", error: e2);
       return -1;
     }
   }
@@ -407,7 +407,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       );
       return result.length;
     } catch (e2) {
-      _logger.e("$_tag recoverCard", e2);
+      _logger.e("$_tag recoverCard", error: e2);
       return -1;
     }
   }
@@ -422,7 +422,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
       RuntimeData.labelParamsPersistence();
       return true;
     } catch (e) {
-      _logger.e("$_tag recoverFolderAndLabel", e);
+      _logger.e("$_tag recoverFolderAndLabel", error: e);
       return false;
     }
   }

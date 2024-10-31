@@ -133,7 +133,7 @@ class WebDavSyncProvider extends ChangeNotifier {
       _getBackupFileState = GetBackupFileSuccess(files);
       notifyListeners();
     } on DioException catch (e) {
-      _logger.e("refreshFiles DioException", e, e.stackTrace);
+      _logger.e("refreshFiles DioException", error: e, stackTrace: e.stackTrace);
 
       if (e.response?.statusCode == 405) {
         _backupFiles.clear();
@@ -170,7 +170,7 @@ class WebDavSyncProvider extends ChangeNotifier {
 
       return SyncSuccess(Null, l10n.uploadSuccess);
     } on Exception catch (e, s) {
-      _logger.e("syncToRemote Exception: ${e.runtimeType}", e, s);
+      _logger.e("syncToRemote Exception: ${e.runtimeType}", error: e, stackTrace: s);
 
       return switch (e) {
         DioException dioError when dioError.response?.statusCode == 405 =>
@@ -208,7 +208,7 @@ class WebDavSyncProvider extends ChangeNotifier {
       var backupFile = await _syncService.downloadFile(context, filename);
       return SyncSuccess(backupFile, l10n.downloadComplete);
     } on Exception catch (e, s) {
-      _logger.e("downloadFile Exception: ${e.runtimeType}", e, s);
+      _logger.e("downloadFile Exception: ${e.runtimeType}", error: e, stackTrace: s);
 
       return switch (e) {
         UnsupportedContentException _ => SyncFailed(l10n.unsupportedBackupFile),
@@ -253,11 +253,11 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on PreDecryptException {
       return SyncPreDecryptFail(context);
     } on AssertionError catch (e) {
-      _logger.e("syncToLocal AssertionError: ${e.message}", e);
+      _logger.e("syncToLocal AssertionError: ${e.message}", error: e);
 
       return SyncFailed(l10n.backupFileCorrupt);
     } on Exception catch (e, s) {
-      _logger.e("syncToLocal Exception: ${e.runtimeType}", e, s);
+      _logger.e("syncToLocal Exception: ${e.runtimeType}", error: e, stackTrace: s);
 
       return switch (e) {
         DecodeException _ => SyncFailed(l10n.backupFileCorrupt),
@@ -284,11 +284,11 @@ class WebDavSyncProvider extends ChangeNotifier {
     } on PreDecryptException {
       return SyncPreDecryptFail(context);
     } on AssertionError catch (e) {
-      _logger.e("syncToLocalOld AssertionError: ${e.message}", e);
+      _logger.e("syncToLocalOld AssertionError: ${e.message}", error: e);
 
       return SyncFailed(l10n.backupFileCorrupt);
     } on Exception catch (e, s) {
-      _logger.e("syncToLocalOld Exception: ${e.runtimeType}", e, s);
+      _logger.e("syncToLocalOld Exception: ${e.runtimeType}", error: e, stackTrace: s);
 
       return switch (e) {
         UnsupportedEnumException _ => SyncFailed(l10n.backupFileCorrupt),
