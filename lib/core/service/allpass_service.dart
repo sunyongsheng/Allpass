@@ -2,15 +2,11 @@ import 'package:allpass/core/di/di.dart';
 import 'package:dio/dio.dart';
 
 import 'package:allpass/application.dart';
-import 'package:allpass/core/model/api/user_bean.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/model/api/feedback_bean.dart';
 import 'package:allpass/core/model/api/allpass_response.dart';
 
 abstract interface class AllpassService {
-  /// 注册用户
-  Future<AllpassResponse> registerUser(UserBean user);
-
   /// 发送反馈
   Future<AllpassResponse> sendFeedback(FeedbackBean content);
 
@@ -30,20 +26,6 @@ class AllpassServiceImpl implements AllpassService {
   }
 
   Dio? _dio;
-
-  @override
-  Future<AllpassResponse> registerUser(UserBean user) async {
-    try {
-      Response response = await dio.post("/user/", data: user.toJson());
-      Map<String, String> res = Map();
-      for (String key in response.data.keys) {
-        res[key] = response.data[key];
-      }
-      return AllpassResponse.create(res);
-    } catch (e) {
-      return AllpassResponse(success: false, msg: e.toString());
-    }
-  }
 
   @override
   Future<AllpassResponse> sendFeedback(FeedbackBean content) async {
@@ -88,7 +70,6 @@ class AllpassServiceImpl implements AllpassService {
     try {
       Response response = await dio.get("/update/", queryParameters: {
         "version": AllpassApplication.version,
-        "identification": AllpassApplication.identification,
       });
 
       Map<String, String> res = Map();

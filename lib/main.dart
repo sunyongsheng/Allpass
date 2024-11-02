@@ -25,6 +25,7 @@ void main() async {
   try {
     await AllpassApplication.initSp();
     await EncryptUtil.initEncrypt();
+    await AllpassApplication.initRuntime();
     Config.initConfig();
     AllpassApplication.initRouter();
     GetItInitializer.initialize();

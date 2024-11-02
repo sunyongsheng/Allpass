@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
@@ -52,6 +51,8 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     _localAuthService = inject<AuthService>();
     _controller = ScrollController();
     super.initState();
+
+    context.read<AutofillProvider>().checkSupportAutofill();
   }
 
   @override
@@ -187,14 +188,16 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       )
     ];
-    if (AllpassApplication.isAndroid && AllpassApplication.systemSdkInt >= 26) {
+
+    var autofillProvider = context.watch<AutofillProvider>();
+    if (autofillProvider.supportAutofill) {
       thirdCardWidgets.add(ListTile(
         title: Text(l10n.autofill),
         leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
-            builder: (context) => ChangeNotifierProvider(
-              create: (_) => AutofillProvider(),
+            builder: (context) => ChangeNotifierProvider.value(
+              value: autofillProvider,
               child: AutofillPage(),
             ),
           ));

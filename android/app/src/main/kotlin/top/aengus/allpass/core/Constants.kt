@@ -8,6 +8,7 @@ object FlutterChannel {
     const val IMPORT_CSV = "$COMMON/importCsv"
 
     object Method {
+        const val SUPPORT_AUTOFILL = "supportAutofill"
         const val SET_APP_DEFAULT_AUTOFILL = "setAppDefaultAutofill"
         const val IS_APP_DEFAULT_AUTOFILL = "isAppDefaultAutofill"
 

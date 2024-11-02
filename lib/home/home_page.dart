@@ -13,6 +13,7 @@ import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/password_page.dart';
+import 'package:allpass/setting/autofill/autofill_provider.dart';
 import 'package:allpass/setting/setting_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
@@ -26,17 +27,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
-  final List<Widget> _pagesList = []
-    ..add(ChangeNotifierProvider(
-      create: (BuildContext context) => MultiItemEditProvider<PasswordBean>(),
-      child: PasswordPage(),
-    ))
-    ..add(ChangeNotifierProvider(
-      create: (_) => MultiItemEditProvider<CardBean>(),
-      child: CardPage(),
-    ))
-    ..add(ClassificationPage())
-    ..add(SettingPage());
+
+  final AutofillProvider autofillProvider = AutofillProvider();
+
   int _currentIndex = 0;
   late PageController _controller;
 
@@ -57,6 +50,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
         );
       }
     });
+
+    autofillProvider.checkSupportAutofill();
 
     // 导入密码Channel
     var importCsvMessageChannel = MethodChannel(ChannelConstants.channelImportCsv);
@@ -105,14 +100,37 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     super.build(context);
     var l10n = context.l10n;
     return Scaffold(
-      body: PageView(
-        children: _pagesList,
+      body: PageView.builder(
+        itemCount: 4,
         controller: _controller,
         onPageChanged: (index) {
-          if (index  != _currentIndex) {
+          if (index != _currentIndex) {
             setState(() {
               _currentIndex = index;
             });
+          }
+        },
+        itemBuilder: (BuildContext context, int index) {
+          switch (index) {
+            case 0:
+              return ChangeNotifierProvider(
+                create: (context) => MultiItemEditProvider<PasswordBean>(),
+                child: PasswordPage(),
+              );
+            case 1:
+              return ChangeNotifierProvider(
+                create: (_) => MultiItemEditProvider<CardBean>(),
+                child: CardPage(),
+              );
+            case 2:
+              return ClassificationPage();
+            case 3:
+              return ChangeNotifierProvider<AutofillProvider>(
+                create: (_) => autofillProvider,
+                child: SettingPage(),
+              );
+            default:
+              return null;
           }
         },
       ),

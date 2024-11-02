@@ -13,6 +13,7 @@ import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,14 +25,14 @@ class AllpassApplication {
   static late SharedPreferences sp;
   static late MethodChannel methodChannel;
 
-  static String version = "1.9.0";
-
-  static int systemSdkInt = -1;
-  static bool isAndroid = true;
-  static String identification = "";
+  static late String version;
 
   static Future<Null> initSp() async {
     sp = await SharedPreferences.getInstance();
+  }
+
+  static Future<void> initRuntime() async {
+    version = (await PackageInfo.fromPlatform()).version;
   }
 
   static void initRouter() {

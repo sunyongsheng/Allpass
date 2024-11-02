@@ -1,4 +1,3 @@
-import 'package:allpass/application.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -88,12 +87,7 @@ class UpdateDialog extends StatelessWidget {
             style: TextStyle(color: mainColor),
           ),
           onPressed: () async {
-            String? downloadUrl;
-            if (updateBean.isBetaChannel()) {
-              downloadUrl = "${updateBean.downloadUrl}&identification=${AllpassApplication.identification}";
-            } else {
-              downloadUrl = updateBean.downloadUrl;
-            }
+            String? downloadUrl = updateBean.downloadUrl;
             if (downloadUrl != null) {
               await launchUrl(
                 Uri.parse(downloadUrl),

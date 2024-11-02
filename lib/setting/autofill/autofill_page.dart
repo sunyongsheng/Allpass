@@ -61,19 +61,42 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Align(
                   child: Consumer<AutofillProvider>(
-                    builder: (_, provider, __) => Text(
-                      provider.autofillEnable
-                          ? l10n.autofillEnableAllpass
-                          : l10n.autofillDisableAllpass,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: provider.autofillEnable
-                            ? Colors.grey
-                            : null,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    builder: (_, provider, __) {
+                      var color = provider.autofillEnable
+                          ? Colors.grey
+                          : null;
+                      var children = <Widget>[
+                        Text(
+                          provider.autofillEnable
+                              ? l10n.autofillEnableAllpass
+                              : l10n.autofillDisableAllpass,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: color,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ];
+                      if (!provider.autofillEnable) {
+                        children.add(Padding(
+                          padding: EdgeInsets.only(
+                            left: 4,
+                            right: 4,
+                          ),
+                          child: Icon(
+                            Icons.arrow_forward,
+                            color: color,
+                            size: 14,
+                          ),
+                      ));
+                    }
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: children,
+                      );
+                    }
                   ),
                 ),
               ),

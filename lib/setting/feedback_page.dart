@@ -112,11 +112,10 @@ class _FeedbackPage extends State<StatefulWidget> {
     String content = _feedbackController.text;
     String contact = _contactController.text;
     String version = AllpassApplication.version;
-    String id = AllpassApplication.identification;
     if (_contactController.text.isNotEmpty) {
       AllpassApplication.sp.setString(SPKeys.contact, _contactController.text);
     }
-    FeedbackBean feedback = FeedbackBean(content: content, contact: contact, version: version, identification: id);
+    FeedbackBean feedback = FeedbackBean(content: content, contact: contact, version: version,);
     AllpassResponse response = await inject<AllpassService>().sendFeedback(feedback);
     ToastUtil.show(msg: response.msg!);
     setState(() {

@@ -9,14 +9,10 @@ class FeedbackBean {
   /// Allpass版本
   String? version;
 
-  /// 设备标识符
-  String identification;
-
   FeedbackBean({
     required this.content,
     this.contact,
     this.version,
-    this.identification = "unknown",
   });
 
   Map<String, String?> toJson() {
@@ -24,7 +20,6 @@ class FeedbackBean {
     map['feedbackContent'] = this.content;
     map['contact'] = this.contact;
     map['allpassVersion'] = this.version;
-    map['identification'] = this.identification;
     return map;
   }
 }

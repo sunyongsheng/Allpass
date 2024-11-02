@@ -44,6 +44,7 @@ class ChannelConstants {
   static const String methodOpenImportPage = "openImportPage";
 
   // Flutter -> Android
+  static const String methodSupportAutofill = "supportAutofill";
   static const String methodIsAppDefaultAutofill = "isAppDefaultAutofill";
   static const String methodSetAppDefaultAutofill = "setAppDefaultAutofill";
 }

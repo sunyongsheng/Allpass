@@ -57,9 +57,15 @@ class MainActivity: FlutterFragmentActivity(), MethodChannel.MethodCallHandler {
 
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
+            FlutterChannel.Method.SUPPORT_AUTOFILL -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    result.success(packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOFILL))
+                } else {
+                    result.success(false)
+                }
+            }
             FlutterChannel.Method.IS_APP_DEFAULT_AUTOFILL -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    packageManager.hasSystemFeature(PackageManager.FEATURE_AUTOFILL)
                     val autofillManager = getSystemService(AutofillManager::class.java)
                     result.success(autofillManager?.hasEnabledAutofillServices() ?: false)
                 } else {
