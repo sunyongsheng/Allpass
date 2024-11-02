@@ -1,5 +1,5 @@
 /// 服务器地址
-const String allpassUrl = "http://10.0.2.2:8081/api";
+const String allpassUrl = "https://allpass.aengus.top/api";
 
 class SPKeys {
   static const String firstRun = "FIRST_RUN";
