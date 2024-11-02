@@ -18,7 +18,7 @@ extension CardEncrypt on CardBean {
           telephone: this.telephone,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,
@@ -34,7 +34,7 @@ extension CardEncrypt on CardBean {
         String notes = EncryptUtil.encrypt(this.notes.noneDataOrNot());
         String createTime = EncryptUtil.encrypt(this.createTime);
         List<String> label = [];
-        for (String l in this.label ?? []) {
+        for (String l in this.label) {
           label.add(EncryptUtil.encrypt(l));
         }
         return CardBean(
@@ -64,7 +64,7 @@ extension CardEncrypt on CardBean {
           telephone: this.telephone,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,
@@ -87,7 +87,7 @@ extension CardEncrypt on CardBean {
           telephone: this.telephone,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,
@@ -104,7 +104,7 @@ extension CardEncrypt on CardBean {
         String notes = customDecryption.decrypt(this.notes.noneDataOrNot());
         String createTime = customDecryption.decrypt(this.createTime);
         List<String> label = [];
-        for (String l in this.label ?? []) {
+        for (String l in this.label) {
           label.add(customDecryption.decrypt(l));
         }
         return CardBean(
@@ -135,7 +135,7 @@ extension CardEncrypt on CardBean {
           telephone: this.telephone,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,

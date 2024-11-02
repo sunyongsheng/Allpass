@@ -435,7 +435,7 @@ class _ViewCardPage extends State<ViewCardPage> {
 
   List<Widget> _getTag(CardBean bean) {
     List<Widget> labelChoices = [];
-    bean.label?.forEach((item) {
+    bean.label.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
         selected: true,

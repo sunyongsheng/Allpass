@@ -209,16 +209,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
 
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
-        if (bean.label?.contains(oldLabel) ?? false) {
-          bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
+        if (bean.label.contains(oldLabel)) {
+          bean.label[bean.label.indexOf(oldLabel)] = newLabel;
           await passwordProvider.updatePassword(bean);
         }
       }
 
       var cardProvider = context.read<CardProvider>();
       for (var bean in cardProvider.cardList) {
-        if (bean.label?.contains(oldLabel) ?? false) {
-          bean.label![bean.label!.indexOf(oldLabel)] = newLabel;
+        if (bean.label.contains(oldLabel)) {
+          bean.label[bean.label.indexOf(oldLabel)] = newLabel;
           await cardProvider.updateCard(bean);
         }
       }
@@ -267,16 +267,16 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
     try {
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
-        if (bean.label?.contains(label) ?? false) {
-          bean.label!.remove(label);
+        if (bean.label.contains(label)) {
+          bean.label.remove(label);
           passwordProvider.updatePassword(bean);
         }
       }
 
       var cardProvider = context.read<CardProvider>();
       for (var bean in cardProvider.cardList) {
-        if (bean.label?.contains(label) ?? false) {
-          bean.label!.remove(label);
+        if (bean.label.contains(label)) {
+          bean.label.remove(label);
           cardProvider.updateCard(bean);
         }
       }

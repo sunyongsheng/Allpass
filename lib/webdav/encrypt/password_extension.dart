@@ -21,7 +21,7 @@ extension PasswordEncrypt on PasswordBean {
           url: this.url,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           color: this.color,
@@ -37,7 +37,7 @@ extension PasswordEncrypt on PasswordBean {
         String folder = EncryptUtil.encrypt(this.folder);
         String notes = EncryptUtil.encrypt(this.notes.noneDataOrNot());
         List<String> label = [];
-        for (String l in this.label ?? []) {
+        for (String l in this.label) {
           label.add(EncryptUtil.encrypt(l));
         }
         String createTime = EncryptUtil.encrypt(this.createTime);
@@ -71,7 +71,7 @@ extension PasswordEncrypt on PasswordBean {
           url: this.url,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,
@@ -96,7 +96,7 @@ extension PasswordEncrypt on PasswordBean {
           url: this.url,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           sortNumber: this.sortNumber,
@@ -114,7 +114,7 @@ extension PasswordEncrypt on PasswordBean {
         String folder = customDecryption.decrypt(this.folder);
         String notes = customDecryption.decrypt(this.notes.noneDataOrNot());
         List<String> label = [];
-        for (String l in this.label ?? []) {
+        for (String l in this.label) {
           label.add(customDecryption.decrypt(l));
         }
         String createTime = customDecryption.decrypt(this.createTime);
@@ -150,7 +150,7 @@ extension PasswordEncrypt on PasswordBean {
           url: this.url,
           folder: this.folder,
           notes: this.notes,
-          label: List.from(this.label ?? []),
+          label: List.from(this.label),
           fav: this.fav,
           createTime: this.createTime,
           color: this.color,

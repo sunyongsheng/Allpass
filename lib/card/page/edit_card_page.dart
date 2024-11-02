@@ -65,7 +65,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
       editingData = widget.data;
       var editingCard = editingData!;
       folder = editingCard.folder;
-      labels.addAll(editingCard.label ?? []);
+      labels.addAll(editingCard.label);
       fav = editingCard.fav;
       createTime = editingCard.createTime;
 

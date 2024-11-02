@@ -82,7 +82,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
       editingData = widget.data;
       var editingPassword = editingData!;
       folder = editingPassword.folder;
-      labels.addAll(editingPassword.label ?? []);
+      labels.addAll(editingPassword.label);
       fav = editingPassword.fav;
       createTime = editingPassword.createTime;
       appName = editingPassword.appName;

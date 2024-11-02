@@ -447,7 +447,7 @@ class _ViewPasswordPage extends State<ViewPasswordPage> {
 
   List<Widget> _getTag(PasswordBean bean) {
     List<Widget> labelChoices = [];
-    bean.label?.forEach((item) {
+    bean.label.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
         selected: true,

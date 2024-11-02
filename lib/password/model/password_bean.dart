@@ -18,7 +18,7 @@ class PasswordBean extends BaseModel implements Identifiable<PasswordBean> {
   late String url; // 5 地址
   late String folder; // 6 文件夹
   late String notes; // 7 备注
-  late List<String>? label; // 8 标签
+  late List<String> label; // 8 标签
   late int fav; // 9 是否标心，0代表否
   late String createTime; // 10 创建时间，为了方便存储使用Iso8601String
   late int sortNumber; // 12 排序号

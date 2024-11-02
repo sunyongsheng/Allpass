@@ -17,7 +17,7 @@ class CardBean extends BaseModel implements Identifiable<CardBean> {
   late String telephone; // 6 手机号
   late String folder; // 7 文件夹
   late String notes; // 8 备注
-  late List<String>? label; // 9 标签
+  late List<String> label; // 9 标签
   late int fav; // 10 是否标心
   late String createTime; // 11 创建时间，为了方便数据库存储使用Iso8601String
   late int sortNumber; // 12 排序号
