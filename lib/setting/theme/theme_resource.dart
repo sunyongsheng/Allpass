@@ -140,6 +140,13 @@ class AllpassTheme {
             return TextStyle(color: Colors.grey);
           }
         }),
+        floatingLabelStyle: WidgetStateTextStyle.resolveWith((states) {
+          if (states.contains(WidgetState.focused)) {
+            return TextStyle(color: mainColor);
+          } else {
+            return TextStyle(color: Colors.grey);
+          }
+        }),
         helperStyle: TextStyle(color: Colors.grey),
       ),
       buttonTheme: ButtonThemeData(
