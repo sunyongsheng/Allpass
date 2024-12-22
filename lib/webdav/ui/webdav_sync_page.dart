@@ -335,6 +335,13 @@ class _WebDavSyncPage extends State<WebDavSyncPage> {
         list: WebDavBackupMethod.values,
         selector: (item) => item == Config.webDavBackupMethod,
         itemTitleBuilder: (ctx, data) => data.title(ctx),
+        itemSubtitleBuilder: (ctx, data) {
+          if (Config.webDavBackupMethod == WebDavBackupMethod.replaceExists &&
+              data == WebDavBackupMethod.replaceExists) {
+            return ctx.l10n.clickToViewAndEditConfig;
+          }
+          return null;
+        },
         onSelected: (item) {
           if (item == WebDavBackupMethod.replaceExists) {
             showDialog(

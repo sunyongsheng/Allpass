@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 typedef WidgetBuilder<T> = Widget Function(BuildContext context, T data);
 typedef StringBuilder = String? Function(BuildContext context);
 typedef StringGetter<T> = String Function(BuildContext context, T);
+typedef NullableStringGetter<T> = String? Function(BuildContext context, T);
 
 abstract class SelectItemDialog<T> extends StatelessWidget {
   final Key? key;
@@ -55,7 +56,7 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
 class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
   final StringBuilder? titleBuilder;
   final StringGetter<T>? itemTitleBuilder;
-  final StringGetter<T>? itemSubtitleBuilder;
+  final NullableStringGetter<T>? itemSubtitleBuilder;
   final void Function(T) onSelected;
 
   final StringGetter<T> _defaultItemTileBuilder = (_, data) => data.toString();
@@ -76,10 +77,11 @@ class DefaultSelectItemDialog<T> extends SelectItemDialog<T> {
   Widget build(BuildContext context) {
     var title = (titleBuilder ?? _defaultTitleBuilder).call(context);
     return AlertDialog(
-        title: title == null ? null : Text(title),
-        content: SingleChildScrollView(
-          child: Column(children: _getList(context)),
-        ));
+      title: title == null ? null : Text(title),
+      content: SingleChildScrollView(
+        child: Column(children: _getList(context)),
+      ),
+    );
   }
 
   @override

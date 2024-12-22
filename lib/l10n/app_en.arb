@@ -618,6 +618,7 @@
   "webdavHelp3": "Port number represents the port where the service is located. If you are not sure, please do not edit.",
   "webdavExample": "https://dav.dropdav.com/",
   "copySuccess": "Copy successfully",
+  "clickToViewAndEditConfig": "Click to review or edit config",
 
   "help": "Help",
   "modifyBackupFilename": "Modify backup filename",

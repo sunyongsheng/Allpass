@@ -331,6 +331,7 @@
   "webdavHelp3": "端口号代表服务所在端口，如果您不清楚，请不要编辑.",
   "webdavExample": "https://dav.jianguoyun.com/dav/",
   "copySuccess": "复制成功",
+  "clickToViewAndEditConfig": "点击以查看或修改配置",
 
   "help": "帮助",
   "modifyBackupFilename": "修改备份文件名",
