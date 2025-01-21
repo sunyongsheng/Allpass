@@ -31,7 +31,7 @@ dependencies:
   # 路由管理
   fluro: ^2.0.5
   # 持久化
-  shared_preferences: ^2.3.2
+  shared_preferences: ^2.3.5
   # 依赖注入
   get_it: ^8.0.2
   # 生物识别
