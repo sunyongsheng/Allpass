@@ -1,4 +1,8 @@
+import 'dart:async';
+
+import 'package:allpass/common/widget/progress_dialog.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/import/import_exceptions.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +18,17 @@ import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:allpass/util/toast_util.dart';
 
-class ImportFromCsvPage extends StatelessWidget {
+class ImportFromCsvPage extends StatefulWidget {
+  @override
+  State createState() {
+    return _ImportFromCsvPageState();
+  }
+}
+
+class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
+
+  var _isShowingProgressDialog = false;
+  var _cancel = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +52,12 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text(l10n.password),
-                leading: Icon(Icons.supervised_user_circle, color: AllpassColorUI.allColor[0]),
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['csv']
-                  );
-                  _process(context, importFuture(context, AllpassType.password,
-                      result?.files.single.path));
-                }
+              title: Text(l10n.password),
+              leading: Icon(
+                Icons.supervised_user_circle,
+                color: AllpassColorUI.allColor[0],
+              ),
+              onTap: () async => await _onTap(AllpassType.password),
             ),
           ),
 
@@ -55,16 +65,12 @@ class ImportFromCsvPage extends StatelessWidget {
             margin: AllpassEdgeInsets.settingCardInset,
             elevation: 0,
             child: ListTile(
-                title: Text(l10n.card),
-                leading: Icon(Icons.credit_card, color: AllpassColorUI.allColor[1]),
-                onTap: () async {
-                  FilePickerResult? result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['csv']
-                  );
-                  _process(context, importFuture(context, AllpassType.card,
-                      result?.files.single.path));
-                }
+              title: Text(l10n.card),
+              leading: Icon(
+                Icons.credit_card,
+                color: AllpassColorUI.allColor[1],
+              ),
+              onTap: () async => await _onTap(AllpassType.card),
             ),
           ),
         ],
@@ -72,56 +78,97 @@ class ImportFromCsvPage extends StatelessWidget {
     );
   }
 
-  Future<Null> importFuture(BuildContext context, AllpassType type, String? path) async {
-    if (path != null) {
-      try {
-        if (type == AllpassType.password) {
-          var passwordProvider = context.read<PasswordProvider>();
-          List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
-          for (var bean in passwordList) {
-            await passwordProvider.insertPassword(bean);
-            RuntimeData.labelListAdd(bean.label);
-            RuntimeData.folderListAdd(bean.folder);
-          }
-          ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
-          await passwordProvider.refresh();
-        } else {
-          var cardProvider = context.read<CardProvider>();
-          List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
-          for (var bean in cardList) {
-            await cardProvider.insertCard(bean);
-            RuntimeData.labelListAdd(bean.label);
-            RuntimeData.folderListAdd(bean.folder);
-          }
-          ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
-          await cardProvider.refresh();
-        }
-      } catch (assertError) {
-        ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
-      }
-    } else {
-      ToastUtil.show(msg: context.l10n.importCanceled);
-    }
+  Future<void> _onTap(AllpassType type) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv']
+    );
+    _showProgressDialog(context, type, result?.files.single.path);
   }
-}
 
-void _process(BuildContext context, Future futureFunction) {
-  showDialog(
-    context: context,
-    builder: (cx) => FutureBuilder(
-      future: futureFunction,
-      builder: (context, snapshot) => switch (snapshot.connectionState) {
-        ConnectionState.done => Center(
-            child: Icon(
-              Icons.check_circle,
-              size: 50,
-              color: Colors.white,
-            ),
+  void _showProgressDialog(BuildContext context, AllpassType type, String? path) {
+    if (path == null) {
+      return;
+    }
+
+    _isShowingProgressDialog = true;
+    showDialog(
+      context: context,
+      builder: (cx) => ProgressDialog((onUpdateProgress) async {
+        var future = importActual(context, type, path, onUpdateProgress);
+        future.then(
+          (_) => Future.delayed(
+            Duration(milliseconds: 500),
+            () {
+              if (_isShowingProgressDialog) {
+                Navigator.pop(context, true);
+              }
+            },
           ),
-        _ => Center(
-            child: CircularProgressIndicator(),
-          ),
-      },
-    ),
-  );
+        );
+        return future;
+      }),
+    ).then((result) {
+      if (result != true) {
+        _cancel = true;
+      }
+      _isShowingProgressDialog = false;
+    });
+  }
+
+  Future<bool> importActual(BuildContext context, AllpassType type, String path, void Function(double) onUpdateProgress) async {
+    _cancel = false;
+    onUpdateProgress(0);
+    try {
+      if (type == AllpassType.password) {
+        var passwordProvider = context.read<PasswordProvider>();
+        List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
+        var size = passwordList.length;
+        var count = 0;
+        for (var bean in passwordList) {
+          if (_cancel) {
+            throw ImportCancellationException();
+          }
+
+          await passwordProvider.insertPassword(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
+          count++;
+          if (size > 0) {
+            onUpdateProgress(count / size);
+          }
+        }
+        ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
+        await passwordProvider.refresh();
+      } else if (type == AllpassType.card) {
+        var cardProvider = context.read<CardProvider>();
+        List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
+        var size = cardList.length;
+        var count = 0;
+        for (var bean in cardList) {
+          if (_cancel) {
+            throw ImportCancellationException();
+          }
+
+          await cardProvider.insertCard(bean);
+          RuntimeData.labelListAdd(bean.label);
+          RuntimeData.folderListAdd(bean.folder);
+          count++;
+          if (size > 0) {
+            onUpdateProgress(count / size);
+          }
+        }
+        ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
+        await cardProvider.refresh();
+      } else {
+        throw UnsupportedImportException();
+      }
+      return true;
+    } on ImportCancellationException {
+      ToastUtil.show(msg: context.l10n.importCanceled);
+    } catch (_) {
+      ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
+    }
+    return false;
+  }
 }

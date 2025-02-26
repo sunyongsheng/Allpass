@@ -27,6 +27,13 @@ class ImportPreviewPage extends StatefulWidget {
 class _ImportPreviewState extends State<ImportPreviewPage> {
 
   var _importing = false;
+  var _cancel = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancel = true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +130,10 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
     var repository = inject<PasswordRepository>();
     var provider = context.read<PasswordProvider>();
     for (var password in provider.passwordList) {
+      if (_cancel) {
+        return;
+      }
+
       await repository.create(password);
     }
     ToastUtil.show(msg: l10n.importRecordSuccess(provider.count));
