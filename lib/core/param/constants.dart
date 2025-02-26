@@ -47,6 +47,7 @@ class ChannelConstants {
   static const String methodSupportAutofill = "supportAutofill";
   static const String methodIsAppDefaultAutofill = "isAppDefaultAutofill";
   static const String methodSetAppDefaultAutofill = "setAppDefaultAutofill";
+  static const String methodOpenAppSettingsPage = "openAppSettingsPage";
 }
 
 class DataOperation {

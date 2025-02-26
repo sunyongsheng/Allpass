@@ -12,6 +12,8 @@ object FlutterChannel {
         const val SET_APP_DEFAULT_AUTOFILL = "setAppDefaultAutofill"
         const val IS_APP_DEFAULT_AUTOFILL = "isAppDefaultAutofill"
 
+        const val OPEN_APP_SETTINGS_PAGE = "openAppSettingsPage"
+
         const val OPEN_IMPORT_PAGE = "openImportPage"
     }
 }

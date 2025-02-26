@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:allpass/application.dart';
 import 'package:allpass/common/widget/progress_dialog.dart';
+import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/import/import_exceptions.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 
@@ -79,11 +82,18 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
   }
 
   Future<void> _onTap(AllpassType type) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['csv']
-    );
-    _showProgressDialog(context, type, result?.files.single.path);
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['csv']
+      );
+      _showProgressDialog(context, type, result?.files.single.path);
+    } on PlatformException catch (e) {
+      if (e.code == "read_external_storage_denied") {
+        ToastUtil.showError(msg: context.l10n.storagePermissionDenied);
+        await AllpassApplication.methodChannel.invokeMethod(ChannelConstants.methodOpenAppSettingsPage);
+      }
+    }
   }
 
   void _showProgressDialog(BuildContext context, AllpassType type, String? path) {

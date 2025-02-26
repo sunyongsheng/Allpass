@@ -428,5 +428,7 @@
 
   "importFromChromeTips1": "打开 Chrome，进入“密码管理工具”，点击“导出密码”",
   "importFromChromeTips2": "在文件管理中找到导出的密码文件，选择“分享”",
-  "importFromChromeTips3": "在分享面板中选择“导入到Allpass中”，将自动打开 Allpass 导入页面"
+  "importFromChromeTips3": "在分享面板中选择“导入到Allpass中”，将自动打开 Allpass 导入页面",
+
+  "storagePermissionDenied": "存储权限被禁止，请前往设置页打开存储空间权限"
 }

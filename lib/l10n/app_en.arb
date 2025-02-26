@@ -744,5 +744,7 @@
 
   "importFromChromeTips1": "Open the Chrome，and then open 'Google Password Manager'，click 'Export passwords'",
   "importFromChromeTips2": "Find exported password file in File Explorer，click 'Share'",
-  "importFromChromeTips3": "Click 'Allpass'，the import page will be open automatically"
+  "importFromChromeTips3": "Click 'Allpass'，the import page will be open automatically",
+
+  "storagePermissionDenied": "Storage permission is denied, please goto setting page to allow Allpass to access your storage"
 }

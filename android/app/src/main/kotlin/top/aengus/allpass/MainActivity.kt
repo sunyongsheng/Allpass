@@ -79,6 +79,14 @@ class MainActivity: FlutterFragmentActivity(), MethodChannel.MethodCallHandler {
                 }
                 result.success(null)
             }
+            FlutterChannel.Method.OPEN_APP_SETTINGS_PAGE -> {
+                startActivity(
+                    Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.fromParts("package", packageName, null)
+                    )
+                )
+            }
         }
     }
 
