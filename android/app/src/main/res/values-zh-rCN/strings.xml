@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Allpass</string>
+    <string name="import_hint_text">正在导入中，请等待…</string>
+    <string name="import_finish">导入完成</string>
+    <string name="import_preview">导入预览</string>
+    <string name="comma">,</string>
+    <string name="parse_error_no_username_or_password">解析失败：无username或password列</string>
+    <string name="import_into_allpass">导入到 Allpass</string>
+    <string name="allpass_autofill">Allpass 自动填充</string>
+</resources>

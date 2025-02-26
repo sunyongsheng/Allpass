@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="top.aengus.allpass">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -27,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter android:label="导入到Allpass">
+            <intent-filter android:label="@string/import_into_allpass">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/*" />
@@ -40,9 +41,10 @@
 
         <service
             android:name=".autofill.AllpassAutofillService"
-            android:label="Allpass自动填充"
+            android:label="@string/allpass_autofill"
             android:permission="android.permission.BIND_AUTOFILL_SERVICE"
-            android:exported="true">
+            android:exported="true"
+            tools:targetApi="o">
             <intent-filter>
                 <action android:name="android.service.autofill.AutofillService" />
             </intent-filter>

@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Allpass</string>
-    <string name="import_hint_text">正在导入中，请等待…</string>
-    <string name="import_finish">导入完成</string>
-    <string name="import_preview">导入预览</string>
+    <string name="import_hint_text">Importing, please wait…</string>
+    <string name="import_finish">Import finished</string>
+    <string name="import_preview">Import Preview</string>
     <string name="comma">,</string>
-    <string name="parse_error_no_username_or_password">解析失败：无username或password列</string>
+    <string name="parse_error_no_username_or_password">Parse failed: no username or password column</string>
+    <string name="import_into_allpass">Import into Allpass</string>
+    <string name="allpass_autofill">Allpass Autofill Service</string>
 </resources>
