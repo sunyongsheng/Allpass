@@ -70,11 +70,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/import_step1.jpg
-    - assets/images/import_step2.jpg
-    - assets/images/import_step3.jpg
-    - assets/images/import_step4.jpg
-    - assets/images/import_step5.png
+    - assets/images/import_step1.png
+    - assets/images/import_step2.png
+    - assets/images/import_step3.png
 
   fonts:
     - family: IconFont

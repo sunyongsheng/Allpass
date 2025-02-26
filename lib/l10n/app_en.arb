@@ -740,5 +740,9 @@
   "debugAllPasswordDeleted": "All password deleted",
   "debugAllCardDeleted": "All card deleted",
   "debugPasswordDBDeleted": "Password database deleted",
-  "debugCardDBDeleted": "Card database deleted"
+  "debugCardDBDeleted": "Card database deleted",
+
+  "importFromChromeTips1": "Open the Chrome，and then open 'Google Password Manager'，click 'Export passwords'",
+  "importFromChromeTips2": "Find exported password file in File Explorer，click 'Share'",
+  "importFromChromeTips3": "Click 'Allpass'，the import page will be open automatically"
 }
