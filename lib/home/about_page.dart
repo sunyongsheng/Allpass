@@ -64,12 +64,6 @@ class AboutPage extends StatelessWidget {
                           subtitle: Text(l10n.allpassIntroduction),
                           trailing: Text("V${AllpassApplication.version}", style: TextStyle(color: Colors.grey),),
                           isThreeLine: true,
-                          onTap: () async {
-                              await launchUrl(
-                                Uri.parse("https://allpass.aengus.top"),
-                                mode: LaunchMode.externalApplication,
-                              );
-                            },
                           onLongPress: () {
                             if (!VersionUtil.isDebug()) {
                               commonLogger.w("current isn't debug mode");
@@ -85,6 +79,18 @@ class AboutPage extends StatelessWidget {
                     Container(
                       child: Divider(),
                       padding: AllpassEdgeInsets.dividerInset,
+                    ),
+                    Container(
+                      padding: AllpassEdgeInsets.dividerInset,
+                      child: TextButton(
+                        child: Text(l10n.website),
+                        onPressed: () async {
+                          await launchUrl(
+                            Uri.parse("https://allpass.aengus.top"),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
