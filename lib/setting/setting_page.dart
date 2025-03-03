@@ -66,7 +66,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     super.build(context);
     var l10n = context.l10n;
 
-    var firstCardWidgets = [
+    var securityWidgets = [
       ListTile(
         title: Text(l10n.mainPasswordManager),
         leading: Icon(Icons.account_circle_outlined, color: AllpassColorUI.allColor[0],),
@@ -115,6 +115,9 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           },
         ),
       ),
+    ];
+
+    var functionWidgets = [
       ListTile(
         title: Text(l10n.longPressToCopy),
         leading: Icon(Icons.content_copy, color: AllpassColorUI.allColor[2]),
@@ -137,8 +140,23 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       ),
     ];
+    var autofillProvider = context.watch<AutofillProvider>();
+    if (autofillProvider.supportAutofill) {
+      functionWidgets.add(ListTile(
+        title: Text(l10n.autofill),
+        leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
+        onTap: () {
+          Navigator.push(context, CupertinoPageRoute(
+            builder: (context) => ChangeNotifierProvider.value(
+              value: autofillProvider,
+              child: AutofillPage(),
+            ),
+          ));
+        },
+      ));
+    }
 
-    var secondCardWidgets = [
+    var categoryWidgets = [
       ListTile(
         title: Text(l10n.labelManager),
         leading: Icon(Icons.label_outline, color: AllpassColorUI.allColor[3]),
@@ -159,7 +177,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
       ),
     ];
 
-    var thirdCardWidgets = [
+    var dataSyncWidgets = [
       ListTile(
         title: Text(l10n.webDavSync),
         leading: Icon(Icons.cloud_outlined, color: AllpassColorUI.allColor[0]),
@@ -189,23 +207,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
       )
     ];
 
-    var autofillProvider = context.watch<AutofillProvider>();
-    if (autofillProvider.supportAutofill) {
-      thirdCardWidgets.add(ListTile(
-        title: Text(l10n.autofill),
-        leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
-        onTap: () {
-          Navigator.push(context, CupertinoPageRoute(
-            builder: (context) => ChangeNotifierProvider.value(
-              value: autofillProvider,
-              child: AutofillPage(),
-            ),
-          ));
-        },
-      ));
-    }
-
-    var forthCardWidgets = [
+    var otherWidgets = [
       ListTile(
           title: Text(l10n.shareToFriends),
           leading: Icon(Icons.share, color: AllpassColorUI.allColor[2]),
@@ -263,28 +265,35 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: firstCardWidgets,
+                    children: securityWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: secondCardWidgets,
+                    children: functionWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: thirdCardWidgets,
+                    children: categoryWidgets,
                   ),
                 ),
                 Card(
                   margin: AllpassEdgeInsets.settingCardInset,
                   elevation: cardElevation,
                   child: Column(
-                    children: forthCardWidgets,
+                    children: dataSyncWidgets,
+                  ),
+                ),
+                Card(
+                  margin: AllpassEdgeInsets.settingCardInset,
+                  elevation: cardElevation,
+                  child: Column(
+                    children: otherWidgets,
                   ),
                 ),
                 Padding(
