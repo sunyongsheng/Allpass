@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:allpass/setting/autolock/auto_lock.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/webdav/backup/webdav_backup_method.dart';
@@ -66,7 +67,7 @@ class Config {
   static late WebDavCustomBackupFilename? webDavBackupFilename;
 
   /// 定期输入主密码天数
-  static late int timingInMainPassword;
+  static late InputMainPasswordTiming timingInMainPassword;
 
   /// 参数初始化
   static void initConfig() {
@@ -94,7 +95,7 @@ class Config {
     webDavBackupFilename = WebDavCustomBackupFilename.tryParse(sp.getString(SPKeys.webDavCustomBackupFilename));
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
-    timingInMainPassword = sp.getInt(SPKeys.timingInputMainPassword) ?? 10;
+    timingInMainPassword = InputMainPasswordTimings.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTiming.tenDays;
     RuntimeData.initData();
   }
 
@@ -106,7 +107,7 @@ class Config {
     longPressCopy = true;
     primaryColor = PrimaryColor.blue;
     themeMode = ThemeMode.system;
-    timingInMainPassword = 10;
+    timingInMainPassword = InputMainPasswordTiming.tenDays;
     webDavAuthSuccess = false;
     webDavUrl = "";
     webDavUsername = "";
@@ -232,8 +233,8 @@ class Config {
     }
   }
 
-  static void setTimingInMainPassDays(int value) {
+  static void setTimingInMainPassDays(InputMainPasswordTiming value) {
     timingInMainPassword = value;
-    AllpassApplication.sp.setInt(SPKeys.timingInputMainPassword, value);
+    AllpassApplication.sp.setInt(SPKeys.timingInputMainPassword, value.days);
   }
 }

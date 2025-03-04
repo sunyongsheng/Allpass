@@ -3,6 +3,8 @@
   "appError": "出错了",
   "appErrorHint1": "App出现错误，快去反馈给作者!",
   "appErrorHint2": "以下是出错信息，请截图发到邮箱sys6511@126.com",
+  "enabled": "已启用",
+  "disabled": "未启用",
 
   "unlock": "解锁",
   "unlockAllpass": "解锁 Allpass",

@@ -55,6 +55,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     super.initState();
 
     context.read<SettingProvider>().checkSupportAutofill();
+    context.read<SettingProvider>().checkAutofillEnable();
   }
 
   @override
@@ -120,6 +121,10 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
       ListTile(
         title: Text(l10n.autoLock),
         leading: Icon(Icons.lock_clock_outlined, color: AllpassColorUI.allColor[4]),
+        trailing: Text(
+          Config.autoLock.l10nStr(context),
+          style: AllpassTextUI.settingTrailing,
+        ),
         onTap: () {
           showDialog(
             context: context,
@@ -128,7 +133,9 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
               selector: (item) => item == Config.autoLock,
               itemTitleBuilder: (ctx, item) => item.l10nStr(ctx),
               onSelected: (autoLock) {
-                Config.setAutoLock(autoLock);
+                setState(() {
+                  Config.setAutoLock(autoLock);
+                });
               },
             ),
           );
@@ -164,6 +171,10 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
       functionWidgets.add(ListTile(
         title: Text(l10n.autofill),
         leading: Icon(Icons.edit_road, color: AllpassColorUI.allColor[6]),
+        trailing: Text(
+          autofillProvider.autofillEnable ? l10n.enabled : l10n.disabled,
+          style: AllpassTextUI.settingTrailing,
+        ),
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(
             builder: (context) => ChangeNotifierProvider.value(

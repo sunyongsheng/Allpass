@@ -21,6 +21,11 @@ class AllpassTextUI {
       TextStyle(fontSize: 12);
   static final TextStyle hintTextStyle =
       TextStyle(fontSize: 16, color: Colors.grey[800]);
+
+  static final TextStyle settingTrailing = TextStyle(
+    fontSize: 12,
+    color: Colors.grey,
+  );
 }
 
 /// 保存所有Allpass用到的颜色

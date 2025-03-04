@@ -1,4 +1,5 @@
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,10 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     if (Config.enabledBiometrics) {
       children.add(ListTile(
         title: Text(l10n.inputMainPasswordTiming),
+        trailing: Text(
+          Config.timingInMainPassword.l10n(context),
+          style: AllpassTextUI.settingTrailing,
+        ),
         leading: Icon(Icons.timer, color: AllpassColorUI.allColor[1]),
         onTap: () {
           _onTapInputMasterPasswordTiming(context);
@@ -71,9 +76,7 @@ class _AccountManagerPage extends State<AccountManagerPage> {
       ListTile(
         title: Text(l10n.lockAllpass),
         leading: Icon(Icons.lock, color: AllpassColorUI.allColor[7]),
-        onTap: () => Config.enabledBiometrics
-            ? AllpassNavigator.goAuthLoginPage(context)
-            : AllpassNavigator.goLoginPage(context),
+        onTap: () => AllpassNavigator.goLoginPage(context),
       ),
     ]);
     return Scaffold(
@@ -107,39 +110,28 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     showDialog(
       context: context,
       builder: (context) {
-        String initial = l10n.nDays(Config.timingInMainPassword);
-        if (Config.timingInMainPassword < 0) {
-          initial = l10n.never;
-        }
-        return DefaultSelectItemDialog<String>(
-          list: [
-            l10n.sevenDays,
-            l10n.tenDays,
-            l10n.fifteenDays,
-            l10n.thirtyDays,
-            l10n.never
-          ],
-          selector: (data) => data == initial,
-          onSelected: (days) {
-            if (days == l10n.never) {
+        return DefaultSelectItemDialog(
+          list: InputMainPasswordTiming.values,
+          selector: (data) => data == Config.timingInMainPassword,
+          itemTitleBuilder: (ctx, item) => item.l10n(ctx),
+          onSelected: (timing) {
+            if (timing == InputMainPasswordTiming.never) {
               showDialog(
                 context: context,
                 builder: (context) => ConfirmDialog(
                   l10n.confirmSelect,
                   l10n.selectNeverWarning,
                   onConfirm: () {
-                    Config.setTimingInMainPassDays(-1);
+                    setState(() {
+                      Config.setTimingInMainPassDays(timing);
+                    });
                   },
                 ),
               );
-            } else if (days == l10n.sevenDays) {
-              Config.setTimingInMainPassDays(7);
-            } else if (days == l10n.tenDays) {
-              Config.setTimingInMainPassDays(10);
-            } else if (days == l10n.fifteenDays) {
-              Config.setTimingInMainPassDays(15);
-            } else if (days == l10n.thirtyDays) {
-              Config.setTimingInMainPassDays(30);
+            } else {
+              setState(() {
+                Config.setTimingInMainPassDays(timing);
+              });
             }
           },
         );

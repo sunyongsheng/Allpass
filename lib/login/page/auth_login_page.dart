@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -113,7 +114,9 @@ class _AuthLoginPage extends State<StatefulWidget> {
     // 两次时间
     DateTime now = DateTime.now();
     DateTime latestUsePassword = DateTime.parse(AllpassApplication.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
-    if (Config.timingInMainPassword > 0 && now.difference(latestUsePassword).inDays >= Config.timingInMainPassword) {
+    if (Config.timingInMainPassword != InputMainPasswordTiming.never
+        && now.difference(latestUsePassword).inDays >= Config.timingInMainPassword.days
+    ) {
       await _localAuthService.stopAuthenticate();
       showDialog<bool>(
         context: context,

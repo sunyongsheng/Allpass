@@ -3,6 +3,8 @@
   "appError": "Occurs error",
   "appErrorHint1": "App occurs unexpected error, please report to author",
   "appErrorHint2": "Please see below for the error message. Kindly take a screenshot and send it to the email address sys6511@126.com.",
+  "enabled": "Enabled",
+  "disabled": "Disabled",
 
   "unlock": "Unlock",
   "@unlock": {
