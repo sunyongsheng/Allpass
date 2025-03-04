@@ -99,26 +99,6 @@ class Config {
     RuntimeData.initData();
   }
 
-  /// 清空参数
-  static void configClear() async {
-    password = "";
-    enabledBiometrics = false;
-    autoLock = AutoLock.disabled;
-    longPressCopy = true;
-    primaryColor = PrimaryColor.blue;
-    themeMode = ThemeMode.system;
-    timingInMainPassword = InputMainPasswordTiming.tenDays;
-    webDavAuthSuccess = false;
-    webDavUrl = "";
-    webDavUsername = "";
-    webDavPassword = "";
-    webDavEncryptLevel = EncryptLevel.None;
-    webDavMergeMethod = MergeMethod.localFirst;
-    webDavBackupMethod = WebDavBackupMethod.createNew;
-    webDavBackupFilename = null;
-    RuntimeData.clearData();
-  }
-
   /// 更新上次使用密码的时间
   static void updateLatestUsePasswordTime() {
     AllpassApplication.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());

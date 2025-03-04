@@ -4,6 +4,7 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/navigation/routes.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
@@ -96,9 +97,10 @@ class AllpassApplication {
     await context.read<CardProvider>().clear();
     await EncryptUtil.clearEncrypt();
     await AllpassApplication.sp.clear();
-    Config.configClear();
+    RuntimeData.clearData();
 
     await EncryptUtil.initEncrypt();
+    Config.initConfig();
   }
 }
 
