@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:allpass/setting/autolock/auto_lock.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
@@ -106,6 +107,10 @@ class Config {
 
   static bool allowUseAuthLogin() {
     return enabledBiometrics && !hasLockManually;
+  }
+
+  static bool isPasswordCorrect(String password) {
+    return Config.password == EncryptUtil.encrypt(password);
   }
 
   /// 更新上次使用密码的时间

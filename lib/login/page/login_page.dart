@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/login/locker.dart';
+import 'package:allpass/login/force_locker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +10,6 @@ import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
@@ -122,14 +121,14 @@ class _LoginPage extends State<LoginPage> {
   }
 
   void login() async {
-    var lockSeconds = Locker.remainsLockSeconds();
+    var lockSeconds = ForceLocker.remainsLockSeconds();
     if (lockSeconds > 0) {
       ToastUtil.showError(msg: context.l10n.lockingRemains(lockSeconds));
       return;
     }
 
     if (inputErrorTimes >= 5) {
-      await Locker.lock();
+      await ForceLocker.lock();
       inputErrorTimes = 0;
       ToastUtil.showError(msg: context.l10n.errorExceedThreshold);
       return;
@@ -141,8 +140,13 @@ class _LoginPage extends State<LoginPage> {
       return;
     }
 
-    if (Config.password != "") {
-      if (Config.password == EncryptUtil.encrypt(password)) {
+    if (Config.password.isEmpty) {
+      ToastUtil.showError(msg: context.l10n.notSetupYet);
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => RegisterPage(),
+      ));
+    } else {
+      if (Config.isPasswordCorrect(password)) {
         Config.setHasLockManually(false);
         Config.updateLatestUsePasswordTime();
         AllpassNavigator.goHomePage(context);
@@ -151,11 +155,6 @@ class _LoginPage extends State<LoginPage> {
         inputErrorTimes++;
         ToastUtil.showError(msg: context.l10n.mainPasswordError(inputErrorTimes));
       }
-    } else {
-      ToastUtil.showError(msg: context.l10n.notSetupYet);
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) => RegisterPage(),
-      ));
     }
   }
 }

@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:allpass/application.dart';
 
-class Locker {
+class ForceLocker {
 
-  Locker._();
+  ForceLocker._();
 
   static final String _lastLockTime = "last_lock_time";
 

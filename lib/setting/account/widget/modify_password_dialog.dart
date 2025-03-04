@@ -58,7 +58,7 @@ class ModifyPasswordDialog extends StatelessWidget {
         TextButton(
           child: Text(l10n.submit, style: TextStyle(color: mainColor)),
           onPressed: () async {
-            if (Config.password == EncryptUtil.encrypt(_oldPasswordController.text)) {
+            if (Config.isPasswordCorrect(_oldPasswordController.text)) {
               if (_newPasswordController.text.length >= 6
                   && _newPasswordController.text == _secondInputController.text) {
                 String newPassword = EncryptUtil.encrypt(_newPasswordController.text);

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 class InputMainPasswordDialog extends StatelessWidget {
@@ -53,7 +52,7 @@ class InputMainPasswordDialog extends StatelessWidget {
       ToastUtil.showError(msg: context.l10n.pleaseInputMainPassword);
       return;
     }
-    if (EncryptUtil.encrypt(_passwordController.text) == Config.password) {
+    if (Config.isPasswordCorrect(_passwordController.text)) {
       _passwordController.clear();
       Config.updateLatestUsePasswordTime();
       Navigator.pop<bool>(context, true);
