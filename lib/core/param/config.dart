@@ -21,7 +21,11 @@ class Config {
 
   /// 是否启用生物识别
   static late bool enabledBiometrics;
-  
+
+  /// 是否手工锁定过
+  static late bool hasLockManually;
+
+  /// 自动锁定
   static late AutoLock autoLock;
 
   /// 是否开启长按复制，否则为长按多选
@@ -76,6 +80,7 @@ class Config {
     password = sp.getString(SPKeys.password) ?? "";
     // 判断是否开启生物识别
     enabledBiometrics = sp.getBool(SPKeys.biometrics) ?? false;
+    hasLockManually = sp.getBool(SPKeys.hasLockManually) ?? false;
     autoLock = AutoLocks.tryParse(sp.getInt(SPKeys.autoLock)) ?? AutoLock.disabled;
     // 判断长按功能
     longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
@@ -99,6 +104,10 @@ class Config {
     RuntimeData.initData();
   }
 
+  static bool allowUseAuthLogin() {
+    return enabledBiometrics && !hasLockManually;
+  }
+
   /// 更新上次使用密码的时间
   static void updateLatestUsePasswordTime() {
     AllpassApplication.sp.setString(SPKeys.latestUsePassword, DateTime.now().toIso8601String());
@@ -107,6 +116,11 @@ class Config {
   static void setPassword(String encryptedValue) {
     password = encryptedValue;
     AllpassApplication.sp.setString(SPKeys.password, encryptedValue);
+  }
+
+  static void setHasLockManually(bool value) {
+    hasLockManually = value;
+    AllpassApplication.sp.setBool(SPKeys.hasLockManually, value);
   }
 
   static void setEnabledBiometrics(bool value) {

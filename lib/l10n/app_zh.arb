@@ -23,6 +23,7 @@
   "unlockSuccess": "解锁成功",
   "mainPasswordError": "主密码错误，已错误{inputErrorTimes}次，连续超过五次将锁定30秒",
   "notSetupYet": "还未设置过Allpass，请先进行设置",
+  "appHasForceLock": "应用已锁定，请使用密码解锁",
 
   "setupAllpass": "设置 Allpass",
   "pleaseInputAgain": "请再输入一遍",

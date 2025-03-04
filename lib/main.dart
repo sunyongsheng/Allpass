@@ -62,7 +62,7 @@ class Allpass extends StatelessWidget {
     if (Config.password.isEmpty) {
       initialPage = RegisterPage();
     } else {
-      if (Config.enabledBiometrics) {
+      if (Config.allowUseAuthLogin()) {
         initialPage = AuthLoginPage();
       } else {
         initialPage = LoginPage();

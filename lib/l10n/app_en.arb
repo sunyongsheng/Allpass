@@ -47,6 +47,7 @@
     }
   },
   "notSetupYet": "Allpass has not been set up yet, please set it up first",
+  "appHasForceLock": "Allpass has been locked, please use password to unlock",
 
   "setupAllpass": "Setup Allpass",
   "pleaseInputAgain": "Please input again",

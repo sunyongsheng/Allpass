@@ -76,7 +76,10 @@ class _AccountManagerPage extends State<AccountManagerPage> {
       ListTile(
         title: Text(l10n.lockAllpass),
         leading: Icon(Icons.lock, color: AllpassColorUI.allColor[7]),
-        onTap: () => AllpassNavigator.goLoginPage(context),
+        onTap: () {
+          Config.setHasLockManually(true);
+          AllpassNavigator.goLoginPage(context);
+        },
       ),
     ]);
     return Scaffold(

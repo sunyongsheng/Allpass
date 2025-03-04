@@ -10,6 +10,7 @@ class SPKeys {
   static const String allpassVersion = "ALLPASS_VERSION";
   static const String password = "password";
   static const String biometrics = "biometrics";
+  static const String hasLockManually = "hasLockManually";
   static const String autoLock = "autoLock";
   static const String longPressCopy = "longPressCopy";
   static const String primaryColor = "theme";

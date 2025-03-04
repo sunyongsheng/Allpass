@@ -101,7 +101,11 @@ class _LoginPage extends State<LoginPage> {
                     child: Text(context.l10n.useBiometrics),
                     onPressed: () {
                       if (Config.enabledBiometrics) {
-                        AllpassNavigator.goAuthLoginPage(context);
+                        if (Config.hasLockManually) {
+                          ToastUtil.show(msg: context.l10n.appHasForceLock);
+                        } else {
+                          AllpassNavigator.goAuthLoginPage(context);
+                        }
                       } else {
                         ToastUtil.show(msg: context.l10n.notEnableBiometricsYet);
                       }
@@ -139,9 +143,10 @@ class _LoginPage extends State<LoginPage> {
 
     if (Config.password != "") {
       if (Config.password == EncryptUtil.encrypt(password)) {
+        Config.setHasLockManually(false);
+        Config.updateLatestUsePasswordTime();
         AllpassNavigator.goHomePage(context);
         ToastUtil.show(msg: context.l10n.unlockSuccess);
-        Config.updateLatestUsePasswordTime();
       } else {
         inputErrorTimes++;
         ToastUtil.showError(msg: context.l10n.mainPasswordError(inputErrorTimes));
