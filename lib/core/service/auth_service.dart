@@ -1,4 +1,5 @@
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/autolock/auto_lock_handler.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
@@ -35,6 +36,7 @@ class AuthServiceImpl implements AuthService {
       } else if (availableBiometrics.contains(BiometricType.iris)) {
         type = BiometricType.iris;
       }
+      AutoLockHandler.pendingHandle();
       var isAuthenticated = await _auth.authenticate(
           localizedReason: context.l10n.authorizeToUnlock,
           authMessages: [
