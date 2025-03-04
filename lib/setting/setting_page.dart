@@ -1,7 +1,9 @@
+import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/autolock/auto_lock.dart';
 import 'package:allpass/setting/autofill/autofill_page.dart';
-import 'package:allpass/setting/autofill/autofill_provider.dart';
+import 'package:allpass/setting/setting_provider.dart';
 import 'package:allpass/webdav/ui/webdav_sync_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
     _controller = ScrollController();
     super.initState();
 
-    context.read<AutofillProvider>().checkSupportAutofill();
+    context.read<SettingProvider>().checkSupportAutofill();
   }
 
   @override
@@ -115,6 +117,23 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
           },
         ),
       ),
+      ListTile(
+        title: Text(l10n.autoLock),
+        leading: Icon(Icons.lock_clock_outlined, color: AllpassColorUI.allColor[4]),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (ctx) => DefaultSelectItemDialog(
+              list: AutoLock.values,
+              selector: (item) => item == Config.autoLock,
+              itemTitleBuilder: (ctx, item) => item.l10nStr(ctx),
+              onSelected: (autoLock) {
+                Config.setAutoLock(autoLock);
+              },
+            ),
+          );
+        },
+      ),
     ];
 
     var functionWidgets = [
@@ -140,7 +159,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
         },
       ),
     ];
-    var autofillProvider = context.watch<AutofillProvider>();
+    var autofillProvider = context.watch<SettingProvider>();
     if (autofillProvider.supportAutofill) {
       functionWidgets.add(ListTile(
         title: Text(l10n.autofill),

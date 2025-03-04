@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/core/param/runtime_data.dart';
+import 'package:allpass/setting/autolock/auto_lock.dart';
 import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/webdav/backup/webdav_backup_method.dart';
 import 'package:allpass/webdav/encrypt/encrypt_level.dart';
@@ -19,6 +20,8 @@ class Config {
 
   /// 是否启用生物识别
   static late bool enabledBiometrics;
+  
+  static late AutoLock autoLock;
 
   /// 是否开启长按复制，否则为长按多选
   static late bool longPressCopy;
@@ -72,6 +75,7 @@ class Config {
     password = sp.getString(SPKeys.password) ?? "";
     // 判断是否开启生物识别
     enabledBiometrics = sp.getBool(SPKeys.biometrics) ?? false;
+    autoLock = AutoLocks.tryParse(sp.getInt(SPKeys.autoLock)) ?? AutoLock.disabled;
     // 判断长按功能
     longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
     // 初始化主题
@@ -98,6 +102,7 @@ class Config {
   static void configClear() async {
     password = "";
     enabledBiometrics = false;
+    autoLock = AutoLock.disabled;
     longPressCopy = true;
     primaryColor = PrimaryColor.blue;
     themeMode = ThemeMode.system;
@@ -126,6 +131,11 @@ class Config {
   static void setEnabledBiometrics(bool value) {
     enabledBiometrics = value;
     AllpassApplication.sp.setBool(SPKeys.biometrics, value);
+  }
+  
+  static void setAutoLock(AutoLock value) {
+    autoLock = value;
+    AllpassApplication.sp.setInt(SPKeys.autoLock, value.value);
   }
 
   static void setLongPressCopy(bool value) {

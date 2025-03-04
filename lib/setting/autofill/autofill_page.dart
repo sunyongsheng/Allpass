@@ -1,6 +1,6 @@
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/setting/autofill/autofill_provider.dart';
+import 'package:allpass/setting/setting_provider.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
 
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<AutofillProvider>().checkAutofillEnable();
+      context.read<SettingProvider>().checkAutofillEnable();
     });
   }
 
@@ -32,7 +32,7 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<AutofillProvider>().checkAutofillEnable();
+      context.read<SettingProvider>().checkAutofillEnable();
     }
   }
 
@@ -60,7 +60,7 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Align(
-                  child: Consumer<AutofillProvider>(
+                  child: Consumer<SettingProvider>(
                     builder: (_, provider, __) {
                       var color = provider.autofillEnable
                           ? Colors.grey
@@ -100,7 +100,7 @@ class _AutofillState extends State<AutofillPage> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              onTap: context.read<AutofillProvider>().gotoAutofillSetting,
+              onTap: context.read<SettingProvider>().gotoAutofillSetting,
             ),
           ),
           Padding(

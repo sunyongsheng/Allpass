@@ -4,7 +4,7 @@ import 'package:allpass/core/param/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AutofillProvider extends ChangeNotifier {
+class SettingProvider extends ChangeNotifier {
   var _supportAutofill = false;
   var _autofillEnable = false;
 

@@ -8,6 +8,8 @@ class RuntimeData {
 
   static List<String> folderList = [];              // 文件夹列表
   static List<String> labelList = [];               // 标签列表
+  static int lastResumeTime = 0;
+  static int lastPauseTime = 0;
 
   static void initData() {
     String folder = AllpassApplication.sp.getString(SPKeys.folder) ?? "";

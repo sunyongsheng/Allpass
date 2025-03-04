@@ -1,5 +1,6 @@
 import 'package:allpass/application.dart';
 import 'package:allpass/navigation/routes.dart';
+import 'package:allpass/setting/autolock/auto_lock_handler.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +38,7 @@ class AllpassNavigator {
   }
 
   static void goHomePage(BuildContext context) {
+    AutoLockHandler.pendingHandle();
     _navigateTo(context, Routes.home, clearStack: true);
   }
 

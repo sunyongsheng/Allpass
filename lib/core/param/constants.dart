@@ -2,11 +2,15 @@
 const String allpassUrl = "https://allpass.aengus.top/api";
 
 class SPKeys {
+
+  SPKeys._();
+
   static const String firstRun = "FIRST_RUN";
   static const String needRegister = "NEED_REGISTER";
   static const String allpassVersion = "ALLPASS_VERSION";
   static const String password = "password";
   static const String biometrics = "biometrics";
+  static const String autoLock = "autoLock";
   static const String longPressCopy = "longPressCopy";
   static const String primaryColor = "theme";
   static const String themeMode = "themeMode";

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:allpass/card/model/card_bean.dart';
@@ -7,13 +6,15 @@ import 'package:allpass/classification/page/classification_page.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/model/api/update_bean.dart';
 import 'package:allpass/core/param/constants.dart';
+import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/service/allpass_service.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/common/data/multi_item_edit_provider.dart';
 import 'package:allpass/password/page/password_page.dart';
-import 'package:allpass/setting/autofill/autofill_provider.dart';
+import 'package:allpass/setting/autolock/auto_lock_handler.dart';
+import 'package:allpass/setting/setting_provider.dart';
 import 'package:allpass/setting/setting_page.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:allpass/setting/update/update_dialog.dart';
@@ -28,7 +29,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, WidgetsBindingObserver {
 
-  final AutofillProvider autofillProvider = AutofillProvider();
+  final SettingProvider settingProvider = SettingProvider();
 
   int _currentIndex = 0;
   late PageController _controller;
@@ -51,7 +52,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
       }
     });
 
-    autofillProvider.checkSupportAutofill();
+    settingProvider.checkSupportAutofill();
 
     // 导入密码Channel
     var importCsvMessageChannel = MethodChannel(ChannelConstants.channelImportCsv);
@@ -72,19 +73,18 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print(state);
-    if (Platform.isIOS) {
-      switch (state) {
-        case AppLifecycleState.resumed:
-          break;
-        case AppLifecycleState.inactive:
-          break;
-        case AppLifecycleState.paused:
-          break;
-        case AppLifecycleState.detached:
-          break;
-        default:
-          break;
-      }
+    switch (state) {
+      case AppLifecycleState.resumed:
+        AutoLockHandler.handleOnResume(context);
+        RuntimeData.lastResumeTime = DateTime.now().millisecondsSinceEpoch;
+        break;
+
+      case AppLifecycleState.paused:
+        RuntimeData.lastPauseTime = DateTime.now().millisecondsSinceEpoch;
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -125,8 +125,8 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
             case 2:
               return ClassificationPage();
             case 3:
-              return ChangeNotifierProvider<AutofillProvider>(
-                create: (_) => autofillProvider,
+              return ChangeNotifierProvider<SettingProvider>(
+                create: (_) => settingProvider,
                 child: SettingPage(),
               );
             default:
