@@ -75,7 +75,7 @@ class _HomePage extends State<HomePage> with AutomaticKeepAliveClientMixin, Widg
     print(state);
     switch (state) {
       case AppLifecycleState.resumed:
-        AutoLockHandler.handleOnResume(context);
+        AutoLockHandler.lock(context);
         RuntimeData.lastResumeTime = DateTime.now().millisecondsSinceEpoch;
         break;
 

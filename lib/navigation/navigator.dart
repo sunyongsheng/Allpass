@@ -1,4 +1,5 @@
 import 'package:allpass/application.dart';
+import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/navigation/routes.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -28,12 +29,24 @@ class AllpassNavigator {
     );
   }
 
-  static void goLoginPage(BuildContext context) {
-    _navigateTo(context, Routes.login, clearStack: true);
+  static void goLoginPage(BuildContext context, { LoginArguments? arguments = null }) {
+    var args = arguments ?? LoginArguments();
+    _navigateTo(
+      context,
+      Routes.login,
+      clearStack: !args.fromAutoLock,
+      arguments: args,
+    );
   }
 
-  static void goAuthLoginPage(BuildContext context) {
-    _navigateTo(context, Routes.authLogin, clearStack: true);
+  static void goAuthLoginPage(BuildContext context, { LoginArguments? arguments = null }) {
+    var args = arguments ?? LoginArguments();
+    _navigateTo(
+      context,
+      Routes.authLogin,
+      clearStack: !args.fromAutoLock,
+      arguments: args,
+    );
   }
 
   static void goHomePage(BuildContext context) {

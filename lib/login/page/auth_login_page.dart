@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/login/page/abstract_login_page.dart';
 import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/config.dart';
@@ -15,11 +13,12 @@ import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/core/service/auth_service.dart';
 import 'package:allpass/setting/account/widget/input_main_password_dialog.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 
 
 /// 生物识别登录页
-class AuthLoginPage extends StatefulWidget {
+class AuthLoginPage extends AbstractLoginPage {
+
+  const AuthLoginPage({super.key, required super.arguments});
 
   @override
   State<StatefulWidget> createState() {
@@ -27,32 +26,20 @@ class AuthLoginPage extends StatefulWidget {
   }
 }
 
-class _AuthLoginPage extends State<StatefulWidget> {
+class _AuthLoginPage extends AbstractLoginState {
 
   final AuthService _localAuthService = inject();
 
   @override
   void initState() {
     super.initState();
-
-    var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
-      askAuth(context);
+      login();
     });
-
-    PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
-      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
-    };
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildRoot(BuildContext context) {
     var l10n = context.l10n;
     return Scaffold(
       body: Column(
@@ -77,7 +64,7 @@ class _AuthLoginPage extends State<StatefulWidget> {
               backgroundColor: WidgetStateProperty.all(Colors.transparent)
             ),
             autofocus: true,
-            onPressed: () => askAuth(context),
+            onPressed: () => login(),
             child: Column(
               children: <Widget>[
                 Icon(Icons.fingerprint, size: AllpassScreenUtil.setWidth(150),),
@@ -109,40 +96,48 @@ class _AuthLoginPage extends State<StatefulWidget> {
     );
   }
 
-  Future<Null> askAuth(BuildContext context) async {
+  @override
+  Future<bool> onPreLogin() async {
     var l10n = context.l10n;
     // 两次时间
     DateTime now = DateTime.now();
-    DateTime latestUsePassword = DateTime.parse(AllpassApplication.sp.get(SPKeys.latestUsePassword)?.toString() ?? now.toIso8601String());
-    if (Config.timingInMainPassword != InputMainPasswordTiming.never
-        && now.difference(latestUsePassword).inDays >= Config.timingInMainPassword.days
+    String? lastUsePassword = AllpassApplication.sp.getString(SPKeys.latestUsePassword);
+    DateTime lastUsePasswordTime;
+    if (lastUsePassword == null) {
+      lastUsePasswordTime = now;
+    } else {
+      lastUsePasswordTime = DateTime.parse(lastUsePassword);
+    }
+    if (Config.timingInMainPassword != InputMainPasswordTimingEnum.never
+        && now.difference(lastUsePasswordTime).inDays >= Config.timingInMainPassword.days
     ) {
       await _localAuthService.stopAuthenticate();
-      showDialog<bool>(
+      var result = await showDialog<bool>(
         context: context,
         builder: (context) => InputMainPasswordDialog(
           helperText: l10n.inputMainPasswordTimingHint,
         ),
-      ).then((value) {
-        if (value ?? false) {
-          ToastUtil.show(msg: l10n.verificationSuccess);
-          Config.updateLatestUsePasswordTime();
-          AllpassNavigator.goHomePage(context);
-        } else {
-          ToastUtil.show(msg: l10n.mainPasswordErrorHint);
-          AllpassNavigator.goLoginPage(context);
-        }
-      });
-    } else {
-      var authResult = await _localAuthService.authenticate(context);
-      if (authResult == AuthResult.Success) {
+      );
+      if (result ?? false) {
         ToastUtil.show(msg: l10n.verificationSuccess);
-        AllpassNavigator.goHomePage(context);
-      } else if (authResult == AuthResult.Failed) {
-        ToastUtil.show(msg: l10n.biometricsRecognizedFailed);
+        return true;
       } else {
-        ToastUtil.show(msg: l10n.authorizationFailed);
+        ToastUtil.show(msg: l10n.mainPasswordErrorHint);
+        Config.setHasLockManually(true);
+        AllpassNavigator.goLoginPage(context);
       }
+      return false;
     }
+
+    var authResult = await _localAuthService.authenticate(context);
+    if (authResult == AuthResult.Success) {
+      ToastUtil.show(msg: l10n.verificationSuccess);
+      return true;
+    } else if (authResult == AuthResult.Failed) {
+      ToastUtil.show(msg: l10n.biometricsRecognizedFailed);
+    } else {
+      ToastUtil.show(msg: l10n.authorizationFailed);
+    }
+    return false;
   }
 }

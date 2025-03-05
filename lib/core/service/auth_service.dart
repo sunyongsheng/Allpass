@@ -36,7 +36,7 @@ class AuthServiceImpl implements AuthService {
       } else if (availableBiometrics.contains(BiometricType.iris)) {
         type = BiometricType.iris;
       }
-      AutoLockHandler.pendingHandle();
+      AutoLockHandler.pendingLock();
       var isAuthenticated = await _auth.authenticate(
           localizedReason: context.l10n.authorizeToUnlock,
           authMessages: [

@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:allpass/initializer/di_initializer.dart';
+import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,9 +64,9 @@ class Allpass extends StatelessWidget {
       initialPage = RegisterPage();
     } else {
       if (Config.allowUseAuthLogin()) {
-        initialPage = AuthLoginPage();
+        initialPage = AuthLoginPage(arguments: LoginArguments(),);
       } else {
-        initialPage = LoginPage();
+        initialPage = LoginPage(arguments: LoginArguments(),);
       }
     }
 

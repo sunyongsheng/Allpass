@@ -1,6 +1,7 @@
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/password/repository/password_repository.dart';
@@ -76,7 +77,7 @@ class _DebugPage extends State<DebugPage> {
                             child: WebDavSyncPage(),
                           ),
                           "register": RegisterPage(),
-                          "login": LoginPage(),
+                          "login": LoginPage(arguments: LoginArguments()),
                         };
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => pageMapping[value]!,

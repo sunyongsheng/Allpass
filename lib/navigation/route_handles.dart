@@ -1,5 +1,6 @@
 import 'package:allpass/home/home_page.dart';
 import 'package:allpass/login/page/auth_login_page.dart';
+import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_memory_data_source.dart';
@@ -11,12 +12,18 @@ import 'package:provider/provider.dart';
 
 /// 登录页
 var loginHandler = Handler(
-  handlerFunc: (context, params) => LoginPage(),
+  handlerFunc: (context, params) {
+    var arguments = context?.settings?.arguments as LoginArguments;
+    return LoginPage(arguments: arguments);
+  },
 );
 
 /// 生物识别登录页
 var authLoginHandler = Handler(
-  handlerFunc: (context, params) => AuthLoginPage(),
+  handlerFunc: (context, params) {
+    var arguments = context?.settings?.arguments as LoginArguments;
+    return AuthLoginPage(arguments: arguments);
+  },
 );
 
 /// 主页

@@ -1,4 +1,5 @@
 import 'package:allpass/core/common_logger.dart';
+import 'package:allpass/login/page/login_arguments.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
@@ -17,7 +18,7 @@ class Routes {
     router.notFoundHandler = Handler(
         handlerFunc: (BuildContext? context, Map<String, List<Object>> params) {
           commonLogger.e("ROUTE NOT FOUND params=$params");
-          return LoginPage();
+          return LoginPage(arguments: LoginArguments(),);
         }
     );
     router.define(login, handler: loginHandler);

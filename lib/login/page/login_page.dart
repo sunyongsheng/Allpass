@@ -1,10 +1,9 @@
-import 'dart:ui';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/login/force_locker.dart';
+import 'package:allpass/login/page/abstract_login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
@@ -13,17 +12,19 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/screen_util.dart';
 import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
 
 /// 登陆页面
-class LoginPage extends StatefulWidget {
+class LoginPage extends AbstractLoginPage {
+
+  const LoginPage({super.key, required super.arguments});
+
   @override
   State<StatefulWidget> createState() {
     return _LoginPage();
   }
 }
 
-class _LoginPage extends State<LoginPage> {
+class _LoginPage extends AbstractLoginState {
   late TextEditingController _passwordController;
 
   int inputErrorTimes = 0;
@@ -31,18 +32,9 @@ class _LoginPage extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
     _passwordController = TextEditingController();
-
-    var themeProvider = context.read<ThemeProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
-    });
-
-    PlatformDispatcher.instance.onPlatformBrightnessChanged = () {
-      themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
-    };
   }
+
   @override
   void dispose() {
     _passwordController.dispose();
@@ -50,7 +42,7 @@ class _LoginPage extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget buildRoot(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -120,24 +112,25 @@ class _LoginPage extends State<LoginPage> {
     );
   }
 
-  void login() async {
+  @override
+  Future<bool> onPreLogin() async {
     var lockSeconds = ForceLocker.remainsLockSeconds();
     if (lockSeconds > 0) {
       ToastUtil.showError(msg: context.l10n.lockingRemains(lockSeconds));
-      return;
+      return false;
     }
 
     if (inputErrorTimes >= 5) {
       await ForceLocker.lock();
       inputErrorTimes = 0;
       ToastUtil.showError(msg: context.l10n.errorExceedThreshold);
-      return;
+      return false;
     }
 
     var password = _passwordController.text;
     if (password.isEmpty) {
       ToastUtil.show(msg: context.l10n.pleaseInputMainPasswordFirst);
-      return;
+      return false;
     }
 
     if (Config.password.isEmpty) {
@@ -145,16 +138,18 @@ class _LoginPage extends State<LoginPage> {
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => RegisterPage(),
       ));
+      return false;
+    }
+
+    if (Config.isPasswordCorrect(password)) {
+      Config.setHasLockManually(false);
+      Config.updateLatestUsePasswordTime();
+      ToastUtil.show(msg: context.l10n.unlockSuccess);
+      return true;
     } else {
-      if (Config.isPasswordCorrect(password)) {
-        Config.setHasLockManually(false);
-        Config.updateLatestUsePasswordTime();
-        AllpassNavigator.goHomePage(context);
-        ToastUtil.show(msg: context.l10n.unlockSuccess);
-      } else {
-        inputErrorTimes++;
-        ToastUtil.showError(msg: context.l10n.mainPasswordError(inputErrorTimes));
-      }
+      inputErrorTimes++;
+      ToastUtil.showError(msg: context.l10n.mainPasswordError(inputErrorTimes));
+      return false;
     }
   }
 }
