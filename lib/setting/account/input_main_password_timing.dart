@@ -1,12 +1,43 @@
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/util/version_util.dart';
 import 'package:flutter/widgets.dart';
 
-enum InputMainPasswordTiming {
+abstract interface class InputMainPasswordTiming {
+  int get days;
+}
+
+class DebugInputMainPasswordTiming implements InputMainPasswordTiming {
+
+  DebugInputMainPasswordTiming._();
+
+  static DebugInputMainPasswordTiming instance = DebugInputMainPasswordTiming._();
+
+  @override
+  int get days => 0;
+}
+
+enum InputMainPasswordTimingEnum implements InputMainPasswordTiming {
   sevenDays,
   tenDays,
   fifteenDays,
   thirtyDays,
   never;
+
+  @override
+  int get days {
+    switch (this) {
+      case InputMainPasswordTimingEnum.sevenDays:
+        return 7;
+      case InputMainPasswordTimingEnum.tenDays:
+        return 10;
+      case InputMainPasswordTimingEnum.fifteenDays:
+        return 15;
+      case InputMainPasswordTimingEnum.thirtyDays:
+        return 30;
+      case InputMainPasswordTimingEnum.never:
+        return -1;
+    }
+  }
 }
 
 class InputMainPasswordTimings {
@@ -18,15 +49,18 @@ class InputMainPasswordTimings {
     }
 
     if (value <= 0) {
-      return InputMainPasswordTiming.never;
+      if (VersionUtil.isDebug() && value == 0) {
+        return DebugInputMainPasswordTiming.instance;
+      }
+      return InputMainPasswordTimingEnum.never;
     } else if (value == 7) {
-      return InputMainPasswordTiming.sevenDays;
+      return InputMainPasswordTimingEnum.sevenDays;
     } else if (value == 10) {
-      return InputMainPasswordTiming.tenDays;
+      return InputMainPasswordTimingEnum.tenDays;
     } else if (value == 15) {
-      return InputMainPasswordTiming.fifteenDays;
+      return InputMainPasswordTimingEnum.fifteenDays;
     } else if (value == 30) {
-      return InputMainPasswordTiming.thirtyDays;
+      return InputMainPasswordTimingEnum.thirtyDays;
     } else {
       return null;
     }
@@ -36,31 +70,18 @@ class InputMainPasswordTimings {
 extension InputMainPasswordTimingExt on InputMainPasswordTiming {
   String l10n(BuildContext context) {
     switch (this) {
-      case InputMainPasswordTiming.sevenDays:
+      case InputMainPasswordTimingEnum.sevenDays:
         return context.l10n.sevenDays;
-      case InputMainPasswordTiming.tenDays:
+      case InputMainPasswordTimingEnum.tenDays:
         return context.l10n.tenDays;
-      case InputMainPasswordTiming.fifteenDays:
+      case InputMainPasswordTimingEnum.fifteenDays:
         return context.l10n.fifteenDays;
-      case InputMainPasswordTiming.thirtyDays:
+      case InputMainPasswordTimingEnum.thirtyDays:
         return context.l10n.thirtyDays;
-      case InputMainPasswordTiming.never:
+      case InputMainPasswordTimingEnum.never:
         return context.l10n.never;
-    }
-  }
-
-  int get days {
-    switch (this) {
-      case InputMainPasswordTiming.sevenDays:
-        return 7;
-      case InputMainPasswordTiming.tenDays:
-        return 10;
-      case InputMainPasswordTiming.fifteenDays:
-        return 15;
-      case InputMainPasswordTiming.thirtyDays:
-        return 30;
-      case InputMainPasswordTiming.never:
-        return -1;
+      default:
+        return "Now(Debug)";
     }
   }
 }

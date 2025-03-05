@@ -101,7 +101,7 @@ class Config {
     webDavBackupFilename = WebDavCustomBackupFilename.tryParse(sp.getString(SPKeys.webDavCustomBackupFilename));
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
-    timingInMainPassword = InputMainPasswordTimings.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTiming.tenDays;
+    timingInMainPassword = InputMainPasswordTimings.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTimingEnum.tenDays;
     RuntimeData.initData();
   }
 

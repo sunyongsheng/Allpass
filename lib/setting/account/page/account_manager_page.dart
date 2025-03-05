@@ -1,6 +1,7 @@
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
+import 'package:allpass/util/version_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -113,12 +114,16 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     showDialog(
       context: context,
       builder: (context) {
+        var timings = <InputMainPasswordTiming>[]..addAll(InputMainPasswordTimingEnum.values);
+        if (VersionUtil.isDebug()) {
+          timings.add(DebugInputMainPasswordTiming.instance);
+        }
         return DefaultSelectItemDialog(
-          list: InputMainPasswordTiming.values,
+          list: timings,
           selector: (data) => data == Config.timingInMainPassword,
           itemTitleBuilder: (ctx, item) => item.l10n(ctx),
           onSelected: (timing) {
-            if (timing == InputMainPasswordTiming.never) {
+            if (timing == InputMainPasswordTimingEnum.never) {
               showDialog(
                 context: context,
                 builder: (context) => ConfirmDialog(
