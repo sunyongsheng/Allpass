@@ -81,6 +81,10 @@ class AboutPage extends StatelessWidget {
                       padding: AllpassEdgeInsets.dividerInset,
                     ),
                     Container(
+                      padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
+                      child: Text(l10n.contact, style: TextStyle(fontWeight: FontWeight.bold),),
+                    ),
+                    Container(
                       padding: AllpassEdgeInsets.dividerInset,
                       child: TextButton(
                         child: Text(l10n.website),
@@ -91,10 +95,6 @@ class AboutPage extends StatelessWidget {
                           );
                         },
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 10),
-                      child: Text(l10n.contact, style: TextStyle(fontWeight: FontWeight.bold),),
                     ),
                     Container(
                       padding: AllpassEdgeInsets.dividerInset,
