@@ -10,6 +10,12 @@ import 'package:allpass/util/csv_util.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
 
+import '../login/page/register_page.dart';
+
+var registerHandler = Handler(
+  handlerFunc: (context, params) => RegisterPage(),
+);
+
 /// 登录页
 var loginHandler = Handler(
   handlerFunc: (context, params) {

@@ -8,8 +8,8 @@ import 'package:allpass/navigation/route_handles.dart';
 import 'package:allpass/login/page/login_page.dart';
 
 class Routes {
-  static String root = "/";
   static String home = "/home";
+  static String register = "/register";
   static String login = "/login";
   static String authLogin = "/authLogin";
   static String import = "/import";
@@ -21,6 +21,7 @@ class Routes {
           return LoginPage(arguments: LoginArguments(),);
         }
     );
+    router.define(register, handler: registerHandler);
     router.define(login, handler: loginHandler);
     router.define(home, handler: homeHandler);
     router.define(authLogin, handler: authLoginHandler);

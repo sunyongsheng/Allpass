@@ -10,7 +10,6 @@ import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/navigation/navigator.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:allpass/util/screen_util.dart';
-import 'package:allpass/login/page/register_page.dart';
 import 'package:allpass/common/widget/none_border_circular_textfield.dart';
 
 /// 登陆页面
@@ -135,9 +134,7 @@ class _LoginPage extends AbstractLoginState {
 
     if (Config.password.isEmpty) {
       ToastUtil.showError(msg: context.l10n.notSetupYet);
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) => RegisterPage(),
-      ));
+      AllpassNavigator.goRegisterPage(context);
       return false;
     }
 

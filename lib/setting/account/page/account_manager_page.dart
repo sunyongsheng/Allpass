@@ -151,19 +151,19 @@ class _AccountManagerPage extends State<AccountManagerPage> {
     var l10n = context.l10n;
     showDialog(
       context: context,
-      builder: (context) => ConfirmDialog(
+      builder: (ctx) => ConfirmDialog(
         l10n.confirmClearAll,
         l10n.clearAllWaring,
         danger: true,
         onConfirm: () {
           // 二次确认
           showDialog(
-            context: context,
-            builder: (context) => InputMainPasswordDialog(
+            context: ctx,
+            builder: (ctx) => InputMainPasswordDialog(
               onVerified: () async {
                 await AllpassApplication.clearAll(context);
                 ToastUtil.show(msg: l10n.clearAllSuccess);
-                AllpassNavigator.goLoginPage(context);
+                AllpassNavigator.goRegisterPage(context);
               },
             ),
           );

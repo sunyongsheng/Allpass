@@ -29,6 +29,10 @@ class AllpassNavigator {
     );
   }
 
+  static void goRegisterPage(BuildContext context) {
+    _navigateTo(context, Routes.register, clearStack: true);
+  }
+
   static void goLoginPage(BuildContext context, { LoginArguments? arguments = null }) {
     var args = arguments ?? LoginArguments();
     _navigateTo(
