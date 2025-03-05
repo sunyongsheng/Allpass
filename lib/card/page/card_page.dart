@@ -3,6 +3,7 @@ import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/page/edit_card_page.dart';
 import 'package:allpass/card/page/view_card_page.dart';
 import 'package:allpass/card/widget/card_widget_item.dart';
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/confirm_dialog.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
@@ -11,7 +12,6 @@ import 'package:allpass/common/widget/route_floating_action_button.dart';
 import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/extension/widget_extension.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/search/search_page.dart';
@@ -183,7 +183,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
       showDialog(
         context: context,
         builder: (context) => DefaultSelectItemDialog<String>(
-          list: RuntimeData.folderList,
+          list: context.watch<CategoryProvider>().folderList,
           onSelected: (value) async {
             editProvider.selectedItem.forEach((element) async {
               element.folder = value;

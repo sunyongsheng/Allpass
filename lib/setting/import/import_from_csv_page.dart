@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:allpass/application.dart';
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/common/widget/progress_dialog.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/l10n/l10n_support.dart';
@@ -15,7 +16,6 @@ import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
 import 'package:allpass/util/csv_util.dart';
@@ -130,6 +130,7 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
     _cancel = false;
     onUpdateProgress(0);
     try {
+      var categoryProvider = context.read<CategoryProvider>();
       if (type == AllpassType.password) {
         var passwordProvider = context.read<PasswordProvider>();
         List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
@@ -141,8 +142,8 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
           }
 
           await passwordProvider.insertPassword(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
+          await categoryProvider.addLabel(bean.label);
+          await categoryProvider.addFolder([bean.folder]);
           count++;
           if (size > 0) {
             onUpdateProgress(count / size);
@@ -161,8 +162,8 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
           }
 
           await cardProvider.insertCard(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
+          await categoryProvider.addLabel(bean.label);
+          await categoryProvider.addFolder([bean.folder]);
           count++;
           if (size > 0) {
             onUpdateProgress(count / size);

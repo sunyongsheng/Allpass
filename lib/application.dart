@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/core/di/di.dart';
 import 'package:allpass/core/param/config.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/navigation/routes.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/password/model/simple_user.dart';
-import 'package:allpass/setting/theme/theme_mode.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,7 +28,7 @@ class AllpassApplication {
 
   static late String version;
 
-  static Future<Null> initSp() async {
+  static Future<void> initSp() async {
     sp = await SharedPreferences.getInstance();
   }
 
@@ -92,30 +92,25 @@ class AllpassApplication {
     return json.encode(list);
   }
 
-  static Future<Null> clearAll(BuildContext context) async {
-    await context.read<PasswordProvider>().clear();
-    await context.read<CardProvider>().clear();
+  static Future<void> clearAll(BuildContext context) async {
     await EncryptUtil.clearEncrypt();
     await AllpassApplication.sp.clear();
-    RuntimeData.clearData();
 
     await EncryptUtil.initEncrypt();
     Config.initConfig();
+
+    await context.read<PasswordProvider>().clear();
+    await context.read<CardProvider>().clear();
+    await context.read<CategoryProvider>().clear();
+
+    context.read<ThemeProvider>().init();
+    context.read<CategoryProvider>().init();
   }
 }
 
 /// 软件第一次运行，用户点击“同意并继续”后，对软件进行初始化，仅会调用一次
-Future<Null> initAppFirstRun() async {
-  // 对10个key进行设置，label、latestUsePassword、WebDav配置相关不在其中
+Future<Null> initAppFirstRun(BuildContext context) async {
   AllpassApplication.sp.setBool(SPKeys.firstRun, false);
   AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
   AllpassApplication.sp.setBool(SPKeys.needRegister, true);
-  AllpassApplication.sp.setString(SPKeys.password, "");
-  AllpassApplication.sp.setBool(SPKeys.biometrics, false);
-  AllpassApplication.sp.setBool(SPKeys.longPressCopy, true);
-  AllpassApplication.sp.setBool(SPKeys.webDavAuthSuccess, false);
-  AllpassApplication.sp.setString(SPKeys.primaryColor, PrimaryColor.blue.name);
-  AllpassApplication.sp.setString(SPKeys.themeMode, ThemeMode.system.name);
-  AllpassApplication.sp.setString(SPKeys.folder, "默认~娱乐~办公~论坛~教育~社交");
-  Config.initConfig();
 }

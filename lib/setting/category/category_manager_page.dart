@@ -1,19 +1,17 @@
-import 'package:allpass/common/widget/bottom_sheet.dart';
-import 'package:allpass/l10n/l10n_support.dart';
-import 'package:allpass/setting/theme/theme_provider.dart';
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
-
-import 'package:allpass/core/param/runtime_data.dart';
-import 'package:allpass/core/enums/category_type.dart';
-import 'package:allpass/util/toast_util.dart';
+import 'package:allpass/card/data/card_provider.dart';
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
+import 'package:allpass/common/widget/bottom_sheet.dart';
+import 'package:allpass/common/widget/confirm_dialog.dart';
+import 'package:allpass/core/enums/category_type.dart';
+import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/setting/category/widget/add_category_dialog.dart';
 import 'package:allpass/setting/category/widget/edit_category_dialog.dart';
-import 'package:allpass/common/widget/confirm_dialog.dart';
-import 'package:allpass/card/data/card_provider.dart';
-import 'package:allpass/password/data/password_provider.dart';
+import 'package:allpass/setting/theme/theme_provider.dart';
+import 'package:allpass/util/toast_util.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const String defaultFolderName = "默认";
 
@@ -35,177 +33,235 @@ class CategoryManagerPage extends StatefulWidget {
 class _CategoryManagerPage extends State<CategoryManagerPage> {
 
   late CategoryType type;
-  late List<String> data;
 
   @override
   void initState() {
     super.initState();
     this.type = widget.type;
-    data = _getCategoryData(type);
   }
 
   @override
   Widget build(BuildContext context) {
     var l10n = context.l10n;
     var categoryName = type.titles(context);
-    return Scaffold(
-      appBar: AppBar(
+    return Selector<CategoryProvider, List<String>>(
+      builder: (context, value, child) {
+        var provider = context.watch<CategoryProvider>();
+        return Scaffold(
+          appBar: child as AppBar,
+          backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
+          body: Column(
+            children: <Widget>[
+              Padding(padding: AllpassEdgeInsets.smallTopInsets),
+              Expanded(
+                child: ReorderableListView(
+                  children: _getAllWidget(context, categoryName, provider, value),
+                  onReorder: (int oldIndex, int newIndex) {
+                    switch (this.type) {
+                      case CategoryType.folder:
+                        provider.reorderFolder(oldIndex, newIndex);
+                        break;
+                      case CategoryType.label:
+                        provider.reorderLabel(oldIndex, newIndex);
+                        break;
+                    }
+                  },
+                ),
+              )
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            heroTag: "add$categoryName",
+            child: Icon(Icons.add),
+            onPressed: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => AddCategoryDialog(type: this.type),
+              ).then((value) async {
+                if (value != null) {
+                  if (this.type == CategoryType.folder && await provider.addFolder([value])) {
+                    ToastUtil.show(
+                      msg: l10n.createCategorySuccess(categoryName, value),
+                    );
+                  } else if (this.type == CategoryType.label && await provider.addLabel([value])) {
+                    ToastUtil.show(
+                      msg: l10n.createCategorySuccess(categoryName, value),
+                    );
+                  } else {
+                    ToastUtil.show(
+                      msg: l10n.categoryAlreadyExists(categoryName, value),
+                    );
+                  }
+                }
+              });
+            },
+          ),
+        );
+      },
+      selector: (context, provider) {
+        switch (type) {
+          case CategoryType.folder:
+            return provider.folderList;
+          case CategoryType.label:
+            return provider.labelList;
+        }
+      },
+      child: AppBar(
         title: Text(
           l10n.categoryManagement(categoryName),
           style: AllpassTextUI.titleBarStyle,
         ),
         centerTitle: true,
       ),
-      backgroundColor: context.watch<ThemeProvider>().specialBackgroundColor,
-      body: Column(
-        children: <Widget>[
-          Padding(padding: AllpassEdgeInsets.smallTopInsets),
-          Expanded(
-            child: ReorderableListView(
-              children: _getAllWidget(categoryName),
-              onReorder: (int oldIndex, int newIndex) {
-                if (oldIndex < newIndex) {
-                  newIndex -= 1;
-                }
-                setState(() {
-                  var child = data.removeAt(oldIndex);
-                  data.insert(newIndex, child);
-                });
-                if (this.type == CategoryType.label) {
-                  RuntimeData.labelParamsPersistence();
-                } else {
-                  RuntimeData.folderParamsPersistence();
-                }
-              },
-            ),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        heroTag: "add$categoryName",
-        child: Icon(Icons.add),
-        onPressed: () {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => AddCategoryDialog(type: this.type)
-          ).then((value) {
-            if (value != null) {
-              if (this.type == CategoryType.folder && RuntimeData.folderListAdd(value)) {
-                ToastUtil.show(msg: l10n.createCategorySuccess(categoryName, value));
-              } else if (this.type == CategoryType.label && RuntimeData.labelListAdd([value])) {
-                ToastUtil.show(msg: l10n.createCategorySuccess(categoryName, value));
-              } else {
-                ToastUtil.show(msg: l10n.categoryAlreadyExists(categoryName, value));
-              }
-              setState(() {});
-            }
-          });
-        },
-      ),
     );
   }
 
-  List<Widget> _getAllWidget(String categoryName) {
+  List<Widget> _getAllWidget(
+    BuildContext context,
+    String categoryName,
+    CategoryProvider provider,
+    List<String> data,
+  ) {
+    var l10n = context.l10n;
     List<Widget> widgets = [];
     for (int currIndex = 0; currIndex < data.length; currIndex++) {
       String currCategoryName = data[currIndex];
-      widgets.add(Card(
-        key: ValueKey(data[currIndex]),
-        child: ListTile(
-          // TODO 增加trailing属性显示有多少个密码账号含有此标签
-          title: Text(currCategoryName, overflow: TextOverflow.ellipsis,),
-          leading: Icon(Icons.list, color: Colors.grey,),
-          onTap: () {
-            if (this.type == CategoryType.folder && currCategoryName == defaultFolderName) {
-              ToastUtil.show(msg: context.l10n.folderDisallowModify);
-              return;
-            }
-            showModalBottomSheet(
+      widgets.add(
+        // TODO 增加trailing属性显示有多少个密码账号含有此标签
+        Card(
+          key: ValueKey(data[currIndex]),
+          child: ListTile(
+            title: Text(
+              currCategoryName,
+              overflow: TextOverflow.ellipsis,
+            ),
+            leading: Icon(
+              Icons.list,
+              color: Colors.grey,
+            ),
+            onTap: () {
+              if (this.type == CategoryType.folder && currCategoryName == defaultFolderName) {
+                ToastUtil.show(msg: l10n.folderDisallowModify);
+                return;
+              }
+              showModalBottomSheet(
                 context: context,
-                builder: (context) => BaseBottomSheet(
-                    builder: (context) => [
-                      ListTile(
-                        title: Text(context.l10n.updateCategory(categoryName)),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 24),
-                        leading: Icon(Icons.edit_attributes, color: Colors.blue,),
-                        onTap: () {
-                          Navigator.pop(context);
-                          showDialog(
+                builder: (context) {
+                  return BaseBottomSheet(
+                    builder: (context) {
+                      return [
+                        ListTile(
+                          title: Text(l10n.updateCategory(categoryName)),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 24),
+                          leading: Icon(
+                            Icons.edit_attributes,
+                            color: Colors.blue,
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                            showDialog(
                               context: context,
                               barrierDismissible: false,
-                              builder: (context) => EditCategoryDialog(widget.type, data[currIndex])
-                          ).then((value) async {
-                            if (value != null) {
-                              if (this.type == CategoryType.label) {
-                                if (RuntimeData.labelList.contains(value)) {
-                                  ToastUtil.showError(msg: context.l10n.categoryAlreadyExists(categoryName, value));
-                                  return;
+                              builder: (context) => EditCategoryDialog(
+                                widget.type,
+                                data[currIndex],
+                              ),
+                            ).then((value) async {
+                              if (value != null) {
+                                switch (this.type) {
+                                  case CategoryType.folder:
+                                    if (provider.isFolderDuplicated(value)) {
+                                      ToastUtil.showError(
+                                        msg: l10n.categoryAlreadyExists(categoryName, value),
+                                      );
+                                      return;
+                                    }
+                                    await editFolderAndUpdate(provider, currIndex, value);
+                                    break;
+
+                                  case CategoryType.label:
+                                    if (provider.isLabelDuplicated(value)) {
+                                      ToastUtil.showError(
+                                          msg: l10n.categoryAlreadyExists(categoryName, value),
+                                      );
+                                      return;
+                                    }
+                                    await editLabelAndUpdate(provider, currIndex, value);
+                                    break;
                                 }
-                                await editLabelAndUpdate(currIndex, value);
-                              } else if (this.type == CategoryType.folder){
-                                if (RuntimeData.folderList.contains(value)) {
-                                  ToastUtil.showError(msg: context.l10n.categoryAlreadyExists(categoryName, value));
-                                  return;
-                                }
-                                await editFolderAndUpdate(currIndex, value);
+                                ToastUtil.show(
+                                  msg: l10n.updateCategorySuccess(categoryName, value),
+                                );
                               }
-                              ToastUtil.show(msg: context.l10n.updateCategorySuccess(categoryName, value));
+                            });
+                          },
+                        ),
+                        ListTile(
+                          title: Text(l10n.deleteCategory(categoryName)),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 24),
+                          leading: Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          onTap: () async {
+                            String hintText = "";
+                            Future<Null> Function()? deleteCallback;
+                            switch (this.type) {
+                              case CategoryType.folder:
+                                hintText = l10n.deleteFolderWarning;
+                                deleteCallback = () async {
+                                  if (await deleteFolderAndUpdate(provider, currCategoryName)) {
+                                    ToastUtil.show(msg: l10n.deleteSuccess);
+                                  }
+                                };
+                                break;
+
+                              case CategoryType.label:
+                                hintText = l10n.deleteLabelWarning;
+                                deleteCallback = () async {
+                                  if (await deleteLabelAndUpdate(provider, currCategoryName)) {
+                                    ToastUtil.show(msg: l10n.deleteSuccess);
+                                  }
+                                };
+                                break;
                             }
-                          });
-                        },
-                      ),
-                      ListTile(
-                        title: Text(context.l10n.deleteCategory(categoryName)),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 24),
-                        leading: Icon(Icons.delete, color: Colors.red,),
-                        onTap: () async {
-                          String hintText = "";
-                          Future<Null> Function()? deleteCallback;
-                          if (this.type == CategoryType.label) {
-                            hintText = context.l10n.deleteLabelWarning;
-                            deleteCallback = () async {
-                              if (await deleteLabelAndUpdate(currCategoryName)) {
-                                ToastUtil.show(msg: context.l10n.deleteSuccess);
-                              }
-                            };
-                          } else if (this.type == CategoryType.folder) {
-                            hintText = context.l10n.deleteFolderWarning;
-                            deleteCallback = () async {
-                              if (await deleteFolderAndUpdate(currCategoryName)) {
-                                ToastUtil.show(msg: context.l10n.deleteSuccess);
-                              }
-                            };
-                          }
-                          Navigator.pop(context);
-                          showDialog(
+                            Navigator.pop(context);
+                            showDialog(
                               context: context,
                               builder: (context) => ConfirmDialog(
-                                context.l10n.confirmDelete,
+                                l10n.confirmDelete,
                                 hintText,
                                 danger: true,
                                 onConfirm: () async {
                                   await deleteCallback?.call();
                                 },
-                              )
-                          );
-                        },
-                      )
-                    ]
-                ),
-            );
-          },
+                              ),
+                            );
+                          },
+                        ),
+                      ];
+                    },
+                  );
+                },
+              );
+            },
+          ),
+          margin: AllpassEdgeInsets.settingCardInset,
+          elevation: 0,
         ),
-        margin: AllpassEdgeInsets.settingCardInset,
-        elevation: 0,
-      ));
+      );
     }
     return widgets;
   }
 
-  Future<bool> editLabelAndUpdate(int index, String newLabel) async {
+  Future<bool> editLabelAndUpdate(
+    CategoryProvider provider,
+    int index,
+    String newLabel,
+  ) async {
     try {
-      String oldLabel = RuntimeData.labelList[index];
+      String oldLabel = provider.labelList[index];
 
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
@@ -223,19 +279,20 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         }
       }
 
-      setState(() {
-        RuntimeData.labelList[index] = newLabel;
-      });
-      RuntimeData.labelParamsPersistence();
+      await provider.updateLabel(index, newLabel);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> editFolderAndUpdate(int index, String newFolder) async {
+  Future<bool> editFolderAndUpdate(
+    CategoryProvider provider,
+    int index,
+    String newFolder,
+  ) async {
     try {
-      String oldFolder = RuntimeData.folderList[index];
+      String oldFolder = provider.folderList[index];
 
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
@@ -253,23 +310,23 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
         }
       }
 
-      setState(() {
-        RuntimeData.folderList[index] = newFolder;
-      });
-      RuntimeData.folderParamsPersistence();
+      await provider.updateFolder(index, newFolder);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> deleteLabelAndUpdate(String label) async {
+  Future<bool> deleteLabelAndUpdate(
+    CategoryProvider provider,
+    String label,
+  ) async {
     try {
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
         if (bean.label.contains(label)) {
           bean.label.remove(label);
-          passwordProvider.updatePassword(bean);
+          await passwordProvider.updatePassword(bean);
         }
       }
 
@@ -277,27 +334,27 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       for (var bean in cardProvider.cardList) {
         if (bean.label.contains(label)) {
           bean.label.remove(label);
-          cardProvider.updateCard(bean);
+          await cardProvider.updateCard(bean);
         }
       }
 
-      setState(() {
-        RuntimeData.labelList.remove(label);
-      });
-      RuntimeData.labelParamsPersistence();
+      await provider.deleteLabel(label);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  Future<bool> deleteFolderAndUpdate(String folder) async {
+  Future<bool> deleteFolderAndUpdate(
+    CategoryProvider provider,
+    String folder,
+  ) async {
     try {
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
         if (folder == bean.folder) {
           bean.folder = defaultFolderName;
-          passwordProvider.updatePassword(bean);
+          await passwordProvider.updatePassword(bean);
         }
       }
 
@@ -305,27 +362,14 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       for (var bean in cardProvider.cardList) {
         if (folder == bean.folder) {
           bean.folder = defaultFolderName;
-          cardProvider.updateCard(bean);
+          await cardProvider.updateCard(bean);
         }
       }
 
-      setState(() {
-        RuntimeData.folderList.remove(folder);
-      });
-      RuntimeData.folderParamsPersistence();
+      await provider.deleteFolder(folder);
       return true;
     } catch (e) {
       return false;
-    }
-  }
-
-  List<String> _getCategoryData(CategoryType type) {
-    if (type == CategoryType.folder) {
-      return RuntimeData.folderList;
-    } else if (type == CategoryType.label) {
-      return RuntimeData.labelList;
-    } else {
-      return [];
     }
   }
 

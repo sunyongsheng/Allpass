@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:allpass/application.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/card/model/card_bean.dart';
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/core/enums/allpass_type.dart';
 import 'package:allpass/core/lazy/lazy.dart';
 import 'package:allpass/core/model/data/base_model.dart';
 import 'package:allpass/core/model/data/extra_model.dart';
 import 'package:allpass/core/param/config.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/encrypt/encryption.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
@@ -143,10 +143,12 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
 
   @override
   Future<void> backupFolderAndLabel(BuildContext context) async {
-    await _backupActual([], AllpassType.other);
+    var categoryProvider = context.read<CategoryProvider>();
+    var model = ExtraModel(categoryProvider.folderList, categoryProvider.labelList);
+    await _backupActual(model, AllpassType.other);
   }
 
-  Future<void> _backupActual(List<BaseModel> data, AllpassType type) async {
+  Future<void> _backupActual(dynamic data, AllpassType type) async {
     await ensureRemoteWorkspace();
 
     String contents = jsonEncode(_createBackup(data, type));
@@ -191,16 +193,13 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     }
   }
 
-  BackupFileV2 _createBackup(List<BaseModel> list, AllpassType type) {
+  BackupFileV2 _createBackup(dynamic list, AllpassType type) {
     var level = Config.webDavEncryptLevel;
     String data = switch (type) {
       AllpassType.password =>
         jsonEncode((list as List<PasswordBean>).encrypt(level)),
       AllpassType.card => jsonEncode((list as List<CardBean>).encrypt(level)),
-      AllpassType.other => jsonEncode(ExtraModel(
-          List.from(RuntimeData.folderList),
-          List.from(RuntimeData.labelList),
-        )),
+      AllpassType.other => jsonEncode(list as ExtraModel),
     };
 
     return BackupFileV2(
@@ -263,7 +262,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           throw DecodeException();
         }
 
-        await recoverFolderAndLabel(model);
+        await recoverFolderAndLabel(context, model);
         break;
     }
     return type;
@@ -351,6 +350,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     List<PasswordBean> remoteList,
   ) async {
     var passwordProvider = context.read<PasswordProvider>();
+    var categoryProvider = context.read<CategoryProvider>();
     List<PasswordBean> localList = List.from(passwordProvider.passwordList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<PasswordBean>();
     try {
@@ -360,8 +360,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           _logger.d("$_tag recoverPassword insert dataSource=$source $bean");
 
           await passwordProvider.insertPassword(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
+          await categoryProvider.addLabel(bean.label);
+          await categoryProvider.addFolder([bean.folder]);
         },
         onDelete: (bean, source) async {
           _logger.d("$_tag recoverPassword delete dataSource=$source $bean");
@@ -384,6 +384,7 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     List<CardBean> remoteList,
   ) async {
     var cardProvider = context.read<CardProvider>();
+    var categoryProvider = context.read<CategoryProvider>();
     List<CardBean> localList = List.from(cardProvider.cardList);
     var mergeExecutor = Config.webDavMergeMethod.createExecutor<CardBean>();
     try {
@@ -393,8 +394,8 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
           _logger.d("$_tag recoverCard insert dataSource=$source $bean");
 
           await cardProvider.insertCard(bean);
-          RuntimeData.labelListAdd(bean.label);
-          RuntimeData.folderListAdd(bean.folder);
+          await categoryProvider.addLabel(bean.label);
+          await categoryProvider.addFolder([bean.folder]);
         },
         onDelete: (bean, source) async {
           _logger.d("$_tag recoverCard delete dataSource=$source $bean");
@@ -412,14 +413,11 @@ class WebDavSyncServiceImpl implements WebDavSyncService {
     }
   }
 
-  Future<bool> recoverFolderAndLabel(ExtraModel model) async {
+  Future<bool> recoverFolderAndLabel(BuildContext context, ExtraModel model) async {
     try {
-      RuntimeData.folderList.clear();
-      RuntimeData.folderList.addAll(model.folderList);
-      RuntimeData.labelList.clear();
-      RuntimeData.labelList.addAll(model.labelList);
-      RuntimeData.folderParamsPersistence();
-      RuntimeData.labelParamsPersistence();
+      var categoryProvider = context.read<CategoryProvider>();
+      await categoryProvider.addFolder(model.folderList);
+      await categoryProvider.addLabel(model.labelList);
       return true;
     } catch (e) {
       _logger.e("$_tag recoverFolderAndLabel", error: e);

@@ -142,7 +142,7 @@ class _RegisterPage extends State<RegisterPage> {
             TextButton(
               child: Text(l10n.confirmServiceTerms),
               onPressed: () async {
-                await initAppFirstRun();
+                await initAppFirstRun(cx);
                 Navigator.pop(cx);
               },
             ),

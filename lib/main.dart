@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/initializer/di_initializer.dart';
 import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/register_page.dart';
@@ -40,12 +41,14 @@ void main() async {
 
     final PasswordProvider passwords = PasswordProvider()..init();
     final CardProvider cards = CardProvider()..init();
+    final CategoryProvider category = CategoryProvider()..init();
     final ThemeProvider theme = ThemeProvider()..init();
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider<PasswordProvider>.value(value: passwords),
         ChangeNotifierProvider<CardProvider>.value(value: cards),
-        ChangeNotifierProvider<ThemeProvider>.value(value: theme)
+        ChangeNotifierProvider<ThemeProvider>.value(value: theme),
+        ChangeNotifierProvider<CategoryProvider>.value(value: category),
       ],
       child: Allpass(),
     ));

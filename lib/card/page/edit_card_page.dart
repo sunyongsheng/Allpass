@@ -1,3 +1,4 @@
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/card/model/card_bean.dart';
 import 'package:allpass/card/data/card_provider.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
@@ -344,7 +344,7 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
                           };
                         });
                       },
-                      items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
+                      items: context.watch<CategoryProvider>().folderList.map<DropdownMenuItem<String>>((item) {
                         return DropdownMenuItem<String>(
                           value: item,
                           child: Text(item, style: TextStyle(
@@ -438,8 +438,9 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
   }
 
   List<Widget> _getTag() {
+    var provider = context.watch<CategoryProvider>();
     List<Widget> labelChoices = [];
-    RuntimeData.labelList.forEach((item) {
+    provider.labelList.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
         selected: labels.contains(item),
@@ -459,8 +460,8 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
           barrierDismissible: false,
           builder: (context) => AddCategoryDialog(),
         ).then(
-          (label) {
-            if (label != null && RuntimeData.labelListAdd([label])) {
+          (label) async {
+            if (label != null && await provider.addLabel([label])) {
               setState(() {});
               ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
             } else if (label != null) {

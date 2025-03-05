@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:provider/provider.dart';
 
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/model/password_bean.dart';
@@ -351,7 +351,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
                 folder = newValue.toString();
               });
             },
-            items: RuntimeData.folderList.map<DropdownMenuItem<String>>((item) {
+            items: context.watch<CategoryProvider>().folderList.map<DropdownMenuItem<String>>((item) {
               return DropdownMenuItem<String>(
                 value: item,
                 child: Text(
@@ -504,7 +504,8 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
 
   List<Widget> _getTag() {
     List<Widget> labelChoices = [];
-    RuntimeData.labelList.forEach((item) {
+    var provider = context.watch<CategoryProvider>();
+    provider.labelList.forEach((item) {
       labelChoices.add(LabelChip(
         text: item,
         selected: labels.contains(item),
@@ -524,8 +525,8 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
               context: context,
               barrierDismissible: false,
               builder: (context) => AddCategoryDialog(),
-            ).then((label) {
-              if (label != null && RuntimeData.labelListAdd([label])) {
+            ).then((label) async {
+              if (label != null && await provider.addLabel([label])) {
                 setState(() {});
                 ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
               } else if (label != null) {

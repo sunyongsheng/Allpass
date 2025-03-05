@@ -1,8 +1,8 @@
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/core/enums/category_type.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/util/screen_util.dart';
@@ -10,6 +10,7 @@ import 'package:allpass/classification/page/favorite_page.dart';
 import 'package:allpass/setting/category/category_manager_page.dart';
 import 'package:allpass/classification/page/classification_details_page.dart';
 import 'package:allpass/classification/widget/classification_item.dart';
+import 'package:provider/provider.dart';
 
 class ClassificationPage extends StatelessWidget {
 
@@ -58,7 +59,7 @@ class ClassificationPage extends StatelessWidget {
           title: context.l10n.fav,
         )
     );
-    list.addAll(RuntimeData.folderList.map((folder) =>
+    list.addAll(context.watch<CategoryProvider>().folderList.map((folder) =>
         ClassificationItem(
           onPress: () {
             Navigator.push(context, CupertinoPageRoute(

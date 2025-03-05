@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/core/param/constants.dart';
-import 'package:allpass/core/param/runtime_data.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/setting/account/input_main_password_timing.dart';
 import 'package:allpass/setting/autolock/auto_lock.dart';
@@ -102,7 +101,6 @@ class Config {
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
     timingInMainPassword = InputMainPasswordTimings.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTimingEnum.tenDays;
-    RuntimeData.initData();
   }
 
   static bool allowUseAuthLogin() {

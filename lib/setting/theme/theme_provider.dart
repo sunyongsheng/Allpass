@@ -25,7 +25,7 @@ class ThemeProvider with ChangeNotifier {
   late Color specialBackgroundColor;
   late Color offstageColor;
 
-  init() {
+  void init() {
     _allpassTheme = AllpassTheme();
     _themeMode = Config.themeMode;
     _lightTheme = _convertTheme(Config.primaryColor, false);
