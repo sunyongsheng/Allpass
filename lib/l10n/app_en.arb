@@ -443,6 +443,7 @@
   "pasteDataHere": "Paste your data here",
   "startImport": "Start import",
   "importing": "Importing, please wait",
+  "importComplete": "Import completed",
   "recordFormatIncorrect": "The format of a certain record is incorrect",
 
   "importFromExternalPreview": "Imports Preview",

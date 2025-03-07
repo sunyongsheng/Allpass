@@ -104,20 +104,21 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
     _isShowingProgressDialog = true;
     showDialog(
       context: context,
-      builder: (cx) => ProgressDialog((onUpdateProgress) async {
-        var future = importActual(context, type, path, onUpdateProgress);
-        future.then(
-          (_) => Future.delayed(
-            Duration(milliseconds: 500),
-            () {
-              if (_isShowingProgressDialog) {
-                Navigator.pop(context, true);
-              }
-            },
-          ),
-        );
-        return future;
-      }),
+      builder: (cx) => ProgressDialog(
+        runningHint: context.l10n.importing,
+        completeHint: context.l10n.importComplete,
+        execution: (onUpdateProgress) async {
+          var future = importActual(context, type, path, onUpdateProgress);
+          future.then((_) =>
+              Future.delayed(Duration(milliseconds: 500), () {
+                if (_isShowingProgressDialog) {
+                  Navigator.pop(context, true);
+                }
+              }),
+          );
+          return future;
+        },
+      ),
     ).then((result) {
       if (result != true) {
         _cancel = true;

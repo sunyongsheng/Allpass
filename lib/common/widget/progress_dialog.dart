@@ -1,12 +1,18 @@
 import 'dart:async';
 
+import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:flutter/material.dart';
 
 class ProgressDialog<T> extends StatefulWidget {
+  final String? completeHint;
+  final String runningHint;
+  final Future<bool> Function(void Function(double) onUpdateProgress) execution;
 
-  final Future<bool> Function(void Function(double) onUpdateProgress) _execution;
-
-  ProgressDialog(this._execution);
+  ProgressDialog({
+    this.completeHint,
+    required this.runningHint,
+    required this.execution,
+  });
 
   @override
   State createState() {
@@ -22,7 +28,7 @@ class _ProgressDialogState<T> extends State<ProgressDialog> {
   @override
   void initState() {
     super.initState();
-    widget._execution((progress) {
+    widget.execution((progress) {
       setState(() {
         _progress = progress;
       });
@@ -35,20 +41,46 @@ class _ProgressDialogState<T> extends State<ProgressDialog> {
 
   @override
   Widget build(BuildContext context) {
+    var content = <Widget>[];
     if (_running) {
-      return Center(
-        child: CircularProgressIndicator(
+      content = [
+        CircularProgressIndicator(
           value: _progress,
         ),
-      );
+        Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        Text(
+          widget.runningHint,
+          style: AllpassTextUI.settingTrailing,
+        )
+      ];
     } else {
-      return Center(
-        child: Icon(
+      content = [
+        Icon(
           Icons.check_circle,
           size: 50,
           color: Colors.white,
         ),
-      );
+        Padding(padding: EdgeInsets.symmetric(vertical: 8)),
+        Text(
+          widget.completeHint ?? widget.runningHint,
+          style: AllpassTextUI.settingTrailing,
+        )
+      ];
     }
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      insetPadding: EdgeInsets.symmetric(horizontal: 120),
+      child: Container(
+        height: 120,
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: content,
+          ),
+        ),
+      ),
+    );
   }
 }

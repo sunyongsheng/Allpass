@@ -266,6 +266,7 @@
   "pasteDataHere": "在此粘贴您的数据",
   "startImport": "开始导入",
   "importing": "导入中，请稍后",
+  "importComplete": "导入完成",
   "recordFormatIncorrect": "某条记录格式不正确，请检查",
 
   "importFromExternalPreview": "导入预览",
