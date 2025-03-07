@@ -462,7 +462,9 @@ class _EditCardPage extends State<EditCardPage> with AfterFirstFrameMixin {
         ).then(
           (label) async {
             if (label != null && await provider.addLabel([label])) {
-              setState(() {});
+              setState(() {
+                labels.add(label);
+              });
               ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
             } else if (label != null) {
               ToastUtil.show(msg: context.l10n.labelAlreadyExists(label));

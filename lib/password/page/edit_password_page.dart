@@ -527,7 +527,9 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
               builder: (context) => AddCategoryDialog(),
             ).then((label) async {
               if (label != null && await provider.addLabel([label])) {
-                setState(() {});
+                setState(() {
+                  labels.add(label);
+                });
                 ToastUtil.show(msg: context.l10n.createLabelSuccess(label));
               } else if (label != null) {
                 ToastUtil.show(msg: context.l10n.labelAlreadyExists(label));
