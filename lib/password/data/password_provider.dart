@@ -117,6 +117,10 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
     await _repository.deleteById(bean.uniqueKey!);
   }
 
+  Future<void> delete(List<PasswordBean> list) async {
+    await _repository.deleteByIds(list.map((e) => e.uniqueKey!).toList());
+  }
+
   Future<Null> updatePassword(PasswordBean bean) async {
     _currPassword = bean;
     await _repository.updateById(bean);

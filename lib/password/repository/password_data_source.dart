@@ -29,6 +29,8 @@ abstract interface class PasswordDataSource {
 
   FutureOr<int> deleteById(int key);
 
+  FutureOr<int> deleteByIds(List<int> keys);
+
   FutureOr<int> deleteAll();
 
   FutureOr<void> deleteTable();

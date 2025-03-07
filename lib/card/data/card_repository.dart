@@ -69,6 +69,12 @@ class CardRepository {
     return await _localDataSource.deleteById(key);
   }
 
+  Future<int> deleteByIds(List<int> keys) async {
+    _cardList.removeWhere((element) => keys.contains(element.uniqueKey));
+    _emitEvent(CardActionDelete());
+    return await _localDataSource.deleteByIds(keys);
+  }
+
   Future<int> updateById(CardBean bean) async {
     var index = _cardList.indexWhere(
       (element) => element.uniqueKey == bean.uniqueKey,

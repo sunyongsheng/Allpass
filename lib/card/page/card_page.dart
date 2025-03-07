@@ -159,9 +159,7 @@ class _CardPageState extends State<CardPage> with AutomaticKeepAliveClientMixin 
           context.l10n.deletePasswordsWarning(editProvider.selectedCount),
           danger: true,
           onConfirm: () async {
-            for (var item in editProvider.selectedItem) {
-              await cardProvider.deleteCard(item);
-            }
+            await cardProvider.delete(editProvider.selectedItem);
             ToastUtil.show(msg: context.l10n.deletePasswordsSuccess(editProvider.selectedCount));
             editProvider.unselectAll();
           },

@@ -142,6 +142,16 @@ class PasswordLocalDataSource extends BaseDBProvider
     );
   }
 
+  @override
+  Future<int> deleteByIds(List<int> keys) async {
+    Database db = await getDatabase();
+    return await db.delete(
+      PasswordTable.name,
+      where: '${PasswordTable.columnId} IN (${keys.map((e) => '?').join(',')})',
+      whereArgs: keys,
+    );
+  }
+
   /// 更新
   @override
   Future<int> updateById(PasswordBean bean) async {

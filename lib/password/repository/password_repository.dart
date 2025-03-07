@@ -158,6 +158,12 @@ class PasswordRepository {
     return await _dataSource.deleteById(key);
   }
 
+  Future<int> deleteByIds(List<int> keys) async {
+    _passwordList.removeWhere((element) => keys.contains(element.uniqueKey));
+    _emitEvent(PasswordActionDelete());
+    return await _dataSource.deleteByIds(keys);
+  }
+
   Future<int> deleteAll() async {
     _passwordList.clear();
     _emitEvent(PasswordActionDeleteAll());

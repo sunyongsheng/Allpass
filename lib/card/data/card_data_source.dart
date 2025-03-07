@@ -66,6 +66,15 @@ class CardDataSource extends BaseDBProvider with CardTable {
     );
   }
 
+  Future<int> deleteByIds(List<int> keys) async {
+    Database db = await getDatabase();
+    return await db.delete(
+      CardTable.name,
+      where: '${CardTable.columnId} IN (${keys.map((e) => '?').join(',')})',
+      whereArgs: keys,
+    );
+  }
+
   /// 更新
   Future<int> updateById(CardBean bean) async {
     Database db = await getDatabase();

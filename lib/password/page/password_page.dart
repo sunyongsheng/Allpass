@@ -228,9 +228,7 @@ class _PasswordPageState extends State<PasswordPage>
           context.l10n.deletePasswordsWarning(editProvider.selectedCount),
           danger: true,
           onConfirm: () async {
-            for (var item in editProvider.selectedItem) {
-              await provider.deletePassword(item);
-            }
+            await provider.delete(editProvider.selectedItem);
             ToastUtil.show(msg: context.l10n.deletePasswordsSuccess(editProvider.selectedCount));
             editProvider.unselectAll();
           },

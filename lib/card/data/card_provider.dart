@@ -87,6 +87,10 @@ class CardProvider with ChangeNotifier {
     await _repository.deleteById(bean.uniqueKey!);
   }
 
+  Future<void> delete(List<CardBean> list) async {
+    await _repository.deleteByIds(list.map((e) => e.uniqueKey!).toList());
+  }
+
   Future<Null> updateCard(CardBean bean) async {
     _currCard = bean;
     await _repository.updateById(bean);

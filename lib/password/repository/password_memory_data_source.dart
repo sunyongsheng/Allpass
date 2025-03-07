@@ -29,6 +29,13 @@ class PasswordMemoryDataSource implements PasswordDataSource {
   }
 
   @override
+  int deleteByIds(List<int> keys) {
+    var count = _list.length;
+    _list.removeWhere((element) => keys.contains(element.uniqueKey));
+    return count - _list.length;
+  }
+
+  @override
   void deleteTable() {}
 
   @override
