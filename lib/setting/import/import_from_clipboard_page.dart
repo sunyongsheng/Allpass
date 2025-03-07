@@ -1,4 +1,5 @@
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/import/import_base_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class ImportFromClipboardPage extends StatefulWidget {
   }
 }
 
-class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
+class _ImportFromClipboardPage extends ImportBaseState<int> {
 
   late TextEditingController _controller;
 
@@ -245,15 +246,7 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
                     setState(() {
                       importing = true;
                     });
-                    try {
-                      List<PasswordBean> list = await parseText(_groupValue);
-                      for (var bean in list) {
-                        await context.read<PasswordProvider>().insertPassword(bean);
-                      }
-                      ToastUtil.show(msg: l10n.importRecordSuccess(list.length));
-                    } catch (e) {
-                      ToastUtil.show(msg: e.toString());
-                    }
+                    await startImport(context, _groupValue);
                     setState(() {
                       importing = false;
                     });
@@ -344,5 +337,27 @@ class _ImportFromClipboardPage extends State<ImportFromClipboardPage> {
       }
     }
     return temp;
+  }
+  
+  @override
+  Future<bool> importActual(
+    BuildContext context,
+    int params,
+    void Function() ensureNotCancel,
+    void Function(double p1) onUpdateProgress,
+  ) async {
+    List<PasswordBean> list = await parseText(_groupValue);
+    var count = 0;
+    var size = list.length;
+    var passwordProvider = context.read<PasswordProvider>();
+    for (var bean in list) {
+      ensureNotCancel();
+
+      await passwordProvider.insertPassword(bean);
+      count++;
+      onUpdateProgress(count / size);
+    }
+    ToastUtil.show(msg: context.l10n.importRecordSuccess(list.length));
+    return true;
   }
 }

@@ -5,7 +5,7 @@ import 'package:allpass/login/page/login_page.dart';
 import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/repository/password_memory_data_source.dart';
 import 'package:allpass/password/repository/password_repository.dart';
-import 'package:allpass/setting/import/import_preview_page.dart';
+import 'package:allpass/setting/import/import_from_external_page.dart';
 import 'package:allpass/util/csv_util.dart';
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
@@ -49,6 +49,6 @@ var importDataHandler = Handler(handlerFunc: (context, params) {
       passwordProvider.init();
       return passwordProvider;
     },
-    child: ImportPreviewPage(data: data),
+    child: ImportFromExternalPage(),
   );
 });

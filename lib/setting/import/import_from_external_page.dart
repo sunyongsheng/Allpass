@@ -1,3 +1,4 @@
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/widget/empty_data_widget.dart';
 import 'package:allpass/common/widget/loading_text_button.dart';
@@ -7,16 +8,16 @@ import 'package:allpass/password/data/password_provider.dart';
 import 'package:allpass/password/page/view_password_page.dart';
 import 'package:allpass/password/repository/password_repository.dart';
 import 'package:allpass/password/widget/password_widget_item.dart';
+import 'package:allpass/setting/import/import_base_state.dart';
 import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-class ImportPreviewPage extends StatefulWidget {
-  final String data;
+class ImportFromExternalPage extends StatefulWidget {
 
-  const ImportPreviewPage({super.key, required this.data});
+  const ImportFromExternalPage({super.key});
 
   @override
   State createState() {
@@ -24,16 +25,9 @@ class ImportPreviewPage extends StatefulWidget {
   }
 }
 
-class _ImportPreviewState extends State<ImportPreviewPage> {
+class _ImportPreviewState extends ImportBaseState<void> {
 
   var _importing = false;
-  var _cancel = false;
-
-  @override
-  void dispose() {
-    super.dispose();
-    _cancel = true;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +102,7 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
                 loading: _importing,
                 loadingTitle: l10n.importing,
                 color: Theme.of(context).primaryColor,
-                onPressed: () => import(context),
+                onPressed: () => _onTapImport(context),
               ),
             ),
           )
@@ -117,7 +111,7 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
     );
   }
 
-  void import(BuildContext context) async {
+  void _onTapImport(BuildContext context) async {
     var l10n = context.l10n;
     if (_importing) {
       ToastUtil.show(msg: l10n.importing);
@@ -127,18 +121,36 @@ class _ImportPreviewState extends State<ImportPreviewPage> {
     setState(() {
       _importing = true;
     });
-    var repository = inject<PasswordRepository>();
-    var provider = context.read<PasswordProvider>();
-    for (var password in provider.passwordList) {
-      if (_cancel) {
-        return;
-      }
-
-      await repository.create(password);
-    }
-    ToastUtil.show(msg: l10n.importRecordSuccess(provider.count));
+    await startImport(context, null);
     setState(() {
       _importing = false;
     });
+  }
+
+  @override
+  Future<bool> importActual(
+    BuildContext context,
+    void params,
+    void Function() ensureNotCancel,
+    void Function(double p1) onUpdateProgress,
+  ) async {
+    var repository = inject<PasswordRepository>();
+    var provider = context.read<PasswordProvider>();
+    var categoryProvider = context.read<CategoryProvider>();
+    var size = provider.count;
+    var count = 0;
+    for (var password in provider.passwordList) {
+      ensureNotCancel();
+
+      await repository.create(password);
+      await categoryProvider.addLabel(password.label);
+      await categoryProvider.addFolder([password.folder]);
+      count++;
+      if (size > 0) {
+        onUpdateProgress(count / size);
+      }
+    }
+    ToastUtil.show(msg: context.l10n.importRecordSuccess(provider.count));
+    return true;
   }
 }

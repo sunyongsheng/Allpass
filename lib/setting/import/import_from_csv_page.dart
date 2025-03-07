@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:allpass/application.dart';
 import 'package:allpass/classification/category_provider.dart';
-import 'package:allpass/common/widget/progress_dialog.dart';
 import 'package:allpass/core/param/constants.dart';
 import 'package:allpass/l10n/l10n_support.dart';
+import 'package:allpass/setting/import/import_base_state.dart';
 import 'package:allpass/setting/import/import_exceptions.dart';
 import 'package:allpass/setting/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +28,13 @@ class ImportFromCsvPage extends StatefulWidget {
   }
 }
 
-class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
+class ImportFromCsvParams {
+  final AllpassType type;
+  final String path;
+  ImportFromCsvParams(this.type, this.path);
+}
 
-  var _isShowingProgressDialog = false;
-  var _cancel = false;
+class _ImportFromCsvPageState extends ImportBaseState<ImportFromCsvParams> {
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +90,10 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
           type: FileType.custom,
           allowedExtensions: ['csv']
       );
-      _showProgressDialog(context, type, result?.files.single.path);
+      var path = result?.files.single.path;
+      if (path != null) {
+        await startImport(context, ImportFromCsvParams(type, path));
+      }
     } on PlatformException catch (e) {
       if (e.code == "read_external_storage_denied") {
         ToastUtil.showError(msg: context.l10n.storagePermissionDenied);
@@ -96,91 +102,55 @@ class _ImportFromCsvPageState extends State<ImportFromCsvPage> {
     }
   }
 
-  void _showProgressDialog(BuildContext context, AllpassType type, String? path) {
-    if (path == null) {
-      return;
-    }
+  @override
+  Future<bool> importActual(
+    BuildContext context,
+    ImportFromCsvParams params,
+    void Function() ensureNotCancel,
+    void Function(double) onUpdateProgress,
+  ) async {
+    var type = params.type;
+    var path = params.path;
+    var categoryProvider = context.read<CategoryProvider>();
+    if (type == AllpassType.password) {
+      var passwordProvider = context.read<PasswordProvider>();
+      List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
+      var size = passwordList.length;
+      var count = 0;
+      for (var bean in passwordList) {
+        ensureNotCancel();
 
-    _isShowingProgressDialog = true;
-    showDialog(
-      context: context,
-      builder: (cx) => ProgressDialog(
-        runningHint: context.l10n.importing,
-        completeHint: context.l10n.importComplete,
-        execution: (onUpdateProgress) async {
-          var future = importActual(context, type, path, onUpdateProgress);
-          future.then((_) =>
-              Future.delayed(Duration(milliseconds: 500), () {
-                if (_isShowingProgressDialog) {
-                  Navigator.pop(context, true);
-                }
-              }),
-          );
-          return future;
-        },
-      ),
-    ).then((result) {
-      if (result != true) {
-        _cancel = true;
-      }
-      _isShowingProgressDialog = false;
-    });
-  }
-
-  Future<bool> importActual(BuildContext context, AllpassType type, String path, void Function(double) onUpdateProgress) async {
-    _cancel = false;
-    onUpdateProgress(0);
-    try {
-      var categoryProvider = context.read<CategoryProvider>();
-      if (type == AllpassType.password) {
-        var passwordProvider = context.read<PasswordProvider>();
-        List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
-        var size = passwordList.length;
-        var count = 0;
-        for (var bean in passwordList) {
-          if (_cancel) {
-            throw ImportCancellationException();
-          }
-
-          await passwordProvider.insertPassword(bean);
-          await categoryProvider.addLabel(bean.label);
-          await categoryProvider.addFolder([bean.folder]);
-          count++;
-          if (size > 0) {
-            onUpdateProgress(count / size);
-          }
+        await passwordProvider.insertPassword(bean);
+        await categoryProvider.addLabel(bean.label);
+        await categoryProvider.addFolder([bean.folder]);
+        count++;
+        if (size > 0) {
+          onUpdateProgress(count / size);
         }
-        ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
-        await passwordProvider.refresh();
-      } else if (type == AllpassType.card) {
-        var cardProvider = context.read<CardProvider>();
-        List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
-        var size = cardList.length;
-        var count = 0;
-        for (var bean in cardList) {
-          if (_cancel) {
-            throw ImportCancellationException();
-          }
-
-          await cardProvider.insertCard(bean);
-          await categoryProvider.addLabel(bean.label);
-          await categoryProvider.addFolder([bean.folder]);
-          count++;
-          if (size > 0) {
-            onUpdateProgress(count / size);
-          }
-        }
-        ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
-        await cardProvider.refresh();
-      } else {
-        throw UnsupportedImportException();
       }
-      return true;
-    } on ImportCancellationException {
-      ToastUtil.show(msg: context.l10n.importCanceled);
-    } catch (_) {
-      ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
+      ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
+      await passwordProvider.refresh();
+    } else if (type == AllpassType.card) {
+      var cardProvider = context.read<CardProvider>();
+      List<CardBean> cardList = await CsvUtil.cardImportFromCsv(path) ?? [];
+      var size = cardList.length;
+      var count = 0;
+      for (var bean in cardList) {
+        ensureNotCancel();
+
+        await cardProvider.insertCard(bean);
+        await categoryProvider.addLabel(bean.label);
+        await categoryProvider.addFolder([bean.folder]);
+        count++;
+        if (size > 0) {
+          onUpdateProgress(count / size);
+        }
+      }
+      ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
+      await cardProvider.refresh();
+    } else {
+      throw UnsupportedImportException();
     }
-    return false;
+    return true;
   }
 }
