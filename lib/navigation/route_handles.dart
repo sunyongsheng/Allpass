@@ -39,14 +39,16 @@ var homeHandler = Handler(
 
 var importDataHandler = Handler(handlerFunc: (context, params) {
   var data = context?.settings?.arguments.toString() ?? "";
-  var dataSource = PasswordMemoryDataSource(
-    dataProvider: () => CsvUtil.parsePasswordFromCsv(toParseText: data),
-  );
-  var passwordRepository = PasswordRepository(dataSource: dataSource);
-  var passwordProvider = PasswordProvider(passwordRepository: passwordRepository);
-  passwordProvider.init();
-  return ChangeNotifierProvider.value(
-    value: passwordProvider,
+  return ChangeNotifierProvider(
+    create: (_) {
+      var dataSource = PasswordMemoryDataSource(
+        dataProvider: () => CsvUtil.parsePasswordFromCsv(toParseText: data),
+      );
+      var passwordRepository = PasswordRepository(dataSource: dataSource);
+      var passwordProvider = PasswordProvider(passwordRepository: passwordRepository);
+      passwordProvider.init();
+      return passwordProvider;
+    },
     child: ImportPreviewPage(data: data),
   );
 });
