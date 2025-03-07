@@ -432,19 +432,29 @@
   "importFromClipboardHelp3": "The account is the username used for login, which may be a phone number, email, or other account you have set up;\n",
   "importFromClipboardHelp4": "The website address can help Allpass correctly fill in your password on the website, usually the URL address of the website login page;\n",
   "importFromClipboardHelp5": "Please use a 'space' as the separator between the two fields, so that Allpass can correctly distinguish which one is the username and which one is the password;\n",
-  "importFromClipboardHelp6": "If you have selected the last import format, please enter a uniform username in the first line. If there are multiple usernames, they can be imported in several batches;",
+  "importFromClipboardHelp6": "If you have selected the last two import format, please enter the uniform username. If there are multiple usernames, they can be imported in several times",
   "importFromClipboardSelectFormat": "Please select import password item format(use 'space' as the separator)",
   "importFromClipboardFormat1": "Name Account Password WebUrl/Link",
   "importFromClipboardFormat2": "Name Account Password",
   "importFromClipboardFormat3": "Account Password WebUrl/Link",
   "importFromClipboardFormat4": "Account Password",
   "importFromClipboardFormat5": "Name Password",
-  "importFromClipboardFormat5Hint": "Please input account(username) at the first line",
+  "importFromClipboardFormat6": "Password",
+  "importFromClipboardFormatHint": "Please input account(username) here",
+  "importFromClipboardFormatHint2": "Please input account(username)",
+  "importFromClipboardFormatHint3": "Please input records",
   "pasteDataHere": "Paste your data here",
   "startImport": "Start import",
   "importing": "Importing, please wait",
   "importComplete": "Import completed",
-  "recordFormatIncorrect": "The format of a certain record is incorrect",
+  "recordFormatIncorrect": "The format of a {n} row's record is incorrect",
+  "@recordFormatIncorrect": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
 
   "importFromExternalPreview": "Imports Preview",
   "confirmImport": "Continue import",

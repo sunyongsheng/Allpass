@@ -63,7 +63,7 @@ abstract class ImportBaseState<PARAMS> extends State<StatefulWidget> {
       return await importActual(context, params, ensureNotCancel, onUpdateProgress);
     } on ImportCancellationException {
       ToastUtil.show(msg: context.l10n.importCanceled);
-    } catch (_) {
+    } on UnsupportedImportException {
       ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
     }
     return false;

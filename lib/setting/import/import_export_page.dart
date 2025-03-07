@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/common/ui/icon_resource.dart';
 import 'package:allpass/setting/import/import_from_chrome_page.dart';
-import 'package:allpass/setting/import/import_from_clipboard_page.dart';
+import 'package:allpass/setting/import/clipboard/import_from_clipboard_page.dart';
 import 'package:allpass/setting/import/import_from_csv_page.dart';
 import 'package:allpass/setting/import/export_to_csv_page.dart';
 import 'package:provider/provider.dart';

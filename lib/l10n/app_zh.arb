@@ -255,19 +255,29 @@
   "importFromClipboardHelp3": "账号是登录使用的账号名，有可能是手机、邮箱或者其他您设置的账号；\n",
   "importFromClipboardHelp4": "网站地址可以帮助Allpass在正确的网站填充您的密码，大多数情况下是网站登录页的URL地址；\n",
   "importFromClipboardHelp5": "两个字段之间请以“空格”作为分隔符，这样Allpass才能正确分辨哪个是用户名，哪个是密码；\n",
-  "importFromClipboardHelp6": "如果选择了最后一个导入格式，请在第一行输入统一的用户名；如果有多个用户名，可以分为几次导入；",
+  "importFromClipboardHelp6": "如果选择了最后两种导入格式，请输入默认账号；如果有多个用户名，可以分为几次导入；",
   "importFromClipboardSelectFormat": "请选择密码格式（空格为分隔符）",
   "importFromClipboardFormat1": "名称 账号 密码 网站地址",
   "importFromClipboardFormat2": "名称 账号 密码",
   "importFromClipboardFormat3": "账号 密码 网站地址",
   "importFromClipboardFormat4": "账号 密码",
   "importFromClipboardFormat5": "名称 密码",
-  "importFromClipboardFormat5Hint": "请在第一行输入默认账号",
+  "importFromClipboardFormat6": "密码",
+  "importFromClipboardFormatHint": "请在此输入默认账号",
+  "importFromClipboardFormatHint2": "请输入默认账号",
+  "importFromClipboardFormatHint3": "请输入数据",
   "pasteDataHere": "在此粘贴您的数据",
   "startImport": "开始导入",
   "importing": "导入中，请稍后",
   "importComplete": "导入完成",
-  "recordFormatIncorrect": "某条记录格式不正确，请检查",
+  "recordFormatIncorrect": "第 {n} 行记录格式不正确，请检查",
+  "@recordFormatIncorrect": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
 
   "importFromExternalPreview": "导入预览",
   "confirmImport": "确认导入",
