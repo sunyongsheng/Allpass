@@ -4,10 +4,8 @@ import 'package:flutter/widgets.dart';
 enum AutoLock {
   immediate,
   in30s,
-  disabled,
-}
+  disabled;
 
-class AutoLocks {
   static AutoLock? tryParse(int? value) {
     if (value == -1) {
       return AutoLock.immediate;

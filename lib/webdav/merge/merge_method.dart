@@ -5,7 +5,25 @@ import 'package:flutter/cupertino.dart';
 enum MergeMethod {
   localFirst,
   remoteFirst,
-  onlyRemote
+  onlyRemote;
+
+  static MergeMethod parse(int value) {
+    for (var method in MergeMethod.values) {
+      if (method.index == value) {
+        return method;
+      }
+    }
+    throw UnsupportedEnumException("Unsupported value=$value");
+  }
+
+  static MergeMethod? tryParse(int? value) {
+    if (value == null) return null;
+    try {
+      return parse(value);
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 extension MergeMethodExt on MergeMethod {
@@ -25,26 +43,6 @@ extension MergeMethodExt on MergeMethod {
       MergeMethod.remoteFirst => l10n.mergeMethodRemoteFirstHelp,
       MergeMethod.onlyRemote => l10n.mergeMethodOnlyRemoteHelp,
     };
-  }
-}
-
-class MergeMethods {
-  static MergeMethod parse(int value) {
-    for (var method in MergeMethod.values) {
-      if (method.index == value) {
-        return method;
-      }
-    }
-    throw UnsupportedEnumException("Unsupported value=$value");
-  }
-
-  static MergeMethod? tryParse(int? value) {
-    if (value == null) return null;
-    try {
-      return parse(value);
-    } catch (_) {
-      return null;
-    }
   }
 }
 

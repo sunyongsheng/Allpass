@@ -28,10 +28,8 @@ enum PrimaryColor {
   deepPurple,
   orange,
   pink,
-  blueGrey
-}
+  blueGrey;
 
-class PrimaryColors {
   static PrimaryColor? tryParse(String? name) {
     for (var color in PrimaryColor.values) {
       if (color.name == name) {

@@ -81,26 +81,26 @@ class Config {
     // 判断是否开启生物识别
     enabledBiometrics = sp.getBool(SPKeys.biometrics) ?? false;
     hasLockManually = sp.getBool(SPKeys.hasLockManually) ?? false;
-    autoLock = AutoLocks.tryParse(sp.getInt(SPKeys.autoLock)) ?? AutoLock.disabled;
+    autoLock = AutoLock.tryParse(sp.getInt(SPKeys.autoLock)) ?? AutoLock.disabled;
     // 判断长按功能
     longPressCopy = sp.getBool(SPKeys.longPressCopy) ?? true;
     // 初始化主题
-    primaryColor = PrimaryColors.tryParse(sp.getString(SPKeys.primaryColor)) ?? PrimaryColor.blue;
+    primaryColor = PrimaryColor.tryParse(sp.getString(SPKeys.primaryColor)) ?? PrimaryColor.blue;
     themeMode = ThemeModes.tryParse(sp.getString(SPKeys.themeMode)) ?? ThemeMode.system;
     // 初始化WebDAV
     webDavAuthSuccess = sp.getBool(SPKeys.webDavAuthSuccess) ?? false;
     webDavUrl = sp.getString(SPKeys.webDavUrl) ?? "";
     webDavUsername = sp.getString(SPKeys.webDavUsername) ?? "";
     webDavPassword = sp.getString(SPKeys.webDavPassword) ?? "";
-    webDavEncryptLevel = EncryptLevels.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.None;
-    webDavMergeMethod = MergeMethods.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
+    webDavEncryptLevel = EncryptLevel.tryParse(sp.getInt(SPKeys.webDavEncryptLevel)) ?? EncryptLevel.None;
+    webDavMergeMethod = MergeMethod.tryParse(sp.getInt(SPKeys.webDavMergeMethod)) ?? MergeMethod.localFirst;
     webDavBackupDirectory = sp.getString(SPKeys.webDavBackupDirectory) ?? "/Allpass";
     webDavUploadTime = sp.getString(SPKeys.webDavUploadTime);
-    webDavBackupMethod = WebDavBackupMethods.tryParse(sp.getString(SPKeys.webDavBackupMethod)) ?? WebDavBackupMethod.createNew;
+    webDavBackupMethod = WebDavBackupMethod.tryParse(sp.getString(SPKeys.webDavBackupMethod)) ?? WebDavBackupMethod.createNew;
     webDavBackupFilename = WebDavCustomBackupFilename.tryParse(sp.getString(SPKeys.webDavCustomBackupFilename));
     webDavDownloadTime = sp.getString(SPKeys.webDavDownloadTime);
     // 定期输入主密码天数
-    timingInMainPassword = InputMainPasswordTimings.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTimingEnum.tenDays;
+    timingInMainPassword = InputMainPasswordTiming.tryParse(sp.getInt(SPKeys.timingInputMainPassword)) ?? InputMainPasswordTimingEnum.tenDays;
   }
 
   static bool allowUseAuthLogin() {

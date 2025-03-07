@@ -14,7 +14,7 @@ class FileMetadata {
 
   FileMetadata.fromJson(Map<String, dynamic> json)
       : type = AllpassTypes.parse(json["type"]),
-        encryptLevel = EncryptLevels.parse(json["encrypt_level"]),
+        encryptLevel = EncryptLevel.parse(json["encrypt_level"]),
         appVersion = json["app_version"];
 
   Map<String, dynamic> toJson() => {

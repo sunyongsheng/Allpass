@@ -4,6 +4,29 @@ import 'package:flutter/widgets.dart';
 
 abstract interface class InputMainPasswordTiming {
   int get days;
+
+  static InputMainPasswordTiming? tryParse(int? value) {
+    if (value == null) {
+      return null;
+    }
+
+    if (value <= 0) {
+      if (VersionUtil.isDebug() && value == 0) {
+        return DebugInputMainPasswordTiming.instance;
+      }
+      return InputMainPasswordTimingEnum.never;
+    } else if (value == 7) {
+      return InputMainPasswordTimingEnum.sevenDays;
+    } else if (value == 10) {
+      return InputMainPasswordTimingEnum.tenDays;
+    } else if (value == 15) {
+      return InputMainPasswordTimingEnum.fifteenDays;
+    } else if (value == 30) {
+      return InputMainPasswordTimingEnum.thirtyDays;
+    } else {
+      return null;
+    }
+  }
 }
 
 class DebugInputMainPasswordTiming implements InputMainPasswordTiming {
@@ -36,33 +59,6 @@ enum InputMainPasswordTimingEnum implements InputMainPasswordTiming {
         return 30;
       case InputMainPasswordTimingEnum.never:
         return -1;
-    }
-  }
-}
-
-class InputMainPasswordTimings {
-  InputMainPasswordTimings._();
-
-  static InputMainPasswordTiming? tryParse(int? value) {
-    if (value == null) {
-      return null;
-    }
-
-    if (value <= 0) {
-      if (VersionUtil.isDebug() && value == 0) {
-        return DebugInputMainPasswordTiming.instance;
-      }
-      return InputMainPasswordTimingEnum.never;
-    } else if (value == 7) {
-      return InputMainPasswordTimingEnum.sevenDays;
-    } else if (value == 10) {
-      return InputMainPasswordTimingEnum.tenDays;
-    } else if (value == 15) {
-      return InputMainPasswordTimingEnum.fifteenDays;
-    } else if (value == 30) {
-      return InputMainPasswordTimingEnum.thirtyDays;
-    } else {
-      return null;
     }
   }
 }

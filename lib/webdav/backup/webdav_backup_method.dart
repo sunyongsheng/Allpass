@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 
 enum WebDavBackupMethod {
   createNew,
-  replaceExists,
-}
+  replaceExists;
 
-class WebDavBackupMethods {
   static WebDavBackupMethod? tryParse(String? string) {
     return switch (string) {
       "createNew" => WebDavBackupMethod.createNew,

@@ -3,9 +3,9 @@ import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/widgets.dart';
 
 /// 加密等級
-enum EncryptLevel { None, OnlyPassword, All }
+enum EncryptLevel {
+  None, OnlyPassword, All;
 
-class EncryptLevels {
   static EncryptLevel parse(int levelCode) {
     for (var level in EncryptLevel.values) {
       if (level.index == levelCode) {
