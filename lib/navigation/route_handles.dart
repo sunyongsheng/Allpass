@@ -46,7 +46,6 @@ var importDataHandler = Handler(handlerFunc: (context, params) {
       );
       var passwordRepository = PasswordRepository(dataSource: dataSource);
       var passwordProvider = PasswordProvider(passwordRepository: passwordRepository);
-      passwordProvider.init();
       return passwordProvider;
     },
     child: ImportFromExternalPage(),

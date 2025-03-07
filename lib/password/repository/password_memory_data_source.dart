@@ -5,13 +5,10 @@ import 'package:allpass/password/repository/password_data_source.dart';
 class PasswordMemoryDataSource implements PasswordDataSource {
   var _list = <PasswordBean>[];
 
-  Future<void>? _dataFuture;
+  Future<List<PasswordBean>> Function()? _dataProvider;
 
   PasswordMemoryDataSource({Future<List<PasswordBean>> Function()? dataProvider}) {
-    _dataFuture = dataProvider?.call().then((value) {
-      _dataFuture = null;
-      _list.addAll(value);
-    });
+    _dataProvider = dataProvider;
   }
 
   @override
@@ -40,8 +37,10 @@ class PasswordMemoryDataSource implements PasswordDataSource {
 
   @override
   Future<List<PasswordBean>> findAll() async {
-    if (_dataFuture != null) {
-      await _dataFuture!;
+    if (_dataProvider != null) {
+      var data = await _dataProvider?.call() ?? [];
+      _dataProvider = null;
+      _list.addAll(data);
     }
     return _list;
   }

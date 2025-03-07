@@ -21,13 +21,23 @@ class ImportFromExternalPage extends StatefulWidget {
 
   @override
   State createState() {
-    return _ImportPreviewState();
+    return _ImportFromExternalState();
   }
 }
 
-class _ImportPreviewState extends ImportBaseState<void> {
+class _ImportFromExternalState extends ImportBaseState<void> {
 
   var _importing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    try {
+      context.read<PasswordProvider>().init();
+    } catch (e) {
+      ToastUtil.show(msg: context.l10n.importFailedNotCsv);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
