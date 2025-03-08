@@ -79,10 +79,10 @@ class _LetterIndexBar extends State<LetterIndexBar> {
                   selector: (_, provider) => provider.letterIndexMap,
                   builder: (_, letterCountIndexMap, __) {
                     List<Widget> children = [];
-                    var keys = letterCountIndexMap.keys;
                     letters.forEach((item) {
                       var selected = _currentIndex == letters.indexOf(item);
-                      var textColor = selected ? Colors.white : keys.contains(item) ? null : Colors.grey;
+                      var contains = letterCountIndexMap[item] != null;
+                      var textColor = selected ? Colors.white : contains ? null : Colors.grey;
                       children.add(Container(
                         width: letterHeight,
                         height: letterHeight,

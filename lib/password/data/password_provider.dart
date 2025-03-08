@@ -45,7 +45,7 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
           break;
 
         case PasswordActionDeleteAll():
-          _letterCountIndexMap.clear();
+          _letterCountIndexMap = Map();
           _mostUsedUsername.clear();
           break;
       }
@@ -67,7 +67,7 @@ class PasswordProvider with ChangeNotifier implements LetterIndexProvider {
   /// 刷新首字母索引，基于[_passwordList]已按首字母排好序的情况下
   void _refreshLetterCountIndex(List<PasswordBean> list) {
     int amount = 0;
-    _letterCountIndexMap.clear();
+    _letterCountIndexMap = Map();
     list.forEach((bean) {
       String firstLetter = PinyinHelper.getFirstWordPinyin(bean.name).substring(0, 1).toUpperCase();
       if (lettersWithoutHash.contains(firstLetter)) {
