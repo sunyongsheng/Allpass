@@ -18,7 +18,7 @@ class CategoryProvider with ChangeNotifier {
     _labelList = StringUtil.waveLineSegStr2List(label);
 
     if (_folderList.isEmpty) {
-      _folderList.addAll(["默认", "娱乐", "办公", "论坛", "教育", "社交"]);
+      _folderList.addAll(["娱乐", "办公", "论坛", "教育", "社交"]);
       _folderParamsPersistence();
     }
   }

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:allpass/classification/category_provider.dart';
+import 'package:allpass/classification/folder_type.dart';
+import 'package:allpass/common/widget/select_item_dialog.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/ui/after_post_frame.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +17,6 @@ import 'package:allpass/password/widget/select_app_dialog.dart';
 import 'package:allpass/common/ui/allpass_ui.dart';
 import 'package:allpass/encrypt/encrypt_util.dart';
 import 'package:allpass/util/toast_util.dart';
-import 'package:allpass/util/theme_util.dart';
 import 'package:allpass/util/device_apps_holder.dart';
 import 'package:allpass/common/page/detail_text_page.dart';
 import 'package:allpass/common/widget/label_chip.dart';
@@ -54,7 +55,7 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
   late TextEditingController notesController;
   late TextEditingController urlController;
   List<String> labels = [];
-  String folder = "默认";
+  String folder = "";
   String? appName;
   String? appId;
   int fav = 0;
@@ -345,29 +346,31 @@ class _EditPasswordPage extends State<EditPasswordPage> with AfterFirstFrameMixi
             context.l10n.folderTitle,
             style: TextStyle(fontSize: 16, color: mainColor),
           ),
-          DropdownButton(
-            onChanged: (newValue) {
-              setState(() {
-                folder = newValue.toString();
-              });
-            },
-            items: context.watch<CategoryProvider>().folderList.map<DropdownMenuItem<String>>((item) {
-              return DropdownMenuItem<String>(
-                value: item,
-                child: Text(
-                  item,
-                  style: TextStyle(
-                    color: ThemeUtil.isInDarkTheme(context)
-                        ? Colors.white
-                        : Colors.black,
-                  ),
+          TextButton(
+            child: Text(
+              folder.isEmpty ? context.l10n.defaultFolder : folder,
+            ),
+            onPressed: () {
+              var list = [BuiltinFolder.defaultFolder];
+              list.addAll(context.read<CategoryProvider>().folderList.map((folder) => CustomFolder(folder)));
+              showDialog(
+                context: context,
+                builder: (_) => DefaultSelectItemDialog(
+                  list: list,
+                  itemTitleBuilder: (ctx, value) {
+                    if (value == BuiltinFolder.defaultFolder) {
+                      return context.l10n.defaultFolder;
+                    } else {
+                      return value.name;
+                    }
+                  },
+                  onSelected: (value) => setState(() {
+                    folder = value.name;
+                  }),
+                  selector: (value) => value.name == folder,
                 ),
               );
-            }).toList(),
-            style: AllpassTextUI.firstTitleStyle,
-            elevation: 8,
-            iconSize: 30,
-            value: folder,
+            },
           ),
         ],
       ),

@@ -292,14 +292,14 @@
   "updateCategorySuccess": "保存{categoryName} {name}",
   "deleteCategory": "删除{categoryName}",
   "deleteLabelWarning": "拥有此标签的密码或卡片将删除此标签，是否继续？",
-  "deleteFolderWarning": "此操作将会移动此文件夹下的所有密码及卡片到‘默认’文件夹中，是否继续？",
+  "deleteFolderWarning": "此操作将会移动此文件夹下的所有密码及卡片到「默认」文件夹中，是否继续？",
   "pleaseInputCategoryName": "请输入{categoryName}名",
   "categoryNameRuleRequire": "{categoryName}名中不允许含有','、'~'或'空格'",
   "categoryNameNotValid": "输入内容不合法，请勿包含‘,’、‘~’或空格",
   "categoryNameNotAllowEmpty": "输入内容不合法",
 
-  "autofillEnableAllpass": "Allpass已是您的自动填充服务",
-  "autofillDisableAllpass": "未使用Allpass作为自动填充服务",
+  "autofillEnableAllpass": "Allpass 已是您的自动填充服务",
+  "autofillDisableAllpass": "未使用 Allpass 作为自动填充服务",
   "autofillHelp": "当您在应用程序中输入密码时，自动填充功能会自动提供可能的密码匹配项以便您进行选择。当存储的密码条目符合以下条件之一时，将作为候选项：\n\n1. 密码条目所属App与当前App相匹配时；\n2. 密码条目的名称与当前App名称匹配时；\n\n如果您发现自动填充的结果不准确，您可以在密码编辑页面中修改密码条目所属App，以帮助自动填充功能更准确地匹配密码",
 
   "uploadToRemote": "上传到云端",

@@ -187,7 +187,7 @@ class CsvUtil {
         return values[index];
       }
     } on RangeError {} catch (e) {}
-    if (column == "folder") return "默认";
+    if (column == "folder") return "";
     if (column == 'fav') return '0';
     if (column == 'sortNumber') return "-1";
     return "";

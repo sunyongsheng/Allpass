@@ -61,7 +61,7 @@ class PasswordRepository {
       url: "",
       createTime: DateTime.now().toIso8601String(),
       notes: "",
-      folder: "默认",
+      folder: "",
       label: [],
     );
     var key = await _dataSource.insert(passwordBean);

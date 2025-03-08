@@ -30,7 +30,7 @@ class CardBean extends BaseModel implements Identifiable<CardBean> {
     required String cardId,
     String password = "",
     String telephone = "",
-    String folder = "默认",
+    String folder = "",
     String notes = "",
     List<String>? label,
     int fav = 0,

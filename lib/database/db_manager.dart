@@ -14,7 +14,7 @@ class DBManager {
   static const String TAG = "DBManager";
 
   /// 数据库版本
-  static const int _dbVersion = 5;
+  static const int _dbVersion = 6;
 
   /// 数据库名称
   static const String _dbName = "allpass_db";
@@ -60,7 +60,7 @@ class DBManager {
   static FutureOr<void> onUpdate(Database database, int oldVersion, int newVersion) async {
     if (oldVersion < 1 || oldVersion >= newVersion) return;
 
-    List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3, _upgrade3To4, _upgrade4To5];
+    List<Function> upgradeFunctions = [_upgrade1To2, _upgrade2To3, _upgrade3To4, _upgrade4To5, _upgrade5To6];
     int startIndex = oldVersion - 1;
     int endIndex = newVersion - 1;
     for (int index = startIndex; index < endIndex; index++) {
@@ -78,7 +78,7 @@ class DBManager {
         username TEXT NOT NULL,
         password TEXT NOT NULL,
         url TEXT NOT NULL,
-        folder TEXT DEFAULT '默认',
+        folder TEXT DEFAULT '',
         notes TEXT,
         label TEXT,
         fav INTEGER DEFAULT 0,
@@ -98,7 +98,7 @@ class DBManager {
         cardId TEXT NOT NULL,
         password TEXT,
         telephone TEXT,
-        folder TEXT DEFAULT '默认',
+        folder TEXT DEFAULT '',
         notes TEXT,
         label TEXT,
         fav INTEGER DEFAULT 0,
@@ -147,6 +147,15 @@ class DBManager {
     _logger.i("数据库升级： 4 -> 5");
     String addPasswordColumnSql = "ALTER TABLE ${PasswordTable.name} ADD COLUMN ${PasswordTable.columnAppName} TEXT DEFAULT ''";
     await database.execute(addPasswordColumnSql);
+    _logger.i("数据库升级完成");
+  }
+
+  static Future<void> _upgrade5To6(Database database) async {
+    _logger.i("数据库升级： 5 -> 6");
+    String removeDefaultFolder1 = "UPDATE ${PasswordTable.name} SET ${PasswordTable.columnFolder} = '' WHERE ${PasswordTable.columnFolder} = '默认'";
+    String removeDefaultFolder2 = "UPDATE ${CardTable.name} SET ${CardTable.columnFolder} = '' WHERE ${CardTable.columnFolder} = '默认'";
+    await database.execute(removeDefaultFolder1);
+    await database.execute(removeDefaultFolder2);
     _logger.i("数据库升级完成");
   }
 }

@@ -13,8 +13,6 @@ import 'package:allpass/util/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-const String defaultFolderName = "默认";
-
 /// 属性管理页
 /// 通过指定[type]来指定属性页的名称，属性页中是[ListView]
 /// 点击每一个[ListTile]弹出模态菜单，菜单中有编辑与删除选项
@@ -141,10 +139,6 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
               color: Colors.grey,
             ),
             onTap: () {
-              if (this.type == CategoryType.folder && currCategoryName == defaultFolderName) {
-                ToastUtil.show(msg: l10n.folderDisallowModify);
-                return;
-              }
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
@@ -353,7 +347,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       var passwordProvider = context.read<PasswordProvider>();
       for (var bean in passwordProvider.passwordList) {
         if (folder == bean.folder) {
-          bean.folder = defaultFolderName;
+          bean.folder = "";
           await passwordProvider.updatePassword(bean);
         }
       }
@@ -361,7 +355,7 @@ class _CategoryManagerPage extends State<CategoryManagerPage> {
       var cardProvider = context.read<CardProvider>();
       for (var bean in cardProvider.cardList) {
         if (folder == bean.folder) {
-          bean.folder = defaultFolderName;
+          bean.folder = "";
           await cardProvider.updateCard(bean);
         }
       }

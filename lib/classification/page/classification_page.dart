@@ -1,4 +1,5 @@
 import 'package:allpass/classification/category_provider.dart';
+import 'package:allpass/classification/page/default_folder_page.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,17 @@ class ClassificationPage extends StatelessWidget {
             ));
           },
           title: context.l10n.fav,
+        )
+    );
+    list.add(
+        ClassificationItem(
+          onPress: () {
+            Navigator.push(context, CupertinoPageRoute(
+                builder: (context) => DefaultFolderPage()
+            ));
+          },
+          title: context.l10n.defaultFolder,
+          color: Color(0xFF1052B5),
         )
     );
     list.addAll(context.watch<CategoryProvider>().folderList.map((folder) =>

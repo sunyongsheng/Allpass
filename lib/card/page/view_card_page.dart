@@ -148,7 +148,7 @@ class _ViewCardPage extends State<ViewCardPage> {
                                   color: Colors.grey[250],
                                   child: Container(
                                     child: Text(
-                                      bean.folder,
+                                      bean.folder.isEmpty ? l10n.defaultFolder : bean.folder,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     width: 50,
