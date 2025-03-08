@@ -33,14 +33,15 @@ abstract class ImportBaseState<PARAMS> extends State<StatefulWidget> {
             },
             onUpdateProgress,
           );
-          future.then((_) =>
-              Future.delayed(Duration(milliseconds: 500), () {
+          future.then((count) =>
+              Future.delayed(Duration(milliseconds: 800), () {
                 if (_isShowingProgressDialog) {
                   Navigator.pop(context, true);
+                  ToastUtil.show(msg: context.l10n.importRecordSuccess(count));
                 }
               }),
           );
-          return future;
+          return future.then((count) => count > 0);
         },
       ),
     ).then((result) {
@@ -51,7 +52,7 @@ abstract class ImportBaseState<PARAMS> extends State<StatefulWidget> {
     });
   }
 
-  Future<bool> _executeImport(
+  Future<int> _executeImport(
     BuildContext context,
     PARAMS params,
     void Function() ensureNotCancel,
@@ -66,10 +67,10 @@ abstract class ImportBaseState<PARAMS> extends State<StatefulWidget> {
     } on UnsupportedImportException {
       ToastUtil.showError(msg: context.l10n.importFailedNotCsv);
     }
-    return false;
+    return -1;
   }
 
-  Future<bool> importActual(
+  Future<int> importActual(
     BuildContext context,
     PARAMS params,
     void Function() ensureNotCancel,

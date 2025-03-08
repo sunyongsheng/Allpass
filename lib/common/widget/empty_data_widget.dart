@@ -13,7 +13,7 @@ class EmptyDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: AllpassScreenUtil.setHeight(400)),

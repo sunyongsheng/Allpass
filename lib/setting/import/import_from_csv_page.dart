@@ -103,7 +103,7 @@ class _ImportFromCsvPageState extends ImportBaseState<ImportFromCsvParams> {
   }
 
   @override
-  Future<bool> importActual(
+  Future<int> importActual(
     BuildContext context,
     ImportFromCsvParams params,
     void Function() ensureNotCancel,
@@ -112,11 +112,11 @@ class _ImportFromCsvPageState extends ImportBaseState<ImportFromCsvParams> {
     var type = params.type;
     var path = params.path;
     var categoryProvider = context.read<CategoryProvider>();
+    var count = 0;
     if (type == AllpassType.password) {
       var passwordProvider = context.read<PasswordProvider>();
       List<PasswordBean> passwordList = await CsvUtil.parsePasswordFromCsv(path: path);
       var size = passwordList.length;
-      var count = 0;
       for (var bean in passwordList) {
         ensureNotCancel();
 
@@ -128,7 +128,6 @@ class _ImportFromCsvPageState extends ImportBaseState<ImportFromCsvParams> {
           onUpdateProgress(count / size);
         }
       }
-      ToastUtil.show(msg: context.l10n.importRecordSuccess(passwordList.length));
       await passwordProvider.refresh();
     } else if (type == AllpassType.card) {
       var cardProvider = context.read<CardProvider>();
@@ -141,16 +140,14 @@ class _ImportFromCsvPageState extends ImportBaseState<ImportFromCsvParams> {
         await cardProvider.insertCard(bean);
         await categoryProvider.addLabel(bean.label);
         await categoryProvider.addFolder([bean.folder]);
-        count++;
         if (size > 0) {
           onUpdateProgress(count / size);
         }
       }
-      ToastUtil.show(msg: context.l10n.importRecordSuccess(cardList.length));
       await cardProvider.refresh();
     } else {
       throw UnsupportedImportException();
     }
-    return true;
+    return count;
   }
 }

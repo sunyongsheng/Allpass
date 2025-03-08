@@ -16,7 +16,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 class ImportFromExternalPage extends StatefulWidget {
-
   const ImportFromExternalPage({super.key});
 
   @override
@@ -26,7 +25,6 @@ class ImportFromExternalPage extends StatefulWidget {
 }
 
 class _ImportFromExternalState extends ImportBaseState<void> {
-
   var _importing = false;
 
   @override
@@ -51,14 +49,17 @@ class _ImportFromExternalState extends ImportBaseState<void> {
         ),
         centerTitle: true,
       ),
-      body: Stack(
+      body: Column(
         children: [
           Consumer<PasswordProvider>(
             builder: (context, provider, emptyWidget) {
               if (provider.count == 0) {
                 return emptyWidget!;
-              } else {
-                return ListView.builder(
+              }
+
+              return Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     var password = provider.passwordList[index];
                     return Slidable(
@@ -97,23 +98,20 @@ class _ImportFromExternalState extends ImportBaseState<void> {
                   },
                   itemCount: provider.count,
                   physics: const AlwaysScrollableScrollPhysics(),
-                );
-              }
+                ),
+              );
             },
             child: EmptyDataWidget(title: l10n.emptyDataHint),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: AllpassEdgeInsets.listInset,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: LoadingTextButton(
-                title: l10n.confirmImport,
-                loading: _importing,
-                loadingTitle: l10n.importing,
-                color: Theme.of(context).primaryColor,
-                onPressed: () => _onTapImport(context),
-              ),
+          Container(
+            padding: AllpassEdgeInsets.listInset,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: LoadingTextButton(
+              title: l10n.confirmImport,
+              loading: _importing,
+              loadingTitle: l10n.importing,
+              color: Theme.of(context).primaryColor,
+              onPressed: () => _onTapImport(context),
             ),
           )
         ],
@@ -138,7 +136,7 @@ class _ImportFromExternalState extends ImportBaseState<void> {
   }
 
   @override
-  Future<bool> importActual(
+  Future<int> importActual(
     BuildContext context,
     void params,
     void Function() ensureNotCancel,
@@ -160,7 +158,6 @@ class _ImportFromExternalState extends ImportBaseState<void> {
         onUpdateProgress(count / size);
       }
     }
-    ToastUtil.show(msg: context.l10n.importRecordSuccess(provider.count));
-    return true;
+    return count;
   }
 }

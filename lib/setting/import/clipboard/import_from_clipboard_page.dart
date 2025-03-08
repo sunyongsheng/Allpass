@@ -237,10 +237,12 @@ class _ImportFromClipboardPage extends ImportBaseState<List<PasswordBean>> {
   }
 
   @override
-  Future<bool> importActual(BuildContext context,
-      List<PasswordBean> params,
-      void Function() ensureNotCancel,
-      void Function(double p1) onUpdateProgress,) async {
+  Future<int> importActual(
+    BuildContext context,
+    List<PasswordBean> params,
+    void Function() ensureNotCancel,
+    void Function(double p1) onUpdateProgress,
+  ) async {
     var count = 0;
     var size = params.length;
     var passwordProvider = context.read<PasswordProvider>();
@@ -251,7 +253,6 @@ class _ImportFromClipboardPage extends ImportBaseState<List<PasswordBean>> {
       count++;
       onUpdateProgress(count / size);
     }
-    ToastUtil.show(msg: context.l10n.importRecordSuccess(params.length));
-    return true;
+    return count;
   }
 }

@@ -56,9 +56,9 @@ class _ProgressDialogState<T> extends State<ProgressDialog> {
     } else {
       content = [
         Icon(
-          Icons.check_circle,
+          Icons.check_circle_outline_outlined,
           size: 50,
-          color: Colors.white,
+          color: Colors.grey,
         ),
         Padding(padding: EdgeInsets.symmetric(vertical: 8)),
         Text(
