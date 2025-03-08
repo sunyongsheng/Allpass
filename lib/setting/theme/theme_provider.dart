@@ -24,6 +24,15 @@ class ThemeProvider with ChangeNotifier {
   /// 少部分页面背景颜色为浅白色
   late Color specialBackgroundColor;
   late Color offstageColor;
+  late Color successContentColor;
+  late Color successBackgroundColor;
+  late Color infoContentColor;
+  late Color infoBackgroundColor;
+  late Color warningContentColor;
+  late Color waringBackgroundColor;
+  late Color errorContentColor;
+  late Color errorBackgroundColor;
+  late Color iconColor;
 
   void init() {
     _allpassTheme = AllpassTheme();
@@ -71,11 +80,29 @@ class ThemeProvider with ChangeNotifier {
   void _setExtraColorLightMode() {
     specialBackgroundColor = Color.fromRGBO(245, 246, 250, 1);
     offstageColor = Colors.black87;
+    successContentColor = Color(0xFF3B7055);
+    successBackgroundColor = Color(0xFFEDFBF3);
+    infoContentColor = Color(0xFF307185);
+    infoBackgroundColor = Color(0xFFF1FBFE);
+    warningContentColor = Color(0xFF81642E);
+    waringBackgroundColor = Color(0xFFFFF9EC);
+    errorContentColor = Color(0xFFAC2F52);
+    errorBackgroundColor = Color(0xFFFFF1F6);
+    iconColor = Color(0xFF81879F);
   }
 
   void _setExtraColorDarkMode() {
     specialBackgroundColor = Colors.black;
     offstageColor = Colors.grey[600]!;
+    successContentColor = Color(0xFF69C28D);
+    successBackgroundColor = Color(0xFF181818);
+    infoContentColor = Color(0xFF25ABFB);
+    infoBackgroundColor = Color(0xFF181818);
+    warningContentColor = Color(0xFFFEBF4D);
+    waringBackgroundColor = Color(0xFF181818);
+    errorContentColor = Color(0xFFE2496F);
+    errorBackgroundColor = Color(0xFF181818);
+    iconColor = Color(0xFF8F8F8F);
   }
 
   void _setExtraColorAuto(Brightness platformBrightness) {

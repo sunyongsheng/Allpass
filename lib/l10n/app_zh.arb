@@ -280,6 +280,7 @@
   },
 
   "importFromExternalPreview": "导入预览",
+  "importFromExternalTips": "左滑以删除密码条目",
   "confirmImport": "确认导入",
 
   "categoryManagement": "{categoryName}管理",

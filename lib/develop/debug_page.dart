@@ -1,5 +1,6 @@
 import 'package:allpass/card/data/card_repository.dart';
 import 'package:allpass/core/di/di.dart';
+import 'package:allpass/develop/widget_preview_page.dart';
 import 'package:allpass/l10n/l10n_support.dart';
 import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/login_page.dart';
@@ -69,7 +70,7 @@ class _DebugPage extends State<DebugPage> {
                   showDialog<String>(
                     context: context,
                     builder: (context) => DefaultSelectItemDialog<String>(
-                      list: ["webdav_sync", "register", "login"],
+                      list: ["webdav_sync", "register", "login", "widget_preview"],
                       onSelected: (value) {
                         var pageMapping = {
                           "webdav_sync": ChangeNotifierProvider(
@@ -78,6 +79,7 @@ class _DebugPage extends State<DebugPage> {
                           ),
                           "register": RegisterPage(),
                           "login": LoginPage(arguments: LoginArguments()),
+                          "widget_preview": WidgetPreviewPage(),
                         };
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) => pageMapping[value]!,

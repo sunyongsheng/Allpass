@@ -457,6 +457,7 @@
   },
 
   "importFromExternalPreview": "Imports Preview",
+  "importFromExternalTips": "Slide to delete item",
   "confirmImport": "Continue import",
 
   "categoryManagement": "{categoryName} Management",

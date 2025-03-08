@@ -125,7 +125,7 @@ class _ImportFromClipboardPage extends ImportBaseState<List<PasswordBean>> {
         ),
       ),
       Container(
-        padding: AllpassEdgeInsets.listInset,
+        padding: AllpassEdgeInsets.forCardInset,
         child: LoadingTextButton(
           title: l10n.startImport,
           loadingTitle: l10n.importing,
@@ -138,9 +138,6 @@ class _ImportFromClipboardPage extends ImportBaseState<List<PasswordBean>> {
           },
         ),
       ),
-      Padding(
-        padding: AllpassEdgeInsets.smallTBPadding,
-      )
     ]);
     return Scaffold(
       appBar: AppBar(
