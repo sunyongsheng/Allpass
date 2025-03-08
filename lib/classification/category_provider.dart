@@ -16,11 +16,6 @@ class CategoryProvider with ChangeNotifier {
     String label = AllpassApplication.sp.getString(SPKeys.label) ?? "";
     _folderList = StringUtil.waveLineSegStr2List(folder);
     _labelList = StringUtil.waveLineSegStr2List(label);
-
-    if (_folderList.isEmpty) {
-      _folderList.addAll(["娱乐", "办公", "论坛", "教育", "社交"]);
-      _folderParamsPersistence();
-    }
   }
 
   /// Label

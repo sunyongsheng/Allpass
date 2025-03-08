@@ -431,8 +431,14 @@
   "projectUrl": "开源地址：Github",
   "gitee": "码云",
 
-  "initialFolders": "默认~娱乐~办公~论坛~教育~社交",
   "defaultFolder": "默认",
+  "folderEntertainment": "娱乐",
+  "folderOffice": "办公",
+  "folderFinance": "金融",
+  "folderGame": "游戏",
+  "folderForum": "论坛",
+  "folderEducation": "教育",
+  "folderSocial": "社交",
 
   "debugListInstalledApp": "显示已安装App",
   "debugPageTest": "页面跳转",

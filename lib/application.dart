@@ -107,10 +107,3 @@ class AllpassApplication {
     context.read<CategoryProvider>().init();
   }
 }
-
-/// 软件第一次运行，用户点击“同意并继续”后，对软件进行初始化，仅会调用一次
-Future<Null> initAppFirstRun(BuildContext context) async {
-  AllpassApplication.sp.setBool(SPKeys.firstRun, false);
-  AllpassApplication.sp.setString(SPKeys.allpassVersion, AllpassApplication.version);
-  AllpassApplication.sp.setBool(SPKeys.needRegister, true);
-}

@@ -747,8 +747,14 @@
   "projectUrl": "Source Repository: Github",
   "gitee": "Gitee",
 
-  "initialFolders": "Default~Entertainment~Office~Forum~Education~Social",
   "defaultFolder": "Default",
+  "folderEntertainment": "Entertainment",
+  "folderOffice": "Office",
+  "folderFinance": "Finance",
+  "folderGame": "Game",
+  "folderForum": "Forum",
+  "folderEducation": "Education",
+  "folderSocial": "Social",
 
   "debugListInstalledApp": "List installed apps",
   "debugPageTest": "Page router",

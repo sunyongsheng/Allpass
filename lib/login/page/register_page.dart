@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/common/widget/loading_text_button.dart';
 import 'package:allpass/home/about_page.dart';
 import 'package:allpass/l10n/l10n_support.dart';
@@ -38,6 +39,21 @@ class _RegisterPage extends State<RegisterPage> {
     var themeProvider = context.read<ThemeProvider>();
     WidgetsBinding.instance.addPostFrameCallback((callback) {
       themeProvider.setExtraColor(PlatformDispatcher.instance.platformBrightness);
+
+      var isFirstRun = AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true;
+      if (isFirstRun) {
+        context.read<CategoryProvider>().addFolder([
+          context.l10n.folderEntertainment,
+          context.l10n.folderOffice,
+          context.l10n.folderFinance,
+          context.l10n.folderSocial,
+          context.l10n.folderGame,
+          context.l10n.folderEducation,
+          context.l10n.folderForum,
+        ]);
+        AllpassApplication.sp.setBool(SPKeys.firstRun, false);
+      }
+
       _tryShowPrivacyDialog();
     });
 
@@ -124,35 +140,37 @@ class _RegisterPage extends State<RegisterPage> {
   }
 
   void _tryShowPrivacyDialog() {
-    if (AllpassApplication.sp.getBool(SPKeys.firstRun) ?? true) {
-      var l10n = context.l10n;
-      showDialog(
-        context: context,
-        builder: (cx) => AlertDialog(
-          title: Text(l10n.serviceTerms),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AboutPage.serviceContent,
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(l10n.confirmServiceTerms),
-              onPressed: () async {
-                await initAppFirstRun(cx);
-                Navigator.pop(cx);
-              },
-            ),
-            TextButton(
-              child: Text(l10n.cancel),
-              onPressed: () => exit(0),
-            )
-          ],
-        ),
-      );
+    if (AllpassApplication.sp.getBool(SPKeys.privacyAgreementAccepted) ?? false) {
+      return;
     }
+
+    var l10n = context.l10n;
+    showDialog(
+      context: context,
+      builder: (cx) => AlertDialog(
+        title: Text(l10n.serviceTerms),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AboutPage.serviceContent,
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(l10n.confirmServiceTerms),
+            onPressed: () async {
+              AllpassApplication.sp.setBool(SPKeys.privacyAgreementAccepted, true);
+              Navigator.pop(cx);
+            },
+          ),
+          TextButton(
+            child: Text(l10n.cancel),
+            onPressed: () => exit(0),
+          )
+        ],
+      ),
+    );
   }
 }

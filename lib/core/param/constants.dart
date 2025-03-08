@@ -6,7 +6,7 @@ class SPKeys {
   SPKeys._();
 
   static const String firstRun = "FIRST_RUN";
-  static const String needRegister = "NEED_REGISTER";
+  static const String privacyAgreementAccepted = "PRIVACY_AGREEMENT_ACCEPTED";
   static const String allpassVersion = "ALLPASS_VERSION";
 
   static const String password = "password";

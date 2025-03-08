@@ -4,6 +4,7 @@ import 'package:allpass/classification/category_provider.dart';
 import 'package:allpass/initializer/di_initializer.dart';
 import 'package:allpass/login/page/login_arguments.dart';
 import 'package:allpass/login/page/register_page.dart';
+import 'package:allpass/setting/update/app_update_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,6 +33,8 @@ void main() async {
     AllpassApplication.initRouter();
     GetItInitializer.initialize();
     AllpassApplication.initAndroidChannel();
+
+    AppUpdateManager.initialize();
 
     if (Platform.isAndroid) {
       //设置Android头部的导航栏透明
