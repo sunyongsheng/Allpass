@@ -34,7 +34,7 @@ class CategoryProvider with ChangeNotifier {
     }
     int oldLen = _labelList.length;
     for (var label in labels) {
-      if (!_labelList.contains(label)) {
+      if (label.isNotEmpty && !_labelList.contains(label)) {
         _labelList.add(label);
       }
     }
@@ -47,6 +47,10 @@ class CategoryProvider with ChangeNotifier {
   }
 
   Future<void> updateLabel(int index, String newLabel) async {
+    if (newLabel.isEmpty) {
+      return;
+    }
+
     _labelList[index] = newLabel;
     await _labelParamsPersistence();
     notifyListeners();
@@ -77,7 +81,7 @@ class CategoryProvider with ChangeNotifier {
   Future<bool> addFolder(List<String> folders) async {
     int oldLen = _folderList.length;
     for (var folder in folders) {
-      if (!_folderList.contains(folder)) {
+      if (folder.isNotEmpty && !_folderList.contains(folder)) {
         _folderList.add(folder);
       }
     }
@@ -90,6 +94,10 @@ class CategoryProvider with ChangeNotifier {
   }
 
   Future<void> updateFolder(int index, String newFolder) async {
+    if (newFolder.isEmpty) {
+      return;
+    }
+
     _folderList[index] = newFolder;
     await _folderParamsPersistence();
     notifyListeners();
