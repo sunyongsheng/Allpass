@@ -61,26 +61,26 @@ class ColumnDefinition {
           try {
             int.parse(defaultValue!);
           } on FormatException {
-            throw FormatException("The default value of an integer column must be an integer.");
+            throw FormatException("The default value of an ${type}(`${name}`) column must be an integer. ");
           }
           break;
         case ColumnType.real:
           try {
             double.parse(defaultValue!);
           } on FormatException {
-            throw FormatException("The default value of a real column must be a real number.");
+            throw FormatException("The default value of a ${type}(`${name}`) column must be a real number.");
           }
           break;
         case ColumnType.text:
           if (!defaultValue!.startsWith("'") || !defaultValue!.endsWith("'")) {
-            throw FormatException("The default value of a text column must use '' to surround.");
+            throw FormatException("The default value of a ${type}(`${name}`) column must use '' to surround.");
           }
           break;
         case ColumnType.blob:
-          throw FormatException("blob columns cannot have a default value.");
+          throw FormatException("${type}(`${name}`) columns cannot have a default value.");
         case ColumnType.boolean:
           if (defaultValue != "0" && defaultValue != "1") {
-            throw FormatException("The default value of a boolean column must be 0 or 1.");
+            throw FormatException("The default value of a ${type}(`${name}`) column must be 0 or 1.");
           }
           break;
         case ColumnType.date:
@@ -88,14 +88,14 @@ class ColumnDefinition {
           try {
             DateTime.parse(defaultValue!);
           } on FormatException {
-            throw FormatException("The default value of a date/time column must be a date/time.");
+            throw FormatException("The default value of a ${type}(`${name}`) column must be a date/time.");
           }
           break;
         case ColumnType.time:
           try {
             DateTime.parse("1970-01-01 ${defaultValue!}");
           } on FormatException {
-            throw FormatException("The default value of a time column must like HH:MM:SS.");
+            throw FormatException("The default value of a ${type}(`${name}`) column must like HH:MM:SS.");
           }
           break;
         default:

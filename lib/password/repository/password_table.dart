@@ -63,7 +63,7 @@ mixin PasswordTable on BaseDBProvider {
       ColumnDefinition(
         name: columnFolder,
         type: ColumnType.text,
-        defaultValue: '',
+        defaultValue: '\'\'',
       ),
       ColumnDefinition(
         name: columnNotes,
