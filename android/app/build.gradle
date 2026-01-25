@@ -31,7 +31,7 @@ if (keyPropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 36
     namespace "top.aengus.allpass"
 
     sourceSets {
@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "top.aengus.allpass"
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

@@ -39,34 +39,40 @@ object AndroidUtil {
         val pm: PackageManager = context.packageManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val info: PackageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
-            val hashes = ArrayList<String>(info.signingInfo.apkContentsSigners.size)
-            for (sig in info.signingInfo.apkContentsSigners) {
-                val cert: ByteArray = sig.toByteArray()
-                val md: MessageDigest = MessageDigest.getInstance("SHA-256")
-                md.update(cert)
-                hashes.add(bytesToHex(md.digest()))
+            info.signingInfo?.let {
+                val hashes = ArrayList<String>(it.apkContentsSigners?.size ?: 0)
+                for (sig in it.apkContentsSigners) {
+                    val cert: ByteArray = sig.toByteArray()
+                    val md: MessageDigest = MessageDigest.getInstance("SHA-256")
+                    md.update(cert)
+                    hashes.add(bytesToHex(md.digest()))
+                }
+                hashes.sort()
+                val hash = StringBuilder()
+                for (i in 0 until hashes.size) {
+                    hash.append(hashes[i])
+                }
+                return hash.toString()
             }
-            hashes.sort()
-            val hash = StringBuilder()
-            for (i in 0 until hashes.size) {
-                hash.append(hashes[i])
-            }
-            return hash.toString()
+            return ""
         } else {
             val info: PackageInfo = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            val hashes = ArrayList<String>(info.signatures.size)
-            for (sig in info.signatures) {
-                val cert: ByteArray = sig.toByteArray()
-                val md: MessageDigest = MessageDigest.getInstance("SHA-256")
-                md.update(cert)
-                hashes.add(bytesToHex(md.digest()))
+            info.signatures?.let {
+                val hashes = ArrayList<String>(it.size)
+                for (sig in it) {
+                    val cert: ByteArray = sig.toByteArray()
+                    val md: MessageDigest = MessageDigest.getInstance("SHA-256")
+                    md.update(cert)
+                    hashes.add(bytesToHex(md.digest()))
+                }
+                hashes.sort()
+                val hash = StringBuilder()
+                for (i in 0 until hashes.size) {
+                    hash.append(hashes[i])
+                }
+                return hash.toString()
             }
-            hashes.sort()
-            val hash = StringBuilder()
-            for (i in 0 until hashes.size) {
-                hash.append(hashes[i])
-            }
-            return hash.toString()
+            return ""
         }
     }
 

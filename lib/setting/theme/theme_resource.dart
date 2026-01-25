@@ -73,7 +73,7 @@ class AllpassTheme {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         iconTheme: IconThemeData(color: Colors.white70),
         elevation: 0,
-        color: Colors.black,
+        backgroundColor: Colors.black,
         titleTextStyle: TextStyle(color: Colors.white),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -95,7 +95,7 @@ class AllpassTheme {
         ),
       ),
       iconTheme: IconThemeData(color: Colors.grey[400]),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.grey[900],
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -103,7 +103,6 @@ class AllpassTheme {
         ),
         clipBehavior: Clip.antiAlias,
       ),
-      indicatorColor: mainColor,
       textSelectionTheme: TextSelectionThemeData(cursorColor: mainColor),
       textTheme: TextTheme(
         displayLarge: TextStyle(color: Colors.white),
@@ -119,7 +118,7 @@ class AllpassTheme {
         labelLarge: TextStyle(color: mainColor),
         titleLarge: TextStyle(color: Colors.white),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: Color.fromRGBO(25, 25, 25, 1),
         shape: RoundedRectangleBorder(
           borderRadius: AllpassUI.smallBorderRadius,
@@ -187,6 +186,7 @@ class AllpassTheme {
         ),
       ),
       listTileTheme: ListTileThemeData(minLeadingWidth: 32),
+      tabBarTheme: TabBarThemeData(indicatorColor: mainColor),
     );
   }
 
@@ -202,7 +202,7 @@ class AllpassTheme {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         iconTheme: IconThemeData(color: Colors.black),
         elevation: 0,
-        color: Colors.white,
+        backgroundColor: Colors.white,
         titleTextStyle: TextStyle(color: Colors.black),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -229,12 +229,11 @@ class AllpassTheme {
           ),
         ),
       ),
-      indicatorColor: mainColor,
       textSelectionTheme: TextSelectionThemeData(cursorColor: mainColor),
       textTheme: TextTheme(
         bodyMedium: TextStyle(fontSize: 14,),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: AllpassUI.smallBorderRadius,
@@ -249,7 +248,7 @@ class AllpassTheme {
           borderSide: BorderSide.none,
         ),
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: AllpassUI.smallBorderRadius,
         ),
@@ -268,6 +267,7 @@ class AllpassTheme {
         ),
       ),
       listTileTheme: ListTileThemeData(minLeadingWidth: 32),
+      tabBarTheme: TabBarThemeData(indicatorColor: mainColor),
     );
   }
 }

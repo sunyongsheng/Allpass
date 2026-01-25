@@ -98,9 +98,7 @@ class ColumnDefinition {
             throw FormatException("The default value of a ${type}(`${name}`) column must like HH:MM:SS.");
           }
           break;
-        default:
-          break;
-      }
+        }
       definition += " DEFAULT $defaultValue";
     }
     return definition;

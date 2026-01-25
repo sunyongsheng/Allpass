@@ -11,29 +11,29 @@ dependencies:
     sdk: flutter
 
   # 动画
-  animations: ^2.0.11
+  animations: ^2.1.1
 #  # IOS图标
 #  cupertino_icons: ^1.0.2
   # Toast通知
-  fluttertoast: ^8.2.8
+  fluttertoast: ^8.2.14
   # 数据库
-  sqflite: ^2.4.0
+  sqflite: ^2.4.2
   # 应用路径
   path_provider: ^2.1.5
   # 密码加密
   encrypt: ^5.0.3
   # 文件管理
-  file_picker: ^8.1.3
+  file_picker: ^8.3.7
   # 打开链接
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
   # 状态管理
-  provider: ^6.1.2
+  provider: ^6.1.5+1
   # 路由管理
   fluro: ^2.0.5
   # 持久化
-  shared_preferences: ^2.3.5
+  shared_preferences: ^2.5.4
   # 依赖注入
-  get_it: ^8.0.2
+  get_it: ^8.3.0
   # 生物识别
   local_auth: ^2.3.0
   # 屏幕尺寸管理
@@ -41,24 +41,24 @@ dependencies:
   # 汉字转拼音
   lpinyin: ^2.0.3
   # 网络请求
-  dio: ^5.7.0
+  dio: ^5.9.0
   pretty_dio_logger: ^1.4.0
   # 分享功能
-  share_plus: ^10.1.1
+  share_plus: ^10.1.4
   # 密钥存储
-  flutter_secure_storage: ^9.2.2
+  flutter_secure_storage: ^9.2.4
   # XML解析
-  xml: ^6.3.0
+  xml: ^6.6.1
   # 已安装App
-  installed_apps: ^1.5.2
+  installed_apps: ^1.6.0
   # Logger
-  logger: ^2.4.0
+  logger: ^2.6.2
   # 包信息
-  package_info_plus: ^8.1.0
+  package_info_plus: ^8.3.1
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
-  flutter_slidable: ^3.1.1
+  intl: ^0.20.2
+  flutter_slidable: ^3.1.2
 
 dev_dependencies:
   flutter_test:

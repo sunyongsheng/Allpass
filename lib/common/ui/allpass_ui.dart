@@ -31,7 +31,7 @@ class AllpassTextUI {
 /// 保存所有Allpass用到的颜色
 class AllpassColorUI {
   AllpassColorUI._();
-  static final List<Color> allColor = List.of([
+  static final List<Color> allColor = List<Color>.of([
     Color.fromRGBO(8, 200, 224, 1),
     Color.fromRGBO(72, 120, 240, 1),
     Colors.amber,
@@ -196,8 +196,8 @@ Gradient getNextGradient() {
 Color getCenterColor(List<Color> colors) {
   var start = colors.first;
   var end = colors.last;
-  var red = (start.red + end.red) / 2;
-  var blue = (start.blue + end.blue) / 2;
-  var green = (start.green + end.green) / 2;
-  return Color.fromARGB(255, red.toInt(), green.toInt(), blue.toInt());
+  var red = (start.r + end.r) / 2;
+  var blue = (start.b + end.b) / 2;
+  var green = (start.g + end.g) / 2;
+  return Color.fromARGB(255, (red * 255).round() & 0xff, (green * 255).round() & 0xff, (blue * 255).round() & 0xff);
 }

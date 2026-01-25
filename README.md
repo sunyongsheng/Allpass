@@ -86,10 +86,10 @@ TODO
 # Flutter环境
 
 ```
-[✓] Flutter (Channel stable, 3.24.4, on macOS 15.1 24B83 darwin-arm64, locale en-CN)
-[✓] Android toolchain - develop for Android devices (Android SDK version 34.0.0)
-[✓] Xcode - develop for iOS and macOS (Xcode 16.1)
-[✓] Android Studio (version 2024.2)
+[✓] Flutter (Channel stable, 3.38.7, on macOS 26.2 25C56 darwin-arm64, locale en-CN)
+[✓] Android toolchain - develop for Android devices (Android SDK version 36.0.0)
+[✓] Xcode - develop for iOS and macOS (Xcode 26.2)
+[✓] Chrome - develop for the web
 ```
 
 # LICENSE
