@@ -372,6 +372,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoLock => '自动锁定';
 
   @override
+  String get autoLockDialogTitle => '切到后台后锁定应用';
+
+  @override
   String get autoLockImmediate => '立刻';
 
   @override

@@ -121,6 +121,7 @@
   "authorizationFailed": "授权失败",
   "biometricNotSupport": "您的设备似乎不支持生物识别",
   "autoLock": "自动锁定",
+  "autoLockDialogTitle": "切到后台后锁定应用",
   "autoLockImmediate": "立刻",
   "autoLock30s": "30秒后",
   "autoLockDisable": "禁用",

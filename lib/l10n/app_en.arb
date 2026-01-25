@@ -224,6 +224,7 @@
   "authorizationFailed": "Authorization failed",
   "biometricNotSupport": "Your device not support biometric",
   "autoLock": "Auto-lock",
+  "autoLockDialogTitle": "Lock app when quit",
   "autoLockImmediate": "Immediately",
   "autoLock30s": "In 30s",
   "autoLockDisable": "Disabled",

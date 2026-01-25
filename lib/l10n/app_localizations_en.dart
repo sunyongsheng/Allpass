@@ -394,6 +394,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoLock => 'Auto-lock';
 
   @override
+  String get autoLockDialogTitle => 'Lock app when quit';
+
+  @override
   String get autoLockImmediate => 'Immediately';
 
   @override

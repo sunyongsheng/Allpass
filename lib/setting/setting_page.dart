@@ -130,6 +130,7 @@ class _SettingPage extends State<SettingPage> with AutomaticKeepAliveClientMixin
             context: context,
             builder: (ctx) => DefaultSelectItemDialog(
               list: AutoLock.values,
+              titleBuilder: (_) => l10n.autoLockDialogTitle,
               selector: (item) => item == Config.autoLock,
               itemTitleBuilder: (ctx, item) => item.l10nStr(ctx),
               onSelected: (autoLock) {

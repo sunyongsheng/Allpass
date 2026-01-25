@@ -11,16 +11,17 @@ abstract class SelectItemDialog<T> extends StatelessWidget {
   final List<T> list;
   final bool Function(T)? selector;
   final String? helpText;
+  final String? title;
 
   final bool Function(T) defaultSelector = (data) => false;
 
-  SelectItemDialog({required this.list, this.selector, this.helpText, this.key})
+  SelectItemDialog({required this.list, this.selector, this.helpText, this.title, this.key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(context.l10n.pleaseSelect),
+      title: Text(title ?? context.l10n.pleaseSelect),
       content: SingleChildScrollView(
         child: Column(children: _getList(context)),
       ),

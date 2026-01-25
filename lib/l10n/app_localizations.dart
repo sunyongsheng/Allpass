@@ -776,6 +776,12 @@ abstract class AppLocalizations {
   /// **'Auto-lock'**
   String get autoLock;
 
+  /// No description provided for @autoLockDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock app when quit'**
+  String get autoLockDialogTitle;
+
   /// No description provided for @autoLockImmediate.
   ///
   /// In en, this message translates to:
